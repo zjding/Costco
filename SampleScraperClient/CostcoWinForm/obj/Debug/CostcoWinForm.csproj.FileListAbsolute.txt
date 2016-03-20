@@ -1,0 +1,10 @@
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\CostcoWinForm.exe.config
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\CostcoWinForm.exe
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\CostcoWinForm.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csprojResolveAssemblyReference.cache
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.Form1.resources
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.Properties.Resources.resources
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csproj.GenerateResource.Cache
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.exe
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.ProductInfoForm.resources
