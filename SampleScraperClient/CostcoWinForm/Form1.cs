@@ -98,6 +98,8 @@ namespace CostcoWinForm
 
         private void btnImportProducts_Click(object sender, EventArgs e)
         {
+            DateTime startDT = DateTime.Now;
+
             string connectionString = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             string sqlString;
@@ -125,18 +127,25 @@ namespace CostcoWinForm
             GetProductUrls();
             MessageBox.Show("Get productUrlArray Done");
 
-            sqlString = "TRUNCATE TABLE Staging_ProductInfo";
+            sqlString = "TRUNCATE TABLE Raw_ProductInfo";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            productUrlArray.Add("1");
+            //productUrlArray.Add("http://www.costco.com/Stackable-Chairs-6-pack.product.11541685.html");
+
+            this.lblTotal.Text = "/ " + productUrlArray.Count.ToString();
+
+            int i = 1;
 
             foreach (string productUrl in productUrlArray)
             {
                 try
                 {
+                    this.lblcurrent.Text = i.ToString();
+                    i++;
 
-                    //string a = "http://www.costco.com/Bolero-Brown-Woven-100%25-Polypropylene-Rug-Collection-.product.100053980.html";
+                    string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
+                    UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.')+1);
 
                     PageResult = Browser.NavigateToPage(new Uri(productUrl));
 
@@ -150,17 +159,19 @@ namespace CostcoWinForm
                     productName = productName.Replace("???", "");
                     productName = productName.Replace("??", "");
 
-                    //if (productName.Contains("DESITIN") || productName.Contains("Evenflo"))
-                    //{
-                    //    int a = 1;
-                    //}
-
                     List<HtmlNode> col1Node = productInfo.CssSelect(".col1").ToList<HtmlNode>();
                     string itemNumber = (col1Node[0].SelectNodes("p")[0]).InnerText;
                     if (itemNumber.Length > 6)
                         itemNumber = itemNumber.Substring(6);
                     else
                         itemNumber = "";
+
+                    string discount = "";
+
+                    HtmlNode discountNote = col1Node[0].CssSelect(".merchandisingText").FirstOrDefault();
+
+                    if (discountNote != null)
+                        discount = discountNote.InnerText.Replace("?", "");
 
                     string price;
                     List<HtmlNode> yourPriceNode = col1Node.CssSelect(".your-price").ToList<HtmlNode>();
@@ -239,7 +250,7 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Staging_ProductInfo (Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + itemNumber + "'," + price + "," + shipping + "," + "'" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Price, Shipping, Discount, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "'," + price + "," + shipping + "," + "'" + discount + "','"  + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
@@ -250,10 +261,15 @@ namespace CostcoWinForm
             }
 
             cn.Close();
+
+            DateTime endDT = DateTime.Now;
+
+            MessageBox.Show("Start: " + startDT.ToLongTimeString() + "; End: " + endDT.ToLongTimeString());
         }
 
         private void GetSubCategoryUrls()
         {
+
             foreach (var categoryUrl in categoryUrlArray)
             {
                 string url;

@@ -31,6 +31,8 @@
             this.btnProductInfo = new System.Windows.Forms.Button();
             this.btnImportCategories = new System.Windows.Forms.Button();
             this.btnImportProducts = new System.Windows.Forms.Button();
+            this.lblcurrent = new System.Windows.Forms.Label();
+            this.lblTotal = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -63,17 +65,38 @@
             this.btnImportProducts.UseVisualStyleBackColor = true;
             this.btnImportProducts.Click += new System.EventHandler(this.btnImportProducts_Click);
             // 
+            // lblcurrent
+            // 
+            this.lblcurrent.AutoSize = true;
+            this.lblcurrent.Location = new System.Drawing.Point(179, 68);
+            this.lblcurrent.Name = "lblcurrent";
+            this.lblcurrent.Size = new System.Drawing.Size(13, 13);
+            this.lblcurrent.TabIndex = 3;
+            this.lblcurrent.Text = "0";
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Location = new System.Drawing.Point(234, 68);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(21, 13);
+            this.lblTotal.TabIndex = 4;
+            this.lblTotal.Text = "/ 0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.lblTotal);
+            this.Controls.Add(this.lblcurrent);
             this.Controls.Add(this.btnImportProducts);
             this.Controls.Add(this.btnImportCategories);
             this.Controls.Add(this.btnProductInfo);
             this.Name = "Form1";
             this.Text = "Main";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -82,6 +105,8 @@
         private System.Windows.Forms.Button btnProductInfo;
         private System.Windows.Forms.Button btnImportCategories;
         private System.Windows.Forms.Button btnImportProducts;
+        private System.Windows.Forms.Label lblcurrent;
+        private System.Windows.Forms.Label lblTotal;
     }
 }
 
