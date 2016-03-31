@@ -33,6 +33,7 @@
             this.btnImportProducts = new System.Windows.Forms.Button();
             this.lblcurrent = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
+            this.btnEmail = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -83,11 +84,22 @@
             this.lblTotal.TabIndex = 4;
             this.lblTotal.Text = "/ 0";
             // 
+            // btnEmail
+            // 
+            this.btnEmail.Location = new System.Drawing.Point(32, 92);
+            this.btnEmail.Name = "btnEmail";
+            this.btnEmail.Size = new System.Drawing.Size(118, 23);
+            this.btnEmail.TabIndex = 5;
+            this.btnEmail.Text = "Send Email";
+            this.btnEmail.UseVisualStyleBackColor = true;
+            this.btnEmail.Click += new System.EventHandler(this.btnEmail_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.btnEmail);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.lblcurrent);
             this.Controls.Add(this.btnImportProducts);
@@ -107,6 +119,7 @@
         private System.Windows.Forms.Button btnImportProducts;
         private System.Windows.Forms.Label lblcurrent;
         private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Button btnEmail;
     }
 }
 
