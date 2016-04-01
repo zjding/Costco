@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleScraperClient", "Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostcoWinForm", "CostcoWinForm\CostcoWinForm.csproj", "{598DE617-C2FE-43C4-B053-82D8DAEB2CFB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostcoConsoleApp", "CostcoConsoleApp\CostcoConsoleApp.csproj", "{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{598DE617-C2FE-43C4-B053-82D8DAEB2CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{598DE617-C2FE-43C4-B053-82D8DAEB2CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{598DE617-C2FE-43C4-B053-82D8DAEB2CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

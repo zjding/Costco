@@ -107,6 +107,8 @@
             this.Controls.Add(this.btnProductInfo);
             this.Name = "Form1";
             this.Text = "Main";
+            this.Activated += new System.EventHandler(this.Form1_Activated);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

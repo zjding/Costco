@@ -73,6 +73,8 @@ namespace CostcoWinForm
 
             CompareProducts();
 
+            ArchieveProducts();
+
             SendEmail();
         }
 
@@ -392,7 +394,7 @@ namespace CostcoWinForm
             cmd.ExecuteNonQuery();
 
             // copy to staging_productInfo_filtered
-            sqlString = "TRUNCATE TABLE Staging_ProductInfo";
+            sqlString = "TRUNCATE TABLE Staging_ProductInfo_Filtered";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
@@ -419,13 +421,13 @@ namespace CostcoWinForm
             // price up
             string sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
                                 where s.UrlNumber = p.UrlNumber
-                                and s.Price < p.Price";
+                                and s.Price > p.Price";
             cmd.CommandText = sqlString;
             rdr =  cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                priceUpProductArray.Add(rdr["Name"].ToString() + "|" + rdr["newPrice"].ToString() + "|" + rdr["oldPrice"].ToString() + "|" + rdr["Url"].ToString());
+                priceUpProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" +  rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
             }
 
             rdr.Close();
@@ -433,13 +435,13 @@ namespace CostcoWinForm
             // price down
             sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
                                 where s.UrlNumber = p.UrlNumber
-                                and s.Price > p.Price";
+                                and s.Price < p.Price";
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
-                priceDownProductArray.Add(rdr["Name"].ToString() + "|" + rdr["newPrice"].ToString() + "|" + rdr["oldPrice"].ToString() + "|" + rdr["Url"].ToString());
+                priceDownProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
             }
 
             rdr.Close();
@@ -454,7 +456,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                newProductArray.Add(rdr["Name"].ToString() + "|" + rdr["Price"].ToString() +  "|" + rdr["Url"].ToString());
+                newProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
             }
 
             rdr.Close();
@@ -469,7 +471,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                discontinueddProductArray.Add(rdr["Name"].ToString() + "|" + rdr["Price"].ToString() + "|" + rdr["Url"].ToString());
+                discontinueddProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
             }
 
             rdr.Close();
@@ -477,50 +479,98 @@ namespace CostcoWinForm
             cn.Close();
         }
 
+        private void ArchieveProducts()
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            // price up
+            string sqlString = @"insert into [dbo].[Archieve] (Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url, ImportedDT)
+                                select distinct Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url, GETDATE()
+                                from  [dbo].[ProductInfo]";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = "TRUNCATE TABLE ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into [dbo].[ProductInfo] (Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url
+                        from  dbo.staging_productInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = "TRUNCATE TABLE Staging_ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+        }
+
         private void SendEmail()
         {
+            emailMessage = "<h3>Price up products: (" + priceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
             if (priceUpProductArray.Count == 0)
-                emailMessage = "No price up product" + System.Environment.NewLine;
+                emailMessage += "<p>No price up product</p>" + "</br>";
             else
             {
                 foreach (string priceUpProduct in priceUpProductArray)
                 {
-                    emailMessage += priceUpProduct + System.Environment.NewLine;
+                    emailMessage += "<p>" + priceUpProduct + "</p></br>";
                 }
             }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
 
+            emailMessage += "<h3>Price down products: (" + priceDownProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
             if (priceDownProductArray.Count == 0)
-                emailMessage = "No price down product" + System.Environment.NewLine;
+                emailMessage += "<p>No price down product" + "</p></br>";
             else
             {
                 foreach (string priceDownProduct in priceDownProductArray)
                 {
-                    emailMessage += priceDownProduct + System.Environment.NewLine;
+                    emailMessage += "<p>" + priceDownProduct + "</p></br>";
                 }
             }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
 
+            emailMessage += "<h3>New products: (" + newProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
             if (newProductArray.Count == 0)
-                emailMessage = "No new product" + System.Environment.NewLine;
+                emailMessage = "<p>No new product</p>" + "</br>";
             else
             {
                 foreach (string newProduct in newProductArray)
                 {
-                    emailMessage += newProduct + System.Environment.NewLine;
+                    emailMessage += "<p>" + newProduct + "</P></br>";
                 }
             }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
 
+            emailMessage += "<h3>Discontinued products: (" + discontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
             if (this.discontinueddProductArray.Count == 0)
-                emailMessage = "No new product" + System.Environment.NewLine;
+                emailMessage = "<p>No new product</p>" + "</br>";
             else
             {
                 foreach (string discontinueddProduct in discontinueddProductArray)
                 {
-                    emailMessage += discontinueddProduct + System.Environment.NewLine;
+                    emailMessage += "<p>" + discontinueddProduct + "</P></br>";
                 }
             }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
 
-            emailMessage += "Start: " + startDT.ToLongTimeString() + System.Environment.NewLine;
-            emailMessage += "End: " + endDT.ToLongTimeString() + System.Environment.NewLine;
+            emailMessage += "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
+            emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
 
             using (MailMessage mail = new MailMessage())
             {
@@ -528,7 +578,7 @@ namespace CostcoWinForm
                 mail.To.Add("zjding@gmail.com");
                 mail.Subject = DateTime.Now.ToLongDateString();
                 mail.Body = emailMessage;
-                //mail.IsBodyHtml = true;
+                mail.IsBodyHtml = true;
                 //mail.Attachments.Add(new Attachment("C:\\file.zip"));
 
                 using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
@@ -543,7 +593,33 @@ namespace CostcoWinForm
 
         private void btnEmail_Click(object sender, EventArgs e)
         {
+            CompareProducts();
+
             SendEmail();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //GetCategoryArray();
+
+            //GetSubCategoryUrls();
+
+            //GetProductUrls();
+
+            //GetProductInfo();
+
+            //PopulateTables();
+
+            //CompareProducts();
+
+            //ArchieveProducts();
+
+            //SendEmail();
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+
         }
     }
 }
