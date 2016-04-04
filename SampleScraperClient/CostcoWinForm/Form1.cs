@@ -621,5 +621,101 @@ namespace CostcoWinForm
         {
 
         }
+
+        private void btnSubCategories_Click(object sender, EventArgs e)
+        {
+            categoryUrlArray.Add("http://www.costco.com/mens-clothing.html");
+
+            foreach (var categoryUrl in categoryUrlArray)
+            {
+                string url;
+                if (categoryUrl.Contains("http"))
+                    url = categoryUrl;
+                else
+                    url = "http://www.costco.com" + categoryUrl;
+
+                // level 0
+                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
+                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                if (mainContentWrapperNote == null)
+                    continue;
+                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                {
+                    subCategoryUrlArray.Add(url);
+                }
+                else
+                {
+                    List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                    foreach (HtmlNode departmentNode in departmentNodes)
+                    {
+                        if (departmentNode.InnerText.Contains("("))
+                        {
+                            HtmlNode node = departmentNode.Descendants("a").First();
+                            string departmentUrl = node.Attributes["href"].Value;
+
+                            // level 1
+                            PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
+                            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                            if (mainContentWrapperNote == null)
+                                continue;
+                            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                            {
+                                subCategoryUrlArray.Add(departmentUrl); 
+                            }
+                            else
+                            {
+                                List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                                foreach (HtmlNode department_1_Node in department_1_Nodes)
+                                {
+                                    if (department_1_Node.InnerText.Contains("("))
+                                    {
+                                        HtmlNode node_1 = department_1_Node.Descendants("a").First();
+                                        string departmentUrl_1 = node_1.Attributes["href"].Value;
+
+                                        // level 2
+                                        PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
+                                        mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                                        if (mainContentWrapperNote == null)
+                                            continue;
+                                        categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                                        if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                                        {
+                                            subCategoryUrlArray.Add(departmentUrl_1);
+                                        }
+                                        else
+                                        {
+                                            List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                                            foreach (HtmlNode department_2_Node in department_2_Nodes)
+                                            {
+                                                HtmlNode node_2 = department_2_Node.Descendants("a").First();
+                                                string department_2_Url = node_2.Attributes["href"].Value;
+                                                subCategoryUrlArray.Add(department_2_Url);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        HtmlNode node_1 = departmentNode.Descendants("a").First();
+                                        string department_1_Url = node_1.Attributes["href"].Value;
+                                        subCategoryUrlArray.Add(department_1_Url);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            HtmlNode node = departmentNode.Descendants("a").First();
+                            string departmentUrl = node.Attributes["href"].Value;
+                            subCategoryUrlArray.Add(departmentUrl);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

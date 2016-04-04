@@ -34,6 +34,7 @@
             this.lblcurrent = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnEmail = new System.Windows.Forms.Button();
+            this.btnSubCategories = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -94,11 +95,22 @@
             this.btnEmail.UseVisualStyleBackColor = true;
             this.btnEmail.Click += new System.EventHandler(this.btnEmail_Click);
             // 
+            // btnSubCategories
+            // 
+            this.btnSubCategories.Location = new System.Drawing.Point(32, 121);
+            this.btnSubCategories.Name = "btnSubCategories";
+            this.btnSubCategories.Size = new System.Drawing.Size(118, 23);
+            this.btnSubCategories.TabIndex = 6;
+            this.btnSubCategories.Text = "Get SubCategories";
+            this.btnSubCategories.UseVisualStyleBackColor = true;
+            this.btnSubCategories.Click += new System.EventHandler(this.btnSubCategories_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.btnSubCategories);
             this.Controls.Add(this.btnEmail);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.lblcurrent);
@@ -122,6 +134,7 @@
         private System.Windows.Forms.Label lblcurrent;
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnEmail;
+        private System.Windows.Forms.Button btnSubCategories;
     }
 }
 
