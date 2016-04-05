@@ -1,0 +1,15 @@
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\CostcoConsoleApp.exe.config
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\CostcoConsoleApp.exe
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\CostcoConsoleApp.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\FSharp.Core.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\HtmlAgilityPack.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\ScrapySharp.Core.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\ScrapySharp.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\FSharp.Core.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\HtmlAgilityPack.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\HtmlAgilityPack.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\ScrapySharp.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\ScrapySharp.Core.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\ScrapySharp.Core.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\obj\Release\CostcoConsoleApp.exe
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\obj\Release\CostcoConsoleApp.pdb
