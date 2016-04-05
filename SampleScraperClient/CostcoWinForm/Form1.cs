@@ -186,6 +186,20 @@ namespace CostcoWinForm
                     if (PageResult.Html.InnerText.Contains("Product Not Found"))
                         continue;
 
+                    string stSubCategories = "";
+
+                    HtmlNode category = PageResult.Html.SelectSingleNode("//ul[@itemprop='breadcrumb']");
+
+                    List<HtmlNode> subCategories = category.SelectNodes("li").ToList(); 
+
+                    foreach(HtmlNode subCategory in subCategories)
+                    {
+                        string temp = subCategory.InnerText.Replace("\n", "");
+                        temp = temp.Replace("\t", "");
+                        stSubCategories += temp + "|";
+                    }
+                    stSubCategories = stSubCategories.Substring(0, stSubCategories.Length - 1);
+
                     HtmlNode productInfo = PageResult.Html.CssSelect(".product-info").ToList<HtmlNode>().First();
 
                     List<HtmlNode> topReviewPanelNode = productInfo.CssSelect(".top_review_panel").ToList<HtmlNode>();
@@ -290,7 +304,7 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Price, Shipping, Discount, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "',"  + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
@@ -445,8 +459,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            sqlString = @"insert into dbo.staging_productInfo (Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url)
-                        select distinct Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url
+            sqlString = @"insert into dbo.staging_productInfo (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url
                         from dbo.Raw_ProductInfo
                         where Price > 0
                         order by UrlNumber";
@@ -459,8 +473,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            sqlString = @"insert into dbo.Staging_ProductInfo_Filtered(Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url)
-                        select distinct Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url 
+            sqlString = @"insert into dbo.Staging_ProductInfo_Filtered(Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url 
                         from dbo.Raw_ProductInfo 
                         where Price > 0 and Price < 100 and Shipping = 0
                         order by UrlNumber";
@@ -549,8 +563,8 @@ namespace CostcoWinForm
             cn.Open();
 
             // price up
-            string sqlString = @"insert into [dbo].[Archieve] (Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url, ImportedDT)
-                                select distinct Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url, GETDATE()
+            string sqlString = @"insert into [dbo].[Archieve] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, ImportedDT)
+                                select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, GETDATE()
                                 from  [dbo].[ProductInfo]";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
@@ -559,8 +573,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            sqlString = @"insert into [dbo].[ProductInfo] (Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url)
-                        select distinct Name, urlNumber, itemnumber, price, shipping, discount, details, specification, imageLink, url
+            sqlString = @"insert into [dbo].[ProductInfo] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url
                         from  dbo.staging_productInfo";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
@@ -777,6 +791,13 @@ namespace CostcoWinForm
                     }
                 }
             }
+        }
+
+        private void btnProductText_Click(object sender, EventArgs e)
+        {
+            productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+
+            GetProductInfo();
         }
     }
 }

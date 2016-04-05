@@ -35,6 +35,7 @@
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnEmail = new System.Windows.Forms.Button();
             this.btnSubCategories = new System.Windows.Forms.Button();
+            this.btnProductText = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -105,11 +106,22 @@
             this.btnSubCategories.UseVisualStyleBackColor = true;
             this.btnSubCategories.Click += new System.EventHandler(this.btnSubCategories_Click);
             // 
+            // btnProductText
+            // 
+            this.btnProductText.Location = new System.Drawing.Point(32, 150);
+            this.btnProductText.Name = "btnProductText";
+            this.btnProductText.Size = new System.Drawing.Size(118, 23);
+            this.btnProductText.TabIndex = 7;
+            this.btnProductText.Text = "Import Product Test";
+            this.btnProductText.UseVisualStyleBackColor = true;
+            this.btnProductText.Click += new System.EventHandler(this.btnProductText_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.btnProductText);
             this.Controls.Add(this.btnSubCategories);
             this.Controls.Add(this.btnEmail);
             this.Controls.Add(this.lblTotal);
@@ -135,6 +147,7 @@
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnEmail;
         private System.Windows.Forms.Button btnSubCategories;
+        private System.Windows.Forms.Button btnProductText;
     }
 }
 
