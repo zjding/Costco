@@ -36,13 +36,15 @@
             this.btnEmail = new System.Windows.Forms.Button();
             this.btnSubCategories = new System.Windows.Forms.Button();
             this.btnProductText = new System.Windows.Forms.Button();
+            this.btnEbayCategory = new System.Windows.Forms.Button();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
             // btnProductInfo
             // 
-            this.btnProductInfo.Location = new System.Drawing.Point(96, 195);
+            this.btnProductInfo.Location = new System.Drawing.Point(32, 283);
             this.btnProductInfo.Name = "btnProductInfo";
-            this.btnProductInfo.Size = new System.Drawing.Size(75, 23);
+            this.btnProductInfo.Size = new System.Drawing.Size(118, 23);
             this.btnProductInfo.TabIndex = 0;
             this.btnProductInfo.Text = "ProductInfo";
             this.btnProductInfo.UseVisualStyleBackColor = true;
@@ -71,7 +73,7 @@
             // lblcurrent
             // 
             this.lblcurrent.AutoSize = true;
-            this.lblcurrent.Location = new System.Drawing.Point(179, 68);
+            this.lblcurrent.Location = new System.Drawing.Point(37, 352);
             this.lblcurrent.Name = "lblcurrent";
             this.lblcurrent.Size = new System.Drawing.Size(13, 13);
             this.lblcurrent.TabIndex = 3;
@@ -80,7 +82,7 @@
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
-            this.lblTotal.Location = new System.Drawing.Point(234, 68);
+            this.lblTotal.Location = new System.Drawing.Point(92, 352);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(21, 13);
             this.lblTotal.TabIndex = 4;
@@ -116,11 +118,31 @@
             this.btnProductText.UseVisualStyleBackColor = true;
             this.btnProductText.Click += new System.EventHandler(this.btnProductText_Click);
             // 
+            // btnEbayCategory
+            // 
+            this.btnEbayCategory.Location = new System.Drawing.Point(32, 179);
+            this.btnEbayCategory.Name = "btnEbayCategory";
+            this.btnEbayCategory.Size = new System.Drawing.Size(118, 23);
+            this.btnEbayCategory.TabIndex = 8;
+            this.btnEbayCategory.Text = "Get eBay Category";
+            this.btnEbayCategory.UseVisualStyleBackColor = true;
+            this.btnEbayCategory.Click += new System.EventHandler(this.btnEbayCategory_Click);
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Location = new System.Drawing.Point(156, 34);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(456, 353);
+            this.webBrowser1.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.webBrowser1);
+            this.Controls.Add(this.btnEbayCategory);
             this.Controls.Add(this.btnProductText);
             this.Controls.Add(this.btnSubCategories);
             this.Controls.Add(this.btnEmail);
@@ -148,6 +170,8 @@
         private System.Windows.Forms.Button btnEmail;
         private System.Windows.Forms.Button btnSubCategories;
         private System.Windows.Forms.Button btnProductText;
+        private System.Windows.Forms.Button btnEbayCategory;
+        private System.Windows.Forms.WebBrowser webBrowser1;
     }
 }
 

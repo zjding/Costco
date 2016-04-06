@@ -17,6 +17,7 @@ using ScrapySharp.Html.Forms;
 using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Net;
+using System.IO;
 
 namespace CostcoWinForm
 {
@@ -690,6 +691,10 @@ namespace CostcoWinForm
             //ArchieveProducts();
 
             //SendEmail();
+
+            //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
+
+            //string a = webBrowser1.DocumentText;
         }
 
         private void Form1_Activated(object sender, EventArgs e)
@@ -798,6 +803,61 @@ namespace CostcoWinForm
             productUrlArray.Add("http://www.costco.com/.product.100244718.html");
 
             GetProductInfo();
+        }
+
+        private void btnEbayCategory_Click(object sender, EventArgs e)
+        {
+            string productName = "Swingline Commercial Stapler Black SWI 44401S";
+            string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
+            //string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401s";
+            productName = productName.Replace("  ", " ");
+            productName = productName.Replace(" ", "+");
+            ebaySearchUrl += productName;
+
+            webBrowser1.ScriptErrorsSuppressed = true;
+            webBrowser1.Navigate(ebaySearchUrl);
+
+            waitTillLoad(this.webBrowser1);
+
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
+            StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
+            doc.Load(sr);
+
+            var ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
+            var liNotes = ulNote.SelectNodes("li");
+
+            //WebPage PageResult = Browser.NavigateToPage(new Uri(ebaySearchUrl));
+            //var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//ul[@id='ListViewInner']");
+        }
+
+        private void waitTillLoad(WebBrowser webBrControl)
+        {
+            WebBrowserReadyState loadStatus;
+            int waittime = 10000000;
+            int counter = 0;
+            while (true)
+            {
+                loadStatus = webBrControl.ReadyState;
+                Application.DoEvents();
+                if ((counter > waittime) || (loadStatus == WebBrowserReadyState.Uninitialized) || (loadStatus == WebBrowserReadyState.Loading) || (loadStatus == WebBrowserReadyState.Interactive))
+                {
+                    break;
+                }
+                counter++;
+            }
+
+            counter = 0;
+            while (true)
+            {
+                loadStatus = webBrControl.ReadyState;
+                Application.DoEvents();
+                if (loadStatus == WebBrowserReadyState.Complete && webBrControl.IsBusy != true)
+                {
+                    break;
+                }
+                counter++;
+            }
         }
     }
 }
