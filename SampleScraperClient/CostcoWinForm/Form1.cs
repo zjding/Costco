@@ -825,16 +825,57 @@ namespace CostcoWinForm
             doc.Load(sr);
 
             var ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
-            var liNotes = ulNote.SelectNodes("li");
+            List<HtmlNode> liNotes = ulNote.SelectNodes("li").ToList();
 
-            //WebPage PageResult = Browser.NavigateToPage(new Uri(ebaySearchUrl));
-            //var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//ul[@id='ListViewInner']");
+            HtmlNode hrefNote = liNotes[0].SelectSingleNode("//h3[@class='lvtitle']");
+
+            HtmlNode node = hrefNote.Descendants("a").First();
+            string productUrl = node.Attributes["href"].Value;
+
+
+            WebPage PageResult = Browser.NavigateToPage(new Uri(productUrl));
+
+            HtmlNode priceNote = PageResult.Html.SelectSingleNode("//span[@itemprop='price']");
+            string price = priceNote.InnerText;
+            price = price.Substring(4);
+
+            HtmlNode brumbNote = PageResult.Html.SelectSingleNode("//table[@class='vi-bc-topM']");
+            HtmlNode brumbTDNote = brumbNote.SelectSingleNode("//td[@id='vi-VR-brumb-lnkLst']");
+            List<HtmlNode> brumbList = brumbTDNote.SelectNodes("//li[@itemprop='itemListElement']").ToList();
+
+            List<string> categoryList = new List<string>();
+
+            foreach(HtmlNode brumbItem in brumbList)
+            {
+                categoryList.Add(brumbItem.InnerText);
+            }
+
+            string subCategory = categoryList.ElementAt(categoryList.Count - 1);
+
+            string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE F" + Convert.ToString(categoryList.Count + 1) + "='" + subCategory + "'";
+
+            string categoryID;
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+                categoryID = reader.GetString(0);
+            }
+            reader.Close();
+            cn.Close();
         }
 
         private void waitTillLoad(WebBrowser webBrControl)
         {
             WebBrowserReadyState loadStatus;
-            int waittime = 10000000;
+            int waittime = 10000;
             int counter = 0;
             while (true)
             {
