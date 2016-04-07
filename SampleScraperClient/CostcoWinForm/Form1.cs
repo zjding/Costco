@@ -19,6 +19,7 @@ using System.Net.Mail;
 using System.Net;
 using System.IO;
 
+
 namespace CostcoWinForm
 {
     public partial class Form1 : Form
@@ -676,21 +677,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //GetCategoryArray();
+            GetCategoryArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
-            //GetProductInfo();
+            GetProductInfo();
 
-            //PopulateTables();
+            PopulateTables();
 
-            //CompareProducts();
+            CompareProducts();
 
-            //ArchieveProducts();
+            ArchieveProducts();
 
-            //SendEmail();
+            SendEmail();
+
+            this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -807,7 +810,7 @@ namespace CostcoWinForm
 
         private void btnEbayCategory_Click(object sender, EventArgs e)
         {
-            string productName = "Swingline Commercial Stapler Black SWI 44401S";
+            string productName = "10 Strawberry Street 18-pc Ripple Dinnerware Set";
             string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
             //string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401s";
             productName = productName.Replace("  ", " ");
@@ -852,7 +855,14 @@ namespace CostcoWinForm
 
             string subCategory = categoryList.ElementAt(categoryList.Count - 1);
 
-            string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE F" + Convert.ToString(categoryList.Count + 1) + "='" + subCategory + "'";
+            if (subCategory.Contains("Other"))
+            {
+                subCategory = "Other";
+            }
+
+            string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
+                                "F" + Convert.ToString(categoryList.Count ) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
+                                "F" + Convert.ToString(categoryList.Count + 1) + "='" + subCategory + "'";
 
             string categoryID;
 
@@ -899,6 +909,56 @@ namespace CostcoWinForm
                 }
                 counter++;
             }
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            string workbookPath = @"C:\test\FileExchangeTest13.csv";
+            string newworkbookPath = @"c:\test\FileExchangeTest14.csv";
+
+            //Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(workbookPath,
+            //        0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, ",",
+            //        true, false, 0, true, false, false);
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        workbookPath,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+            oSheet.Cells[1, 1] = "First2 Name";
+            oSheet.Cells[1, 2] = "Last2 Name";
+            oSheet.Cells[1, 3] = "Full2 Name"; 
+            oSheet.Cells[1, 4] = "Salary";
+
+            oWB.SaveAs(newworkbookPath);
+            oWB.Close(true);
+            oXL.Quit();
+
+            //releaseObject(xlWorkSheet);
+            //releaseObject(xlWorkBook);
+            //releaseObject(xlApp);
+
         }
     }
 }

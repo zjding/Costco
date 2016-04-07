@@ -18,3 +18,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWi
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\ScrapySharp.Core.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\ScrapySharp.Core.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csprojResolveAssemblyReference.cache
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csproj.ResolveComReference.cache
