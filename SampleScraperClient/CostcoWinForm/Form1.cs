@@ -18,7 +18,7 @@ using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Net;
 using System.IO;
-
+using System.Diagnostics;
 
 namespace CostcoWinForm
 {
@@ -35,6 +35,8 @@ namespace CostcoWinForm
         List<String> priceDownProductArray = new List<string>();
 
         string emailMessage;
+
+        string destinFileName;
 
         DateTime startDT;
         DateTime endDT;
@@ -263,8 +265,11 @@ namespace CostcoWinForm
                         {
                             string shString = productSHNode.InnerText;
                             int nDollar = shString.IndexOf("$");
+                            shString = shString.Substring(nDollar + 1);
                             int nStar = shString.IndexOf("*");
-                            shString = shString.Substring(nDollar + 1, nStar - nDollar - 1);
+                            if (nStar == -1)
+                                nStar = shString.IndexOf(" ");
+                            shString = shString.Substring(0, nStar);
                             shString = shString.Replace(" ", "");
                             shipping = shString;
                         }
@@ -293,6 +298,9 @@ namespace CostcoWinForm
                     if (productDetailTab2Node != null)
                     {
                         specification = productDetailTab2Node.InnerHtml;
+                        string convertedSpecification = HtmlToText.ConvertHtml(specification);
+
+
                         specification = specification.Replace("'", "\"");
                     }
 
@@ -978,7 +986,7 @@ namespace CostcoWinForm
 
             // add to Excel file
             string sourceFileName = @"c:\ebay\documents\" + "FileExchange.csv";
-            string destinFileName = @"c:\ebay\upload\" + "FileExchange-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            destinFileName = @"c:\ebay\upload\" + "FileExchange-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
             File.Copy(sourceFileName, destinFileName);
 
             Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
@@ -1026,7 +1034,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 2] = eBayCategoryId.ToString();
 
                 oSheet.Cells[i, 3] = product.Name;
-                oSheet.Cells[i, 5] = product.Details;
+                oSheet.Cells[i, 5] = product.Specification;
                 oSheet.Cells[i, 6] = "1000";
                 oSheet.Cells[i, 7] = product.ImageLink;
                 oSheet.Cells[i, 8] = "1";
@@ -1048,13 +1056,24 @@ namespace CostcoWinForm
             }
 
             oWB.Save();
-            oWB.Close(true);
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
             oXL.Quit();
+
+            MessageBox.Show("Done");
 
             //releaseObject(xlWorkSheet);
             //releaseObject(xlWorkBook);
             //releaseObject(xlApp);
 
+        }
+
+        private void btnLoad_Click(object sender, EventArgs e)
+        {
+            //destinFileName = @"C:\ebay\Upload\FileExchange-2016-04-07-13-22-56.csv";
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
         }
     }
 }

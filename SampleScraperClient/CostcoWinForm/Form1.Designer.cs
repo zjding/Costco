@@ -39,6 +39,7 @@
             this.btnEbayCategory = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.btnExcel = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -147,11 +148,22 @@
             this.btnExcel.UseVisualStyleBackColor = true;
             this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(32, 237);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(118, 23);
+            this.btnLoad.TabIndex = 11;
+            this.btnLoad.Text = "Upload";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.btnExcel);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.btnEbayCategory);
@@ -185,6 +197,7 @@
         private System.Windows.Forms.Button btnEbayCategory;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.Button btnExcel;
+        private System.Windows.Forms.Button btnLoad;
     }
 }
 
