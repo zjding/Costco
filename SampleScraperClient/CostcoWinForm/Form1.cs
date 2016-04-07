@@ -198,6 +198,7 @@ namespace CostcoWinForm
                     {
                         string temp = subCategory.InnerText.Replace("\n", "");
                         temp = temp.Replace("\t", "");
+                        temp = temp.Replace("'", "");
                         stSubCategories += temp + "|";
                     }
                     stSubCategories = stSubCategories.Substring(0, stSubCategories.Length - 1);
@@ -677,23 +678,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            GetCategoryArray();
+            //GetCategoryArray();
 
-            GetSubCategoryUrls();
+            //GetSubCategoryUrls();
 
-            GetProductUrls();
+            //GetProductUrls();
 
-            GetProductInfo();
+            //GetProductInfo();
 
-            PopulateTables();
+            //PopulateTables();
 
-            CompareProducts();
+            //CompareProducts();
 
-            ArchieveProducts();
+            //ArchieveProducts();
 
-            SendEmail();
+            //SendEmail();
 
-            this.Close();
+            //this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -810,7 +811,11 @@ namespace CostcoWinForm
 
         private void btnEbayCategory_Click(object sender, EventArgs e)
         {
-            string productName = "10 Strawberry Street 18-pc Ripple Dinnerware Set";
+            //GetEbayCategoryID();
+        }
+
+        private string GetEbayCategoryIDAndPrice(string productName)
+        {
             string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
             //string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401s";
             productName = productName.Replace("  ", " ");
@@ -828,6 +833,12 @@ namespace CostcoWinForm
             doc.Load(sr);
 
             var ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
+
+            if (ulNote == null)
+            {
+                return "99|0";
+            }
+
             List<HtmlNode> liNotes = ulNote.SelectNodes("li").ToList();
 
             HtmlNode hrefNote = liNotes[0].SelectSingleNode("//h3[@class='lvtitle']");
@@ -839,6 +850,10 @@ namespace CostcoWinForm
             WebPage PageResult = Browser.NavigateToPage(new Uri(productUrl));
 
             HtmlNode priceNote = PageResult.Html.SelectSingleNode("//span[@itemprop='price']");
+            if (priceNote == null)
+            {
+                priceNote = PageResult.Html.SelectSingleNode("//span[@id='mm-saleDscPrc']");
+            }
             string price = priceNote.InnerText;
             price = price.Substring(4);
 
@@ -848,7 +863,7 @@ namespace CostcoWinForm
 
             List<string> categoryList = new List<string>();
 
-            foreach(HtmlNode brumbItem in brumbList)
+            foreach (HtmlNode brumbItem in brumbList)
             {
                 categoryList.Add(brumbItem.InnerText);
             }
@@ -861,10 +876,10 @@ namespace CostcoWinForm
             }
 
             string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
-                                "F" + Convert.ToString(categoryList.Count ) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
+                                "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
                                 "F" + Convert.ToString(categoryList.Count + 1) + "='" + subCategory + "'";
 
-            string categoryID;
+            string categoryID = "";
 
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -880,6 +895,8 @@ namespace CostcoWinForm
             }
             reader.Close();
             cn.Close();
+
+            return categoryID + "|" + price;
         }
 
         private void waitTillLoad(WebBrowser webBrControl)
@@ -911,24 +928,74 @@ namespace CostcoWinForm
             }
         }
 
+        private double GeneratePrice(double productPrice, double ebayPrice)
+        {
+            double cost = productPrice * 1.09 / 0.87;
+
+            if (cost + 5 > ebayPrice)
+                return cost + 5;
+            else
+                return ebayPrice;
+        }
+
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            List<Product> products = new List<Product>();
 
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = "  SELECT top 5 * FROM ProductInfo WHERE shipping = 0.00 and Price < 100";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.Name = Convert.ToString(reader["Name"]);
+                    product.UrlNumber = Convert.ToString(reader["UrlNumber"]);
+                    product.ItemNumber = Convert.ToString(reader["ItemNumber"]);
+                    product.Category = Convert.ToString(reader["Category"]);
+                    product.Price = Convert.ToDecimal(reader["Price"]);
+                    product.Shipping = Convert.ToDecimal(reader["Shipping"]);
+                    product.Discount = Convert.ToString(reader["Discount"]);
+                    product.Details = Convert.ToString(reader["Details"]);
+                    product.Specification = Convert.ToString(reader["Specification"]);
+                    product.ImageLink = Convert.ToString(reader["ImageLink"]);
+                    product.Url = Convert.ToString(reader["Url"]);
+
+                    products.Add(product);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            // add to Excel file
+            string sourceFileName = @"c:\ebay\documents\" + "FileExchange.csv";
+            string destinFileName = @"c:\ebay\upload\" + "FileExchange-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
             Microsoft.Office.Interop.Excel.Range oRange;
 
             //oXL.Visible = true;
             oXL.DisplayAlerts = false;
 
-            string workbookPath = @"C:\test\FileExchangeTest13.csv";
-            string newworkbookPath = @"c:\test\FileExchangeTest14.csv";
+            string workbookPath = @"C:\ebay\FileExchangeTest13.csv";
+            string newworkbookPath = @"c:\ebay\FileExchangeTest14.csv";
 
             //Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(workbookPath,
             //        0, false, 5, "", "", false, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, ",",
             //        true, false, 0, true, false, false);
 
             Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
-                                        workbookPath,               // Filename
+                                        destinFileName,               // Filename
                                         0,
                                         Type.Missing,
                                         Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
@@ -946,12 +1013,41 @@ namespace CostcoWinForm
 
             Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
             Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
-            oSheet.Cells[1, 1] = "First2 Name";
-            oSheet.Cells[1, 2] = "Last2 Name";
-            oSheet.Cells[1, 3] = "Full2 Name"; 
-            oSheet.Cells[1, 4] = "Salary";
 
-            oWB.SaveAs(newworkbookPath);
+            int i = 2;
+            foreach (Product product in products)
+            {
+                oSheet.Cells[i, 1] = "Add";
+
+                string temp = GetEbayCategoryIDAndPrice(product.Name);
+                string eBayCategoryId = temp.Split('|')[0];
+                string eBayPrice = temp.Split('|')[1];
+
+                oSheet.Cells[i, 2] = eBayCategoryId.ToString();
+
+                oSheet.Cells[i, 3] = product.Name;
+                oSheet.Cells[i, 5] = product.Details;
+                oSheet.Cells[i, 6] = "1000";
+                oSheet.Cells[i, 7] = product.ImageLink;
+                oSheet.Cells[i, 8] = "1";
+                oSheet.Cells[i, 9] = "FixedPrice";
+                oSheet.Cells[i, 10] = GeneratePrice(Convert.ToDouble(product.Price), Convert.ToDouble(eBayPrice)).ToString();
+                oSheet.Cells[i, 12] = "30";
+                oSheet.Cells[i, 13] = "1";
+                oSheet.Cells[i, 14] = "AL USA";
+                oSheet.Cells[i, 16] = "1";
+                oSheet.Cells[i, 17] = "zjding@outlook.com";
+                oSheet.Cells[i, 22] = "Flat";
+                oSheet.Cells[i, 23] = "USPSPriority";
+                oSheet.Cells[i, 24] = "0";
+                oSheet.Cells[i, 25] = "1";
+                oSheet.Cells[i, 31] = "1";
+                oSheet.Cells[i, 33] = "ReturnsNotAccepted";
+
+                i++;
+            }
+
+            oWB.Save();
             oWB.Close(true);
             oXL.Quit();
 
