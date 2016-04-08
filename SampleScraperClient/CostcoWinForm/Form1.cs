@@ -290,7 +290,7 @@ namespace CostcoWinForm
 
                     string description = productDescriptionNode.InnerHtml;
                     description = description.Replace("???", "");
-                    description = description.Replace("'", "\"");
+                    description = description.Replace("'", "");
 
                     var productDetailTab2Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab2']");
 
@@ -299,9 +299,10 @@ namespace CostcoWinForm
                     {
                         specification = productDetailTab2Node.InnerHtml;
                         string convertedSpecification = HtmlToText.ConvertHtml(specification);
-
-
-                        specification = specification.Replace("'", "\"");
+                        specification = convertedSpecification.Replace("'", "");
+                        specification = convertedSpecification.Replace("\r", "");
+                        specification = convertedSpecification.Replace("\t", "");
+                        specification = convertedSpecification.Replace("\n", "");
                     }
 
                     HtmlNode imageColumnNode = PageResult.Html.CssSelect(".image-column").ToList<HtmlNode>().First();
@@ -686,23 +687,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //GetCategoryArray();
+            GetCategoryArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
-            //GetProductInfo();
+            GetProductInfo();
 
-            //PopulateTables();
+            PopulateTables();
 
-            //CompareProducts();
+            CompareProducts();
 
-            //ArchieveProducts();
+            ArchieveProducts();
 
-            //SendEmail();
+            SendEmail();
 
-            //this.Close();
+            this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -812,7 +813,12 @@ namespace CostcoWinForm
 
         private void btnProductText_Click(object sender, EventArgs e)
         {
+            productUrlArray.Add("http://www.costco.com/Lifetime%c2%ae-Kids-Stacking-Chair-4pk---Lime.product.100228632.html");
+            //productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
             productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+            productUrlArray.Add("http://www.costco.com/.product.100056803.html");
+            productUrlArray.Add("http://www.costco.com/.product.100169328.html");
+
 
             GetProductInfo();
         }
@@ -955,7 +961,7 @@ namespace CostcoWinForm
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
 
-            string sqlString = "  SELECT top 5 * FROM ProductInfo WHERE shipping = 0.00 and Price < 100";
+            string sqlString = "  SELECT top 5 * FROM Raw_ProductInfo WHERE shipping = 0.00 and Price < 100";
 
             cn.Open();
             cmd.CommandText = sqlString;
