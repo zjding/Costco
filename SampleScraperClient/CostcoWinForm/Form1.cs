@@ -19,6 +19,7 @@ using System.Net.Mail;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace CostcoWinForm
 {
@@ -185,14 +186,29 @@ namespace CostcoWinForm
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
                     UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
 
+                    //
+                    //webBrowser1.ScriptErrorsSuppressed = true;
+                    //webBrowser1.Navigate(productUrl);
+
+                    //waitTillLoad(this.webBrowser1);
+
+                    //HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    //var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
+                    //StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
+                    //doc.Load(sr);
+
+                    //HtmlNode html = doc.DocumentNode;
+
                     PageResult = Browser.NavigateToPage(new Uri(productUrl));
 
-                    if (PageResult.Html.InnerText.Contains("Product Not Found"))
+                    HtmlNode html = PageResult.Html;
+
+                    if (html.InnerText.Contains("Product Not Found"))
                         continue;
 
                     string stSubCategories = "";
 
-                    HtmlNode category = PageResult.Html.SelectSingleNode("//ul[@itemprop='breadcrumb']");
+                    HtmlNode category = html.SelectSingleNode("//ul[@itemprop='breadcrumb']");
 
                     List<HtmlNode> subCategories = category.SelectNodes("li").ToList(); 
 
@@ -205,7 +221,7 @@ namespace CostcoWinForm
                     }
                     stSubCategories = stSubCategories.Substring(0, stSubCategories.Length - 1);
 
-                    HtmlNode productInfo = PageResult.Html.CssSelect(".product-info").ToList<HtmlNode>().First();
+                    HtmlNode productInfo = html.CssSelect(".product-info").ToList<HtmlNode>().First();
 
                     List<HtmlNode> topReviewPanelNode = productInfo.CssSelect(".top_review_panel").ToList<HtmlNode>();
 
@@ -282,15 +298,34 @@ namespace CostcoWinForm
                     //else
                     //    shipping = "-1";
 
-                    HtmlNode productDetailTabsNode = PageResult.Html.CssSelect(".product-detail-tabs").ToList<HtmlNode>().First();
+                    HtmlNode productDetailTabsNode = html.CssSelect(".product-detail-tabs").ToList<HtmlNode>().First();
 
                     var productDetailTab1Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab1']");
 
                     var productDescriptionNode = productDetailTab1Node.SelectSingleNode("//p[@itemprop='description']");
 
                     string description = productDescriptionNode.InnerHtml;
+
+                    description = ProcessHtml(description);
+                    
                     description = description.Replace("???", "");
+                    description = description.Replace("??", "");
                     description = description.Replace("'", "");
+
+                    if (description.Contains("<div style=text-align:center;>"))
+                    {
+                        string stStart = "<div style=text-align:center;>";
+                        string stEnd = "</div>";
+
+                        int iStart = description.IndexOf(stStart);
+
+                        int iEnd = description.IndexOf(stEnd, iStart);
+                        iEnd += stEnd.Length;
+
+                        string stReplace = description.Substring(iStart, iEnd - iStart);
+
+                        description = description.Replace(stReplace, "");
+                    }
 
                     var productDetailTab2Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab2']");
 
@@ -298,14 +333,17 @@ namespace CostcoWinForm
                     if (productDetailTab2Node != null)
                     {
                         specification = productDetailTab2Node.InnerHtml;
-                        string convertedSpecification = HtmlToText.ConvertHtml(specification);
-                        specification = convertedSpecification.Replace("'", "");
-                        specification = convertedSpecification.Replace("\r", "");
-                        specification = convertedSpecification.Replace("\t", "");
-                        specification = convertedSpecification.Replace("\n", "");
+                        string temp = specification;
+                        //string convertedSpecification = HtmlToText.ConvertHtml(specification);
+                        //specification = convertedSpecification.Replace("'", "");
+                        //specification = convertedSpecification.Replace("\r", "");
+                        //specification = convertedSpecification.Replace("\t", "");
+                        //specification = convertedSpecification.Replace("\n", "");
+                        temp = ProcessHtml(temp);
+                        specification = temp;
                     }
 
-                    HtmlNode imageColumnNode = PageResult.Html.CssSelect(".image-column").ToList<HtmlNode>().First();
+                    HtmlNode imageColumnNode = html.CssSelect(".image-column").ToList<HtmlNode>().First();
 
                     //HtmlNode carouselWrapNode = imageColumnNode.CssSelect(".product-image-carousel").ToList<HtmlNode>().First();
                     //var thumbHolderNode = carouselWrapNode.SelectNodes("//ul[@id='thumb_holder']");
@@ -687,23 +725,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            GetCategoryArray();
+            //GetCategoryArray();
 
-            GetSubCategoryUrls();
+            //GetSubCategoryUrls();
 
-            GetProductUrls();
+            //GetProductUrls();
 
-            GetProductInfo();
+            //GetProductInfo();
 
-            PopulateTables();
+            //PopulateTables();
 
-            CompareProducts();
+            //CompareProducts();
 
-            ArchieveProducts();
+            //ArchieveProducts();
 
-            SendEmail();
+            //SendEmail();
 
-            this.Close();
+            //this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -813,12 +851,17 @@ namespace CostcoWinForm
 
         private void btnProductText_Click(object sender, EventArgs e)
         {
-            productUrlArray.Add("http://www.costco.com/Lifetime%c2%ae-Kids-Stacking-Chair-4pk---Lime.product.100228632.html");
+            //productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
             //productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
-            productUrlArray.Add("http://www.costco.com/.product.100244718.html");
-            productUrlArray.Add("http://www.costco.com/.product.100056803.html");
-            productUrlArray.Add("http://www.costco.com/.product.100169328.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100056803.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100169328.html");
 
+            //productUrlArray.Add("http://www.costco.com/.product.100100971.html?cm_sp=RichRelevance-_-categorypageHorizontalTop-_-CategoryTopProducts&cm_vc=categorypageHorizontalTop|CategoryTopProducts");
+            //productUrlArray.Add("http://www.costco.com/Ninja-Coffee-Bar%E2%84%A2-Coffee-Brewer.product.100244468.html");
+            productUrlArray.Add("http://www.costco.com/.product.100226551.html");
+            //productUrlArray.Add("http://www.costco.com/Green-Mountain-Coffee%C2%AE-Breakfast-Blend-180-K-Cup%C2%AE-Pods.product.100242875.html");
+            //productUrlArray.Add("http://www.costco.com/Starbucks%C2%AE-French-Roast-Whole-Bean-Coffee-240oz.product.100232750.html");
 
             GetProductInfo();
         }
@@ -877,21 +920,25 @@ namespace CostcoWinForm
 
             List<string> categoryList = new List<string>();
 
+            string categoryTemp;
             foreach (HtmlNode brumbItem in brumbList)
             {
-                categoryList.Add(brumbItem.InnerText);
+                categoryTemp = brumbItem.InnerText;
+                if (categoryTemp.Contains("Other"))
+                    categoryTemp = "Other";
+                categoryList.Add(categoryTemp);
             }
 
-            string subCategory = categoryList.ElementAt(categoryList.Count - 1);
+            //string subCategory = categoryList.ElementAt(categoryList.Count - 1);
 
-            if (subCategory.Contains("Other"))
-            {
-                subCategory = "Other";
-            }
+            //if (subCategory.Contains("Other"))
+            //{
+            //    subCategory = "Other";
+            //}
 
             string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
                                 "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
-                                "F" + Convert.ToString(categoryList.Count + 1) + "='" + subCategory + "'";
+                                "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1) + "'";
 
             string categoryID = "";
 
@@ -907,6 +954,23 @@ namespace CostcoWinForm
                 reader.Read();
                 categoryID = reader.GetString(0);
             }
+            reader.Close();
+
+            if (categoryID == "")
+            {
+                sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
+                                "F" + Convert.ToString(categoryList.Count-1) + "='" + categoryList.ElementAt(categoryList.Count - 3) + "' AND " +
+                                "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "'";
+
+                cmd.CommandText = sqlString;
+                reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    categoryID = reader.GetString(0);
+                }
+            }
+
             reader.Close();
             cn.Close();
 
@@ -961,7 +1025,7 @@ namespace CostcoWinForm
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
 
-            string sqlString = "  SELECT top 5 * FROM Raw_ProductInfo WHERE shipping = 0.00 and Price < 100";
+            string sqlString = "  SELECT top 5 * FROM Raw_ProductInfo"; // WHERE shipping = 0.00 and Price < 100";
 
             cn.Open();
             cmd.CommandText = sqlString;
@@ -1040,7 +1104,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 2] = eBayCategoryId.ToString();
 
                 oSheet.Cells[i, 3] = product.Name;
-                oSheet.Cells[i, 5] = product.Specification;
+                oSheet.Cells[i, 5] = product.Details + "<br>" + product.Specification;
                 oSheet.Cells[i, 6] = "1000";
                 oSheet.Cells[i, 7] = product.ImageLink;
                 oSheet.Cells[i, 8] = "1";
@@ -1076,10 +1140,25 @@ namespace CostcoWinForm
 
         private void btnLoad_Click(object sender, EventArgs e)
         {
-            //destinFileName = @"C:\ebay\Upload\FileExchange-2016-04-07-13-22-56.csv";
+            //destinFileName = @"C:\ebay\Upload\FileExchange-2016-04-07-20-37-41.csv";
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+        }
+
+        private string ProcessHtml(string inputSt)
+        {
+            //string pattern = "/[\n\r]+/g";
+            //Regex rgx = new Regex(pattern);
+            //string outputSt = rgx.Replace(inputSt, "''");
+
+            //outputSt = outputSt.Replace("\"", "'");
+
+            string outputSt = inputSt.Replace("\n", "");
+            outputSt = outputSt.Replace("\t", "");
+            outputSt = outputSt.Replace("\\\"", "'");
+
+            return outputSt;
         }
     }
 }
