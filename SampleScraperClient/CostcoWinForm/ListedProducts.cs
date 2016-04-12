@@ -16,5 +16,14 @@ namespace CostcoWinForm
         {
             InitializeComponent();
         }
+
+        private void ListedProducts_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'costcoDataSet1.eBay_CurrentListings' table. You can move, or remove it, as needed.
+            this.eBay_CurrentListingsTableAdapter.Fill(this.costcoDataSet1.eBay_CurrentListings);
+            // TODO: This line of code loads data into the 'dataSet_eBayCurrentListing.eBay_CurrentListings' table. You can move, or remove it, as needed.
+            this.eBay_CurrentListingsTableAdapter.Fill(this.dataSet_eBayCurrentListing.eBay_CurrentListings);
+
+        }
     }
 }
