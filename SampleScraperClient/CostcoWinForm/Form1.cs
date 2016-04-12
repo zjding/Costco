@@ -859,9 +859,10 @@ namespace CostcoWinForm
 
             //productUrlArray.Add("http://www.costco.com/.product.100100971.html?cm_sp=RichRelevance-_-categorypageHorizontalTop-_-CategoryTopProducts&cm_vc=categorypageHorizontalTop|CategoryTopProducts");
             //productUrlArray.Add("http://www.costco.com/Ninja-Coffee-Bar%E2%84%A2-Coffee-Brewer.product.100244468.html");
-            productUrlArray.Add("http://www.costco.com/.product.100226551.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100226551.html");
             //productUrlArray.Add("http://www.costco.com/Green-Mountain-Coffee%C2%AE-Breakfast-Blend-180-K-Cup%C2%AE-Pods.product.100242875.html");
             //productUrlArray.Add("http://www.costco.com/Starbucks%C2%AE-French-Roast-Whole-Bean-Coffee-240oz.product.100232750.html");
+            productUrlArray.Add("http://www.costco.com/Brother-QL-500-Label-Maker.product.11000878.html");
 
             GetProductInfo();
         }
