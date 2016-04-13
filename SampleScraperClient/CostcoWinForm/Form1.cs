@@ -1185,6 +1185,7 @@ namespace CostcoWinForm
             pdfStamper.Close();
             pdfReader.Close();
 
+
             List<string> fileNames = new List<string>();
             fileNames.Add(@"c:\ebay\TaxExemption\TaxExemptionTotal.pdf");
             fileNames.Add(newFileName);
