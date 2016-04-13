@@ -20,6 +20,8 @@ using System.Net;
 using System.IO;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 
 namespace CostcoWinForm
 {
@@ -172,7 +174,7 @@ namespace CostcoWinForm
 
             //productUrlArray.Add("http://www.costco.com/ABC-and-123-Foam-Floor-Mat-Set%2c-36-Tiles-Set.product.11754291.html");
 
-            this.lblTotal.Text = "/ " + productUrlArray.Count.ToString();
+            
 
             int i = 1;
 
@@ -180,7 +182,7 @@ namespace CostcoWinForm
             {
                 try
                 {
-                    this.lblcurrent.Text = i.ToString();
+                   
                     i++;
 
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
@@ -725,23 +727,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            GetCategoryArray();
+            //GetCategoryArray();
 
-            GetSubCategoryUrls();
+            //GetSubCategoryUrls();
 
-            GetProductUrls();
+            //GetProductUrls();
 
-            GetProductInfo();
+            //GetProductInfo();
 
-            PopulateTables();
+            //PopulateTables();
 
-            CompareProducts();
+            //CompareProducts();
 
-            ArchieveProducts();
+            //ArchieveProducts();
 
-            SendEmail();
+            //SendEmail();
 
-            this.Close();
+            //this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -1166,6 +1168,67 @@ namespace CostcoWinForm
         {
             ListedProducts listedProducts = new ListedProducts();
             listedProducts.ShowDialog();
+        }
+
+        private void btnCreatePDF_Click(object sender, EventArgs e)
+        {
+            string pdfTemplateFileName = @"c:\ebay\documents\" + "TaxExemption_Form.pdf";
+            string newFileName = @"c:\ebay\TaxExemption\TaxExemption-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") +  ".pdf";
+            PdfReader pdfReader = new PdfReader(pdfTemplateFileName);
+            PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileStream(newFileName, FileMode.Create));
+            AcroFields pdfFormFields = pdfStamper.AcroFields;
+
+            pdfFormFields.SetField("txtLegalBusinessName", "eBay Business");
+            pdfFormFields.SetField("txtBusinessAddress", "1642 Crossgate Dr., Vestavia");
+
+            pdfStamper.FormFlattening = true;
+            pdfStamper.Close();
+            pdfReader.Close();
+
+            List<string> fileNames = new List<string>();
+            fileNames.Add(@"c:\ebay\TaxExemption\TaxExemptionTotal.pdf");
+            fileNames.Add(newFileName);
+
+            string tempFileName = @"c:\ebay\TaxExemption\TaxExemptionTemp.pdf";
+
+            MergePDFs(fileNames, tempFileName);
+        }
+
+        public bool MergePDFs(IEnumerable<string> fileNames, string targetPdf)
+        {
+            bool merged = true;
+            using (FileStream stream = new FileStream(targetPdf, FileMode.Create))
+            {
+                Document document = new Document();
+                PdfCopy pdf = new PdfCopy(document, stream);
+                PdfReader reader = null;
+                try
+                {
+                    document.Open();
+                    foreach (string file in fileNames)
+                    {
+                        reader = new PdfReader(file);
+                        pdf.AddDocument(reader);
+                        reader.Close();
+                    }
+                }
+                catch (Exception)
+                {
+                    merged = false;
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                }
+                finally
+                {
+                    if (document != null)
+                    {
+                        document.Close();
+                    }
+                }
+            }
+            return merged;
         }
     }
 }

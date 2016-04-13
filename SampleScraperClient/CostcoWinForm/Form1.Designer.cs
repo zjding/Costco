@@ -31,8 +31,6 @@
             this.btnProductInfo = new System.Windows.Forms.Button();
             this.btnImportCategories = new System.Windows.Forms.Button();
             this.btnImportProducts = new System.Windows.Forms.Button();
-            this.lblcurrent = new System.Windows.Forms.Label();
-            this.lblTotal = new System.Windows.Forms.Label();
             this.btnEmail = new System.Windows.Forms.Button();
             this.btnSubCategories = new System.Windows.Forms.Button();
             this.btnProductText = new System.Windows.Forms.Button();
@@ -41,6 +39,7 @@
             this.btnExcel = new System.Windows.Forms.Button();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnListedProducts = new System.Windows.Forms.Button();
+            this.btnCreatePDF = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -72,24 +71,6 @@
             this.btnImportProducts.Text = "Import Products";
             this.btnImportProducts.UseVisualStyleBackColor = true;
             this.btnImportProducts.Click += new System.EventHandler(this.btnImportProducts_Click);
-            // 
-            // lblcurrent
-            // 
-            this.lblcurrent.AutoSize = true;
-            this.lblcurrent.Location = new System.Drawing.Point(37, 352);
-            this.lblcurrent.Name = "lblcurrent";
-            this.lblcurrent.Size = new System.Drawing.Size(13, 13);
-            this.lblcurrent.TabIndex = 3;
-            this.lblcurrent.Text = "0";
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Location = new System.Drawing.Point(92, 352);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(21, 13);
-            this.lblTotal.TabIndex = 4;
-            this.lblTotal.Text = "/ 0";
             // 
             // btnEmail
             // 
@@ -172,11 +153,22 @@
             this.btnListedProducts.UseVisualStyleBackColor = true;
             this.btnListedProducts.Click += new System.EventHandler(this.btnListedProducts_Click);
             // 
+            // btnCreatePDF
+            // 
+            this.btnCreatePDF.Location = new System.Drawing.Point(32, 354);
+            this.btnCreatePDF.Name = "btnCreatePDF";
+            this.btnCreatePDF.Size = new System.Drawing.Size(118, 23);
+            this.btnCreatePDF.TabIndex = 13;
+            this.btnCreatePDF.Text = "Create PDF";
+            this.btnCreatePDF.UseVisualStyleBackColor = true;
+            this.btnCreatePDF.Click += new System.EventHandler(this.btnCreatePDF_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(624, 399);
+            this.Controls.Add(this.btnCreatePDF);
             this.Controls.Add(this.btnListedProducts);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.btnExcel);
@@ -185,8 +177,6 @@
             this.Controls.Add(this.btnProductText);
             this.Controls.Add(this.btnSubCategories);
             this.Controls.Add(this.btnEmail);
-            this.Controls.Add(this.lblTotal);
-            this.Controls.Add(this.lblcurrent);
             this.Controls.Add(this.btnImportProducts);
             this.Controls.Add(this.btnImportCategories);
             this.Controls.Add(this.btnProductInfo);
@@ -195,7 +185,6 @@
             this.Activated += new System.EventHandler(this.Form1_Activated);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -204,8 +193,6 @@
         private System.Windows.Forms.Button btnProductInfo;
         private System.Windows.Forms.Button btnImportCategories;
         private System.Windows.Forms.Button btnImportProducts;
-        private System.Windows.Forms.Label lblcurrent;
-        private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Button btnEmail;
         private System.Windows.Forms.Button btnSubCategories;
         private System.Windows.Forms.Button btnProductText;
@@ -214,6 +201,7 @@
         private System.Windows.Forms.Button btnExcel;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnListedProducts;
+        private System.Windows.Forms.Button btnCreatePDF;
     }
 }
 
