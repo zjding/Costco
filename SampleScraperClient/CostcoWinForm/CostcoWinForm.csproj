@@ -71,6 +71,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CostcoDataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CostcoDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CostcoDataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="CostcoDataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CostcoDataSet3.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataSet_eBayCurrentListing.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,6 +147,28 @@
     </None>
     <None Include="CostcoDataSet1.xss">
       <DependentUpon>CostcoDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet2.xsc">
+      <DependentUpon>CostcoDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CostcoDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CostcoDataSet2.xss">
+      <DependentUpon>CostcoDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet3.xsc">
+      <DependentUpon>CostcoDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet3.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CostcoDataSet3.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CostcoDataSet3.xss">
+      <DependentUpon>CostcoDataSet3.xsd</DependentUpon>
     </None>
     <None Include="DataSet_eBayCurrentListing.xsc">
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>

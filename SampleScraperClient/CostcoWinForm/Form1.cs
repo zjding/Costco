@@ -725,23 +725,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //GetCategoryArray();
+            GetCategoryArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
-            //GetProductInfo();
+            GetProductInfo();
 
-            //PopulateTables();
+            PopulateTables();
 
-            //CompareProducts();
+            CompareProducts();
 
-            //ArchieveProducts();
+            ArchieveProducts();
 
-            //SendEmail();
+            SendEmail();
 
-            //this.Close();
+            this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -851,10 +851,10 @@ namespace CostcoWinForm
 
         private void btnProductText_Click(object sender, EventArgs e)
         {
-            //productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
-            //productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
-            //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
-            //productUrlArray.Add("http://www.costco.com/.product.100056803.html");
+            productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
+            productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
+            productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+            productUrlArray.Add("http://www.costco.com/.product.100056803.html");
             //productUrlArray.Add("http://www.costco.com/.product.100169328.html");
 
             //productUrlArray.Add("http://www.costco.com/.product.100100971.html?cm_sp=RichRelevance-_-categorypageHorizontalTop-_-CategoryTopProducts&cm_vc=categorypageHorizontalTop|CategoryTopProducts");
@@ -1160,6 +1160,12 @@ namespace CostcoWinForm
             outputSt = outputSt.Replace("\\\"", "'");
 
             return outputSt;
+        }
+
+        private void btnListedProducts_Click(object sender, EventArgs e)
+        {
+            ListedProducts listedProducts = new ListedProducts();
+            listedProducts.ShowDialog();
         }
     }
 }
