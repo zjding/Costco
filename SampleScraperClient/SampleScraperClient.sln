@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleScraperClient", "SampleScraperClient\SampleScraperClient.csproj", "{18C16DD4-4587-4483-A19D-366F86854452}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostcoWinForm", "CostcoWinForm\CostcoWinForm.csproj", "{598DE617-C2FE-43C4-B053-82D8DAEB2CFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CostcoConsoleApp", "CostcoConsoleApp\CostcoConsoleApp.csproj", "{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "Website\Website.csproj", "{9A9871BC-BA5A-4863-9BBC-BD25DAB5DAEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{137B777E-5300-4CC1-9B1F-48CEE2B4B99D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A9871BC-BA5A-4863-9BBC-BD25DAB5DAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A9871BC-BA5A-4863-9BBC-BD25DAB5DAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A9871BC-BA5A-4863-9BBC-BD25DAB5DAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A9871BC-BA5A-4863-9BBC-BD25DAB5DAEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

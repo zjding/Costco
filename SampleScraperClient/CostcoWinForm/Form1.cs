@@ -193,11 +193,13 @@ namespace CostcoWinForm
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
                     UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
 
-                    //
+
                     //webBrowser1.ScriptErrorsSuppressed = true;
                     //webBrowser1.Navigate(productUrl);
 
                     //waitTillLoad(this.webBrowser1);
+
+                    //return;
 
                     //HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
                     //var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
@@ -288,13 +290,25 @@ namespace CostcoWinForm
                         {
                             string shString = productSHNode.InnerText;
                             int nDollar = shString.IndexOf("$");
-                            shString = shString.Substring(nDollar + 1);
-                            int nStar = shString.IndexOf("*");
-                            if (nStar == -1)
-                                nStar = shString.IndexOf(" ");
-                            shString = shString.Substring(0, nStar);
-                            shString = shString.Replace(" ", "");
-                            shipping = shString;
+                            if (nDollar > 0)
+                            {
+                                shString = shString.Substring(nDollar + 1);
+                                int nStar = shString.IndexOf("*");
+                                if (nStar == -1)
+                                    nStar = shString.IndexOf(" ");
+                                shString = shString.Substring(0, nStar);
+                                shString = shString.Replace(" ", "");
+                                shipping = shString;
+                            }
+                            else
+                            {
+                                int nShipping = shString.IndexOf("Shipping");
+                                int nQuantity = shString.ToUpper().IndexOf("QUANTITY");
+                                shString = shString.Substring(nShipping, nQuantity);
+                                Char[] strarr = shString.ToCharArray().Where(c => Char.IsDigit(c) || c.Equals('.')).ToArray();
+                                decimal number = Convert.ToDecimal(new string(strarr));
+                                shipping = number.ToString();
+                            }
                         }
                     }
 
@@ -305,34 +319,47 @@ namespace CostcoWinForm
                     //else
                     //    shipping = "-1";
 
-                    HtmlNode productDetailTabsNode = html.CssSelect(".product-detail-tabs").ToList<HtmlNode>().First();
-
-                    var productDetailTab1Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab1']");
-
-                    var productDescriptionNode = productDetailTab1Node.SelectSingleNode("//p[@itemprop='description']");
-
-                    string description = productDescriptionNode.InnerHtml;
-
+                    string description = GetProductionDescription(productUrl);
                     description = ProcessHtml(description);
-                    
+
                     description = description.Replace("???", "");
                     description = description.Replace("??", "");
                     description = description.Replace("'", "");
+                    description = description.Replace("\"", "");
 
-                    if (description.Contains("<div style=text-align:center;>"))
+                    HtmlNode productDetailTabsNode = html.CssSelect(".product-detail-tabs").ToList<HtmlNode>().First();
+                    if (description == "")
                     {
-                        string stStart = "<div style=text-align:center;>";
-                        string stEnd = "</div>";
+                        var productDetailTab1Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab1']");
 
-                        int iStart = description.IndexOf(stStart);
+                        var productDescriptionNode = productDetailTab1Node.SelectSingleNode("//p[@itemprop='description']");
 
-                        int iEnd = description.IndexOf(stEnd, iStart);
-                        iEnd += stEnd.Length;
+                        description = productDescriptionNode.InnerHtml;
 
-                        string stReplace = description.Substring(iStart, iEnd - iStart);
+                        description = ProcessHtml(description);
 
-                        description = description.Replace(stReplace, "");
+                        description = description.Replace("???", "");
+                        description = description.Replace("??", "");
+                        description = description.Replace("'", "");
+
+                        if (description.Contains("<div style=text-align:center;>"))
+                        {
+                            string stStart = "<div style=text-align:center;>";
+                            string stEnd = "</div>";
+
+                            int iStart = description.IndexOf(stStart);
+
+                            int iEnd = description.IndexOf(stEnd, iStart);
+                            iEnd += stEnd.Length;
+
+                            string stReplace = description.Substring(iStart, iEnd - iStart);
+
+                            description = description.Replace(stReplace, "");
+                        }
                     }
+
+                    Regex emailReplace = new Regex(@"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}", RegexOptions.IgnoreCase);
+                    emailReplace.Replace(description, "");
 
                     var productDetailTab2Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab2']");
 
@@ -761,23 +788,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            GetCategoryArray();
+            //GetCategoryArray();
 
-            GetSubCategoryUrls();
+            //GetSubCategoryUrls();
 
-            GetProductUrls();
+            //GetProductUrls();
 
-            GetProductInfo();
+            //GetProductInfo();
 
-            PopulateTables();
+            //PopulateTables();
 
-            CompareProducts();
+            //CompareProducts();
 
-            ArchieveProducts();
+            //ArchieveProducts();
 
-            SendEmail();
+            //SendEmail();
 
-            this.Close();
+            //this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -889,6 +916,8 @@ namespace CostcoWinForm
         {
             productUrlArray.Add("http://www.costco.com/Kirkland-Signature%E2%84%A2-Hair-Regrowth-Treatment-Extra-Strength-for-Men-5%25-Minoxidil-Topical-Solution-6-pk.product.11501138.html");
 
+            productUrlArray.Add("http://www.costco.com/.product.100099102.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP");
+
             //productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
             //productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
             //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
@@ -916,6 +945,7 @@ namespace CostcoWinForm
             //string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401s";
             productName = productName.Replace("  ", " ");
             productName = productName.Replace(" ", "+");
+            productName = productName.Replace("%", "");
             ebaySearchUrl += productName;
 
             webBrowser1.ScriptErrorsSuppressed = true;
@@ -1025,7 +1055,10 @@ namespace CostcoWinForm
             {
                 loadStatus = webBrControl.ReadyState;
                 Application.DoEvents();
-                if ((counter > waittime) || (loadStatus == WebBrowserReadyState.Uninitialized) || (loadStatus == WebBrowserReadyState.Loading) || (loadStatus == WebBrowserReadyState.Interactive))
+                if ((counter > waittime) ||
+                    (loadStatus == WebBrowserReadyState.Uninitialized) ||
+                    (loadStatus == WebBrowserReadyState.Loading) || 
+                    (loadStatus == WebBrowserReadyState.Interactive))
                 {
                     break;
                 }
@@ -1134,7 +1167,7 @@ namespace CostcoWinForm
             int i = 2;
             foreach (Product product in products)
             {
-                oSheet.Cells[i, 1] = "Add";
+                oSheet.Cells[i, 1] = "VerifyAdd";
 
                 string temp = GetEbayCategoryIDAndPrice(product.Name);
                 string eBayCategoryId = temp.Split('|')[0];
@@ -1268,21 +1301,132 @@ namespace CostcoWinForm
             return merged;
         }
 
+        private string GetProductionDescription(string url)
+        {
+            string result = "";
+
+            IWebDriver driver = new FirefoxDriver();
+
+            driver.Navigate().GoToUrl(url);
+
+            IWebElement element = driver.FindElement(By.Id("product-tab1"));
+            //string elementHtml = element.GetAttribute("outerHTML");
+
+            //driver.Dispose();
+
+            var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
+
+            if (pageTypeElements.Count > 0)
+            {
+                 result =  ProcessPowerPage(pageTypeElements[0]);
+            }
+
+            driver.Dispose();
+
+            return result;
+
+        }
+
+        private string ProcessPowerPage(IWebElement inputElement)
+        {
+            string outputHtml = "<div style = 'list-style-type: none; font-family: Verdana,sans-serif; font-size: 15px; color: grey'>";
+
+            var lis = inputElement.FindElements(By.XPath("//li[contains(@class, 'wc-rich-feature-item')]"));
+
+            foreach (IWebElement li in lis)
+            {
+                string lihtml = li.GetAttribute("outerHTML");
+
+                var videos = li.FindElements(By.XPath(".//img[contains(@data-asset-type, 'video')]"));
+
+                if (videos.Count > 0)
+                {
+                    string vhtml = videos[0].GetAttribute("outerHTML");
+                    lihtml = lihtml.Replace(vhtml, "");
+                }
+
+                var iframes = li.FindElements(By.XPath(".//iframe"));
+
+                if (iframes.Count > 0)
+                {
+                    string ihtml = iframes[0].GetAttribute("outerHTML");
+                    lihtml = lihtml.Replace(ihtml, "");
+                }
+
+                var enlarges = li.FindElements(By.XPath(".//a[contains(@class, 'wc-zoom-image')]"));
+
+                if (enlarges.Count > 0)
+                {
+                    string ehtml = enlarges[0].GetAttribute("outerHTML");
+                    lihtml = lihtml.Replace(ehtml, "");
+                }
+
+                outputHtml += lihtml;
+            }
+
+            outputHtml += "</div>";
+
+            return outputHtml;
+        }
+
         private void btnFillWebForm_Click(object sender, EventArgs e)
         {
             IWebDriver driver = new FirefoxDriver();
 
-            driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
-            driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
-            driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
-            driver.FindElements(By.ClassName("submit"))[2].Click();
+            //string url = "http://www.costco.com/.product.100244524.html";
+            string url = "http://www.costco.com/.product.100099102.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP";
 
-            driver.Navigate().GoToUrl("http://www.costco.com/.product.100244524.html");
-            driver.FindElement(By.Id("addToCartBtn")).Click();
+            driver.Navigate().GoToUrl(url);
 
-            driver.Navigate().GoToUrl("https://www.costco.com/CheckoutCartView?langId=-1&storeId=10301&catalogId=10701&orderId=.");
-            driver.SwitchTo().Alert().Accept();
-            driver.FindElement(By.Id("shopCartCheckoutSubmitButton")).Click();
+            IWebElement element = driver.FindElement(By.Id("product-tab1"));
+            //string elementHtml = element.GetAttribute("outerHTML");
+
+            //driver.Dispose();
+
+            var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
+
+            if (pageTypeElements.Count > 0)
+            {
+                string output = ProcessPowerPage(pageTypeElements[0]);
+
+                return;
+            }
+
+            pageTypeElements = element.FindElements(By.Id("sp_inline_product"));
+
+            if (pageTypeElements.Count > 0)
+            {
+                var scripts = pageTypeElements[0].FindElements(By.TagName("script"));
+
+                string sshtml = pageTypeElements[0].GetAttribute("outerHTML");
+
+                foreach (IWebElement script in scripts)
+                {
+                    string shtml = script.GetAttribute("outerHTML");
+                }
+
+                var objects = pageTypeElements[0].FindElements(By.XPath(".//[local-name()='object']"));
+
+                foreach (IWebElement obj in objects)
+                {
+
+                    string ohtml = obj.GetAttribute("outerHTML");
+                }
+            }
+
+            driver.Dispose();
+
+            //driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+            //driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+            //driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
+            //driver.FindElements(By.ClassName("submit"))[2].Click();
+
+            //driver.Navigate().GoToUrl("http://www.costco.com/.product.100244524.html");
+            //driver.FindElement(By.Id("addToCartBtn")).Click();
+
+            //driver.Navigate().GoToUrl("https://www.costco.com/CheckoutCartView?langId=-1&storeId=10301&catalogId=10701&orderId=.");
+            //driver.SwitchTo().Alert().Accept();
+            //driver.FindElement(By.Id("shopCartCheckoutSubmitButton")).Click();
 
 
 
