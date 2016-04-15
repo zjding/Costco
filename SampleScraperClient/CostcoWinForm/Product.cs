@@ -19,5 +19,11 @@ namespace CostcoWinForm
         public string Specification { get; set; }
         public string ImageLink { get; set; }
         public string Url { get; set; }
+
+        public string eBayItemNumber { get; set; }
+        public string eBayUrl { get; set; }
+        public string eBayCategoryID { get; set; }
+        public string eBayListingPrice { get; set; }
+
     }
 }

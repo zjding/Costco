@@ -22,6 +22,9 @@ using System.Diagnostics;
 using System.Text.RegularExpressions;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 
 namespace CostcoWinForm
 {
@@ -36,6 +39,8 @@ namespace CostcoWinForm
         List<String> discontinueddProductArray = new List<string>();
         List<String> priceUpProductArray = new List<string>();
         List<String> priceDownProductArray = new List<string>();
+
+        List<Product> priceChangedProductArray = new List<Product>();
 
         string emailMessage;
 
@@ -535,6 +540,35 @@ namespace CostcoWinForm
             cmd.ExecuteNonQuery();
         }
 
+        private void AdjustEBayListings()
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            SqlDataReader rdr;
+
+            cn.Open();
+
+            // price up
+            string sqlString = @"select e.*, p.Price as NewPrice from eBay_CurrentListings e, ProductInfo p where e.CostcoUrlNumber = p.UrlNumber and e.CostcoPrice <> p.Price";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            Product product;
+
+            while (rdr.Read())
+            {
+                product = new Product();
+                product.Name = rdr["Name"].ToString();
+                product.UrlNumber = rdr["CostcoItemNumber"].ToString();
+                product.eBayItemNumber = rdr["eBayItemNumber"].ToString();
+                product.Price = Convert.ToDecimal(rdr["NewPrice"]);
+            }
+
+            rdr.Close();
+        }
+
         private void CompareProducts()
         {
             SqlConnection cn = new SqlConnection(connectionString);
@@ -727,23 +761,23 @@ namespace CostcoWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //GetCategoryArray();
+            GetCategoryArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
-            //GetProductInfo();
+            GetProductInfo();
 
-            //PopulateTables();
+            PopulateTables();
 
-            //CompareProducts();
+            CompareProducts();
 
-            //ArchieveProducts();
+            ArchieveProducts();
 
-            //SendEmail();
+            SendEmail();
 
-            //this.Close();
+            this.Close();
 
             //webBrowser1.Navigate("http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=Swingline+Commercial+Stapler+Black+SWI+44401S");
 
@@ -853,10 +887,12 @@ namespace CostcoWinForm
 
         private void btnProductText_Click(object sender, EventArgs e)
         {
-            productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
-            productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
-            productUrlArray.Add("http://www.costco.com/.product.100244718.html");
-            productUrlArray.Add("http://www.costco.com/.product.100056803.html");
+            productUrlArray.Add("http://www.costco.com/Kirkland-Signature%E2%84%A2-Hair-Regrowth-Treatment-Extra-Strength-for-Men-5%25-Minoxidil-Topical-Solution-6-pk.product.11501138.html");
+
+            //productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
+            //productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100056803.html");
             //productUrlArray.Add("http://www.costco.com/.product.100169328.html");
 
             //productUrlArray.Add("http://www.costco.com/.product.100100971.html?cm_sp=RichRelevance-_-categorypageHorizontalTop-_-CategoryTopProducts&cm_vc=categorypageHorizontalTop|CategoryTopProducts");
@@ -864,7 +900,7 @@ namespace CostcoWinForm
             //productUrlArray.Add("http://www.costco.com/.product.100226551.html");
             //productUrlArray.Add("http://www.costco.com/Green-Mountain-Coffee%C2%AE-Breakfast-Blend-180-K-Cup%C2%AE-Pods.product.100242875.html");
             //productUrlArray.Add("http://www.costco.com/Starbucks%C2%AE-French-Roast-Whole-Bean-Coffee-240oz.product.100232750.html");
-            productUrlArray.Add("http://www.costco.com/Brother-QL-500-Label-Maker.product.11000878.html");
+            //productUrlArray.Add("http://www.costco.com/Brother-QL-500-Label-Maker.product.11000878.html");
 
             GetProductInfo();
         }
@@ -1230,6 +1266,29 @@ namespace CostcoWinForm
                 }
             }
             return merged;
+        }
+
+        private void btnFillWebForm_Click(object sender, EventArgs e)
+        {
+            IWebDriver driver = new FirefoxDriver();
+
+            driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+            driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+            driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
+            driver.FindElements(By.ClassName("submit"))[2].Click();
+
+            driver.Navigate().GoToUrl("http://www.costco.com/.product.100244524.html");
+            driver.FindElement(By.Id("addToCartBtn")).Click();
+
+            driver.Navigate().GoToUrl("https://www.costco.com/CheckoutCartView?langId=-1&storeId=10301&catalogId=10701&orderId=.");
+            driver.SwitchTo().Alert().Accept();
+            driver.FindElement(By.Id("shopCartCheckoutSubmitButton")).Click();
+
+
+
+
+
+            //driver.FindElement(By.XPath("//button[@id='addToCartBtn']")).Click();
         }
     }
 }

@@ -40,11 +40,12 @@
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnListedProducts = new System.Windows.Forms.Button();
             this.btnCreatePDF = new System.Windows.Forms.Button();
+            this.btnFillWebForm = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
             // 
-            this.btnProductInfo.Location = new System.Drawing.Point(32, 283);
+            this.btnProductInfo.Location = new System.Drawing.Point(32, 449);
             this.btnProductInfo.Name = "btnProductInfo";
             this.btnProductInfo.Size = new System.Drawing.Size(118, 23);
             this.btnProductInfo.TabIndex = 0;
@@ -120,7 +121,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(156, 34);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(456, 353);
+            this.webBrowser1.Size = new System.Drawing.Size(662, 467);
             this.webBrowser1.TabIndex = 9;
             // 
             // btnExcel
@@ -145,7 +146,7 @@
             // 
             // btnListedProducts
             // 
-            this.btnListedProducts.Location = new System.Drawing.Point(32, 312);
+            this.btnListedProducts.Location = new System.Drawing.Point(32, 478);
             this.btnListedProducts.Name = "btnListedProducts";
             this.btnListedProducts.Size = new System.Drawing.Size(118, 23);
             this.btnListedProducts.TabIndex = 12;
@@ -155,7 +156,7 @@
             // 
             // btnCreatePDF
             // 
-            this.btnCreatePDF.Location = new System.Drawing.Point(32, 354);
+            this.btnCreatePDF.Location = new System.Drawing.Point(32, 298);
             this.btnCreatePDF.Name = "btnCreatePDF";
             this.btnCreatePDF.Size = new System.Drawing.Size(118, 23);
             this.btnCreatePDF.TabIndex = 13;
@@ -163,11 +164,22 @@
             this.btnCreatePDF.UseVisualStyleBackColor = true;
             this.btnCreatePDF.Click += new System.EventHandler(this.btnCreatePDF_Click);
             // 
+            // btnFillWebForm
+            // 
+            this.btnFillWebForm.Location = new System.Drawing.Point(32, 327);
+            this.btnFillWebForm.Name = "btnFillWebForm";
+            this.btnFillWebForm.Size = new System.Drawing.Size(118, 23);
+            this.btnFillWebForm.TabIndex = 14;
+            this.btnFillWebForm.Text = "Fill Web Form";
+            this.btnFillWebForm.UseVisualStyleBackColor = true;
+            this.btnFillWebForm.Click += new System.EventHandler(this.btnFillWebForm_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 399);
+            this.ClientSize = new System.Drawing.Size(830, 513);
+            this.Controls.Add(this.btnFillWebForm);
             this.Controls.Add(this.btnCreatePDF);
             this.Controls.Add(this.btnListedProducts);
             this.Controls.Add(this.btnLoad);
@@ -202,6 +214,7 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnListedProducts;
         private System.Windows.Forms.Button btnCreatePDF;
+        private System.Windows.Forms.Button btnFillWebForm;
     }
 }
 
