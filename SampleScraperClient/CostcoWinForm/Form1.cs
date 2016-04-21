@@ -179,7 +179,7 @@ namespace CostcoWinForm
 
             //productUrlArray.Add("http://www.costco.com/ABC-and-123-Foam-Floor-Mat-Set%2c-36-Tiles-Set.product.11754291.html");
 
-            
+
 
             int i = 1;
 
@@ -187,7 +187,7 @@ namespace CostcoWinForm
             {
                 try
                 {
-                   
+
                     i++;
 
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
@@ -219,9 +219,9 @@ namespace CostcoWinForm
 
                     HtmlNode category = html.SelectSingleNode("//ul[@itemprop='breadcrumb']");
 
-                    List<HtmlNode> subCategories = category.SelectNodes("li").ToList(); 
+                    List<HtmlNode> subCategories = category.SelectNodes("li").ToList();
 
-                    foreach(HtmlNode subCategory in subCategories)
+                    foreach (HtmlNode subCategory in subCategories)
                     {
                         string temp = subCategory.InnerText.Replace("\n", "");
                         temp = temp.Replace("\t", "");
@@ -319,7 +319,32 @@ namespace CostcoWinForm
                     //else
                     //    shipping = "-1";
 
-                    string description = GetProductionDescription(productUrl);
+                    string description = "";
+
+                    IWebDriver driver = new FirefoxDriver();
+
+                    driver.Navigate().GoToUrl(productUrl);
+
+                    IWebElement element = driver.FindElement(By.Id("product-tab1"));
+                    //string elementHtml = element.GetAttribute("outerHTML");
+
+                    //driver.Dispose();
+
+                    //var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
+
+                    if (element.FindElements(By.Id("wc-power-page")).Count > 0)
+                    {
+                        description = ProcessPowerPage(element.FindElement(By.Id("wc-power-page")));
+                    }
+                    else if (element.FindElements(By.Id("sp_inline_product")).Count > 0)
+                    {
+                        description = ProcessInlineProduct(element.FindElement(By.Id("sp_inline_product")));
+                    }
+
+                    driver.Dispose();
+
+
+                    //string description = GetProductionDescription(productUrl);
                     description = ProcessHtml(description);
 
                     description = description.Replace("???", "");
@@ -388,7 +413,7 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "',"  + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
@@ -914,9 +939,15 @@ namespace CostcoWinForm
 
         private void btnProductText_Click(object sender, EventArgs e)
         {
-            productUrlArray.Add("http://www.costco.com/Kirkland-Signature%E2%84%A2-Hair-Regrowth-Treatment-Extra-Strength-for-Men-5%25-Minoxidil-Topical-Solution-6-pk.product.11501138.html");
+            productUrlArray.Add("http://www.costco.com/.product.100244718.html");
 
-            productUrlArray.Add("http://www.costco.com/.product.100099102.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP");
+            //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+
+            //productUrlArray.Add("http://www.costco.com/.product.100230476.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP");
+
+            //productUrlArray.Add("http://www.costco.com/Kirkland-Signature%E2%84%A2-Hair-Regrowth-Treatment-Extra-Strength-for-Men-5%25-Minoxidil-Topical-Solution-6-pk.product.11501138.html");
+
+            //productUrlArray.Add("http://www.costco.com/.product.100099102.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP");
 
             //productUrlArray.Add("http://www.costco.com/Titan-1.25-Waste-Disposer-Designer-Series.product.100277151.html");
             //productUrlArray.Add("http://www.costco.com/4-Tier-Toy-Organizer-with-Bins.product.100240406.html");
@@ -1028,7 +1059,7 @@ namespace CostcoWinForm
             if (categoryID == "")
             {
                 sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
-                                "F" + Convert.ToString(categoryList.Count-1) + "='" + categoryList.ElementAt(categoryList.Count - 3) + "' AND " +
+                                "F" + Convert.ToString(categoryList.Count - 1) + "='" + categoryList.ElementAt(categoryList.Count - 3) + "' AND " +
                                 "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "'";
 
                 cmd.CommandText = sqlString;
@@ -1057,7 +1088,7 @@ namespace CostcoWinForm
                 Application.DoEvents();
                 if ((counter > waittime) ||
                     (loadStatus == WebBrowserReadyState.Uninitialized) ||
-                    (loadStatus == WebBrowserReadyState.Loading) || 
+                    (loadStatus == WebBrowserReadyState.Loading) ||
                     (loadStatus == WebBrowserReadyState.Interactive))
                 {
                     break;
@@ -1242,7 +1273,7 @@ namespace CostcoWinForm
         private void btnCreatePDF_Click(object sender, EventArgs e)
         {
             string pdfTemplateFileName = @"c:\ebay\documents\" + "TaxExemption_Form.pdf";
-            string newFileName = @"c:\ebay\TaxExemption\TaxExemption-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") +  ".pdf";
+            string newFileName = @"c:\ebay\TaxExemption\TaxExemption-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".pdf";
             PdfReader pdfReader = new PdfReader(pdfTemplateFileName);
             PdfStamper pdfStamper = new PdfStamper(pdfReader, new FileStream(newFileName, FileMode.Create));
             AcroFields pdfFormFields = pdfStamper.AcroFields;
@@ -1318,13 +1349,20 @@ namespace CostcoWinForm
 
             if (pageTypeElements.Count > 0)
             {
-                 result =  ProcessPowerPage(pageTypeElements[0]);
+                result = ProcessPowerPage(pageTypeElements[0]);
             }
 
             driver.Dispose();
 
             return result;
 
+        }
+
+        private string ProcessInlineProduct(IWebElement inputElement)
+        {
+            string html = inputElement.GetAttribute("outerHTML");
+
+            return html;
         }
 
         private string ProcessPowerPage(IWebElement inputElement)
@@ -1434,5 +1472,246 @@ namespace CostcoWinForm
 
             //driver.FindElement(By.XPath("//button[@id='addToCartBtn']")).Click();
         }
+
+        private void btnResearch_Click(object sender, EventArgs e)
+        {
+            List<string> sellers = new List<string>();
+
+            //"http://feedback.ebay.com/ws/eBayISAPI.dll?ViewFeedback2&ftab=FeedbackAsSeller&userid=bigmayer5&iid=400936057158&de=off&items=25&interval=0&mPg=2112&keyword=400936057158&page="
+            //string feedbackUrl1 = "http://feedback.ebay.com/ws/eBayISAPI.dll?ViewFeedback2&ftab=FeedbackAsSeller&userid=netspecials&iid=172000117265&de=off&items=200&interval=0&mPg=79&keyword=172000117265&page=";
+            string feedbackUrl1 = "http://feedback.ebay.com/ws/eBayISAPI.dll?ViewFeedback2&ftab=FeedbackAsSeller&userid=infinity_giving_works&iid=111637054229&de=off&items=25&interval=0&mPg=598&keyword=111637054229&page=";
+
+            int iUserStart = feedbackUrl1.IndexOf("userid=");
+            int iUserEnd = feedbackUrl1.IndexOf("&", iUserStart);
+            string UserId = feedbackUrl1.Substring(iUserStart + 7, iUserEnd - iUserStart - 7);
+
+            for (int i = 1; i <= 5; i++)
+            {
+                sellers.Add(feedbackUrl1 + i.ToString());
+            }
+
+            IWebDriver driver = new FirefoxDriver();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString;
+
+            sqlString = "TRUNCATE TABLE eBay_ProductsResearch";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+
+            foreach (string url in sellers)
+            {
+                try
+                {
+                    driver.Navigate().GoToUrl(url);
+
+                    var trs = driver.FindElements(By.XPath("//tr[contains(@class, 'bot')]"));
+
+                    foreach (IWebElement tr in trs)
+                    {
+                        var tds = tr.FindElements(By.XPath(".//td"));
+
+                        string Name = tds[1].Text;
+
+                        if (Name == "")
+                            continue;
+
+                        int iStart = Name.IndexOf("(");
+                        int iEnd = Name.IndexOf(")");
+
+                        Name = Name.Substring(0, iStart);
+                        Name = Name.Replace("'", "*");
+
+                        string Price = tds[2].Text;
+
+                        Price = Price.Replace("US $", "");
+
+                        IWebElement a = tds[3].FindElement(By.TagName("a"));
+
+                        string Url = a.GetAttribute("href");
+
+                        // Insert to DB
+                        sqlString = "SELECT Name FROM eBay_ProductsResearch WHERE Name = '" + Name + "' AND eBayUserId = '" + UserId + "'" ;
+
+                        cmd.CommandText = sqlString;
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            reader.Close();
+                            continue;
+                        }
+                        reader.Close();
+
+                        sqlString = "INSERT INTO eBay_ProductsResearch (Name, eBayUrl, eBayPrice, eBayUserId) VALUES ('" +
+                                        Name + "', '" +
+                                        Url + "', '" +
+                                        Price + "', '" +
+                                        UserId + "')";
+
+                        cmd.CommandText = sqlString;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
+            }
+
+            List<string> eBayUrls = new List<string>();
+
+            sqlString = "SELECT eBayUrl FROM eBay_ProductsResearch";
+
+            cmd.CommandText = sqlString;
+            SqlDataReader reader1 = cmd.ExecuteReader();
+            if (reader1.HasRows)
+            {
+                while (reader1.Read())
+                {
+                    string eBayUrl = reader1.GetString(0);
+
+                    eBayUrls.Add(eBayUrl);
+                }
+            }
+
+            reader1.Close();
+
+            foreach (string eBayUrl in eBayUrls)
+            {
+
+                driver.Navigate().GoToUrl(eBayUrl);
+
+                var spans = driver.FindElements(By.XPath("//span[contains(@class, 'vi-qtyS-hot-red  vi-bboxrev-dsplblk vi-qty-vert-algn vi-qty-pur-lnk')]"));
+
+                if (spans.Count == 0)
+                    spans = driver.FindElements(By.XPath("//span[contains(@class, 'vi-qtyS vi-bboxrev-dsplblk vi-qty-vert-algn vi-qty-pur-lnk')]"));
+
+                if (spans.Count > 0)
+                {
+                    var a = spans[0].FindElement(By.TagName("a"));
+                    if (a != null)
+                    {
+                        string num = a.Text.Replace("sold", "");
+                        num = num.TrimEnd();
+                        num = num.TrimStart();
+                        num = num.Replace(",", "");
+
+                        sqlString = "UPDATE eBay_ProductsResearch SET eBaySoldNumber = " + num + " WHERE eBayUrl = '" + eBayUrl + "'";
+                        cmd.CommandText = sqlString;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+            }
+
+            cn.Close();
+            driver.Dispose();
+
+        }
+
+        private void btnEmailExtract_Click(object sender, EventArgs e)
+        {
+            string html = @"<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta name=Generator content='Microsoft Word 15 (filtered medium)'><!--[if !mso]><style>v:* {behavior:url(#default#VML);}                            o:* {behavior:url(#default#VML);}                            w:* {behavior:url(#default#VML);}                            .shape {behavior:url(#default#VML);}                            </style><![endif]--><style><!--                            /* Font Definitions */                            @font-face                            {font-family:'Cambria Math';                            panose-1:2 4 5 3 5 4 6 3 2 4;}                            @font-face                            {font-family:DengXian;                            panose-1:2 1 6 0 3 1 1 1 1 1;}                            @font-face                            {font-family:Calibri;                            panose-1:2 15 5 2 2 2 4 3 2 4;}                            @font-face                            {font-family:'@DengXian';                            panose-1:2 1 6 0 3 1 1 1 1 1;}                            /* Style Definitions */                            p.MsoNormal, li.MsoNormal, div.MsoNormal                            {margin:0in;                            margin-bottom:.0001pt;                            font-size:12.0pt;                            font-family:'Times New Roman',serif;}                            a:link, span.MsoHyperlink                            {mso-style-priority:99;                            color:blue;                            text-decoration:underline;}                            a:visited, span.MsoHyperlinkFollowed                            {mso-style-priority:99;                            color:purple;                            text-decoration:underline;}                            p.msonormal0, li.msonormal0, div.msonormal0                            {mso-style-name:msonormal;                            mso-margin-top-alt:auto;                            margin-right:0in;                            mso-margin-bottom-alt:auto;                            margin-left:0in;                            font-size:12.0pt;                            font-family:'Times New Roman',serif;}                            span.EmailStyle18                            {mso-style-type:personal;                            font-family:'Calibri',sans-serif;                            color:windowtext;}                            span.EmailStyle20                            {mso-style-type:personal-reply;                            font-family:'Calibri',sans-serif;                            color:windowtext;}                            .MsoChpDefault                            {mso-style-type:export-only;                            font-size:10.0pt;}                            @page WordSection1                            {size:8.5in 11.0in;                            margin:1.0in 1.0in 1.0in 1.0in;}                            div.WordSection1                            {page:WordSection1;}                            --></style><!--[if gte mso 9]><xml>                            <o:shapedefaults v:ext='edit' spidmax='1026' />                            </xml><![endif]--><!--[if gte mso 9]><xml>                            <o:shapelayout v:ext='edit'>                            <o:idmap v:ext='edit' data='1' />                            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link=blue vlink=purple><div class=WordSection1><p class=MsoNormal style='margin-bottom:12.0pt'><o:p>&nbsp;</o:p></p><div><div><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width='100%' style='width:100.0%'><tr><td style='padding:0in 0in 0in 0in'></td></tr></table></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=600 style='width:6.25in;color:#333333!important'><tr><td width='100%' valign=top style='width:100.0%;padding:0in 0in 0in 0in'><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=600 style='width:6.25in'><tr><td valign=top style='padding:0in 0in 0in 0in'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><img id='_x0000_i1025' src='http://images.paypal.com/en_US/i/logo/paypal_logo.gif' alt='PayPal logo'><o:p></o:p></span></p></td><td style='padding:0in 0in 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Jun 12, 2014 18:02:31 PDT<br>Transaction ID: <a href='https://www.paypal.com/us/cgi-bin/webscr?cmd=_view-a-trans&amp;id=6J8040028M3004619' target='_blank'>6J8040028M3004619</a><o:p></o:p></span></p></td></tr></table></div><div style='margin-top:22.5pt;color:#333!important'><p class=MsoNormal><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Hello Yue Zhang,</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br><br></span><b><span style='font-size:10.5pt;font-family:'Arial',sans-serif;color:#C88039'>You received a payment of $14.95 USD from nanetrawl (<a href='mailto:nanetcrawl@aol.com' target='_blank'>nanetcrawl@aol.com</a>)</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p><table class=MsoNormalTable border=0 cellpadding=0><tr><td valign=top style='padding:3.75pt 3.75pt 3.75pt 3.75pt'><p class=MsoNormal>Thanks for using PayPal. You can now ship any items.To see all the transaction details, log in to your PayPal account.<br><br>It may take a few moments for this transaction to appear in your account.<br><br><b><span style='color:#333333'>Seller Protection - </span></b><span style='color:#4C8F3A'>Eligible</span><o:p></o:p></p></td><td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div style='margin-top:3.75pt'><div class=MsoNormal align=center style='text-align:center'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><hr size=1 width='100%' align=center></span></div></div><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><table class=MsoNormalTable border=0 cellspacing=3 cellpadding=0 style='color:#333333!important'><tr><td style='padding:2.25pt 2.25pt 2.25pt 2.25pt'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width='98%' style='width:98.0%'><tr><td width='50%' valign=top style='width:50.0%;padding:3.75pt 7.5pt 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Buyer</span></b><br>nanette crawley<br>nanetrawl<br><a href='mailto:nanetcrawl@aol.com' target='_blank'>nanetcrawl@aol.com</a><o:p></o:p></p></td><td valign=top style='padding:3.75pt 0in 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Note to seller</span></b><br>The buyer hasn't sent a note.<o:p></o:p></p></td></tr><tr><td width='40%' valign=top style='width:40.0%;padding:7.5pt 0in 0in 0in'><p class=MsoNormal><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Shipping address - </span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#4C8F3A'>confirmed</span><br>nanette a crawley<br>1040 buena Rd<br>Lake forest,&nbsp;IL&nbsp;60045<br>United States<o:p></o:p></p></td><td valign=top style='padding:7.5pt 0in 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Shipping details</span></b><br>You haven’t added any shipping details.<o:p></o:p></p></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='color:#333!important'><tr><td width=348 style='width:261.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Description<o:p></o:p></span></p></td><td width=100 style='width:75.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Unit price<o:p></o:p></span></p></td><td width=50 style='width:37.5pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Qty<o:p></o:p></span></p></td><td width=80 style='width:60.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Amount<o:p></o:p></span></p></td></tr><tr><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><a href='http://cgi.ebay.com/ws/eBayISAPI.dll?ViewItem&amp;item=200781909849' target='_blank'>~ICY PINK HEART~ Pendant Necklace with Swarovski Crystals</a><br>Item# 200781909849<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>$14.95 USD<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>1<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>$14.95 USD<o:p></o:p></span></p></td></tr></table></div><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div align=center><table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=595 style='width:446.25pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none'><tr><td valign=top style='border:none;padding:0in 0in 0in 0in'><p class=MsoNormal><img border=0 id='_x0000_i1027' src='https://securepics.ebaystatic.com/aw/pics/logos/paypal/logo_ebay_62x26.gif'><o:p></o:p></p></td><td style='border:none;padding:0in 0in 0in 0in'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 align=right style='margin-top:3.0pt;color:#333333!important'><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Shipping and handling<o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:0in 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$0.00 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Total</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:0in 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$14.95 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:15.0pt 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Payment</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:15.0pt 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$14.95 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br>Payment sent to <a href='mailto:coffeebean217@gmail.com' target='_blank'>coffeebean217@gmail.com</a><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:15.0pt 3.75pt 0in 0in'></td></tr><tr style='height:7.5pt'><td colspan=2 style='padding:0in 0in 0in 0in;height:7.5pt'></td></tr></table></td></tr></table></div><p class=MsoNormal align=center style='text-align:center'><o:p></o:p></p></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><img border=0 id='_x0000_i1028' src='http://images.paypal.com/en_US/i/icon/icon_help_16x16.gif'>Questions? Go to the Help Center at: <a href='https://www.paypal.com/help' target='_blank'>www.paypal.com/help</a>.<br><br></span><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>Please do not reply to this email. This mailbox is not monitored and you will not receive a response. For assistance, log in to your PayPal account and click <strong><span style='font-family:'Arial',sans-serif'>Help</span></strong> in the top right corner of any PayPal page.</span><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br><br></span><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>You can receive plain text emails instead of HTML emails. To change your Notifications preferences, log in to your account, go to your Profile, and click <strong><span style='font-family:'Arial',sans-serif'>My settings</span></strong>.</span><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></div><p class=MsoNormal><br><br><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>PayPal Email ID PP753 - 534ee8f139d8d</span><img border=0 width=1 height=1 style='width:.0104in;height:.0104in' id='_x0000_i1029' src='https://paypal.112.2o7.net/b/ss/paypalglobal/1/H.22--NS/1403163154?c6=62T71479F9328045D&amp;v0=PP753_0_&amp;pe=lnk_o&amp;pev1=email&amp;pev2=D=v0&amp;events=scOpen'><o:p></o:p></p></td></tr></table></div></div></div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>";
+
+            string body = SubstringInBetween(html, "<body", @"</body>", true, true);
+
+            // TransactionID
+            string stTime = SubstringEndBack(body, "PDT", ">", false, true);
+
+            string stTransactionID = SubstringInBetween(body, "Transaction ID:", "</a>", true, true);
+
+            stTransactionID = SubstringEndBack(stTransactionID, "</a>", ">", false, false);
+
+            // Buyer Name
+            string stBuyer = SubstringInBetween(body, "Buyer", @"</a>", true, true);
+
+            string stFullName = SubstringInBetween(stBuyer, "<br>", "<br>", false, false);
+
+            stBuyer = stBuyer.Replace("<br>" + stFullName + "<br>", "");
+
+            string stUserID = SubstringInBetween(stBuyer, @"</b>", "<br>", false, false);
+
+            string stUserEmail = SubstringEndBack(stBuyer, @"</a>", ">", false, false);
+
+            // Shipping Address
+            string stShippingAddress = SubstringInBetween(body, "Shipping address", "<o:p>", true, false);
+
+            string stShippingName = SubstringInBetween(stShippingAddress, "<br>", "<br>", false, false);
+
+            stShippingAddress = stShippingAddress.Replace("<br>" + stShippingName, "");
+
+            string stShippingAddress1 = SubstringInBetween(stShippingAddress, "<br>", "<br>", false, false);
+
+            stShippingAddress = stShippingAddress.Replace("<br>" + stShippingAddress1, "");
+
+            string stShippingAddress2 = SubstringInBetween(stShippingAddress, "<br>", "<br>", false, false);
+
+            string stShippingCity = stShippingAddress2.Substring(0, stShippingAddress2.IndexOf(","));
+
+            string stShippingState = SubstringInBetween(stShippingAddress2, "&nbsp;", "&nbsp;", false, false);
+
+            stShippingAddress2 = stShippingAddress2.Replace(stShippingCity, "");
+            stShippingAddress2 = stShippingAddress2.Replace(stShippingState, "");
+            stShippingAddress2 = stShippingAddress2.Replace("&nbsp;", "");
+            stShippingAddress2 = stShippingAddress2.Replace(",", "");
+
+            string stShippingZip = stShippingAddress2;
+
+            // Buyer note
+            string stBuyerNote = SubstringInBetween(body, "Note to seller", "<o:p>", false, true);
+            stBuyerNote = SubstringInBetween(stBuyerNote, "<br>", "<o:p>", false, false);
+
+            // Item 
+            string stItemNum = SubstringInBetween(body, "Item#", "<o:p>", false, false);
+            stItemNum = stItemNum.Trim();
+
+
+
+        }
+
+        private string SubstringInBetween(string input, string start, string end, bool bIncludeStart, bool bIncludeEnd)
+        {
+            int iStart = input.IndexOf(start);
+
+            if (bIncludeStart)
+                input = input.Substring(iStart);
+            else
+                input = input.Substring(iStart + start.Length);
+
+            int iEnd = input.IndexOf(end);
+
+            if (bIncludeEnd)
+                input = input.Substring(0, iEnd + end.Length);
+            else
+                input = input.Substring(0, iEnd);
+
+            return input;
+        }
+
+        private string SubstringEndBack(string input, string end, string start, bool bIncludeStart, bool bIncludeEnd)
+        {
+            int iEnd = input.IndexOf(end);
+
+            if (bIncludeEnd)
+                input = input.Substring(0, iEnd + end.Length);
+            else
+                input = input.Substring(0, iEnd);
+
+            int iStart = input.LastIndexOf(">");
+
+            if (bIncludeStart)
+                input = input.Substring(iStart, input.Length - iStart);
+            else
+                input = input.Substring(iStart + start.Length, input.Length - iStart - start.Length);
+
+            return input;
+        }
+
+        
     }
 }

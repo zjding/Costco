@@ -41,11 +41,13 @@
             this.btnListedProducts = new System.Windows.Forms.Button();
             this.btnCreatePDF = new System.Windows.Forms.Button();
             this.btnFillWebForm = new System.Windows.Forms.Button();
+            this.btnResearch = new System.Windows.Forms.Button();
+            this.btnEmailExtract = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
             // 
-            this.btnProductInfo.Location = new System.Drawing.Point(32, 449);
+            this.btnProductInfo.Location = new System.Drawing.Point(32, 481);
             this.btnProductInfo.Name = "btnProductInfo";
             this.btnProductInfo.Size = new System.Drawing.Size(118, 23);
             this.btnProductInfo.TabIndex = 0;
@@ -121,7 +123,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(156, 34);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(662, 467);
+            this.webBrowser1.Size = new System.Drawing.Size(743, 495);
             this.webBrowser1.TabIndex = 9;
             // 
             // btnExcel
@@ -146,7 +148,7 @@
             // 
             // btnListedProducts
             // 
-            this.btnListedProducts.Location = new System.Drawing.Point(32, 478);
+            this.btnListedProducts.Location = new System.Drawing.Point(32, 510);
             this.btnListedProducts.Name = "btnListedProducts";
             this.btnListedProducts.Size = new System.Drawing.Size(118, 23);
             this.btnListedProducts.TabIndex = 12;
@@ -174,11 +176,33 @@
             this.btnFillWebForm.UseVisualStyleBackColor = true;
             this.btnFillWebForm.Click += new System.EventHandler(this.btnFillWebForm_Click);
             // 
+            // btnResearch
+            // 
+            this.btnResearch.Location = new System.Drawing.Point(32, 389);
+            this.btnResearch.Name = "btnResearch";
+            this.btnResearch.Size = new System.Drawing.Size(118, 23);
+            this.btnResearch.TabIndex = 15;
+            this.btnResearch.Text = "Product Research";
+            this.btnResearch.UseVisualStyleBackColor = true;
+            this.btnResearch.Click += new System.EventHandler(this.btnResearch_Click);
+            // 
+            // btnEmailExtract
+            // 
+            this.btnEmailExtract.Location = new System.Drawing.Point(32, 418);
+            this.btnEmailExtract.Name = "btnEmailExtract";
+            this.btnEmailExtract.Size = new System.Drawing.Size(118, 23);
+            this.btnEmailExtract.TabIndex = 16;
+            this.btnEmailExtract.Text = "Email Extract";
+            this.btnEmailExtract.UseVisualStyleBackColor = true;
+            this.btnEmailExtract.Click += new System.EventHandler(this.btnEmailExtract_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(830, 513);
+            this.ClientSize = new System.Drawing.Size(911, 541);
+            this.Controls.Add(this.btnEmailExtract);
+            this.Controls.Add(this.btnResearch);
             this.Controls.Add(this.btnFillWebForm);
             this.Controls.Add(this.btnCreatePDF);
             this.Controls.Add(this.btnListedProducts);
@@ -215,6 +239,8 @@
         private System.Windows.Forms.Button btnListedProducts;
         private System.Windows.Forms.Button btnCreatePDF;
         private System.Windows.Forms.Button btnFillWebForm;
+        private System.Windows.Forms.Button btnResearch;
+        private System.Windows.Forms.Button btnEmailExtract;
     }
 }
 
