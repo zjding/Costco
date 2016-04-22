@@ -1670,8 +1670,26 @@ namespace CostcoWinForm
             string stItemNum = SubstringInBetween(body, "Item#", "<o:p>", false, false);
             stItemNum = stItemNum.Trim();
 
+            string stItemName = SubstringInBetween(body, "<a href='http://cgi.ebay.com/ws/eBayISAPI.dll?ViewItem&amp;item=" + stItemNum + "' target='_blank'>", @"</a>", false, false);
 
+            // Amount
+            string stAmount = SubstringInBetween(body, "Item# " + stItemNum, @"</table>", false, false);
 
+            stAmount = TrimTags(stAmount);
+
+            string stUnitePrice = stAmount.Substring(0, stAmount.IndexOf("<"));
+
+            stAmount = stAmount.Substring(stUnitePrice.Length);
+
+            stAmount = TrimTags(stAmount);
+
+            string stQuatity = stAmount.Substring(0, stAmount.IndexOf("<"));
+
+            stAmount = stAmount.Substring(stQuatity.Length);
+
+            stAmount = TrimTags(stAmount);
+
+            string stTotal = stAmount.Substring(0, stAmount.IndexOf("<"));
         }
 
         private string SubstringInBetween(string input, string start, string end, bool bIncludeStart, bool bIncludeEnd)
@@ -1708,6 +1726,21 @@ namespace CostcoWinForm
                 input = input.Substring(iStart, input.Length - iStart);
             else
                 input = input.Substring(iStart + start.Length, input.Length - iStart - start.Length);
+
+            return input;
+        }
+
+        private string TrimTags(string input)
+        {
+            int iStart = input.IndexOf("<");
+            string stTag;
+            input = input.Substring(iStart);
+
+            while (input.IndexOf("<") == 0)
+            {
+                stTag = SubstringInBetween(input, "<", ">", true, true);
+                input = input.Substring(stTag.Length);
+            }
 
             return input;
         }
