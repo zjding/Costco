@@ -43,6 +43,7 @@
             this.btnFillWebForm = new System.Windows.Forms.Button();
             this.btnResearch = new System.Windows.Forms.Button();
             this.btnEmailExtract = new System.Windows.Forms.Button();
+            this.btnSoldEmailExtract = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -178,7 +179,7 @@
             // 
             // btnResearch
             // 
-            this.btnResearch.Location = new System.Drawing.Point(32, 389);
+            this.btnResearch.Location = new System.Drawing.Point(32, 377);
             this.btnResearch.Name = "btnResearch";
             this.btnResearch.Size = new System.Drawing.Size(118, 23);
             this.btnResearch.TabIndex = 15;
@@ -188,19 +189,30 @@
             // 
             // btnEmailExtract
             // 
-            this.btnEmailExtract.Location = new System.Drawing.Point(32, 418);
+            this.btnEmailExtract.Location = new System.Drawing.Point(32, 406);
             this.btnEmailExtract.Name = "btnEmailExtract";
             this.btnEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnEmailExtract.TabIndex = 16;
-            this.btnEmailExtract.Text = "Email Extract";
+            this.btnEmailExtract.Text = "Paid Email Extract";
             this.btnEmailExtract.UseVisualStyleBackColor = true;
             this.btnEmailExtract.Click += new System.EventHandler(this.btnEmailExtract_Click);
+            // 
+            // btnSoldEmailExtract
+            // 
+            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 435);
+            this.btnSoldEmailExtract.Name = "btnSoldEmailExtract";
+            this.btnSoldEmailExtract.Size = new System.Drawing.Size(118, 23);
+            this.btnSoldEmailExtract.TabIndex = 17;
+            this.btnSoldEmailExtract.Text = "Sold Email Extract";
+            this.btnSoldEmailExtract.UseVisualStyleBackColor = true;
+            this.btnSoldEmailExtract.Click += new System.EventHandler(this.btnSoldEmailExtract_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(911, 541);
+            this.Controls.Add(this.btnSoldEmailExtract);
             this.Controls.Add(this.btnEmailExtract);
             this.Controls.Add(this.btnResearch);
             this.Controls.Add(this.btnFillWebForm);
@@ -241,6 +253,7 @@
         private System.Windows.Forms.Button btnFillWebForm;
         private System.Windows.Forms.Button btnResearch;
         private System.Windows.Forms.Button btnEmailExtract;
+        private System.Windows.Forms.Button btnSoldEmailExtract;
     }
 }
 

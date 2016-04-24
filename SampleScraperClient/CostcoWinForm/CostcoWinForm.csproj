@@ -93,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>
     </Compile>
+    <Compile Include="eBayListingProduct.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

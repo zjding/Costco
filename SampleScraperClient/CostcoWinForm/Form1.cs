@@ -1616,12 +1616,80 @@ namespace CostcoWinForm
 
         private void btnEmailExtract_Click(object sender, EventArgs e)
         {
-            string html = @"<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta name=Generator content='Microsoft Word 15 (filtered medium)'><!--[if !mso]><style>v:* {behavior:url(#default#VML);}                            o:* {behavior:url(#default#VML);}                            w:* {behavior:url(#default#VML);}                            .shape {behavior:url(#default#VML);}                            </style><![endif]--><style><!--                            /* Font Definitions */                            @font-face                            {font-family:'Cambria Math';                            panose-1:2 4 5 3 5 4 6 3 2 4;}                            @font-face                            {font-family:DengXian;                            panose-1:2 1 6 0 3 1 1 1 1 1;}                            @font-face                            {font-family:Calibri;                            panose-1:2 15 5 2 2 2 4 3 2 4;}                            @font-face                            {font-family:'@DengXian';                            panose-1:2 1 6 0 3 1 1 1 1 1;}                            /* Style Definitions */                            p.MsoNormal, li.MsoNormal, div.MsoNormal                            {margin:0in;                            margin-bottom:.0001pt;                            font-size:12.0pt;                            font-family:'Times New Roman',serif;}                            a:link, span.MsoHyperlink                            {mso-style-priority:99;                            color:blue;                            text-decoration:underline;}                            a:visited, span.MsoHyperlinkFollowed                            {mso-style-priority:99;                            color:purple;                            text-decoration:underline;}                            p.msonormal0, li.msonormal0, div.msonormal0                            {mso-style-name:msonormal;                            mso-margin-top-alt:auto;                            margin-right:0in;                            mso-margin-bottom-alt:auto;                            margin-left:0in;                            font-size:12.0pt;                            font-family:'Times New Roman',serif;}                            span.EmailStyle18                            {mso-style-type:personal;                            font-family:'Calibri',sans-serif;                            color:windowtext;}                            span.EmailStyle20                            {mso-style-type:personal-reply;                            font-family:'Calibri',sans-serif;                            color:windowtext;}                            .MsoChpDefault                            {mso-style-type:export-only;                            font-size:10.0pt;}                            @page WordSection1                            {size:8.5in 11.0in;                            margin:1.0in 1.0in 1.0in 1.0in;}                            div.WordSection1                            {page:WordSection1;}                            --></style><!--[if gte mso 9]><xml>                            <o:shapedefaults v:ext='edit' spidmax='1026' />                            </xml><![endif]--><!--[if gte mso 9]><xml>                            <o:shapelayout v:ext='edit'>                            <o:idmap v:ext='edit' data='1' />                            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link=blue vlink=purple><div class=WordSection1><p class=MsoNormal style='margin-bottom:12.0pt'><o:p>&nbsp;</o:p></p><div><div><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width='100%' style='width:100.0%'><tr><td style='padding:0in 0in 0in 0in'></td></tr></table></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=600 style='width:6.25in;color:#333333!important'><tr><td width='100%' valign=top style='width:100.0%;padding:0in 0in 0in 0in'><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=600 style='width:6.25in'><tr><td valign=top style='padding:0in 0in 0in 0in'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><img id='_x0000_i1025' src='http://images.paypal.com/en_US/i/logo/paypal_logo.gif' alt='PayPal logo'><o:p></o:p></span></p></td><td style='padding:0in 0in 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Jun 12, 2014 18:02:31 PDT<br>Transaction ID: <a href='https://www.paypal.com/us/cgi-bin/webscr?cmd=_view-a-trans&amp;id=6J8040028M3004619' target='_blank'>6J8040028M3004619</a><o:p></o:p></span></p></td></tr></table></div><div style='margin-top:22.5pt;color:#333!important'><p class=MsoNormal><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Hello Yue Zhang,</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br><br></span><b><span style='font-size:10.5pt;font-family:'Arial',sans-serif;color:#C88039'>You received a payment of $14.95 USD from nanetrawl (<a href='mailto:nanetcrawl@aol.com' target='_blank'>nanetcrawl@aol.com</a>)</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p><table class=MsoNormalTable border=0 cellpadding=0><tr><td valign=top style='padding:3.75pt 3.75pt 3.75pt 3.75pt'><p class=MsoNormal>Thanks for using PayPal. You can now ship any items.To see all the transaction details, log in to your PayPal account.<br><br>It may take a few moments for this transaction to appear in your account.<br><br><b><span style='color:#333333'>Seller Protection - </span></b><span style='color:#4C8F3A'>Eligible</span><o:p></o:p></p></td><td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div style='margin-top:3.75pt'><div class=MsoNormal align=center style='text-align:center'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><hr size=1 width='100%' align=center></span></div></div><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><table class=MsoNormalTable border=0 cellspacing=3 cellpadding=0 style='color:#333333!important'><tr><td style='padding:2.25pt 2.25pt 2.25pt 2.25pt'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width='98%' style='width:98.0%'><tr><td width='50%' valign=top style='width:50.0%;padding:3.75pt 7.5pt 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Buyer</span></b><br>nanette crawley<br>nanetrawl<br><a href='mailto:nanetcrawl@aol.com' target='_blank'>nanetcrawl@aol.com</a><o:p></o:p></p></td><td valign=top style='padding:3.75pt 0in 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Note to seller</span></b><br>The buyer hasn't sent a note.<o:p></o:p></p></td></tr><tr><td width='40%' valign=top style='width:40.0%;padding:7.5pt 0in 0in 0in'><p class=MsoNormal><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Shipping address - </span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#4C8F3A'>confirmed</span><br>nanette a crawley<br>1040 buena Rd<br>Lake forest,&nbsp;IL&nbsp;60045<br>United States<o:p></o:p></p></td><td valign=top style='padding:7.5pt 0in 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Shipping details</span></b><br>You haven’t added any shipping details.<o:p></o:p></p></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='color:#333!important'><tr><td width=348 style='width:261.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Description<o:p></o:p></span></p></td><td width=100 style='width:75.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Unit price<o:p></o:p></span></p></td><td width=50 style='width:37.5pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Qty<o:p></o:p></span></p></td><td width=80 style='width:60.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Amount<o:p></o:p></span></p></td></tr><tr><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><a href='http://cgi.ebay.com/ws/eBayISAPI.dll?ViewItem&amp;item=200781909849' target='_blank'>~ICY PINK HEART~ Pendant Necklace with Swarovski Crystals</a><br>Item# 200781909849<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>$14.95 USD<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>1<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>$14.95 USD<o:p></o:p></span></p></td></tr></table></div><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div align=center><table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=595 style='width:446.25pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none'><tr><td valign=top style='border:none;padding:0in 0in 0in 0in'><p class=MsoNormal><img border=0 id='_x0000_i1027' src='https://securepics.ebaystatic.com/aw/pics/logos/paypal/logo_ebay_62x26.gif'><o:p></o:p></p></td><td style='border:none;padding:0in 0in 0in 0in'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 align=right style='margin-top:3.0pt;color:#333333!important'><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Shipping and handling<o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:0in 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$0.00 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Total</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:0in 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$14.95 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:15.0pt 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Payment</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:15.0pt 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$14.95 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br>Payment sent to <a href='mailto:coffeebean217@gmail.com' target='_blank'>coffeebean217@gmail.com</a><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:15.0pt 3.75pt 0in 0in'></td></tr><tr style='height:7.5pt'><td colspan=2 style='padding:0in 0in 0in 0in;height:7.5pt'></td></tr></table></td></tr></table></div><p class=MsoNormal align=center style='text-align:center'><o:p></o:p></p></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><img border=0 id='_x0000_i1028' src='http://images.paypal.com/en_US/i/icon/icon_help_16x16.gif'>Questions? Go to the Help Center at: <a href='https://www.paypal.com/help' target='_blank'>www.paypal.com/help</a>.<br><br></span><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>Please do not reply to this email. This mailbox is not monitored and you will not receive a response. For assistance, log in to your PayPal account and click <strong><span style='font-family:'Arial',sans-serif'>Help</span></strong> in the top right corner of any PayPal page.</span><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br><br></span><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>You can receive plain text emails instead of HTML emails. To change your Notifications preferences, log in to your account, go to your Profile, and click <strong><span style='font-family:'Arial',sans-serif'>My settings</span></strong>.</span><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></div><p class=MsoNormal><br><br><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>PayPal Email ID PP753 - 534ee8f139d8d</span><img border=0 width=1 height=1 style='width:.0104in;height:.0104in' id='_x0000_i1029' src='https://paypal.112.2o7.net/b/ss/paypalglobal/1/H.22--NS/1403163154?c6=62T71479F9328045D&amp;v0=PP753_0_&amp;pe=lnk_o&amp;pev1=email&amp;pev2=D=v0&amp;events=scOpen'><o:p></o:p></p></td></tr></table></div></div></div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>";
+            string html = @"<html xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns:m='http://schemas.microsoft.com/office/2004/12/omml' xmlns='http://www.w3.org/TR/REC-html40'><head><meta name=Generator content='Microsoft Word 15 (filtered medium)'><!--[if !mso]><style>v:* {behavior:url(#default#VML);}
+                            o:* {behavior:url(#default#VML);}
+                            w:* {behavior:url(#default#VML);}
+                            .shape {behavior:url(#default#VML);}
+                            </style><![endif]--><style><!--
+                            /* Font Definitions */
+                            @font-face
+                            {font-family:'Cambria Math';
+                            panose-1:2 4 5 3 5 4 6 3 2 4;}
+                            @font-face
+                            {font-family:DengXian;
+                            panose-1:2 1 6 0 3 1 1 1 1 1;}
+                            @font-face
+                            {font-family:Calibri;
+                            panose-1:2 15 5 2 2 2 4 3 2 4;}
+                            @font-face
+                            {font-family:'@DengXian';
+                            panose-1:2 1 6 0 3 1 1 1 1 1;}
+                            /* Style Definitions */
+                            p.MsoNormal, li.MsoNormal, div.MsoNormal
+                            {margin:0in;
+                            margin-bottom:.0001pt;
+                            font-size:12.0pt;
+                            font-family:'Times New Roman',serif;}
+                            a:link, span.MsoHyperlink
+                            {mso-style-priority:99;
+                            color:blue;
+                            text-decoration:underline;}
+                            a:visited, span.MsoHyperlinkFollowed
+                            {mso-style-priority:99;
+                            color:purple;
+                            text-decoration:underline;}
+                            p.msonormal0, li.msonormal0, div.msonormal0
+                            {mso-style-name:msonormal;
+                            mso-margin-top-alt:auto;
+                            margin-right:0in;
+                            mso-margin-bottom-alt:auto;
+                            margin-left:0in;
+                            font-size:12.0pt;
+                            font-family:'Times New Roman',serif;}
+                            span.EmailStyle18
+                            {mso-style-type:personal;
+                            font-family:'Calibri',sans-serif;
+                            color:windowtext;}
+                            span.EmailStyle20
+                            {mso-style-type:personal-reply;
+                            font-family:'Calibri',sans-serif;
+                            color:windowtext;}
+                            .MsoChpDefault
+                            {mso-style-type:export-only;
+                            font-size:10.0pt;}
+                            @page WordSection1
+                            {size:8.5in 11.0in;
+                            margin:1.0in 1.0in 1.0in 1.0in;}
+                            div.WordSection1
+                            {page:WordSection1;}
+                            --></style><!--[if gte mso 9]><xml>
+                            <o:shapedefaults v:ext='edit' spidmax='1026' />
+                            </xml><![endif]--><!--[if gte mso 9]><xml>
+                            <o:shapelayout v:ext='edit'>
+                            <o:idmap v:ext='edit' data='1' />
+                            </o:shapelayout></xml><![endif]--></head><body lang=EN-US link=blue vlink=purple><div class=WordSection1><p class=MsoNormal style='margin-bottom:12.0pt'><o:p>&nbsp;</o:p></p><div><div><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width='100%' style='width:100.0%'><tr><td style='padding:0in 0in 0in 0in'></td></tr></table></div><p class=MsoNormal><o:p>&nbsp;</o:p></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=600 style='width:6.25in;color:#333333!important'><tr><td width='100%' valign=top style='width:100.0%;padding:0in 0in 0in 0in'><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width=600 style='width:6.25in'><tr><td valign=top style='padding:0in 0in 0in 0in'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><img id='_x0000_i1025' src='http://images.paypal.com/en_US/i/logo/paypal_logo.gif' alt='PayPal logo'><o:p></o:p></span></p></td><td style='padding:0in 0in 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Jun 12, 2014 18:02:31 PDT<br>Transaction ID: <a href='https://www.paypal.com/us/cgi-bin/webscr?cmd=_view-a-trans&amp;id=6J8040028M3004619' target='_blank'>6J8040028M3004619</a><o:p></o:p></span></p></td></tr></table></div><div style='margin-top:22.5pt;color:#333!important'><p class=MsoNormal><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Hello Yue Zhang,</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br><br></span><b><span style='font-size:10.5pt;font-family:'Arial',sans-serif;color:#C88039'>You received a payment of $14.95 USD from nanetrawl (<a href='mailto:nanetcrawl@aol.com' target='_blank'>nanetcrawl@aol.com</a>)</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p><table class=MsoNormalTable border=0 cellpadding=0><tr><td valign=top style='padding:3.75pt 3.75pt 3.75pt 3.75pt'><p class=MsoNormal>Thanks for using PayPal. You can now ship any items.To see all the transaction details, log in to your PayPal account.<br><br>It may take a few moments for this transaction to appear in your account.<br><br><b><span style='color:#333333'>Seller Protection - </span></b><span style='color:#4C8F3A'>Eligible</span><o:p></o:p></p></td><td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div style='margin-top:3.75pt'><div class=MsoNormal align=center style='text-align:center'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><hr size=1 width='100%' align=center></span></div></div><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><table class=MsoNormalTable border=0 cellspacing=3 cellpadding=0 style='color:#333333!important'><tr><td style='padding:2.25pt 2.25pt 2.25pt 2.25pt'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 width='98%' style='width:98.0%'><tr><td width='50%' valign=top style='width:50.0%;padding:3.75pt 7.5pt 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Buyer</span></b><br>nanette crawley<br>nanetrawl<br><a href='mailto:nanetcrawl@aol.com' target='_blank'>nanetcrawl@aol.com</a><o:p></o:p></p></td><td valign=top style='padding:3.75pt 0in 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Note to seller</span></b><br>The buyer hasn't sent a note.<o:p></o:p></p></td></tr><tr><td width='40%' valign=top style='width:40.0%;padding:7.5pt 0in 0in 0in'><p class=MsoNormal><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Shipping address - </span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#4C8F3A'>confirmed</span><br>nanette a crawley<br>1040 buena Rd<br>Lake forest,&nbsp;IL&nbsp;60045<br>United States<o:p></o:p></p></td><td valign=top style='padding:7.5pt 0in 0in 0in'><p class=MsoNormal><b><span style='color:#333333'>Shipping details</span></b><br>You haven’t added any shipping details.<o:p></o:p></p></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div align=center><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 style='color:#333!important'><tr><td width=348 style='width:261.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Description<o:p></o:p></span></p></td><td width=100 style='width:75.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Unit price<o:p></o:p></span></p></td><td width=50 style='width:37.5pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Qty<o:p></o:p></span></p></td><td width=80 style='width:60.0pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none;padding:0in 0in 0in 0in 10px!important'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>Amount<o:p></o:p></span></p></td></tr><tr><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><a href='http://cgi.ebay.com/ws/eBayISAPI.dll?ViewItem&amp;item=200781909849' target='_blank'>~ICY PINK HEART~ Pendant Necklace with Swarovski Crystals</a><br>Item# 200781909849<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>$14.95 USD<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>1<o:p></o:p></span></p></td><td valign=top style='padding:7.5pt 7.5pt 7.5pt 7.5pt'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>$14.95 USD<o:p></o:p></span></p></td></tr></table></div><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p>&nbsp;</o:p></span></p><div align=center><table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0 width=595 style='width:446.25pt;border-top:solid #CCCCCC 1.0pt;border-left:none;border-bottom:solid #CCCCCC 1.0pt;border-right:none'><tr><td valign=top style='border:none;padding:0in 0in 0in 0in'><p class=MsoNormal><img border=0 id='_x0000_i1027' src='https://securepics.ebaystatic.com/aw/pics/logos/paypal/logo_ebay_62x26.gif'><o:p></o:p></p></td><td style='border:none;padding:0in 0in 0in 0in'><table class=MsoNormalTable border=0 cellspacing=0 cellpadding=0 align=right style='margin-top:3.0pt;color:#333333!important'><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Shipping and handling<o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:0in 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$0.00 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Total</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:0in 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$14.95 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:15.0pt 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'>Payment</span></b><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:15.0pt 3.75pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif;color:#333333'>$14.95 USD<o:p></o:p></span></p></td></tr><tr><td width=390 style='width:292.5pt;padding:0in 7.5pt 0in 0in'><p class=MsoNormal align=right style='text-align:right'><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br>Payment sent to <a href='mailto:coffeebean217@gmail.com' target='_blank'>coffeebean217@gmail.com</a><o:p></o:p></span></p></td><td width=90 style='width:67.5pt;padding:15.0pt 3.75pt 0in 0in'></td></tr><tr style='height:7.5pt'><td colspan=2 style='padding:0in 0in 0in 0in;height:7.5pt'></td></tr></table></td></tr></table></div><p class=MsoNormal align=center style='text-align:center'><o:p></o:p></p></td></tr></table><p class=MsoNormal><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><img border=0 id='_x0000_i1028' src='http://images.paypal.com/en_US/i/icon/icon_help_16x16.gif'>Questions? Go to the Help Center at: <a href='https://www.paypal.com/help' target='_blank'>www.paypal.com/help</a>.<br><br></span><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>Please do not reply to this email. This mailbox is not monitored and you will not receive a response. For assistance, log in to your PayPal account and click <strong><span style='font-family:'Arial',sans-serif'>Help</span></strong> in the top right corner of any PayPal page.</span><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><br><br></span><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>You can receive plain text emails instead of HTML emails. To change your Notifications preferences, log in to your account, go to your Profile, and click <strong><span style='font-family:'Arial',sans-serif'>My settings</span></strong>.</span><span style='font-size:9.0pt;font-family:'Arial',sans-serif'><o:p></o:p></span></p></div><p class=MsoNormal><br><br><span style='font-size:8.5pt;font-family:'Arial',sans-serif;color:#333333'>PayPal Email ID PP753 - 534ee8f139d8d</span><img border=0 width=1 height=1 style='width:.0104in;height:.0104in' id='_x0000_i1029' src='https://paypal.112.2o7.net/b/ss/paypalglobal/1/H.22--NS/1403163154?c6=62T71479F9328045D&amp;v0=PP753_0_&amp;pe=lnk_o&amp;pev1=email&amp;pev2=D=v0&amp;events=scOpen'><o:p></o:p></p></td></tr></table></div></div></div><p class=MsoNormal><o:p>&nbsp;</o:p></p></div></body></html>";
 
+            ProcessPaymentReceivedEmail(html);
+        }
+
+        private void ProcessPaymentReceivedEmail(string html)
+        {
             string body = SubstringInBetween(html, "<body", @"</body>", true, true);
 
             // TransactionID
             string stTime = SubstringEndBack(body, "PDT", ">", false, true);
+
+            DateTime dtTime = Convert.ToDateTime(stTime.Replace("PDT", "-0700"));
 
             string stTransactionID = SubstringInBetween(body, "Transaction ID:", "</a>", true, true);
 
@@ -1665,6 +1733,7 @@ namespace CostcoWinForm
             // Buyer note
             string stBuyerNote = SubstringInBetween(body, "Note to seller", "<o:p>", false, true);
             stBuyerNote = SubstringInBetween(stBuyerNote, "<br>", "<o:p>", false, false);
+            stBuyerNote = stBuyerNote.Replace("The buyer hasn't sent a note.", "");
 
             // Item 
             string stItemNum = SubstringInBetween(body, "Item#", "<o:p>", false, false);
@@ -1678,6 +1747,9 @@ namespace CostcoWinForm
             stAmount = TrimTags(stAmount);
 
             string stUnitePrice = stAmount.Substring(0, stAmount.IndexOf("<"));
+            stUnitePrice = stUnitePrice.Replace("$", "");
+            stUnitePrice = stUnitePrice.Replace("USD", "");
+            stUnitePrice = stUnitePrice.Trim();
 
             stAmount = stAmount.Substring(stUnitePrice.Length);
 
@@ -1690,6 +1762,12 @@ namespace CostcoWinForm
             stAmount = TrimTags(stAmount);
 
             string stTotal = stAmount.Substring(0, stAmount.IndexOf("<"));
+            stTotal = stTotal.Replace("$", "");
+            stTotal = stTotal.Replace("USD", "");
+            stTotal = stTotal.Trim();
+
+            // db stuff
+
         }
 
         private string SubstringInBetween(string input, string start, string end, bool bIncludeStart, bool bIncludeEnd)
@@ -1720,7 +1798,7 @@ namespace CostcoWinForm
             else
                 input = input.Substring(0, iEnd);
 
-            int iStart = input.LastIndexOf(">");
+            int iStart = input.LastIndexOf(start);
 
             if (bIncludeStart)
                 input = input.Substring(iStart, input.Length - iStart);
@@ -1745,6 +1823,148 @@ namespace CostcoWinForm
             return input;
         }
 
-        
+        private void ProcessItemSoldEmail(string subject, string body)
+        {
+            string stItemNum = SubstringInBetween(subject, "(", ")", false, false);
+
+            subject = subject.Replace("(" + stItemNum + ")", "");
+            subject = subject.Replace("Your eBay item sold!", "");
+
+            string stItemName = subject.Trim();
+
+            string stUrl = SubstringEndBack(body, ">" + stItemName, "<a href=", false, false);
+
+            stUrl = SubstringInBetween(stUrl, "'", "'", false, false);
+
+            string stEndTime = SubstringInBetween(body, "End time:", "PDT", false, true);
+
+            stEndTime = SubstringEndBack(stEndTime, "PDT", ">", false, true);
+
+            string correctedTZ = stEndTime.Replace("PDT", "-0700");
+            DateTime dt = Convert.ToDateTime(correctedTZ);
+
+            string stPrice = SubstringInBetween(body, "Sale price:", "Quantity:", false, false);
+
+            stPrice = SubstringInBetween(stPrice, "$", "<", false, false);
+
+            string stQuantity = SubstringInBetween(body, "Quantity:", "Quantity sold:", false, false);
+
+            stQuantity = TrimTags(stQuantity);
+
+            stQuantity = stQuantity.Substring(0, stQuantity.IndexOf("<"));
+
+            string stQuantitySold = SubstringInBetween(body, "Quantity sold:", "Quantity remaining:", false, false);
+
+            stQuantitySold = TrimTags(stQuantitySold);
+
+            stQuantitySold = stQuantitySold.Substring(0, stQuantitySold.IndexOf("<"));
+
+            string stQuantityRemaining = SubstringInBetween(body, "Quantity remaining:", "Buyer:", false, false);
+
+            stQuantityRemaining = TrimTags(stQuantityRemaining);
+
+            stQuantityRemaining = stQuantityRemaining.Substring(0, stQuantityRemaining.IndexOf("<"));
+
+            string stBuyerName = SubstringInBetween(body, "Buyer:", "<div>", false, false);
+
+            stBuyerName = TrimTags(stBuyerName);
+
+            stBuyerName = stBuyerName.Substring(0, stBuyerName.IndexOf("<"));
+
+            string stBuyerId = SubstringInBetween(body, stBuyerName, "(<a href='mailto", false, true);
+
+            stBuyerId = TrimTags(stBuyerId);
+
+            stBuyerId = stBuyerId.Substring(0, stBuyerId.IndexOf("(<a href='mailto"));
+
+            stBuyerId = stBuyerId.Trim();
+
+            string stBuyerEmail = SubstringInBetween(body, "(<a href='mailto:", "'", false, false);
+
+
+            // db stuff
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = @"SELECT * FROM eBay_CurrentListings WHERE eBayItemNumber = " + stItemNum;
+
+            eBayListingProduct eBayProduct = new eBayListingProduct();
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+
+                eBayProduct.Name = Convert.ToString(reader["Name"]);
+                eBayProduct.eBayListingName = Convert.ToString(reader["eBayListingName"]);
+                eBayProduct.eBayCategoryID = Convert.ToString(reader["eBayCategoryID"]);
+                eBayProduct.eBayItemNumber = Convert.ToString(reader["eBayItemNumber"]);
+                eBayProduct.eBayListingPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+                eBayProduct.eBayDescription = Convert.ToString(reader["eBayDescription"]);
+                eBayProduct.eBayListingDT = Convert.ToDateTime(reader["eBayListingDT"]);
+                eBayProduct.eBayUrl = Convert.ToString(reader["eBayUrl"]);
+                eBayProduct.CostcoUrlNumber = Convert.ToString(reader["CostcoUrlNumber"]);
+                eBayProduct.CostcoItemNumber = Convert.ToString(reader["CostcoItemNumber"]);
+                eBayProduct.CostcoUrl = Convert.ToString(reader["CostcoUrl"]);
+                eBayProduct.CostcoPrice = Convert.ToDecimal(reader["CostcoPrice"]);
+                eBayProduct.ImageLink = Convert.ToString(reader["ImageLink"]);
+            }
+            reader.Close();
+
+            // check exist
+
+            bool bExist = false;
+
+            sqlString = "SELECT * FROM eBay_SoldTransactions WHERE eBayItemNumber = " + stItemNum;
+            cmd.CommandText = sqlString;
+            reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+                bExist = true;
+            reader.Close();
+
+            if (!bExist)
+            {
+                sqlString = @"INSERT INTO eBay_SoldTransactions 
+                              (eBayItemNumber, eBaySoldDateTime, eBayItemName, eBayUrl, eBayPrice, eBayListingQuality, eBaySoldQuality, eBayRemainingQuality, 
+                               BuyerName, BuyerID, BuyerEmail, CostcoUrlNumber, CostcoUrl, CostcoPrice)
+                              VALUES (@_eBayItemNumber, @_eBaySoldDateTime, @_eBayItemName, @_eBayUrl, @_eBayPrice, @_eBayListingQuality, @_eBaySoldQuality, @_eBayRemainingQuality, 
+                               @_BuyerName, @_BuyerID, @_BuyerEmail, @_CostcoUrlNumber, @_CostcoUrl, @_CostcoPrice)";
+
+                cmd.CommandText = sqlString;
+                cmd.Parameters.AddWithValue("@_eBayItemNumber", stItemNum);
+                cmd.Parameters.AddWithValue("@_eBaySoldDateTime", dt);
+                cmd.Parameters.AddWithValue("@_eBayItemName", stItemName);
+                cmd.Parameters.AddWithValue("@_eBayUrl", stUrl);
+                cmd.Parameters.AddWithValue("@_eBayPrice", Convert.ToDecimal(stPrice));
+                cmd.Parameters.AddWithValue("@_eBayListingQuality", Convert.ToInt16(stQuantity));
+                cmd.Parameters.AddWithValue("@_eBaySoldQuality", Convert.ToInt16(stQuantitySold));
+                cmd.Parameters.AddWithValue("@_eBayRemainingQuality", Convert.ToInt16(stQuantityRemaining));
+                cmd.Parameters.AddWithValue("@_BuyerName", stBuyerName);
+                cmd.Parameters.AddWithValue("@_BuyerID", stBuyerId);
+                cmd.Parameters.AddWithValue("@_BuyerEmail", stBuyerEmail);
+                cmd.Parameters.AddWithValue("@_CostcoUrlNumber", eBayProduct.CostcoUrlNumber);
+                cmd.Parameters.AddWithValue("@_CostcoUrl", eBayProduct.CostcoUrl);
+                cmd.Parameters.AddWithValue("@_CostcoPrice", eBayProduct.CostcoPrice);
+
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+
+            }
+
+            cn.Close();
+        }
+
+        private void btnSoldEmailExtract_Click(object sender, EventArgs e)
+        {
+            string subject = "Your eBay item sold! New Estée Lauder Pure Color Long Lasting lipstick ~Rubellite SHIMMER~ (161193141452)";
+            string body = @"<div dir='ltr'><div class='gmail_quote'><br><div><div><div><table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td width='100%' style='word-wrap:break-word'><table cellpadding='2' cellspacing='3' border='0' width='100%'><tbody><tr><td width='1%' nowrap><img src='http://q.ebaystatic.com/aw/pics/logos/ebay_95x39.gif' height='39' width='95' alt='eBay'></td><td align='left' valign='bottom'><span style='font-weight:bold;font-size:xx-small;font-family:verdana,sans-serif;color:#666'><b>eBay sent this message to Yue Zhang (coffeebean217).</b><br></span><span style='font-size:xx-small;font-family:verdana,sans-serif;color:#666'>Your registered name is included to show this message originated from eBay. <a href='http://pages.ebay.com/help/confidence/name-userid-emails.html' target='_blank'>Learn more</a>.</span></td></tr></tbody></table></td></tr></tbody></table></div></div><div><div><table style='background-color:#ffe680' border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td width='8' valign='top'><img src='http://q.ebaystatic.com/aw/pics/globalAssets/ltCurve.gif' height='8' width='8'></td><td valign='bottom' width='100%'><span style='font-weight:bold;font-size:14pt;font-family:arial,sans-serif;color:#000;margin:2px 0 2px 0'>Congratulations, your item sold-get ready to ship!</span></td><td width='8' valign='top' align='right'><img src='http://p.ebaystatic.com/aw/pics/globalAssets/rtCurve.gif' height='8' width='8'></td></tr><tr><td style='background-color:#fc0' colspan='3' height='4'></td></tr></tbody></table></div></div><div><div><table border='0' cellpadding='2' cellspacing='3' width='100%'><tbody><tr><td><font style='font-size:10pt;font-family:arial,sans-serif;color:#000'>Hi coffeebean217,<table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='10' alt=' '></td></tr></tbody></table>You did it! Your item sold. Please ship this item to the buyer after your buyer pays. As soon as your buyer pays, print your <a href='http://rover.ebay.com/rover/0/e12011.m354.l1337/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Fpayments.ebay.com%2Fws%2FeBayISAPI.dll%3FPrintPostage%26transactionid%3D1105542200006%26itemid%3D161193141452%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1337' target='_blank'>eBay shipping label</a>.<table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='10' alt=' '></td></tr></tbody></table><font style='font-size:10pt;font-family:arial,sans-serif;color:#000'><ul style='list-style-type:decimal'><li style='padding:5px'>Get discounted rates for shipping.</li><li style='padding:5px'>eBay label printing service is FREE!</li><li style='padding:5px'>Tracking information is uploaded automatically to My eBay and an email is sent to your buyer that their shipment is on the way.</li></ul><br><div style='padding-bottom:20px'>If you don&#39;t use eBay label printing, <a href='http://rover.ebay.com/rover/0/e12011.m354.l1663/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Fpayments.ebay.com%2Fws%2FeBayISAPI.dll%3FAddTrackingNumber2%26flow%3Dmyebay%26LineID%3D161193141452_1105542200006%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1663' target='_blank'>upload your tracking information manually</a>.</div><br><div style='padding-bottom:20px'> You should always <a href='http://rover.ebay.com/rover/0/e12011.m354.l1332/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Ffeedback.ebay.com%2Fws%2FeBayISAPI.dll%3FLeaveFeedback2%26show_as%3Dsold%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1332' target='_blank'>leave feedback</a> for your buyer to encourage them to buy from you again.</div></font></font><div><table width='100%' cellpadding='0' cellspacing='3' border='0'><tbody><tr><td valign='top' align='center' width='100' nowrap><a href='http://rover.ebay.com/rover/0/e12011.m43.l1123/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D161193141452%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1123' target='_blank'><img src='http://thumbs.ebaystatic.com/pict/161193141452.jpg' alt='New Estée Lauder Pure Color Long Lasting lipstick ~Rubellite SHIMMER~' border='0'></a></td><td colspan='2' valign='top'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tbody><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' colspan='2'><a href='http://rover.ebay.com/rover/0/e12011.m43.l1123/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D161193141452%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1123' target='_blank'>New Estée Lauder Pure Color Long Lasting lipstick ~Rubellite SHIMMER~</a></td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'>End time:</td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'>Jun-04-14 08:29:55 PDT</td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'><font style='font-weight:bold;font-size:10pt;font-family:arial,sans-serif;color:#000'>Sale price:</font></td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'><font style='font-weight:bold;font-size:10pt;font-family:arial,sans-serif;color:#000'>$9.50</font></td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'>Quantity:</td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'>1</td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'>Quantity sold:</td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'>1</td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'>Quantity remaining:</td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'>0</td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'>Buyer:</td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'>STAVROULLA XENI</td></tr><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' width='15%' nowrap valign='top'></td><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'><div><table border='0' cellpadding='0' cellspacing='0'><tbody><tr><td style='font-size:10pt;font-family:arial,sans-serif;color:#000' valign='top'><font style='font-size:10pt;font-family:arial,sans-serif;color:#000'>stavri.lav (<a href='mailto:sxeni@treasury.gov.cy' target='_blank'>sxeni@treasury.gov.cy</a>) [<a href='http://contact.ebay.com/ws/eBayISAPI.dll?ReturnUserEmail&amp;requested=stavri.lav&amp;redirect=0&amp;iid=161193141452' target='_blank'>contact buyer</a>]</font></td></tr></tbody></table></div></td></tr><tr><td colspan='2'><font style='font-size:10pt;font-family:arial,sans-serif;color:#000'><a href='http://rover.ebay.com/rover/0/e12011.m43.l1151/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1151' target='_blank'>Sell another Item</a>   |    <a href='http://rover.ebay.com/rover/0/e12011.m43.l1156/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=http%3A%2F%2Fpayments.ebay.com%2Fws%2FeBayISAPI.dll%3FUnifiedCheckoutSellerUpdateDetails%26itemId%3D161193141452%26transId%3D1105542200006%26buyerid%3D0%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1156' target='_blank'>Send invoice to buyer</a></font></td></tr></tbody></table></td></tr></tbody></table></div></td><td valign='top' width='185'><div><span style='font-weight:bold;font-size:10pt;font-family:arial,sans-serif;color:#000'><strong>As soon as your buyer pays</strong></span><table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='4' alt=' '></td></tr></tbody></table><a href='http://rover.ebay.com/rover/0/e12011.m44.l1337/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=https%3A%2F%2Fpostage.ebay.com%2Fws%2FeBayISAPI.dll%3FPrintPostageLabelRedirect%26itemid%3D161193141452%26transactionid%3D1105542200006%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1337' title='http://rover.ebay.com/rover/0/e12011.m44.l1337/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;loc=https%3A%2F%2Fpostage.ebay.com%2Fws%2FeBayISAPI.dll%3FPrintPostageLabelRedirect%26itemid%3D161193141452%26transactionid%3D1105542200006%26ssPageName%3DADME%3AL%3AEOISSA%3AUS%3A1337' target='_blank'><img src='http://p.ebaystatic.com/aw/pics/buttons/btnPrintShippingLabel.gif' border='0' height='32' width='120'></a><br></div></td></tr></tbody></table><br></div></div><div></div><div></div><div><div><hr style='min-height:1px'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td width='100%'><font style='font-size:8pt;font-family:arial,sans-serif;color:#000000'>Email reference id: [#80af0a23f2c047c5b6fac4936c26c954#]</font></td></tr></tbody></table><br></div><hr style='min-height:1px'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tbody><tr><td width='100%'><font style='font-size:xx-small;font-family:verdana;color:#666'><a href='http://pages.ebay.com/education/spooftutorial/index.html' target='_blank'>Learn More</a> to protect yourself from spoof (fake) emails.<br><br>eBay sent this email to you at <a href='mailto:coffeebean217@gmail.com' target='_blank'>coffeebean217@gmail.com</a> about your account registered on <a href='http://www.ebay.com' target='_blank'>www.ebay.com</a>.<br><br>eBay will periodically send you required emails about the site and your transactions. Visit our <a href='http://pages.ebay.com/help/policies/privacy-policy.html' target='_blank'>Privacy Policy</a> and <a href='http://pages.ebay.com/help/policies/user-agreement.html' target='_blank'>User Agreement</a> if you have any questions.<br><br>Copyright © 2014 eBay Inc. All Rights Reserved. Designated trademarks and brands are the property of their respective owners. eBay and the eBay logo are trademarks of eBay Inc. eBay Inc. is located at 2145 Hamilton Avenue, San Jose, CA 95125.  </font></td></tr></tbody></table><img src='http://rover.ebay.com/roveropen/0/e12011/7?euid=80af0a23f2c047c5b6fac4936c26c954&amp;' height='1' width='1'></div></div></div><br></div>";
+
+            ProcessItemSoldEmail(subject, body);
+        }
     }
 }
