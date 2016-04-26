@@ -44,6 +44,7 @@
             this.btnResearch = new System.Windows.Forms.Button();
             this.btnEmailExtract = new System.Windows.Forms.Button();
             this.btnSoldEmailExtract = new System.Windows.Forms.Button();
+            this.btnHtmlToPDF = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -159,7 +160,7 @@
             // 
             // btnCreatePDF
             // 
-            this.btnCreatePDF.Location = new System.Drawing.Point(32, 298);
+            this.btnCreatePDF.Location = new System.Drawing.Point(32, 278);
             this.btnCreatePDF.Name = "btnCreatePDF";
             this.btnCreatePDF.Size = new System.Drawing.Size(118, 23);
             this.btnCreatePDF.TabIndex = 13;
@@ -169,7 +170,7 @@
             // 
             // btnFillWebForm
             // 
-            this.btnFillWebForm.Location = new System.Drawing.Point(32, 327);
+            this.btnFillWebForm.Location = new System.Drawing.Point(32, 307);
             this.btnFillWebForm.Name = "btnFillWebForm";
             this.btnFillWebForm.Size = new System.Drawing.Size(118, 23);
             this.btnFillWebForm.TabIndex = 14;
@@ -179,7 +180,7 @@
             // 
             // btnResearch
             // 
-            this.btnResearch.Location = new System.Drawing.Point(32, 377);
+            this.btnResearch.Location = new System.Drawing.Point(32, 345);
             this.btnResearch.Name = "btnResearch";
             this.btnResearch.Size = new System.Drawing.Size(118, 23);
             this.btnResearch.TabIndex = 15;
@@ -189,7 +190,7 @@
             // 
             // btnEmailExtract
             // 
-            this.btnEmailExtract.Location = new System.Drawing.Point(32, 406);
+            this.btnEmailExtract.Location = new System.Drawing.Point(32, 374);
             this.btnEmailExtract.Name = "btnEmailExtract";
             this.btnEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnEmailExtract.TabIndex = 16;
@@ -199,7 +200,7 @@
             // 
             // btnSoldEmailExtract
             // 
-            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 435);
+            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 403);
             this.btnSoldEmailExtract.Name = "btnSoldEmailExtract";
             this.btnSoldEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnSoldEmailExtract.TabIndex = 17;
@@ -207,11 +208,22 @@
             this.btnSoldEmailExtract.UseVisualStyleBackColor = true;
             this.btnSoldEmailExtract.Click += new System.EventHandler(this.btnSoldEmailExtract_Click);
             // 
+            // btnHtmlToPDF
+            // 
+            this.btnHtmlToPDF.Location = new System.Drawing.Point(32, 432);
+            this.btnHtmlToPDF.Name = "btnHtmlToPDF";
+            this.btnHtmlToPDF.Size = new System.Drawing.Size(118, 23);
+            this.btnHtmlToPDF.TabIndex = 18;
+            this.btnHtmlToPDF.Text = "Html to PDF";
+            this.btnHtmlToPDF.UseVisualStyleBackColor = true;
+            this.btnHtmlToPDF.Click += new System.EventHandler(this.btnHtmlToPDF_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(911, 541);
+            this.Controls.Add(this.btnHtmlToPDF);
             this.Controls.Add(this.btnSoldEmailExtract);
             this.Controls.Add(this.btnEmailExtract);
             this.Controls.Add(this.btnResearch);
@@ -254,6 +266,7 @@
         private System.Windows.Forms.Button btnResearch;
         private System.Windows.Forms.Button btnEmailExtract;
         private System.Windows.Forms.Button btnSoldEmailExtract;
+        private System.Windows.Forms.Button btnHtmlToPDF;
     }
 }
 
