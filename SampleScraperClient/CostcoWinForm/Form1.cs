@@ -345,7 +345,6 @@ namespace CostcoWinForm
 
                     driver.Dispose();
 
-
                     //string description = GetProductionDescription(productUrl);
                     description = ProcessHtml(description);
 
@@ -1409,70 +1408,122 @@ namespace CostcoWinForm
             return outputHtml;
         }
 
+        public bool isAlertPresents(ref IWebDriver driver)
+        {
+            try
+            {
+                driver.SwitchTo().Alert();
+                return true;
+            }// try
+            catch (Exception e)
+            {
+                return false;
+            }// catch
+        }
+
         private void btnFillWebForm_Click(object sender, EventArgs e)
         {
-            IWebDriver driver = new FirefoxDriver();
+            //IWebDriver driver = new FirefoxDriver();
 
-            //string url = "http://www.costco.com/.product.100244524.html";
-            string url = "http://www.costco.com/.product.100099102.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP";
+            ////string url = "http://www.costco.com/.product.100244524.html";
+            //string url = "http://www.costco.com/.product.100099102.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP";
 
-            driver.Navigate().GoToUrl(url);
+            //driver.Navigate().GoToUrl(url);
 
-            IWebElement element = driver.FindElement(By.Id("product-tab1"));
-            //string elementHtml = element.GetAttribute("outerHTML");
+            //IWebElement element = driver.FindElement(By.Id("product-tab1"));
+            ////string elementHtml = element.GetAttribute("outerHTML");
+
+            ////driver.Dispose();
+
+            //var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
+
+            //if (pageTypeElements.Count > 0)
+            //{
+            //    string output = ProcessPowerPage(pageTypeElements[0]);
+
+            //    return;
+            //}
+
+            //pageTypeElements = element.FindElements(By.Id("sp_inline_product"));
+
+            //if (pageTypeElements.Count > 0)
+            //{
+            //    var scripts = pageTypeElements[0].FindElements(By.TagName("script"));
+
+            //    string sshtml = pageTypeElements[0].GetAttribute("outerHTML");
+
+            //    foreach (IWebElement script in scripts)
+            //    {
+            //        string shtml = script.GetAttribute("outerHTML");
+            //    }
+
+            //    var objects = pageTypeElements[0].FindElements(By.XPath(".//[local-name()='object']"));
+
+            //    foreach (IWebElement obj in objects)
+            //    {
+
+            //        string ohtml = obj.GetAttribute("outerHTML");
+            //    }
+            //}
 
             //driver.Dispose();
 
-            var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
+            IWebDriver driver = new FirefoxDriver();
 
-            if (pageTypeElements.Count > 0)
+            driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+            driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+            driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
+            driver.FindElements(By.ClassName("submit"))[2].Click();
+
+            driver.Navigate().GoToUrl("http://www.costco.com/.product.100244524.html");
+            driver.FindElement(By.Id("minQtyText")).Clear();
+            driver.FindElement(By.Id("minQtyText")).SendKeys("2");
+            driver.FindElement(By.Id("addToCartBtn")).Click();
+
+            if (isAlertPresents(ref driver))
+                driver.SwitchTo().Alert().Accept();
+
+            driver.FindElement(By.Id("mini-shopping-cart")).Click();
+
+            if (isAlertPresents(ref driver))
+                driver.SwitchTo().Alert().Accept();
+
+            driver.FindElement(By.Id("shopCartCheckoutSubmitButton")).Click();
+
+            if (isAlertPresents(ref driver))
+                driver.SwitchTo().Alert().Accept();
+
+            driver.FindElement(By.Id("addressFormInlineFirstName")).SendKeys("Jason");
+            driver.FindElement(By.Id("addressFormInlineLastName")).SendKeys("Ding");
+            driver.FindElement(By.Id("addressFormInlineAddressLine1")).SendKeys("1642 Crossgate Dr.");
+            driver.FindElement(By.Id("addressFormInlineCity")).SendKeys("Vestavia");
+
+            driver.FindElement(By.XPath("//select[@id='" + "addressFormInlineState" + "']/option[contains(.,'" + "Alabama" + "')]")).Click();
+            driver.FindElement(By.Id("addressFormInlineZip")).SendKeys("35216");           
+            driver.FindElement(By.Id("addressFormInlinePhoneNumber")).SendKeys("2056175063");
+            driver.FindElement(By.Id("addressFormInlineAddressNickName")).SendKeys(DateTime.Now.ToString());
+            
+            if (driver.FindElement(By.Id("saveAddressCheckboxInline")).Selected)
             {
-                string output = ProcessPowerPage(pageTypeElements[0]);
-
-                return;
+                driver.FindElement(By.Id("saveAddressCheckboxInline")).Click();
             }
 
-            pageTypeElements = element.FindElements(By.Id("sp_inline_product"));
+            driver.FindElement(By.Id("addressFormInlineButton")).Click();
 
-            if (pageTypeElements.Count > 0)
+            System.Threading.Thread.Sleep(3000);
+
+            if (driver.FindElements(By.XPath("//span[contains(text(), 'Continue')]")).Count > 0)
             {
-                var scripts = pageTypeElements[0].FindElements(By.TagName("script"));
-
-                string sshtml = pageTypeElements[0].GetAttribute("outerHTML");
-
-                foreach (IWebElement script in scripts)
-                {
-                    string shtml = script.GetAttribute("outerHTML");
-                }
-
-                var objects = pageTypeElements[0].FindElements(By.XPath(".//[local-name()='object']"));
-
-                foreach (IWebElement obj in objects)
-                {
-
-                    string ohtml = obj.GetAttribute("outerHTML");
-                }
+                driver.FindElement(By.XPath("//span[contains(text(), 'Continue')]")).Click();
             }
 
-            driver.Dispose();
+            driver.FindElement(By.Id("deliverySubmitButton")).Click();
 
-            //driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
-            //driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
-            //driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
-            //driver.FindElements(By.ClassName("submit"))[2].Click();
+            driver.FindElement(By.Id("cc_cvc")).SendKeys("0905");
 
-            //driver.Navigate().GoToUrl("http://www.costco.com/.product.100244524.html");
-            //driver.FindElement(By.Id("addToCartBtn")).Click();
+            driver.FindElement(By.Id("paymentSubButtonBot")).Click();
 
-            //driver.Navigate().GoToUrl("https://www.costco.com/CheckoutCartView?langId=-1&storeId=10301&catalogId=10701&orderId=.");
-            //driver.SwitchTo().Alert().Accept();
-            //driver.FindElement(By.Id("shopCartCheckoutSubmitButton")).Click();
-
-
-
-
-
-            //driver.FindElement(By.XPath("//button[@id='addToCartBtn']")).Click();
+            //driver.FindElement(By.Id("orderButton")).Click();
         }
 
         private void btnResearch_Click(object sender, EventArgs e)
@@ -1784,6 +1835,8 @@ namespace CostcoWinForm
 
             driver.Dispose();
 
+            System.Threading.Thread.Sleep(3000);
+
             // Process files
             string[] files = Directory.GetFiles(@"C:\temp\tempPDF\");
 
@@ -1952,6 +2005,8 @@ namespace CostcoWinForm
 
             driver.Dispose();
 
+            System.Threading.Thread.Sleep(3000);
+
             // Process files
             string[] files = Directory.GetFiles(@"C:\temp\tempPDF\");
 
@@ -2074,9 +2129,112 @@ namespace CostcoWinForm
 
             string stBuyerName = TrimTags(stShipping);
 
+            // Generate PDF for email
+            string destinationFileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + stOrderNumber;
+
+            File.WriteAllText(@"C:\temp\" + @"\" + destinationFileName + ".html", body);
+
+            FirefoxProfile profile = new FirefoxProfile();
+            profile.SetPreference("print.always_print_silent", true);
+
+            IWebDriver driver = new FirefoxDriver(profile);
+
+            driver.Navigate().GoToUrl(@"file:///" + @"C:\temp\" + @"\" + destinationFileName + ".html");
+
+            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+
+            js.ExecuteScript("window.print();");
+
+            driver.Dispose();
+
+            System.Threading.Thread.Sleep(3000);
+
+            // Process files
+            string sourceFileName = @"C:\temp\tempPDF\file__C__temp_" + destinationFileName + @"\" + "file_C_temp_" + destinationFileName + ".pdf";
+
+            File.Move(sourceFileName, @"C:\temp\CostcoOrderEmails\" + destinationFileName + ".pdf");
+
+            File.Delete(@"C:\temp\" + destinationFileName + ".html");
+            Directory.Delete(@"C:\temp\tempPDF\file__C__temp_" + destinationFileName);
+
+            // db stuff
+            string sqlString;
+            bool bExist = false;
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            if (stItemNum != "")
+            {
+                sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE CostcoItemNumber = @_costcoItemNumber 
+                                AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
+
+                cmd.CommandText = sqlString;
+                cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
+                cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    bExist = true;
+                }
+                reader.Close();
+
+                if (bExist)
+                {
+                    sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
+                                CostcoOrderEmailPdf = @_costcoOrderEmailPdf
+                                WHERE WHERE CostcoItemNumber = @_costcoItemNumber 
+                                AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
+
+                    cmd.CommandText = sqlString;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
+                    cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
+                    cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
+                    cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            else
+            {
+                sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE CostcoItemName = @_costcoItemName
+                                AND CostcoOrderNumber IS NULL";
+
+                cmd.CommandText = sqlString;
+                cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    bExist = true;
+                }
+                reader.Close();
+
+                if (bExist)
+                {
+                    sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
+                                CostcoOrderEmailPdf = @_costcoOrderEmailPdf
+                                WHERE WHERE CostcoItemName = @_costcoItemName 
+                                AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
+
+                    cmd.CommandText = sqlString;
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
+                    cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
+                    cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
+                    cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            cn.Close();
             
 
-            
         }
 
         private void btnSoldEmailExtract_Click(object sender, EventArgs e)
@@ -2089,18 +2247,39 @@ namespace CostcoWinForm
 
         private void btnHtmlToPDF_Click(object sender, EventArgs e)
         {
-            FirefoxProfile profile = new FirefoxProfile();
-            profile.SetPreference("print.always_print_silent", true);
+            
 
-            IWebDriver driver = new FirefoxDriver(profile);
+            string[] files = Directory.GetFiles(@"C:\temp\");
 
-            driver.Navigate().GoToUrl(@"file:///C:/temp/new25.html");
+            foreach (string file in files)
+            {
+                //FirefoxProfile profile = new FirefoxProfile();
+                ////profile.SetPreference("print.always_print_silent", true);
 
-            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+                //IWebDriver driver = new FirefoxDriver(profile);
+                //driver.Navigate().GoToUrl(@"file:///" + file);
+                //IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+                //js.ExecuteScript("window.print();");
+                //driver.Dispose();
 
-            js.ExecuteScript("window.print();");
+                //System.Threading.Thread.Sleep(3000);
+                //string command = "c:\\temp\\wkhtmltopdf.exe c:\\temp\\1.html c:\\temp\\1.pdf ";
+                string f = (string)file;
 
-            driver.Dispose();
+                string command = "c:\\temp\\wkhtmltopdf.exe " + f + " " + f.Replace("html", "pdf");
+
+                //System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+
+                var startInfo = new ProcessStartInfo("CMD.exe");
+                startInfo.WindowStyle = ProcessWindowStyle.Minimized;
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                startInfo.CreateNoWindow = true;
+                startInfo.UseShellExecute = false;
+                startInfo.Arguments = "/c" + command;
+                System.Diagnostics.Process.Start(startInfo);
+            }
+
+
 
         }
 
