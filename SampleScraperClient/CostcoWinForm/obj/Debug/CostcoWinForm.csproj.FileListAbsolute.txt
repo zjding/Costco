@@ -36,3 +36,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWi
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\de\PdfSharp.Charting.resources.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\Select.HtmlToPdf.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\Select.HtmlToPdf.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.eBayFrontEnd.resources

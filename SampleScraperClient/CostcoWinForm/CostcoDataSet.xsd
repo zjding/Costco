@@ -42,7 +42,7 @@ SELECT ID, Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink,
                 </InsertCommand>
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="false">
-                    <CommandText>SELECT ID, Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink, Url FROM dbo.ProductInfo</CommandText>
+                    <CommandText>SELECT ID, Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink, Url FROM ProductInfo</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -93,7 +93,7 @@ SELECT ID, Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink,
   <xs:element name="CostcoDataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="CostcoDataSet" msprop:Generator_UserDSName="CostcoDataSet">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="ProductInfo" msprop:Generator_TableClassName="ProductInfoDataTable" msprop:Generator_TableVarName="tableProductInfo" msprop:Generator_TablePropName="ProductInfo" msprop:Generator_RowDeletingName="ProductInfoRowDeleting" msprop:Generator_RowChangingName="ProductInfoRowChanging" msprop:Generator_RowEvHandlerName="ProductInfoRowChangeEventHandler" msprop:Generator_RowDeletedName="ProductInfoRowDeleted" msprop:Generator_UserTableName="ProductInfo" msprop:Generator_RowChangedName="ProductInfoRowChanged" msprop:Generator_RowEvArgName="ProductInfoRowChangeEvent" msprop:Generator_RowClassName="ProductInfoRow">
+        <xs:element name="ProductInfo" msprop:Generator_TableClassName="ProductInfoDataTable" msprop:Generator_TableVarName="tableProductInfo" msprop:Generator_RowChangedName="ProductInfoRowChanged" msprop:Generator_TablePropName="ProductInfo" msprop:Generator_RowDeletingName="ProductInfoRowDeleting" msprop:Generator_RowChangingName="ProductInfoRowChanging" msprop:Generator_RowEvHandlerName="ProductInfoRowChangeEventHandler" msprop:Generator_RowDeletedName="ProductInfoRowDeleted" msprop:Generator_RowClassName="ProductInfoRow" msprop:Generator_UserTableName="ProductInfo" msprop:Generator_RowEvArgName="ProductInfoRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="ID" msdata:ReadOnly="true" msdata:AutoIncrement="true" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_ColumnVarNameInTable="columnID" msprop:Generator_ColumnPropNameInRow="ID" msprop:Generator_ColumnPropNameInTable="IDColumn" msprop:Generator_UserColumnName="ID" type="xs:long" />

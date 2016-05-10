@@ -1132,7 +1132,7 @@ SELECT ID, Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink,
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT ID, Name, ItemNumber, Price, Shipping, Details, Specification, ImageLink, " +
-                "Url FROM dbo.ProductInfo";
+                "Url FROM ProductInfo";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         

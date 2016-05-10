@@ -46,11 +46,12 @@
             this.btnSoldEmailExtract = new System.Windows.Forms.Button();
             this.btnHtmlToPDF = new System.Windows.Forms.Button();
             this.btnCostcoOrderEmail = new System.Windows.Forms.Button();
+            this.btnFtp = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
             // 
-            this.btnProductInfo.Location = new System.Drawing.Point(32, 517);
+            this.btnProductInfo.Location = new System.Drawing.Point(32, 571);
             this.btnProductInfo.Name = "btnProductInfo";
             this.btnProductInfo.Size = new System.Drawing.Size(118, 23);
             this.btnProductInfo.TabIndex = 0;
@@ -126,7 +127,7 @@
             this.webBrowser1.Location = new System.Drawing.Point(156, 34);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.Size = new System.Drawing.Size(743, 535);
+            this.webBrowser1.Size = new System.Drawing.Size(755, 589);
             this.webBrowser1.TabIndex = 9;
             // 
             // btnExcel
@@ -151,7 +152,7 @@
             // 
             // btnListedProducts
             // 
-            this.btnListedProducts.Location = new System.Drawing.Point(32, 546);
+            this.btnListedProducts.Location = new System.Drawing.Point(32, 600);
             this.btnListedProducts.Name = "btnListedProducts";
             this.btnListedProducts.Size = new System.Drawing.Size(118, 23);
             this.btnListedProducts.TabIndex = 12;
@@ -229,11 +230,22 @@
             this.btnCostcoOrderEmail.UseVisualStyleBackColor = true;
             this.btnCostcoOrderEmail.Click += new System.EventHandler(this.btnCostcoOrderEmail_Click);
             // 
+            // btnFtp
+            // 
+            this.btnFtp.Location = new System.Drawing.Point(32, 490);
+            this.btnFtp.Name = "btnFtp";
+            this.btnFtp.Size = new System.Drawing.Size(118, 23);
+            this.btnFtp.TabIndex = 20;
+            this.btnFtp.Text = "FTP";
+            this.btnFtp.UseVisualStyleBackColor = true;
+            this.btnFtp.Click += new System.EventHandler(this.btnFtp_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(911, 581);
+            this.ClientSize = new System.Drawing.Size(923, 635);
+            this.Controls.Add(this.btnFtp);
             this.Controls.Add(this.btnCostcoOrderEmail);
             this.Controls.Add(this.btnHtmlToPDF);
             this.Controls.Add(this.btnSoldEmailExtract);
@@ -280,6 +292,7 @@
         private System.Windows.Forms.Button btnSoldEmailExtract;
         private System.Windows.Forms.Button btnHtmlToPDF;
         private System.Windows.Forms.Button btnCostcoOrderEmail;
+        private System.Windows.Forms.Button btnFtp;
     }
 }
 

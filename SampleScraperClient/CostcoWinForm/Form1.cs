@@ -27,6 +27,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Chrome;
 using System.Collections;
 using iTextSharp.text.html.simpleparser;
+using System.Drawing.Imaging;
 
 namespace CostcoWinForm
 {
@@ -181,7 +182,7 @@ namespace CostcoWinForm
 
             //productUrlArray.Add("http://www.costco.com/ABC-and-123-Foam-Floor-Mat-Set%2c-36-Tiles-Set.product.11754291.html");
 
-
+            IWebDriver driver = new FirefoxDriver();
 
             int i = 1;
 
@@ -323,7 +324,7 @@ namespace CostcoWinForm
 
                     string description = "";
 
-                    IWebDriver driver = new FirefoxDriver();
+                    
 
                     driver.Navigate().GoToUrl(productUrl);
 
@@ -334,16 +335,89 @@ namespace CostcoWinForm
 
                     //var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
 
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+
+                    // Create an Encoder object based on the GUID
+                    // for the Quality parameter category.
+                    System.Drawing.Imaging.Encoder myEncoder =
+                        System.Drawing.Imaging.Encoder.Quality;
+
+                    // Create an EncoderParameters object.
+                    // An EncoderParameters object has an array of EncoderParameter
+                    // objects. In this case, there is only one
+                    // EncoderParameter object in the array.
+                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+                    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 70L);
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+                    var screenshotDriver = driver as ITakesScreenshot;
+                    Screenshot screenshot = screenshotDriver.GetScreenshot();
+                    var bmpScreen = new Bitmap(new MemoryStream(screenshot.AsByteArray));
+
+                    System.Drawing.Rectangle cropArea;
+
                     if (element.FindElements(By.Id("wc-power-page")).Count > 0)
                     {
+                        
+                        //bmpScreen.Save(@"C:\temp\" + UrlNum + ".jpg");
+
+                        IWebElement e = element.FindElement(By.Id("wc-power-page"));
+                        Size s = e.Size;
+                        s.Height = s.Height - 100;
+                        cropArea = new System.Drawing.Rectangle(e.Location, s);
+
+                        
+
                         description = ProcessPowerPage(element.FindElement(By.Id("wc-power-page")));
                     }
                     else if (element.FindElements(By.Id("sp_inline_product")).Count > 0)
                     {
+
+                        IWebElement e = element.FindElement(By.Id("sp_inline_product"));
+
+                        Size s = e.Size;
+                        s.Height = s.Height - 60;
+
+                        Point p = e.Location;
+                        p.Y = p.Y + 30;
+
+                        cropArea = new System.Drawing.Rectangle(p, s);
+
+                        
+
                         description = ProcessInlineProduct(element.FindElement(By.Id("sp_inline_product")));
                     }
+                    else
+                    {
+                        IWebElement e = element.FindElement(By.Id("product-tab1"));
 
-                    driver.Dispose();
+                        Size s = e.Size;
+                        s.Height = s.Height - 60;
+
+                        Point p = e.Location;
+                        p.Y = p.Y + 30;
+
+                        cropArea = new System.Drawing.Rectangle(p, s);
+                    }
+
+                    bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\" + UrlNum + ".jpg", jpgEncoder, myEncoderParameters);
+
+                    using (WebClient client = new WebClient())
+                    {
+                        client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                        client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\" + UrlNum + ".jpg");
+                    }
+
+                    // images
+                    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
+
+                    
+                    int numImages = 1;
+                    if (imageElement.FindElements(By.TagName("li")) != null)
+                        numImages = imageElement.FindElements(By.TagName("li")).ToList().Count;
+
+                    
 
                     //string description = GetProductionDescription(productUrl);
                     description = ProcessHtml(description);
@@ -414,13 +488,15 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url, NumberOfImage) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "'," + numImages.ToString() + ")";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception exception)
                 {
                     continue;
+
+                    
                 }
             }
 
@@ -428,7 +504,60 @@ namespace CostcoWinForm
 
             endDT = DateTime.Now;
 
+            driver.Dispose();
+
             //MessageBox.Show("Start: " + startDT.ToLongTimeString() + "; End: " + endDT.ToLongTimeString());
+        }
+
+        private ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
+        }
+
+        private void CompressImage(System.Drawing.Image sourceImage, int imageQuality, string savePath)
+        {
+            try
+            {
+                //Create an ImageCodecInfo-object for the codec information
+                ImageCodecInfo jpegCodec = null;
+
+                //Set quality factor for compression
+                EncoderParameter imageQualitysParameter = new EncoderParameter(
+                            System.Drawing.Imaging.Encoder.Quality, imageQuality);
+
+                //List all avaible codecs (system wide)
+                ImageCodecInfo[] alleCodecs = ImageCodecInfo.GetImageEncoders();
+
+                EncoderParameters codecParameter = new EncoderParameters(1);
+                codecParameter.Param[0] = imageQualitysParameter;
+
+                //Find and choose JPEG codec
+                for (int i = 0; i < alleCodecs.Length; i++)
+                {
+                    if (alleCodecs[i].MimeType == "image/jpeg")
+                    {
+                        jpegCodec = alleCodecs[i];
+                        break;
+                    }
+                }
+
+                //Save compressed image
+                sourceImage.Save(savePath, jpegCodec, codecParameter);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         private void GetSubCategoryUrls()
@@ -940,7 +1069,14 @@ namespace CostcoWinForm
 
         private void btnProductText_Click(object sender, EventArgs e)
         {
-            productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
+            //productUrlArray.Add("http://www.costco.com/.product.100283609.html");
+            productUrlArray.Add("http://www.costco.com/.product.100146130.html");
+            productUrlArray.Add("http://www.costco.com/iRobot%C2%AE-Roomba%C2%AE-655-Pet-Series-Vacuum-Cleaning-Robot.product.100127929.html");
+            productUrlArray.Add("http://www.costco.com/.product.100161934.html?cm_sp=RichRelevance-_-itempageVerticalRight-_-CategorySiloedViewCP&cm_vc=itempageVerticalRight|CategorySiloedViewCP");
+            productUrlArray.Add("http://www.costco.com/Crest-Pro-Health-Advanced-Toothpaste-4ct7oz.product.100230824.html");
+            productUrlArray.Add("http://www.costco.com/Aquverse-Single-Serve-Coffee-Brewer.product.100229235.html");
+            //productUrlArray.Add("http://www.costco.com/iRobot%C2%AE-Roomba%C2%AE-655-Pet-Series-Vacuum-Cleaning-Robot.product.100127929.html");
 
             //productUrlArray.Add("http://www.costco.com/.product.100244718.html");
 
@@ -2673,6 +2809,13 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
 
         }
 
-
+        private void btnFtp_Click(object sender, EventArgs e)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/11.jpg", "STOR", @"C:\temp\1.jpg");
+            }
+        }
     }
 }

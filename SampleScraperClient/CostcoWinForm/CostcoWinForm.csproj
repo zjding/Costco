@@ -87,6 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Category.cs" />
     <Compile Include="CostcoDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -107,10 +108,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CostcoDataSet3.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CostcoDataSet41.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CostcoDataSet41.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataLayer.cs" />
     <Compile Include="DataSet_eBayCurrentListing.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="eBayFrontEnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="eBayFrontEnd.Designer.cs">
+      <DependentUpon>eBayFrontEnd.cs</DependentUpon>
     </Compile>
     <Compile Include="eBayListingProduct.cs" />
     <Compile Include="Form1.cs">
@@ -135,6 +148,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="eBayFrontEnd.resx">
+      <DependentUpon>eBayFrontEnd.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -196,6 +212,17 @@
     </None>
     <None Include="CostcoDataSet3.xss">
       <DependentUpon>CostcoDataSet3.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet41.xsc">
+      <DependentUpon>CostcoDataSet41.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet41.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CostcoDataSet41.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CostcoDataSet41.xss">
+      <DependentUpon>CostcoDataSet41.xsd</DependentUpon>
     </None>
     <None Include="DataSet_eBayCurrentListing.xsc">
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>
