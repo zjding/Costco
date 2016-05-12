@@ -119,6 +119,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>
     </Compile>
+    <Compile Include="ds_eBayToAdd.cs">
+      <DependentUpon>ds_eBayToAdd.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="ds_eBayToAdd.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ds_eBayToAdd.xsd</DependentUpon>
+    </Compile>
     <Compile Include="eBayFrontEnd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -234,6 +242,17 @@
     </None>
     <None Include="DataSet_eBayCurrentListing.xss">
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>
+    </None>
+    <None Include="ds_eBayToAdd.xsc">
+      <DependentUpon>ds_eBayToAdd.xsd</DependentUpon>
+    </None>
+    <None Include="ds_eBayToAdd.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ds_eBayToAdd.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ds_eBayToAdd.xss">
+      <DependentUpon>ds_eBayToAdd.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
