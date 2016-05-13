@@ -30,7 +30,7 @@ namespace CostcoWinForm
         public string eBayItemNumber { get; set; }
         public string eBayUrl { get; set; }
         public string eBayCategoryID { get; set; }
-        public string eBayListingPrice { get; set; }
+        public decimal eBayListingPrice { get; set; }
 
     }
 }
