@@ -37,6 +37,10 @@ namespace CostcoWinForm
 
         List<string> selectedItems = new List<string>();
 
+        List<string> selectedListingItems = new List<string>();
+
+        Timer timer = new Timer();
+
         string connectionString = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public eBayFrontEnd()
@@ -46,6 +50,10 @@ namespace CostcoWinForm
 
         private void eBayFrontEnd_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'costcoDataSet5.eBay_ToRemove' table. You can move, or remove it, as needed.
+            this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
+            // TODO: This line of code loads data into the 'dseBayCurrentListings.eBay_CurrentListings' table. You can move, or remove it, as needed.
+            this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
             // TODO: This line of code loads data into the 'ds_eBayToAdd.eBay_ToAdd' table. You can move, or remove it, as needed.
             this.eBay_ToAddTableAdapter.Fill(this.ds_eBayToAdd.eBay_ToAdd);
             // TODO: This line of code loads data into the 'costcoDataSet4.ProductInfo' table. You can move, or remove it, as needed.
@@ -53,21 +61,57 @@ namespace CostcoWinForm
             //this.TopMost = true;
             this.WindowState = FormWindowState.Maximized;
 
+            //List<Department> categories = dl.GetDepartmentArray();
+
+            //foreach (Department catetory in categories)
+            //{
+            //    ListViewItem item = new ListViewItem();
+            //    item.Checked = catetory.bInclude;
+            //    item.SubItems.Add(catetory.DepartmentName);
+            //    item.SubItems.Add(catetory.CategoryName);
+            //    item.SubItems.Add(catetory.Url);
+
+            //    this.lvCategories.Items.Add(item);
+            //}
+
             List<Category> categories = dl.GetCategoryArray();
 
             foreach (Category catetory in categories)
             {
                 ListViewItem item = new ListViewItem();
-                item.Checked = catetory.bInclude;
-                item.SubItems.Add(catetory.DepartmentName);
-                item.SubItems.Add(catetory.CategoryName);
-                item.SubItems.Add(catetory.Url);
+                //item.Checked = catetory.bInclude;
+                item.SubItems.Add(catetory.Category1);
+                item.SubItems.Add(catetory.Category2);
+                item.SubItems.Add(catetory.Category3);
+                item.SubItems.Add(catetory.Category4);
+                item.SubItems.Add(catetory.Category5);
+                item.SubItems.Add(catetory.Category6);
+                item.SubItems.Add(catetory.Category7);
+                item.SubItems.Add(catetory.Category8);
 
                 this.lvCategories.Items.Add(item);
             }
 
             this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
 
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = (1000) * (3);              // Timer will tick evert second
+            timer.Enabled = true;                       // Enable the timer
+            timer.Start();
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            if (tpPendingChanges == tabControl1.SelectedTab)
+            {
+                eBayToAddBindingSource.ResetBindings(false);
+                this.eBay_ToAddTableAdapter.Fill(this.ds_eBayToAdd.eBay_ToAdd);
+                this.gvToAdd.Refresh();
+
+                eBayToRemoveBindingSource.ResetBindings(false);
+                this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
+                this.gvToDelete.Refresh();
+            }
         }
 
         private void btnRefreshProducts_Click(object sender, EventArgs e)
@@ -852,6 +896,112 @@ namespace CostcoWinForm
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+        }
+
+        private void btnListingDelete_Click(object sender, EventArgs e)
+        {
+            string itemNumbers = "";
+
+            foreach (string n in this.selectedListingItems)
+            {
+                itemNumbers += "'" + n + "',";
+            }
+
+            itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @"INSERT INTO eBay_ToRemove(eBayListingName, eBayItemNumber) 
+                                 SELECT eBayListingName, eBayItemNumber 
+                                 FROM eBay_CurrentListings
+                                 WHERE eBayItemNumber in (" + itemNumbers + ")";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            // add to Excel file
+            string sourceFileName = @"c:\ebay\documents\" + "FileExchangeRemove.csv";
+            string destinFileName = @"c:\ebay\upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+            foreach (string n in this.selectedListingItems)
+            {
+                    oSheet.Cells[i, 1].value = "End";
+                    oSheet.Cells[i, 2].NumberFormat = "#";
+                    oSheet.Cells[i, 2].value = n;
+                    oSheet.Cells[i, 3].value = "NotAvailable";
+
+                    i++;
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+        }
+
+        private void gvCurrentListing_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                this.gvCurrentListing.Rows[e.RowIndex].Cells[0].Value = !Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value);
+                if (Convert.ToBoolean(gvCurrentListing.Rows[e.RowIndex].Cells[0].Value))
+                {
+                    gvCurrentListing.Rows[e.RowIndex].Selected = true;
+                    gvCurrentListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = SystemColors.Highlight;
+
+                    selectedListingItems.Add(gvCurrentListing.Rows[e.RowIndex].Cells[5].Value.ToString());
+                }
+                else
+                {
+                    gvCurrentListing.Rows[e.RowIndex].Selected = false;
+                    gvCurrentListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
+
+                    selectedListingItems.Remove(gvCurrentListing.Rows[e.RowIndex].Cells[5].Value.ToString());
+                }
+            }
+        }
+
+        private void btnReloadCurrentListing_Click(object sender, EventArgs e)
+        {
+            eBayCurrentListingsBindingSource.ResetBindings(false);
+            this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
+            //this.gvToAdd.Update();
+            this.gvCurrentListing.Refresh();
         }
     }
 }

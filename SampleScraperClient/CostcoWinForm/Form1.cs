@@ -76,7 +76,7 @@ namespace CostcoWinForm
 
         private void btnImportProducts_Click(object sender, EventArgs e)
         {
-            GetCategoryArray();
+            GetDepartmentArray();
 
             GetSubCategoryUrls();
 
@@ -111,7 +111,7 @@ namespace CostcoWinForm
 
             cn.Open();
 
-            sqlString = "TRUNCATE TABLE Categories";
+            sqlString = "TRUNCATE TABLE Costco_Departments";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
@@ -131,7 +131,7 @@ namespace CostcoWinForm
 
                     if (node1.ChildNodes[0].Attributes[0].Name == "href")
                     {
-                        sqlString = "INSERT INTO Categories (DepartmentName, CategoryName, CategoryUrl) VALUES ('" +
+                        sqlString = "INSERT INTO Costco_Departments (DepartmentName, CategoryName, CategoryUrl) VALUES ('" +
                                     departmentName + "', '" +
                                     categoryName + "', '" +
                                     node1.ChildNodes[0].Attributes[0].Value + "')";
@@ -144,7 +144,7 @@ namespace CostcoWinForm
             //MessageBox.Show("Get Category Done");
         }
 
-        private void GetCategoryArray()
+        private void GetDepartmentArray()
         {
             string sqlString;
 
@@ -153,7 +153,7 @@ namespace CostcoWinForm
             cmd.Connection = cn;
 
             cn.Open();
-            sqlString = "SELECT CategoryUrl FROM Categories WHERE bInclude = 1";
+            sqlString = "SELECT CategoryUrl FROM Costco_Departments WHERE bInclude = 1";
             cmd.CommandText = sqlString;
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -177,6 +177,10 @@ namespace CostcoWinForm
 
             cn.Open();
             string sqlString = "TRUNCATE TABLE Raw_ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = "TRUNCATE TABLE Costco_Categories";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
@@ -224,14 +228,24 @@ namespace CostcoWinForm
 
                     List<HtmlNode> subCategories = category.SelectNodes("li").ToList();
 
+                    int iCategory = 1;
+                    string columns = "";
+                    string values = "";
                     foreach (HtmlNode subCategory in subCategories)
                     {
                         string temp = subCategory.InnerText.Replace("\n", "");
                         temp = temp.Replace("\t", "");
                         temp = temp.Replace("'", "");
                         stSubCategories += temp + "|";
+
+                        columns += "Category" + iCategory.ToString() + ",";
+                        values += "'" + temp + "',";
+
+                        iCategory++;
                     }
                     stSubCategories = stSubCategories.Substring(0, stSubCategories.Length - 1);
+                    columns = columns.Substring(0, columns.Length - 1);
+                    values = values.Substring(0, values.Length - 1);
 
                     HtmlNode productInfo = html.CssSelect(".product-info").ToList<HtmlNode>().First();
 
@@ -489,6 +503,12 @@ namespace CostcoWinForm
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
                     sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url, NumberOfImage) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "'," + numImages.ToString() + ")";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+
+
+
+                    sqlString = "INSERT INTO Costco_Categories (" + columns + ") VALUES (" + values + ")";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
@@ -2817,5 +2837,113 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
                 client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/11.jpg", "STOR", @"C:\temp\1.jpg");
             }
         }
+
+        private void btnListEmailExtract_Click(object sender, EventArgs e)
+        {
+            string body = @"<html><head></head><body><div id='Header'><div><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='100%' style='word-wrap:break-word'><table cellpadding='2' cellspacing='3' border='0' width='100%'><tr><td width='1%' nowrap='nowrap'><img src='http://q.ebaystatic.com/aw/pics/logos/ebay_95x39.gif' height='39' width='95' alt='eBay'></td><td align='left' valign='bottom'><span style='font-weight:bold; font-size:xx-small; font-family:verdana, sans-serif; color:#666'><b>eBay sent this message to Zhijun Ding (zjding2016).</b><br></span><span style='font-size:xx-small; font-family:verdana, sans-serif; color:#666'>Your registered name is included to show this message originated from eBay. <a href='http://pages.ebay.com/help/confidence/name-userid-emails.html'>Learn more</a>.</span></td></tr></table></td></tr></table></div></div><div id='Title'><div><table style='background-color:#ffe680' border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='8' valign='top'><img src='http://q.ebaystatic.com/aw/pics/globalAssets/ltCurve.gif' height='8' width='8' alt=''></td><td valign='bottom' width='100%'><span style='font-weight:bold; font-size:14pt; font-family:arial, sans-serif; color:#000; margin:2px 0 2px 0'>Your item has been listed. Sell another item now!</span></td><td width='8' valign='top' align='right'><img src='http://p.ebaystatic.com/aw/pics/globalAssets/rtCurve.gif' height='8' width='8' alt=''></td></tr><tr><td style='background-color:#fc0' colspan='3' height='4'></td></tr></table></div></div><div id='SingleItemCTA'><div><table border='0' cellpadding='2' cellspacing='3' width='100%'><tr><td><font style='font-size:10pt; font-family:arial, sans-serif; color:#000'>Hi zjding2016,<table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='10' alt=' '></td></tr></table>Your item has been successfully listed on eBay. It may take some time for the item to appear on eBay search results. Here are the listing details:<table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='10' alt=' '></td></tr></table><div></div></font><div><table width='100%' cellpadding='0' cellspacing='3' border='0'><tr><td valign='top' align='center' width='100' nowrap='nowrap'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1123/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D152102133759%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1123'><img src='http://pics.ebaystatic.com/aw/pics/icon/iconPic_20x20.gif' alt='Swingline Optima Grip Full Strip Stapler, 25-Sheet Capacity, Graphite SWI 87810' border='0'></a></td><td colspan='2' valign='top'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' colspan='2'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1123/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D152102133759%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1123'>Swingline Optima Grip Full Strip Stapler, 25-Sheet Capacity, Graphite SWI 87810</a></td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>Item Id:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>152102133759</td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>Price:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>$25.40</td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>End time:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>Jun-23-16 09:18:06 PDT</td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>Listing fees:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>0</td></tr><tr><td colspan='2'><font style='font-size:10pt; font-family:arial, sans-serif; color:#000'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1125/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws2%2FeBayISAPI.dll%3FUserItemVerification%26%26item%3D152102133759%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1125'>Revise item</a>   |    <a href='http://rover.ebay.com/rover/0/e12000.m43.l1121/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fmy.ebay.com%2Fws%2FeBayISAPI.dll%3FMyeBay%26%26CurrentPage%3DMyeBaySelling%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1121'>Go to My eBay</a></font></td></tr></table></td></tr></table></div><td valign='top' width='185'><div><span style='font-weight:bold; font-size:10pt; font-family:arial, sans-serif; color:#000'>Ready to List Your Next Item?</span><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='4' alt=' '></td></tr></table><a href='http://rover.ebay.com/rover/0/e12000.m44.l1127/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1127' title='http://rover.ebay.com/rover/0/e12000.m44.l1127/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1127'><img src='http://p.ebaystatic.com/aw/pics/buttons/btnSellMore.gif' border='0' height='32' width='120'></img></a><br><span style='font-style:italic; font-size:8pt; font-family:arial, sans-serif; color:#000'>Click to list another item</span></div></td></td></tr></table><br></div></div><div id='OneClickUnsubscribe'><div><style>.cub-cwrp {display:block; border:1px solid #dedfde; font-family:arial, sans-serif; font-size:10pt; margin-bottom:20px}h3.cub-chd {margin:0px; padding:5px; display:block; background:#e7e7e7; font-size:14px}.cub-ccnt {padding:0px 10px 10px 5px; display:block}ul.cub-ulst {margin:0px 0px 0px 10px; padding:0px 0px 0px 10px}ul.cub-ulst li, ul.cub-ulst li.cub-licn {list-style:square outside none; margin:0px; padding:10px 0px 0px 0px; line-height:16px}.cub-ltxt {color:#333; display:block}</style><div class='cub-cwrp'><h3 class='cub-chd'>Select your email preferences</h3><div class='cub-ccnt'><ul class='cub-ulst'><li><span class='cub-ltxt'><span>Want to reduce your inbox email volume? <a href='http://my.ebay.com/ws/eBayISAPI.dll?DigestEmail&amp;emailType=12000'>Receive this email as a daily digest</a>.</span><br><span>For other email digest options, go to <a href='http://my.ebay.com/ws/eBayISAPI.dll?MyEbayBeta&amp;CurrentPage=MyeBayNextNotificationPreferences'>Notification Preferences</a> in My eBay.</span><br></span></li><li><span class='cub-ltxt'><span>Don't want to receive this email? <a href='http://my.ebay.com/ws/eBayISAPI.dll?EmailUnsubscribe&amp;emailType=12000'>Unsubscribe from this email</a>.</span><br></span></li></ul></div></div></div></div><div id='Tips'></div><div id='RTMEducational'></div><div id='MST'><div><table style='border:1px solid #6b7b91' border='0' cellpadding='0' cellspacing='0' width='100%'><tr style='background-color:#c9d2dc' height='1'><td><img src='http://p.ebaystatic.com/aw/pics/securityCenter/imgShield_25x25.gif' height='25' width='25' alt='Marketplace Safety Tip' align='absmiddle'></td><td style='font-weight:bold; font-size:10pt; font-family:arial, sans-serif; color:#000' nowrap='nowrap' width='20%'>Marketplace Safety Tip</td><td><img src='http://p.ebaystatic.com/aw/pics/securityCenter/imgTabCorner_25x25.gif' height='25' width='25' alt='' align='absmiddle'></td><td background='http://q.ebaystatic.com/aw/pics/securityCenter/imgFlex_1x25.gif' height='1' width='80%'></td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' colspan='4'><ul style='margin-top: 5px; margin-bottom: 5px;'><li style='padding-bottom: 3px; line-height: 120%; padding-top: 3px; list-style-type: square;'>If you are contacted about buying a similar item outside of eBay, please do not respond. Outside-of-eBay transactions are against eBay policy, and they are not covered by eBay services such as feedback and eBay purchase protection programs.</li></ul></td></tr><tr><td style='background-color:#c9d2dc' colspan='4'><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='1' width='1'></td></tr></table><br></div></div><div id='Footer'><div><hr style='HEIGHT: 1px'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='100%'><font style='font-size:8pt; font-family:arial, sans-serif; color:#000000'>Email reference id: [#d7aa3b6062934f4d99682042ae7471a4#]</font></td></tr></table><br></div><hr style='HEIGHT: 1px'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='100%'><font style='font-size:xx-small; font-family:verdana; color:#666'><a href='http://pages.ebay.com/education/spooftutorial/index.html'>Learn More</a> to protect yourself from spoof (fake) emails.<br><br>eBay sent this email to you at zjding@outlook.com about your account registered on <a href='http://www.ebay.com'>www.ebay.com</a>.<br><br>eBay sends these emails based on the preferences you set for your account. To unsubscribe from this email, change your <a href='http://my.ebay.com/ws/eBayISAPI.dll?MyEbayBeta&amp;CurrentPage=MyeBayNextNotificationPreferences'>communication preferences</a>. Please note that it may take up to 10 days to process your request. Visit our <a href='http://pages.ebay.com/help/policies/privacy-policy.html'>Privacy Notice</a> and <a href='http://pages.ebay.com/help/policies/user-agreement.html'>User Agreement</a> if you have any questions.<br><br>Copyright © 2016 eBay Inc. All Rights Reserved. Designated trademarks and brands are the property of their respective owners. eBay and the eBay logo are trademarks of eBay Inc. eBay Inc. is located at 2145 Hamilton Avenue, San Jose, CA 95125.  </font></td></tr></table><img src='http://rover.ebay.com/roveropen/0/e12000/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;' height='1' width='1'></div></body></html>";
+
+            string subject = @"Your eBay listing is confirmed: Swingline Optima Grip Full Strip Stapler, 25-Sheet Capacity, Graphite SWI 87810";
+
+            ProcessListingConfirmEmail(body, subject);
+        }
+
+        private void ProcessListingConfirmEmail(string body, string subject)
+        {
+            body = body.Replace("\n", "");
+            body = body.Replace("\t", "");
+            //body = body.Replace("\\", "");
+            body = body.Replace("\"", "'");
+
+            string productName = subject.Substring(32, subject.Length - 32);
+
+            string sqlString = "SELECT * FROM eBay_ToAdd WHERE name = '" + productName + "'";
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            Product product = new Product();
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+
+                product.Name = Convert.ToString(reader["Name"]);
+                product.UrlNumber = Convert.ToString(reader["UrlNumber"]);
+                product.ItemNumber = Convert.ToString(reader["ItemNumber"]);
+                product.Category = Convert.ToString(reader["Category"]);
+                product.Price = Convert.ToDecimal(reader["Price"]);
+                product.Shipping = Convert.ToDecimal(reader["Shipping"]);
+                product.Limit = Convert.ToString(reader["Limit"]);
+                product.Details = Convert.ToString(reader["Details"]);
+                product.Specification = Convert.ToString(reader["Specification"]);
+                product.ImageLink = Convert.ToString(reader["ImageLink"]);
+                product.NumberOfImage = Convert.ToInt16(reader["NumberOfImage"]);
+                product.Url = Convert.ToString(reader["Url"]);
+                product.eBayCategoryID = Convert.ToString(reader["eBayCategoryID"]);
+                product.eBayReferencePrice = Convert.ToDecimal(reader["eBayReferencePrice"]);
+                product.eBayListingPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+                product.DescriptionImageWidth = Convert.ToInt16(reader["DescriptionImageWidth"]);
+                product.DescriptionImageHeight = Convert.ToInt16(reader["DescriptionImageHeight"]);
+            }
+
+            reader.Close();
+
+            sqlString = @"DELETE FROM eBay_ToAdd WHERE name = '" + productName + "'";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            body = body.Replace("\r", "");
+            body = body.Replace("\t", "");
+            body = body.Replace("\n", "");
+
+            string stItemId = SubstringInBetween(body, "Item Id:</td>", "</td>", false, true);
+            stItemId = SubstringEndBack(stItemId, "</td>", ">", false, false);
+            stItemId = stItemId.Trim();
+
+            //string stListingUrl = SubstringEndBack(body, "Item Id:</td>", "<a href='", true, false);
+            //stListingUrl = SubstringInBetween(stListingUrl, "<a href='", "target", false, false);
+            //stListingUrl = stListingUrl.Trim();
+
+            string stPrice = SubstringInBetween(body, "Price:</td>", "</td>", false, true);
+            stPrice = SubstringEndBack(stPrice, "</td>", "$", false, false);
+            stPrice = stPrice.Replace("$", "");
+            stPrice = stPrice.Trim();
+
+            string stEndTime = SubstringInBetween(body, "End time:</td>", "</td>", false, false);
+            stEndTime = SubstringEndBack(stEndTime, "PDT", ">", false, true);
+            stEndTime = stEndTime.Trim();
+            string correctedTZ = stEndTime.Replace("PDT", "-0700");
+            DateTime dtEndTime = Convert.ToDateTime(correctedTZ);
+
+            sqlString = @"INSERT INTO eBay_CurrentListings
+                            (Name, eBayListingName, eBayCategoryID, eBayItemNumber, eBayListingPrice, eBayDescription, 
+                             eBayEndTime,  CostcoUrlNumber, CostcoItemNumber, CostcoUrl, CostcoPrice, ImageLink) 
+                          VALUES (@_name, @_eBayListingName, @_eBayCategoryID, @_eBayItemNumber, @_eBayListingPrice, @_eBayDescription,
+                                @_eBayEndTime, @_CostcoUrlNumber, @_CostcoItemNumber, @_CostcoUrl, @_CostcoPrice, @_ImageLink)";
+
+            cmd.CommandText = sqlString;
+            cmd.Parameters.AddWithValue("@_name", product.Name);
+            cmd.Parameters.AddWithValue("@_eBayListingName", productName);
+            cmd.Parameters.AddWithValue("@_eBayCategoryID", product.eBayCategoryID);
+            cmd.Parameters.AddWithValue("@_eBayItemNumber", stItemId);
+            cmd.Parameters.AddWithValue("@_eBayListingPrice", product.eBayListingPrice);
+            cmd.Parameters.AddWithValue("@_eBayDescription", product.Details);
+            cmd.Parameters.AddWithValue("@_eBayEndTime", dtEndTime);
+            //cmd.Parameters.AddWithValue("@_eBayUrl", stListingUrl);
+            cmd.Parameters.AddWithValue("@_CostcoUrlNumber", product.UrlNumber);
+            cmd.Parameters.AddWithValue("@_CostcoItemNumber", product.ItemNumber);
+            cmd.Parameters.AddWithValue("@_CostcoUrl", product.Url);
+            cmd.Parameters.AddWithValue("@_CostcoPrice", product.Price);
+            cmd.Parameters.AddWithValue("@_ImageLink", product.ImageLink);
+
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+        }
     }
+
 }

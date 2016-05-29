@@ -43,9 +43,9 @@ namespace CostcoConsoleApp
 
         static void Main(string[] args)
         {
-            
 
-            GetCategoryArray();
+
+            GetDepartmentArray();
 
             GetSubCategoryUrls();
 
@@ -80,7 +80,7 @@ namespace CostcoConsoleApp
 
             cn.Open();
 
-            sqlString = "TRUNCATE TABLE Categories";
+            sqlString = "TRUNCATE TABLE Costco_Departments";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
@@ -100,7 +100,7 @@ namespace CostcoConsoleApp
 
                     if (node1.ChildNodes[0].Attributes[0].Name == "href")
                     {
-                        sqlString = "INSERT INTO Categories (DepartmentName, CategoryName, CategoryUrl) VALUES ('" +
+                        sqlString = "INSERT INTO Costco_Departments (DepartmentName, CategoryName, CategoryUrl) VALUES ('" +
                                     departmentName + "', '" +
                                     categoryName + "', '" +
                                     node1.ChildNodes[0].Attributes[0].Value + "')";
@@ -113,7 +113,7 @@ namespace CostcoConsoleApp
             //MessageBox.Show("Get Category Done");
         }
 
-        static void GetCategoryArray()
+        static void GetDepartmentArray()
         {
             string sqlString;
 
@@ -122,7 +122,7 @@ namespace CostcoConsoleApp
             cmd.Connection = cn;
 
             cn.Open();
-            sqlString = "SELECT CategoryUrl FROM Categories WHERE bInclude = 1";
+            sqlString = "SELECT CategoryUrl FROM Costco_Departments WHERE bInclude = 1";
             cmd.CommandText = sqlString;
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)

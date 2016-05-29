@@ -47,6 +47,7 @@
             this.btnHtmlToPDF = new System.Windows.Forms.Button();
             this.btnCostcoOrderEmail = new System.Windows.Forms.Button();
             this.btnFtp = new System.Windows.Forms.Button();
+            this.btnListEmailExtract = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -65,7 +66,7 @@
             this.btnImportCategories.Name = "btnImportCategories";
             this.btnImportCategories.Size = new System.Drawing.Size(118, 23);
             this.btnImportCategories.TabIndex = 1;
-            this.btnImportCategories.Text = "Import Categories";
+            this.btnImportCategories.Text = "Import Departments";
             this.btnImportCategories.UseVisualStyleBackColor = true;
             this.btnImportCategories.Click += new System.EventHandler(this.btnImportCategories_Click);
             // 
@@ -192,7 +193,7 @@
             // 
             // btnEmailExtract
             // 
-            this.btnEmailExtract.Location = new System.Drawing.Point(32, 374);
+            this.btnEmailExtract.Location = new System.Drawing.Point(32, 403);
             this.btnEmailExtract.Name = "btnEmailExtract";
             this.btnEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnEmailExtract.TabIndex = 16;
@@ -202,7 +203,7 @@
             // 
             // btnSoldEmailExtract
             // 
-            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 403);
+            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 432);
             this.btnSoldEmailExtract.Name = "btnSoldEmailExtract";
             this.btnSoldEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnSoldEmailExtract.TabIndex = 17;
@@ -212,7 +213,7 @@
             // 
             // btnHtmlToPDF
             // 
-            this.btnHtmlToPDF.Location = new System.Drawing.Point(32, 461);
+            this.btnHtmlToPDF.Location = new System.Drawing.Point(32, 490);
             this.btnHtmlToPDF.Name = "btnHtmlToPDF";
             this.btnHtmlToPDF.Size = new System.Drawing.Size(118, 23);
             this.btnHtmlToPDF.TabIndex = 18;
@@ -222,7 +223,7 @@
             // 
             // btnCostcoOrderEmail
             // 
-            this.btnCostcoOrderEmail.Location = new System.Drawing.Point(32, 432);
+            this.btnCostcoOrderEmail.Location = new System.Drawing.Point(32, 461);
             this.btnCostcoOrderEmail.Name = "btnCostcoOrderEmail";
             this.btnCostcoOrderEmail.Size = new System.Drawing.Size(118, 23);
             this.btnCostcoOrderEmail.TabIndex = 19;
@@ -232,7 +233,7 @@
             // 
             // btnFtp
             // 
-            this.btnFtp.Location = new System.Drawing.Point(32, 490);
+            this.btnFtp.Location = new System.Drawing.Point(32, 519);
             this.btnFtp.Name = "btnFtp";
             this.btnFtp.Size = new System.Drawing.Size(118, 23);
             this.btnFtp.TabIndex = 20;
@@ -240,11 +241,22 @@
             this.btnFtp.UseVisualStyleBackColor = true;
             this.btnFtp.Click += new System.EventHandler(this.btnFtp_Click);
             // 
+            // btnListEmailExtract
+            // 
+            this.btnListEmailExtract.Location = new System.Drawing.Point(32, 374);
+            this.btnListEmailExtract.Name = "btnListEmailExtract";
+            this.btnListEmailExtract.Size = new System.Drawing.Size(118, 23);
+            this.btnListEmailExtract.TabIndex = 21;
+            this.btnListEmailExtract.Text = "List Email Extract";
+            this.btnListEmailExtract.UseVisualStyleBackColor = true;
+            this.btnListEmailExtract.Click += new System.EventHandler(this.btnListEmailExtract_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(923, 635);
+            this.Controls.Add(this.btnListEmailExtract);
             this.Controls.Add(this.btnFtp);
             this.Controls.Add(this.btnCostcoOrderEmail);
             this.Controls.Add(this.btnHtmlToPDF);
@@ -293,6 +305,7 @@
         private System.Windows.Forms.Button btnHtmlToPDF;
         private System.Windows.Forms.Button btnCostcoOrderEmail;
         private System.Windows.Forms.Button btnFtp;
+        private System.Windows.Forms.Button btnListEmailExtract;
     }
 }
 
