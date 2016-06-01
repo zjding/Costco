@@ -55,7 +55,7 @@ namespace CostcoWinForm
             cmd.Connection = cn;
 
             cn.Open();
-            sqlString = @"SELECT * FROM Costco_Categories
+            sqlString = @"SELECT DISTINCT * FROM Costco_Categories
                             order by Category1, Category2, Category3, Category4, 
                             Category5, Category6, Category7, Category8";
             cmd.CommandText = sqlString;

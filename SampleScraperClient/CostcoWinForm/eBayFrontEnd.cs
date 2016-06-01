@@ -22,6 +22,8 @@ using System.Data.SqlClient;
 using OpenQA.Selenium;
 using System.Drawing.Imaging;
 using OpenQA.Selenium.Firefox;
+using System.Text.RegularExpressions;
+using System.Net.Mail;
 
 namespace CostcoWinForm
 {
@@ -34,6 +36,23 @@ namespace CostcoWinForm
         List<string> categoryArray = new List<string>();
         List<string> subCategoryArray = new List<string>();
         List<string> productUrlArray = new List<string>();
+
+        List<String> categoryUrlArray = new List<string>();
+        List<String> subCategoryUrlArray = new List<string>();
+
+        List<String> newProductArray = new List<string>();
+        List<String> discontinueddProductArray = new List<string>();
+        List<String> priceUpProductArray = new List<string>();
+        List<String> priceDownProductArray = new List<string>();
+
+        List<Product> priceChangedProductArray = new List<Product>();
+
+        string emailMessage;
+
+        string destinFileName;
+
+        DateTime startDT;
+        DateTime endDT;
 
         List<string> selectedItems = new List<string>();
 
@@ -122,149 +141,10 @@ namespace CostcoWinForm
 
         private void btnRefreshProducts_Click(object sender, EventArgs e)
         {
-            // populate categoryArray
-            categoryArray.Clear();
-            foreach (ListViewItem item in this.lvCategories.Items)
-            {
-                if (item.Checked)
-                {
-                    categoryArray.Add(item.SubItems[3].Text);
-                }
-            }
-
-            GetSubCategoryUrls();
-            GetProductUrls();
-
-
+            RefreshProductsGrid();
         }
 
-        private void GetSubCategoryUrls()
-        {
-            subCategoryArray.Clear();
-
-            foreach (var categoryUrl in categoryArray)
-            {
-                string url;
-                if (categoryUrl.Contains("http"))
-                    url = categoryUrl;
-                else
-                    url = "http://www.costco.com" + categoryUrl;
-
-                // level 0
-                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
-                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                if (mainContentWrapperNote == null)
-                    continue;
-                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                {
-                    subCategoryArray.Add(url);
-                }
-                else
-                {
-                    List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                    foreach (HtmlNode departmentNode in departmentNodes)
-                    {
-                        if (departmentNode.InnerText.Contains("("))
-                        {
-                            HtmlNode node = departmentNode.Descendants("a").First();
-                            string departmentUrl = node.Attributes["href"].Value;
-
-                            // level 1
-                            PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
-                            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                            if (mainContentWrapperNote == null)
-                                continue;
-                            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                            {
-                                subCategoryArray.Add(departmentUrl);
-                            }
-                            else
-                            {
-                                List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                                foreach (HtmlNode department_1_Node in department_1_Nodes)
-                                {
-                                    if (department_1_Node.InnerText.Contains("("))
-                                    {
-                                        HtmlNode node_1 = department_1_Node.Descendants("a").First();
-                                        string departmentUrl_1 = node_1.Attributes["href"].Value;
-
-                                        // level 2
-                                        PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
-                                        mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                                        if (mainContentWrapperNote == null)
-                                            continue;
-                                        categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                                        if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                                        {
-                                            subCategoryArray.Add(departmentUrl_1);
-                                        }
-                                        else
-                                        {
-                                            List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                                            foreach (HtmlNode department_2_Node in department_2_Nodes)
-                                            {
-                                                HtmlNode node_2 = department_2_Node.Descendants("a").First();
-                                                string department_2_Url = node_2.Attributes["href"].Value;
-                                                subCategoryArray.Add(department_2_Url);
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        HtmlNode node_1 = departmentNode.Descendants("a").First();
-                                        string department_1_Url = node_1.Attributes["href"].Value;
-                                        subCategoryArray.Add(department_1_Url);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            HtmlNode node = departmentNode.Descendants("a").First();
-                            string departmentUrl = node.Attributes["href"].Value;
-                            subCategoryArray.Add(departmentUrl);
-                        }
-                    }
-                }
-            }
-
-            //MessageBox.Show("Get subCategoryUrlArray Done");
-        }
-
-        private void GetProductUrls()
-        {
-            foreach (string url in subCategoryArray)
-            {
-                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
-                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                {
-                    List<HtmlNode> gridNodes = PageResult.Html.CssSelect(".grid-4col").ToList<HtmlNode>();
-                    if (gridNodes.Count() > 0)
-                    {
-                        List<HtmlNode> productNodes = gridNodes.CssSelect(".product-tile").ToList<HtmlNode>();
-
-                        foreach (HtmlNode productNode in productNodes)
-                        {
-                            HtmlNode product = productNode.CssSelect(".product-tile-image-container ").First();
-                            if (((product.SelectNodes("a")).First().Attributes).First().Name == "href")
-                            {
-                                productUrlArray.Add(((product.SelectNodes("a")).First().Attributes).First().Value);
-                            }
-                        }
-                    }
-                }
-            }
-
-            //MessageBox.Show("Get productUrlArray Done");
-        }
+        
 
         private void chkAll_CheckedChanged(object sender, EventArgs e)
         {
@@ -330,7 +210,21 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            
+            //GetDepartmentArray();
+
+            //GetSubCategoryUrls();
+
+            //GetProductUrls();
+
+            //GetProductInfo();
+
+            PopulateTables();
+
+            CompareProducts();
+
+            ArchieveProducts();
+
+            SendEmail();
         }
 
         private void btnCrawl_Click(object sender, EventArgs e)
@@ -1085,53 +979,868 @@ namespace CostcoWinForm
         {
             if (bInit)
             {
-                List<string> selectedCategories = new List<string>();
+                RefreshProductsGrid();   
+            }
+        }
 
-                foreach (ListViewItem item in lvCategories.Items)
+        private void RefreshProductsGrid()
+        {
+            List<string> selectedCategories = new List<string>();
+
+            foreach (ListViewItem item in lvCategories.Items)
+            {
+                if (item.Checked)
                 {
-                    if (item.Checked)
+                    string category = "";
+
+                    for (int i = 0; i < 8; i++)
                     {
-                        string category = "";
-
-                        for (int i = 0; i < 8; i++)
+                        if (item.SubItems[i].Text.Length > 0)
                         {
-                            if (item.SubItems[i].Text.Length > 0)
-                            {
-                                category += item.SubItems[i].Text + "|";
-                            }
+                            category += item.SubItems[i].Text + "|";
                         }
-
-                        category = category.Substring(0, category.Length - 1);
-
-                        selectedCategories.Add(category);
                     }
+
+                    category = category.Substring(0, category.Length - 1);
+
+                    selectedCategories.Add(category);
                 }
+            }
 
-                string selectCategoriesString = "";
+            string selectCategoriesString = "";
 
-                foreach (string s in selectedCategories)
-                {
-                    selectCategoriesString += "'" + s + "',";
-                }
+            foreach (string s in selectedCategories)
+            {
+                selectCategoriesString += "'" + s + "',";
+            }
 
-                if (selectCategoriesString.Length > 0)
-                    selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
-                else
-                    selectCategoriesString = "''";
+            if (selectCategoriesString.Length > 0)
+                selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
+            else
+                selectCategoriesString = "''";
 
-                string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
+            string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
                                 Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
                                 FROM ProductInfo
-                                WHERE Category in (" + selectCategoriesString + ")";
+                                WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text;
 
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
-                DataSet products = new DataSet();
-                dataAdapter.Fill(products);
-                DataTable productTable = products.Tables[0];
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
+            DataSet products = new DataSet();
+            dataAdapter.Fill(products);
+            DataTable productTable = products.Tables[0];
 
-                gvProducts.DataSource = productTable;
-                gvProducts.Refresh();
+            gvProducts.DataSource = productTable;
+            gvProducts.Refresh();
+        }
+
+
+        private void GetDepartmentArray()
+        {
+            string sqlString;
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+            sqlString = "SELECT CategoryUrl FROM Costco_Departments WHERE bInclude = 1";
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    categoryUrlArray.Add(reader.GetString(0));
+                }
             }
+            reader.Close();
+            cn.Close();
+        }
+
+        private void GetSubCategoryUrls()
+        {
+            subCategoryArray.Clear();
+
+            foreach (var categoryUrl in categoryUrlArray)
+            {
+                string url;
+                if (categoryUrl.Contains("http"))
+                    url = categoryUrl;
+                else
+                    url = "http://www.costco.com" + categoryUrl;
+
+                // level 0
+                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
+                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                if (mainContentWrapperNote == null)
+                    continue;
+                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                {
+                    subCategoryArray.Add(url);
+                }
+                else
+                {
+                    List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                    foreach (HtmlNode departmentNode in departmentNodes)
+                    {
+                        if (departmentNode.InnerText.Contains("("))
+                        {
+                            HtmlNode node = departmentNode.Descendants("a").First();
+                            string departmentUrl = node.Attributes["href"].Value;
+
+                            // level 1
+                            PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
+                            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                            if (mainContentWrapperNote == null)
+                                continue;
+                            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                            {
+                                subCategoryArray.Add(departmentUrl);
+                            }
+                            else
+                            {
+                                List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                                foreach (HtmlNode department_1_Node in department_1_Nodes)
+                                {
+                                    if (department_1_Node.InnerText.Contains("("))
+                                    {
+                                        HtmlNode node_1 = department_1_Node.Descendants("a").First();
+                                        string departmentUrl_1 = node_1.Attributes["href"].Value;
+
+                                        // level 2
+                                        PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
+                                        mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                                        if (mainContentWrapperNote == null)
+                                            continue;
+                                        categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                                        if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                                        {
+                                            subCategoryArray.Add(departmentUrl_1);
+                                        }
+                                        else
+                                        {
+                                            List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                                            foreach (HtmlNode department_2_Node in department_2_Nodes)
+                                            {
+                                                HtmlNode node_2 = department_2_Node.Descendants("a").First();
+                                                string department_2_Url = node_2.Attributes["href"].Value;
+                                                subCategoryArray.Add(department_2_Url);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        HtmlNode node_1 = departmentNode.Descendants("a").First();
+                                        string department_1_Url = node_1.Attributes["href"].Value;
+                                        subCategoryArray.Add(department_1_Url);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            HtmlNode node = departmentNode.Descendants("a").First();
+                            string departmentUrl = node.Attributes["href"].Value;
+                            subCategoryArray.Add(departmentUrl);
+                        }
+                    }
+                }
+            }
+
+            //MessageBox.Show("Get subCategoryUrlArray Done");
+        }
+
+        private void GetProductUrls()
+        {
+            foreach (string url in subCategoryArray)
+            {
+                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
+                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                {
+                    List<HtmlNode> gridNodes = PageResult.Html.CssSelect(".grid-4col").ToList<HtmlNode>();
+                    if (gridNodes.Count() > 0)
+                    {
+                        List<HtmlNode> productNodes = gridNodes.CssSelect(".product-tile").ToList<HtmlNode>();
+
+                        foreach (HtmlNode productNode in productNodes)
+                        {
+                            HtmlNode product = productNode.CssSelect(".product-tile-image-container ").First();
+                            if (((product.SelectNodes("a")).First().Attributes).First().Name == "href")
+                            {
+                                productUrlArray.Add(((product.SelectNodes("a")).First().Attributes).First().Value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //MessageBox.Show("Get productUrlArray Done");
+        }
+
+        private void GetProductInfo()
+        {
+            startDT = DateTime.Now;
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+            string sqlString = "TRUNCATE TABLE Raw_ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = "TRUNCATE TABLE Costco_Categories";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            IWebDriver driver = new FirefoxDriver();
+
+            WebPage PageResult;
+
+            int i = 1;
+
+            foreach (string productUrl in productUrlArray)
+            {
+                try
+                {
+
+                    i++;
+
+                    string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
+                    UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
+
+
+                    //webBrowser1.ScriptErrorsSuppressed = true;
+                    //webBrowser1.Navigate(productUrl);
+
+                    //waitTillLoad(this.webBrowser1);
+
+                    //return;
+
+                    //HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                    //var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
+                    //StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
+                    //doc.Load(sr);
+
+                    //HtmlNode html = doc.DocumentNode;
+
+                    PageResult = Browser.NavigateToPage(new Uri(productUrl));
+
+                    HtmlNode html = PageResult.Html;
+
+                    if (html.InnerText.Contains("Product Not Found"))
+                        continue;
+
+                    string stSubCategories = "";
+
+                    HtmlNode category = html.SelectSingleNode("//ul[@itemprop='breadcrumb']");
+
+                    List<HtmlNode> subCategories = category.SelectNodes("li").ToList();
+
+                    int iCategory = 1;
+                    string columns = "";
+                    string values = "";
+                    foreach (HtmlNode subCategory in subCategories)
+                    {
+                        string temp = subCategory.InnerText.Replace("\n", "");
+                        temp = temp.Replace("\t", "");
+                        temp = temp.Replace("'", "");
+                        stSubCategories += temp + "|";
+
+                        columns += "Category" + iCategory.ToString() + ",";
+                        values += "'" + temp + "',";
+
+                        iCategory++;
+                    }
+                    stSubCategories = stSubCategories.Substring(0, stSubCategories.Length - 1);
+                    columns = columns.Substring(0, columns.Length - 1);
+                    values = values.Substring(0, values.Length - 1);
+
+                    HtmlNode productInfo = html.CssSelect(".product-info").ToList<HtmlNode>().First();
+
+                    List<HtmlNode> topReviewPanelNode = productInfo.CssSelect(".top_review_panel").ToList<HtmlNode>();
+
+                    string discount = "";
+
+                    HtmlNode discountNote = topReviewPanelNode[0].SelectSingleNode("//p[@class='merchandisingText']");
+
+                    if (discountNote != null)
+                        discount = discountNote.InnerText.Replace("?", "");
+
+                    string productName = ((topReviewPanelNode[0]).SelectNodes("h1"))[0].InnerText;
+                    productName = productName.Replace("???", "");
+                    productName = productName.Replace("??", "");
+
+                    List<HtmlNode> col1Node = productInfo.CssSelect(".col1").ToList<HtmlNode>();
+                    string itemNumber = (col1Node[0].SelectNodes("p")[0]).InnerText;
+                    if (itemNumber.ToUpper().Contains("ITEM") && itemNumber.Length > 6)
+                        itemNumber = itemNumber.Substring(6);
+                    else
+                        itemNumber = "";
+
+                    discountNote = col1Node[0].CssSelect(".merchandisingText").FirstOrDefault();
+
+                    if (discountNote != null)
+                        discount = discount.Length == 0 ? discountNote.InnerText.Replace("?", "") : discount + "; " + discountNote.InnerText.Replace("?", "");
+
+                    string price;
+                    List<HtmlNode> yourPriceNode = col1Node.CssSelect(".your-price").ToList<HtmlNode>();
+                    if (yourPriceNode.Count > 0)
+                    {
+                        List<HtmlNode> priceNode = yourPriceNode[0].CssSelect(".currency").ToList<HtmlNode>();
+                        price = priceNode[0].InnerText;
+                        price = price.Replace("$", "");
+                        price = price.Replace(",", "");
+
+                        if (price == "- -")
+                            price = "-2";
+                    }
+                    else
+                    {
+                        price = "-1";
+                    }
+
+                    var productOptionsNode = col1Node.CssSelect(".product-option").FirstOrDefault();
+
+                    string shipping = "0";
+
+                    var productSHNode = col1Node[0].SelectSingleNode("//li[@class='product']");
+
+                    if (productSHNode != null)
+                    {
+                        if (productSHNode.InnerText.ToUpper().Contains("INCLUDED"))
+                        {
+                            shipping = "0";
+                        }
+                        else
+                        {
+                            string shString = productSHNode.InnerText;
+                            int nDollar = shString.IndexOf("$");
+                            if (nDollar > 0)
+                            {
+                                shString = shString.Substring(nDollar + 1);
+                                int nStar = shString.IndexOf("*");
+                                if (nStar == -1)
+                                    nStar = shString.IndexOf(" ");
+                                shString = shString.Substring(0, nStar);
+                                shString = shString.Replace(" ", "");
+                                shipping = shString;
+                            }
+                            else
+                            {
+                                int nShipping = shString.IndexOf("Shipping");
+                                int nQuantity = shString.ToUpper().IndexOf("QUANTITY");
+                                shString = shString.Substring(nShipping, nQuantity);
+                                Char[] strarr = shString.ToCharArray().Where(c => Char.IsDigit(c) || c.Equals('.')).ToArray();
+                                decimal number = Convert.ToDecimal(new string(strarr));
+                                shipping = number.ToString();
+                            }
+                        }
+                    }
+
+
+                    //List<HtmlNode> productsNode = col1Node.CssSelect(".products").ToList<HtmlNode>();
+                    //if (productsNode.Count > 0)
+                    //    shipping = productsNode[0].SelectSingleNode("li").SelectSingleNode("p") == null ? "-1" : productsNode[0].SelectSingleNode("li").SelectSingleNode("p").InnerText;
+                    //else
+                    //    shipping = "-1";
+
+                    /*
+                    string description = "";
+
+
+
+                    driver.Navigate().GoToUrl(productUrl);
+
+                    IWebElement element = driver.FindElement(By.Id("product-tab1"));
+                    //string elementHtml = element.GetAttribute("outerHTML");
+
+                    //driver.Dispose();
+
+                    //var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
+
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+
+                    // Create an Encoder object based on the GUID
+                    // for the Quality parameter category.
+                    System.Drawing.Imaging.Encoder myEncoder =
+                        System.Drawing.Imaging.Encoder.Quality;
+
+                    // Create an EncoderParameters object.
+                    // An EncoderParameters object has an array of EncoderParameter
+                    // objects. In this case, there is only one
+                    // EncoderParameter object in the array.
+                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+                    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 70L);
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+                    var screenshotDriver = driver as ITakesScreenshot;
+                    Screenshot screenshot = screenshotDriver.GetScreenshot();
+                    var bmpScreen = new Bitmap(new MemoryStream(screenshot.AsByteArray));
+
+                    System.Drawing.Rectangle cropArea;
+
+                    if (element.FindElements(By.Id("wc-power-page")).Count > 0)
+                    {
+
+                        //bmpScreen.Save(@"C:\temp\" + UrlNum + ".jpg");
+
+                        IWebElement e = element.FindElement(By.Id("wc-power-page"));
+                        Size s = e.Size;
+                        s.Height = s.Height - 100;
+                        cropArea = new System.Drawing.Rectangle(e.Location, s);
+
+
+
+                        description = ProcessPowerPage(element.FindElement(By.Id("wc-power-page")));
+                    }
+                    else if (element.FindElements(By.Id("sp_inline_product")).Count > 0)
+                    {
+
+                        IWebElement e = element.FindElement(By.Id("sp_inline_product"));
+
+                        Size s = e.Size;
+                        s.Height = s.Height - 60;
+
+                        Point p = e.Location;
+                        p.Y = p.Y + 30;
+
+                        cropArea = new System.Drawing.Rectangle(p, s);
+
+
+
+                        description = ProcessInlineProduct(element.FindElement(By.Id("sp_inline_product")));
+                    }
+                    else
+                    {
+                        IWebElement e = element.FindElement(By.Id("product-tab1"));
+
+                        Size s = e.Size;
+                        s.Height = s.Height - 60;
+
+                        Point p = e.Location;
+                        p.Y = p.Y + 30;
+
+                        cropArea = new System.Drawing.Rectangle(p, s);
+                    }
+
+                    bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\" + UrlNum + ".jpg", jpgEncoder, myEncoderParameters);
+
+                    using (WebClient client = new WebClient())
+                    {
+                        client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                        client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\" + UrlNum + ".jpg");
+                    }
+
+                    // images
+                    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
+
+
+                    int numImages = 1;
+                    if (imageElement.FindElements(By.TagName("li")) != null)
+                        numImages = imageElement.FindElements(By.TagName("li")).ToList().Count;
+
+
+
+                    //string description = GetProductionDescription(productUrl);
+                    description = ProcessHtml(description);
+
+                    description = description.Replace("???", "");
+                    description = description.Replace("??", "");
+                    description = description.Replace("'", "");
+                    description = description.Replace("\"", "");
+
+                    HtmlNode productDetailTabsNode = html.CssSelect(".product-detail-tabs").ToList<HtmlNode>().First();
+                    if (description == "")
+                    {
+                        var productDetailTab1Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab1']");
+
+                        var productDescriptionNode = productDetailTab1Node.SelectSingleNode("//p[@itemprop='description']");
+
+                        description = productDescriptionNode.InnerHtml;
+
+                        description = ProcessHtml(description);
+
+                        description = description.Replace("???", "");
+                        description = description.Replace("??", "");
+                        description = description.Replace("'", "");
+
+                        if (description.Contains("<div style=text-align:center;>"))
+                        {
+                            string stStart = "<div style=text-align:center;>";
+                            string stEnd = "</div>";
+
+                            int iStart = description.IndexOf(stStart);
+
+                            int iEnd = description.IndexOf(stEnd, iStart);
+                            iEnd += stEnd.Length;
+
+                            string stReplace = description.Substring(iStart, iEnd - iStart);
+
+                            description = description.Replace(stReplace, "");
+                        }
+                    }
+
+                    Regex emailReplace = new Regex(@"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}", RegexOptions.IgnoreCase);
+                    emailReplace.Replace(description, "");
+
+                    var productDetailTab2Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab2']");
+
+                    string specification = "";
+                    if (productDetailTab2Node != null)
+                    {
+                        specification = productDetailTab2Node.InnerHtml;
+                        string temp = specification;
+                        //string convertedSpecification = HtmlToText.ConvertHtml(specification);
+                        //specification = convertedSpecification.Replace("'", "");
+                        //specification = convertedSpecification.Replace("\r", "");
+                        //specification = convertedSpecification.Replace("\t", "");
+                        //specification = convertedSpecification.Replace("\n", "");
+                        temp = ProcessHtml(temp);
+                        specification = temp;
+                    }
+                    */
+
+                    HtmlNode imageColumnNode = html.CssSelect(".image-column").ToList<HtmlNode>().First();
+
+                    //HtmlNode carouselWrapNode = imageColumnNode.CssSelect(".product-image-carousel").ToList<HtmlNode>().First();
+                    //var thumbHolderNode = carouselWrapNode.SelectNodes("//ul[@id='thumb_holder']");
+
+                    //var thumbNodes = thumbHolderNode.SelectNodes("/li");
+
+                    HtmlNode imageNode = imageColumnNode.SelectSingleNode("//img[@itemprop='image']");
+
+                    string imageUrl = (imageNode.Attributes["src"]).Value;
+
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','"  + imageUrl + "','" + productUrl + "')";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+
+                    sqlString = "INSERT INTO Costco_Categories (" + columns + ") VALUES (" + values + ")";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception exception)
+                {
+                    continue;
+
+
+                }
+            }
+
+            cn.Close();
+
+            endDT = DateTime.Now;
+
+            driver.Dispose();
+
+            //MessageBox.Show("Start: " + startDT.ToLongTimeString() + "; End: " + endDT.ToLongTimeString());
+        }
+
+        private string ProcessHtml(string inputSt)
+        {
+            //string pattern = "/[\n\r]+/g";
+            //Regex rgx = new Regex(pattern);
+            //string outputSt = rgx.Replace(inputSt, "''");
+
+            //outputSt = outputSt.Replace("\"", "'");
+
+            string outputSt = inputSt.Replace("\n", "");
+            outputSt = outputSt.Replace("\t", "");
+            outputSt = outputSt.Replace("\\\"", "'");
+
+            return outputSt;
+        }
+
+        private string ProcessInlineProduct(IWebElement inputElement)
+        {
+            string html = inputElement.GetAttribute("outerHTML");
+
+            return html;
+        }
+
+        private string ProcessPowerPage(IWebElement inputElement)
+        {
+            string outputHtml = "<div style = 'list-style-type: none; font-family: Verdana,sans-serif; font-size: 15px; color: grey'>";
+
+            var lis = inputElement.FindElements(By.XPath("//li[contains(@class, 'wc-rich-feature-item')]"));
+
+            foreach (IWebElement li in lis)
+            {
+                string lihtml = li.GetAttribute("outerHTML");
+
+                var videos = li.FindElements(By.XPath(".//img[contains(@data-asset-type, 'video')]"));
+
+                if (videos.Count > 0)
+                {
+                    string vhtml = videos[0].GetAttribute("outerHTML");
+                    lihtml = lihtml.Replace(vhtml, "");
+                }
+
+                var iframes = li.FindElements(By.XPath(".//iframe"));
+
+                if (iframes.Count > 0)
+                {
+                    string ihtml = iframes[0].GetAttribute("outerHTML");
+                    lihtml = lihtml.Replace(ihtml, "");
+                }
+
+                var enlarges = li.FindElements(By.XPath(".//a[contains(@class, 'wc-zoom-image')]"));
+
+                if (enlarges.Count > 0)
+                {
+                    string ehtml = enlarges[0].GetAttribute("outerHTML");
+                    lihtml = lihtml.Replace(ehtml, "");
+                }
+
+                outputHtml += lihtml;
+            }
+
+            outputHtml += "</div>";
+
+            return outputHtml;
+        }
+
+        public bool isAlertPresents(ref IWebDriver driver)
+        {
+            try
+            {
+                driver.SwitchTo().Alert();
+                return true;
+            }// try
+            catch (Exception e)
+            {
+                return false;
+            }// catch
+        }
+
+        private void PopulateTables()
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            // copy to staging_productInfo
+            cn.Open();
+            string sqlString = "TRUNCATE TABLE Staging_ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into dbo.staging_productInfo (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url
+                        from dbo.Raw_ProductInfo
+                        where Price > 0
+                        order by UrlNumber";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            // copy to staging_productInfo_filtered
+            sqlString = "TRUNCATE TABLE Staging_ProductInfo_Filtered";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into dbo.Staging_ProductInfo_Filtered(Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url 
+                        from dbo.Raw_ProductInfo 
+                        where Price > 0 and Price < 100 and Shipping = 0
+                        order by UrlNumber";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+        }
+
+        private void CompareProducts()
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            SqlDataReader rdr;
+
+            cn.Open();
+
+            // price up
+            string sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+                                where s.UrlNumber = p.UrlNumber
+                                and s.Price > p.Price";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                priceUpProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+            }
+
+            rdr.Close();
+
+            // price down
+            sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+                                where s.UrlNumber = p.UrlNumber
+                                and s.Price < p.Price";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                priceDownProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+            }
+
+            rdr.Close();
+
+            // new products
+            sqlString = @"select * from Staging_ProductInfo sp
+                        where 
+                        not exists
+                        (select 1 from ProductInfo p  where sp.UrlNumber = p.UrlNumber)";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                newProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+            }
+
+            rdr.Close();
+
+            // discontinued products
+            sqlString = @"select * from ProductInfo p 
+                        where 
+                        not exists
+                        (select 1 from Staging_ProductInfo sp where sp.UrlNumber = p.UrlNumber)";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                discontinueddProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+            }
+
+            rdr.Close();
+
+            cn.Close();
+        }
+
+        private void ArchieveProducts()
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            // price up
+            string sqlString = @"insert into [dbo].[Archieve] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, ImportedDT)
+                                select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, GETDATE()
+                                from  [dbo].[ProductInfo]";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = "TRUNCATE TABLE ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into [dbo].[ProductInfo] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url
+                        from  dbo.staging_productInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = "TRUNCATE TABLE Staging_ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+        }
+
+        private void SendEmail()
+        {
+            emailMessage = "<h3>Price up products: (" + priceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (priceUpProductArray.Count == 0)
+                emailMessage += "<p>No price up product</p>" + "</br>";
+            else
+            {
+                foreach (string priceUpProduct in priceUpProductArray)
+                {
+                    emailMessage += "<p>" + priceUpProduct + "</p></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>Price down products: (" + priceDownProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (priceDownProductArray.Count == 0)
+                emailMessage += "<p>No price down product" + "</p></br>";
+            else
+            {
+                foreach (string priceDownProduct in priceDownProductArray)
+                {
+                    emailMessage += "<p>" + priceDownProduct + "</p></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>New products: (" + newProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (newProductArray.Count == 0)
+                emailMessage = "<p>No new product</p>" + "</br>";
+            else
+            {
+                foreach (string newProduct in newProductArray)
+                {
+                    emailMessage += "<p>" + newProduct + "</P></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>Discontinued products: (" + discontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (this.discontinueddProductArray.Count == 0)
+                emailMessage = "<p>No new product</p>" + "</br>";
+            else
+            {
+                foreach (string discontinueddProduct in discontinueddProductArray)
+                {
+                    emailMessage += "<p>" + discontinueddProduct + "</P></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
+            emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
+
+            using (MailMessage mail = new MailMessage())
+            {
+                mail.From = new MailAddress("zjding@gmail.com");
+                mail.To.Add("zjding@gmail.com");
+                mail.Subject = DateTime.Now.ToLongDateString();
+                mail.Body = emailMessage;
+                mail.IsBodyHtml = true;
+                //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                {
+                    smtp.Credentials = new NetworkCredential("zjding@gmail.com", "yueding00");
+                    smtp.EnableSsl = true;
+                    smtp.Send(mail);
+                }
+            }
+
         }
     }
 }

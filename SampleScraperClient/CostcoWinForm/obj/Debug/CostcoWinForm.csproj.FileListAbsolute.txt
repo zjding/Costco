@@ -17,7 +17,6 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWi
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\ScrapySharp.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\ScrapySharp.Core.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\ScrapySharp.Core.xml
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csprojResolveAssemblyReference.cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csproj.ResolveComReference.cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.ListedProducts.resources
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\itextsharp.dll
@@ -37,3 +36,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWi
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\Select.HtmlToPdf.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\Select.HtmlToPdf.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.eBayFrontEnd.resources
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.csprojResolveAssemblyReference.cache

@@ -15,3 +15,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleSc
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.ProductInfoForm.resources
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.csproj.GenerateResource.Cache
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.csprojResolveAssemblyReference.cache
