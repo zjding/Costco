@@ -42,6 +42,12 @@
             this.Select = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Category_1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Category_2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Category_3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Category_4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Category_5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Category_6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Category_7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Category_8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button7 = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -147,12 +153,6 @@
             this.eBay_ToAddTableAdapter = new CostcoWinForm.ds_eBayToAddTableAdapters.eBay_ToAddTableAdapter();
             this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
             this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
-            this.Category_3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1.SuspendLayout();
             this.tpCostco.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -289,6 +289,9 @@
             this.lvCategories.TabIndex = 0;
             this.lvCategories.UseCompatibleStateImageBehavior = false;
             this.lvCategories.View = System.Windows.Forms.View.Details;
+            this.lvCategories.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lvCategories_ItemCheck);
+            this.lvCategories.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvCategories_ItemChecked);
+            this.lvCategories.SelectedIndexChanged += new System.EventHandler(this.lvCategories_SelectedIndexChanged);
             // 
             // Select
             // 
@@ -304,6 +307,36 @@
             // 
             this.Category_2.Text = "Category2";
             this.Category_2.Width = 100;
+            // 
+            // Category_3
+            // 
+            this.Category_3.Text = "Category3";
+            this.Category_3.Width = 100;
+            // 
+            // Category_4
+            // 
+            this.Category_4.Text = "Category4";
+            this.Category_4.Width = 100;
+            // 
+            // Category_5
+            // 
+            this.Category_5.Text = "Category5";
+            this.Category_5.Width = 100;
+            // 
+            // Category_6
+            // 
+            this.Category_6.Text = "Category6";
+            this.Category_6.Width = 100;
+            // 
+            // Category_7
+            // 
+            this.Category_7.Text = "Category7";
+            this.Category_7.Width = 100;
+            // 
+            // Category_8
+            // 
+            this.Category_8.Text = "Category8";
+            this.Category_8.Width = 100;
             // 
             // button7
             // 
@@ -1188,36 +1221,6 @@
             // eBay_ToRemoveTableAdapter
             // 
             this.eBay_ToRemoveTableAdapter.ClearBeforeFill = true;
-            // 
-            // Category_3
-            // 
-            this.Category_3.Text = "Category3";
-            this.Category_3.Width = 100;
-            // 
-            // Category_4
-            // 
-            this.Category_4.Text = "Category4";
-            this.Category_4.Width = 100;
-            // 
-            // Category_5
-            // 
-            this.Category_5.Text = "Category5";
-            this.Category_5.Width = 100;
-            // 
-            // Category_6
-            // 
-            this.Category_6.Text = "Category6";
-            this.Category_6.Width = 100;
-            // 
-            // Category_7
-            // 
-            this.Category_7.Text = "Category7";
-            this.Category_7.Width = 100;
-            // 
-            // Category_8
-            // 
-            this.Category_8.Text = "Category8";
-            this.Category_8.Width = 100;
             // 
             // eBayFrontEnd
             // 

@@ -43,6 +43,8 @@ namespace CostcoWinForm
 
         string connectionString = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
+        bool bInit = false;
+
         public eBayFrontEnd()
         {
             InitializeComponent();
@@ -50,6 +52,8 @@ namespace CostcoWinForm
 
         private void eBayFrontEnd_Load(object sender, EventArgs e)
         {
+            bInit = false;
+
             // TODO: This line of code loads data into the 'costcoDataSet5.eBay_ToRemove' table. You can move, or remove it, as needed.
             this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
             // TODO: This line of code loads data into the 'dseBayCurrentListings.eBay_CurrentListings' table. You can move, or remove it, as needed.
@@ -79,7 +83,7 @@ namespace CostcoWinForm
             foreach (Category catetory in categories)
             {
                 ListViewItem item = new ListViewItem();
-                //item.Checked = catetory.bInclude;
+                //item.Checked = true;
                 item.SubItems.Add(catetory.Category1);
                 item.SubItems.Add(catetory.Category2);
                 item.SubItems.Add(catetory.Category3);
@@ -98,6 +102,8 @@ namespace CostcoWinForm
             timer.Interval = (1000) * (3);              // Timer will tick evert second
             timer.Enabled = true;                       // Enable the timer
             timer.Start();
+
+            bInit = true;
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -324,7 +330,7 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            MessageBox.Show("Hi");
+            
         }
 
         private void btnCrawl_Click(object sender, EventArgs e)
@@ -1002,6 +1008,130 @@ namespace CostcoWinForm
             this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
             //this.gvToAdd.Update();
             this.gvCurrentListing.Refresh();
+        }
+
+        private void lvCategories_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<string> selectedCategories = new List<string>();
+
+            foreach(ListViewItem item in lvCategories.Items)
+            {
+                if (item.Checked)
+                {
+                    string category = "";
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        category += item.SubItems[i].Text + "|";
+                    }
+
+                    category = category.Substring(0, category.Length - 1);
+
+                    selectedCategories.Add(category);
+                }
+            }
+
+            string selectCategoriesString = "";
+
+            foreach(string s in selectedCategories)
+            {
+                selectCategoriesString += "'" + s + "',";
+            }
+
+            selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
+
+            string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
+                                Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
+                                FROM ProductInfo
+                                WHERE Category in (" + selectCategoriesString + ")";
+            
+            SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
+            CostcoDataSet4.ProductInfoDataTable table = new CostcoDataSet4.ProductInfoDataTable();
+            table.Locale = System.Globalization.CultureInfo.InvariantCulture;
+            //dataAdapter.Fill(table);
+
+            //this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
+
+            productInfoBindingSource.ResetBindings(false);
+            productInfoTableAdapter1.Fill(table);
+            this.gvProducts.Refresh();
+
+            //eBayCurrentListingsBindingSource.ResetBindings(false);
+            //this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
+            ////this.gvToAdd.Update();
+            //this.gvCurrentListing.Refresh();
+        }
+
+        private void lvCategories_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (bInit)
+            {
+
+                
+
+                //CostcoDataSet4.ProductInfoDataTable table = new CostcoDataSet4.ProductInfoDataTable();
+                //table.Locale = System.Globalization.CultureInfo.InvariantCulture;
+                ////dataAdapter.Fill(table);
+
+                ////this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
+
+                //productInfoBindingSource.ResetBindings(false);
+                //productInfoTableAdapter1.Fill(table);
+                //this.gvProducts.Refresh();
+            }
+        }
+
+        private void lvCategories_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (bInit)
+            {
+                List<string> selectedCategories = new List<string>();
+
+                foreach (ListViewItem item in lvCategories.Items)
+                {
+                    if (item.Checked)
+                    {
+                        string category = "";
+
+                        for (int i = 0; i < 8; i++)
+                        {
+                            if (item.SubItems[i].Text.Length > 0)
+                            {
+                                category += item.SubItems[i].Text + "|";
+                            }
+                        }
+
+                        category = category.Substring(0, category.Length - 1);
+
+                        selectedCategories.Add(category);
+                    }
+                }
+
+                string selectCategoriesString = "";
+
+                foreach (string s in selectedCategories)
+                {
+                    selectCategoriesString += "'" + s + "',";
+                }
+
+                if (selectCategoriesString.Length > 0)
+                    selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
+                else
+                    selectCategoriesString = "''";
+
+                string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
+                                Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
+                                FROM ProductInfo
+                                WHERE Category in (" + selectCategoriesString + ")";
+
+                SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
+                DataSet products = new DataSet();
+                dataAdapter.Fill(products);
+                DataTable productTable = products.Tables[0];
+
+                gvProducts.DataSource = productTable;
+                gvProducts.Refresh();
+            }
         }
     }
 }

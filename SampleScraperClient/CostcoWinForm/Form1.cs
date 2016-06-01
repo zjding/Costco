@@ -74,7 +74,7 @@ namespace CostcoWinForm
             GetCategories();
         }
 
-        private void btnImportProducts_Click(object sender, EventArgs e)
+        public void ImportProducts()
         {
             GetDepartmentArray();
 
@@ -91,6 +91,11 @@ namespace CostcoWinForm
             ArchieveProducts();
 
             SendEmail();
+        }
+
+        private void btnImportProducts_Click(object sender, EventArgs e)
+        {
+            ImportProducts();
         }
 
         private void GetCategories()
