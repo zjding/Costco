@@ -118,6 +118,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CostcoDataSet5.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CostcoDataSet6.cs">
+      <DependentUpon>CostcoDataSet6.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="CostcoDataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CostcoDataSet6.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer.cs" />
     <Compile Include="DataSet_eBayCurrentListing.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -252,6 +260,17 @@
     </None>
     <None Include="CostcoDataSet5.xss">
       <DependentUpon>CostcoDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet6.xsc">
+      <DependentUpon>CostcoDataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="CostcoDataSet6.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CostcoDataSet6.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="CostcoDataSet6.xss">
+      <DependentUpon>CostcoDataSet6.xsd</DependentUpon>
     </None>
     <None Include="DataSet_eBayCurrentListing.xsc">
       <DependentUpon>DataSet_eBayCurrentListing.xsd</DependentUpon>

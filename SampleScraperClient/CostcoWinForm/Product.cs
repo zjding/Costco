@@ -33,4 +33,10 @@ namespace CostcoWinForm
         public decimal eBayListingPrice { get; set; } 
 
     }
+
+    class ProductUpdate
+    {
+        public string eBayItemNumbr { get; set; }
+        public decimal NewPrice { get; set; }
+    }
 }

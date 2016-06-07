@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Website", "Website\Website.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerConsole", "CrawlerConsole\CrawlerConsole.csproj", "{440C0384-92B9-412C-BB82-16C2CB3111FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormCrawl", "WinFormCrawl\WinFormCrawl.csproj", "{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{440C0384-92B9-412C-BB82-16C2CB3111FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{440C0384-92B9-412C-BB82-16C2CB3111FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{440C0384-92B9-412C-BB82-16C2CB3111FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

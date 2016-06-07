@@ -45,6 +45,10 @@ namespace CostcoWinForm
         List<String> priceUpProductArray = new List<string>();
         List<String> priceDownProductArray = new List<string>();
 
+        List<String> eBayListingDiscontinueddProductArray = new List<string>();
+        List<String> eBayListingPriceUpProductArray = new List<string>();
+        List<String> eBayListingPriceDownProductArray = new List<string>();
+
         List<Product> priceChangedProductArray = new List<Product>();
 
         string emailMessage;
@@ -64,6 +68,8 @@ namespace CostcoWinForm
 
         bool bInit = false;
 
+        bool bCheckingAll = false;
+
         public eBayFrontEnd()
         {
             InitializeComponent();
@@ -71,6 +77,8 @@ namespace CostcoWinForm
 
         private void eBayFrontEnd_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'costcoDataSet6.eBay_ToChange' table. You can move, or remove it, as needed.
+            this.eBay_ToChangeTableAdapter.Fill(this.costcoDataSet6.eBay_ToChange);
             bInit = false;
 
             // TODO: This line of code loads data into the 'costcoDataSet5.eBay_ToRemove' table. You can move, or remove it, as needed.
@@ -102,7 +110,7 @@ namespace CostcoWinForm
             foreach (Category catetory in categories)
             {
                 ListViewItem item = new ListViewItem();
-                //item.Checked = true;
+                item.Checked = true;
                 item.SubItems.Add(catetory.Category1);
                 item.SubItems.Add(catetory.Category2);
                 item.SubItems.Add(catetory.Category3);
@@ -133,9 +141,18 @@ namespace CostcoWinForm
                 this.eBay_ToAddTableAdapter.Fill(this.ds_eBayToAdd.eBay_ToAdd);
                 this.gvToAdd.Refresh();
 
+                eBayToChangeBindingSource.ResetBindings(false);
+                this.eBay_ToChangeTableAdapter.Fill(this.costcoDataSet6.eBay_ToChange);
+                this.gvToChange.Refresh();
+
                 eBayToRemoveBindingSource.ResetBindings(false);
                 this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
                 this.gvToDelete.Refresh();
+            } else if (tpCurrentListing == tabControl1.SelectedTab)
+            {
+                eBayCurrentListingsBindingSource.ResetBindings(false);
+                eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
+                gvCurrentListing.Refresh();
             }
         }
 
@@ -144,14 +161,18 @@ namespace CostcoWinForm
             RefreshProductsGrid();
         }
 
-        
-
         private void chkAll_CheckedChanged(object sender, EventArgs e)
         {
+            bCheckingAll = true;
+
             foreach (ListViewItem item in this.lvCategories.Items)
             {
                 item.Checked = chkAll.Checked;
             }
+
+            bCheckingAll = false;
+
+            RefreshProductsGrid();
         }
 
         private void gvProducts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -210,13 +231,13 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            //GetDepartmentArray();
+            GetDepartmentArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
-            //GetProductInfo();
+            GetProductInfo();
 
             PopulateTables();
 
@@ -404,8 +425,8 @@ namespace CostcoWinForm
             //}
 
             string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
-                                "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
-                                "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1) + "'";
+                                "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2).Replace("'", "''") + "' AND " +
+                                "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1).Replace("'", "''") + "'";
 
             string categoryID = "";
 
@@ -822,7 +843,10 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
+            cn.Close();
+
             // add to Excel file
+            /*
             string sourceFileName = @"c:\ebay\documents\" + "FileExchangeRemove.csv";
             string destinFileName = @"c:\ebay\upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
             File.Copy(sourceFileName, destinFileName);
@@ -872,6 +896,7 @@ namespace CostcoWinForm
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+            */
         }
 
         private void gvCurrentListing_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -977,10 +1002,13 @@ namespace CostcoWinForm
 
         private void lvCategories_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            if (bInit)
-            {
-                RefreshProductsGrid();   
-            }
+            if (bCheckingAll)
+                return;
+
+            if (!bInit)
+                return;
+
+            RefreshProductsGrid();   
         }
 
         private void RefreshProductsGrid()
@@ -1063,92 +1091,101 @@ namespace CostcoWinForm
 
             foreach (var categoryUrl in categoryUrlArray)
             {
-                string url;
-                if (categoryUrl.Contains("http"))
-                    url = categoryUrl;
-                else
-                    url = "http://www.costco.com" + categoryUrl;
-
-                // level 0
-                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
-                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                if (mainContentWrapperNote == null)
-                    continue;
-                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                try
                 {
-                    subCategoryArray.Add(url);
-                }
-                else
-                {
-                    List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                    foreach (HtmlNode departmentNode in departmentNodes)
+                    string url;
+                    if (categoryUrl.Contains("http"))
+                        url = categoryUrl;
+                    else
+                        url = "http://www.costco.com" + categoryUrl;
+
+                    // level 0
+                    WebPage PageResult = Browser.NavigateToPage(new Uri(url));
+                    var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                    if (mainContentWrapperNote == null)
+                        continue;
+                    List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                    if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
                     {
-                        if (departmentNode.InnerText.Contains("("))
+                        subCategoryArray.Add(url);
+                    }
+                    else
+                    {
+                        List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                        foreach (HtmlNode departmentNode in departmentNodes)
                         {
-                            HtmlNode node = departmentNode.Descendants("a").First();
-                            string departmentUrl = node.Attributes["href"].Value;
-
-                            // level 1
-                            PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
-                            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                            if (mainContentWrapperNote == null)
-                                continue;
-                            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                            if (departmentNode.InnerText.Contains("("))
                             {
-                                subCategoryArray.Add(departmentUrl);
-                            }
-                            else
-                            {
-                                List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                                foreach (HtmlNode department_1_Node in department_1_Nodes)
+                                HtmlNode node = departmentNode.Descendants("a").First();
+                                string departmentUrl = node.Attributes["href"].Value;
+
+                                // level 1
+                                PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
+                                mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                                if (mainContentWrapperNote == null)
+                                    continue;
+                                categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
                                 {
-                                    if (department_1_Node.InnerText.Contains("("))
+                                    subCategoryArray.Add(departmentUrl);
+                                }
+                                else
+                                {
+                                    List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                                    foreach (HtmlNode department_1_Node in department_1_Nodes)
                                     {
-                                        HtmlNode node_1 = department_1_Node.Descendants("a").First();
-                                        string departmentUrl_1 = node_1.Attributes["href"].Value;
-
-                                        // level 2
-                                        PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
-                                        mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                                        if (mainContentWrapperNote == null)
-                                            continue;
-                                        categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                                        if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                                        if (department_1_Node.InnerText.Contains("("))
                                         {
-                                            subCategoryArray.Add(departmentUrl_1);
+                                            HtmlNode node_1 = department_1_Node.Descendants("a").First();
+                                            string departmentUrl_1 = node_1.Attributes["href"].Value;
+
+                                            // level 2
+                                            PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
+                                            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                                            if (mainContentWrapperNote == null)
+                                                continue;
+                                            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                                            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                                            {
+                                                subCategoryArray.Add(departmentUrl_1);
+                                            }
+                                            else
+                                            {
+                                                List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                                                foreach (HtmlNode department_2_Node in department_2_Nodes)
+                                                {
+                                                    HtmlNode node_2 = department_2_Node.Descendants("a").First();
+                                                    string department_2_Url = node_2.Attributes["href"].Value;
+                                                    subCategoryArray.Add(department_2_Url);
+                                                }
+                                            }
                                         }
                                         else
                                         {
-                                            List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                                            foreach (HtmlNode department_2_Node in department_2_Nodes)
-                                            {
-                                                HtmlNode node_2 = department_2_Node.Descendants("a").First();
-                                                string department_2_Url = node_2.Attributes["href"].Value;
-                                                subCategoryArray.Add(department_2_Url);
-                                            }
+                                            HtmlNode node_1 = departmentNode.Descendants("a").First();
+                                            string department_1_Url = node_1.Attributes["href"].Value;
+                                            subCategoryArray.Add(department_1_Url);
                                         }
-                                    }
-                                    else
-                                    {
-                                        HtmlNode node_1 = departmentNode.Descendants("a").First();
-                                        string department_1_Url = node_1.Attributes["href"].Value;
-                                        subCategoryArray.Add(department_1_Url);
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            HtmlNode node = departmentNode.Descendants("a").First();
-                            string departmentUrl = node.Attributes["href"].Value;
-                            subCategoryArray.Add(departmentUrl);
+                            else
+                            {
+                                HtmlNode node = departmentNode.Descendants("a").First();
+                                string departmentUrl = node.Attributes["href"].Value;
+                                subCategoryArray.Add(departmentUrl);
+                            }
                         }
                     }
+                }
+                catch (Exception exception)
+                {
+                    continue;
+
+
                 }
             }
 
@@ -1202,8 +1239,11 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            IWebDriver driver = new FirefoxDriver();
+            sqlString = "TRUNCATE TABLE Import_Errors";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
 
+            //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
 
             int i = 1;
@@ -1317,7 +1357,11 @@ namespace CostcoWinForm
 
                     if (productSHNode != null)
                     {
-                        if (productSHNode.InnerText.ToUpper().Contains("INCLUDED"))
+                        if (productSHNode.InnerText.ToUpper().Contains("OPTIONS"))
+                        {
+                            continue;
+                        }
+                        else if (productSHNode.InnerText.ToUpper().Contains("INCLUDED") || productSHNode.InnerText.ToUpper().Contains("INLCUDED"))
                         {
                             shipping = "0";
                         }
@@ -1532,9 +1576,11 @@ namespace CostcoWinForm
                 }
                 catch (Exception exception)
                 {
+                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + productUrl + "','" + exception.Message + "')";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+
                     continue;
-
-
                 }
             }
 
@@ -1542,7 +1588,7 @@ namespace CostcoWinForm
 
             endDT = DateTime.Now;
 
-            driver.Dispose();
+            //driver.Dispose();
 
             //MessageBox.Show("Start: " + startDT.ToLongTimeString() + "; End: " + endDT.ToLongTimeString());
         }
@@ -1671,7 +1717,8 @@ namespace CostcoWinForm
             cn.Open();
 
             // price up
-            string sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+            string sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url 
+                                from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
                                 where s.UrlNumber = p.UrlNumber
                                 and s.Price > p.Price";
             cmd.CommandText = sqlString;
@@ -1685,9 +1732,10 @@ namespace CostcoWinForm
             rdr.Close();
 
             // price down
-            sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
-                                where s.UrlNumber = p.UrlNumber
-                                and s.Price < p.Price";
+            sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from 
+                        [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+                        where s.UrlNumber = p.UrlNumber
+                        and s.Price < p.Price";
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
 
@@ -1728,6 +1776,84 @@ namespace CostcoWinForm
 
             rdr.Close();
 
+            // eBay listing price up
+            sqlString = @"select s.Name, s.CostcoPrice as OldBasePrice, s.eBayListingPrice as eBayListingPrice, p.Price as NewBasePrice, p.Url as CostcoUrl, s.eBayItemNumber as eBayItemNumber
+                            from [dbo].[eBay_CurrentListings] s, [dbo].[Staging_ProductInfo] p
+                            where s.CostcoUrlNumber = p.UrlNumber
+                            and s.CostcoPrice < p.Price";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                eBayListingPriceUpProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
+            }
+
+            rdr.Close();
+
+            sqlString = @"INSERT INTO [dbo].[eBay_ToChange] (Name, CostcoUrlNumber, eBayItemNumber, eBayOldListingPrice, 
+							eBayNewListingPrice, eBayReferencePrice, 
+							CostcoOldPrice, CostcoNewPrice, PriceChange)
+                            SELECT l.Name, l.CostcoUrlNumber, l.eBayItemNumber, l.eBayListingPrice, l.eBayListingPrice, 
+                            l.eBayReferencePrice, l.CostcoPrice, r.Price, 'up'
+                            FROM [dbo].[eBay_CurrentListings] l, [dbo].[Staging_ProductInfo] r
+                            WHERE l.CostcoPrice < r.Price 
+                            AND l.CostcoUrlNumber = r.UrlNumber";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            // eBay listing price down
+            sqlString = @"select s.Name, s.CostcoPrice as OldBasePrice, s.eBayListingPrice as eBayListingPrice, p.Price as NewBasePrice, p.Url as CostcoUrl, s.eBayItemNumber as eBayItemNumber
+                            from [dbo].[eBay_CurrentListings] s, [dbo].[Staging_ProductInfo] p
+                            where s.CostcoUrlNumber = p.UrlNumber
+                            and s.CostcoPrice > p.Price";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                eBayListingPriceDownProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
+            }
+
+            rdr.Close();
+
+            sqlString = @"INSERT INTO [dbo].[eBay_ToChange] (Name, CostcoUrlNumber, eBayItemNumber, eBayOldListingPrice, 
+							eBayNewListingPrice, eBayReferencePrice, 
+							CostcoOldPrice, CostcoNewPrice, PriceChange)
+                            SELECT l.Name, l.CostcoUrlNumber, l.eBayItemNumber, l.eBayListingPrice, l.eBayListingPrice, 
+                            l.eBayReferencePrice, l.CostcoPrice, r.Price, 'down'
+                            FROM [dbo].[eBay_CurrentListings] l, [dbo].[Staging_ProductInfo] r
+                            WHERE l.CostcoPrice < r.Price
+                            AND l.CostcoUrlNumber = r.UrlNumber";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            // eBay listing discontinused 
+            sqlString = @"select * from eBay_CurrentListings p 
+                        where 
+                        not exists
+                        (select 1 from Staging_ProductInfo sp where sp.UrlNumber = p.CostcoUrlNumber)";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                eBayListingDiscontinueddProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["CostcoPrice"].ToString());
+            }
+
+            rdr.Close();
+
+            sqlString = @"INSERT INTO [dbo].[eBay_ToRemove] (Name, CostcoUrlNumber, eBayItemNumber)
+                            SELECT l.Name, l.CostcoUrlNumber, l.eBayItemNumber
+                            FROM [dbo].[eBay_CurrentListings] l
+                            WHERE not exists 
+	                        (SELECT 1 FROM [dbo].[Staging_ProductInfo] r where r.UrlNumber = l.CostcoUrlNumber)";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
             cn.Close();
         }
 
@@ -1765,7 +1891,13 @@ namespace CostcoWinForm
 
         private void SendEmail()
         {
-            emailMessage = "<h3>Price up products: (" + priceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage =  "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
+            emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
+
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>Price up products: (" + priceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             if (priceUpProductArray.Count == 0)
                 emailMessage += "<p>No price up product</p>" + "</br>";
@@ -1818,11 +1950,51 @@ namespace CostcoWinForm
                     emailMessage += "<p>" + discontinueddProduct + "</P></br>";
                 }
             }
+
             emailMessage += "</br>";
             emailMessage += "</br>";
 
-            emailMessage += "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
-            emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
+            emailMessage += "<h3>eBay listing price up products: (" + eBayListingPriceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (eBayListingPriceUpProductArray.Count == 0)
+                emailMessage += "<p>No eBay listing price up product</p>" + "</br>";
+            else
+            {
+                foreach (string priceUpProduct in eBayListingPriceUpProductArray)
+                {
+                    emailMessage += "<p>" + priceUpProduct + "</p></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>eBay listing price down products: (" + eBayListingPriceDownProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (eBayListingPriceDownProductArray.Count == 0)
+                emailMessage += "<p>No eBay listing price down product</p>" + "</br>";
+            else
+            {
+                foreach (string priceDownProduct in eBayListingPriceDownProductArray)
+                {
+                    emailMessage += "<p>" + priceDownProduct + "</p></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>eBay listing discontinued products: (" + eBayListingDiscontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (eBayListingDiscontinueddProductArray.Count == 0)
+                emailMessage += "<p>No eBay listing discontinued product</p>" + "</br>";
+            else
+            {
+                foreach (string priceDiscontinuedProduct in eBayListingDiscontinueddProductArray)
+                {
+                    emailMessage += "<p>" + priceDiscontinuedProduct + "</p></br>";
+                }
+            }
+            emailMessage += "</br>";
+            emailMessage += "</br>";
 
             using (MailMessage mail = new MailMessage())
             {
@@ -1841,6 +2013,230 @@ namespace CostcoWinForm
                 }
             }
 
+        }
+
+        private void btnToChangeUpload_Click(object sender, EventArgs e)
+        {
+            List<ProductUpdate> products = new List<ProductUpdate>();
+
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = "  SELECT * FROM eBay_ToChange"; // WHERE shipping = 0.00 and Price < 100";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    ProductUpdate p = new ProductUpdate();
+                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+                    p.NewPrice = Convert.ToDecimal(reader["eBayNewListingPrice"]);
+                    products.Add(p);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            // add to Excel file
+            string sourceFileName = @"c:\ebay\documents\" + "FileExchangeRevise.csv";
+            string destinFileName = @"c:\ebay\upload\" + "FileExchangeRevise-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+            foreach (ProductUpdate product in products)
+            {
+                oSheet.Cells[i, 1].value = "Revise";
+                oSheet.Cells[i, 2].NumberFormat = "#";
+                oSheet.Cells[i, 2].value = product.eBayItemNumbr;        
+                oSheet.Cells[i, 3].value = product.NewPrice;
+               
+                i++;
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+        }
+
+        private void btnToDeleteUpload_Click(object sender, EventArgs e)
+        {
+            List<ProductUpdate> products = new List<ProductUpdate>();
+
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = "  SELECT * FROM eBay_ToRemove"; // WHERE shipping = 0.00 and Price < 100";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    ProductUpdate p = new ProductUpdate();
+                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+                    
+                    products.Add(p);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            // add to Excel file
+            string sourceFileName = @"c:\ebay\documents\" + "FileExchangeRemove.csv";
+            string destinFileName = @"c:\ebay\upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+            foreach (ProductUpdate product in products)
+            {
+                oSheet.Cells[i, 1].value = "End";
+                oSheet.Cells[i, 2].NumberFormat = "#";
+                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
+                oSheet.Cells[i, 3].value = "NotAvailable";
+
+                i++;
+            }
+            
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+        }
+
+        private void btnToChangeDelete_Click(object sender, EventArgs e)
+        {
+            gvToChange.Rows.RemoveAt(gvToChange.CurrentRow.Index);
+            eBay_ToChangeTableAdapter.Update(costcoDataSet6.eBay_ToChange);
+        }
+
+        private void btnToChangeUpdate_Click(object sender, EventArgs e)
+        {
+            eBayToChangeBindingSource.EndEdit();
+            eBay_ToChangeTableAdapter.Update(costcoDataSet6.eBay_ToChange);
+        }
+
+        private void btnListingModify_Click(object sender, EventArgs e)
+        {
+            string itemNumbers = "";
+
+            foreach (string n in this.selectedListingItems)
+            {
+                itemNumbers += "'" + n + "',";
+            }
+
+            itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @"INSERT INTO eBay_ToChange(Name, eBayItemNumber, eBayOldListingPrice, eBayNewListingPrice) 
+                                 SELECT eBayListingName, eBayItemNumber, eBayListingPrice, eBayListingPrice
+                                 FROM eBay_CurrentListings
+                                 WHERE eBayItemNumber in (" + itemNumbers + ")";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+        }
+
+        private void gvToChange_SelectionChanged(object sender, EventArgs e)
+        {
+            //timer.Stop();
+        }
+
+        private void gvToChange_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            //timer.Stop();
+        }
+
+        private void gvToChange_Enter(object sender, EventArgs e)
+        {
+            timer.Stop();
+        }
+
+        private void gvToChange_Leave(object sender, EventArgs e)
+        {
+            timer.Start();
+        }
+
+        private void tpPendingChanges_Enter(object sender, EventArgs e)
+        {
+            timer.Start();
         }
     }
 }
