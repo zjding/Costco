@@ -77,6 +77,8 @@ namespace CostcoWinForm
 
         private void eBayFrontEnd_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'dsEBaySold.eBay_SoldTransactions' table. You can move, or remove it, as needed.
+            this.eBay_SoldTransactionsTableAdapter.Fill(this.dsEBaySold.eBay_SoldTransactions);
             // TODO: This line of code loads data into the 'costcoDataSet6.eBay_ToChange' table. You can move, or remove it, as needed.
             this.eBay_ToChangeTableAdapter.Fill(this.costcoDataSet6.eBay_ToChange);
             bInit = false;
@@ -1194,6 +1196,8 @@ namespace CostcoWinForm
 
         private void GetProductUrls()
         {
+            productUrlArray.Clear();
+
             foreach (string url in subCategoryArray)
             {
                 WebPage PageResult = Browser.NavigateToPage(new Uri(url));
@@ -1314,7 +1318,10 @@ namespace CostcoWinForm
                     HtmlNode discountNote = topReviewPanelNode[0].SelectSingleNode("//p[@class='merchandisingText']");
 
                     if (discountNote != null)
+                    {
                         discount = discountNote.InnerText.Replace("?", "");
+                        discount = discountNote.InnerText.Replace("'", "");
+                    }
 
                     string productName = ((topReviewPanelNode[0]).SelectNodes("h1"))[0].InnerText;
                     productName = productName.Replace("???", "");
@@ -1330,7 +1337,12 @@ namespace CostcoWinForm
                     discountNote = col1Node[0].CssSelect(".merchandisingText").FirstOrDefault();
 
                     if (discountNote != null)
+                    {
                         discount = discount.Length == 0 ? discountNote.InnerText.Replace("?", "") : discount + "; " + discountNote.InnerText.Replace("?", "");
+                        discount = discount.Replace("?", "");
+                        discount = discount.Replace("'", "");
+                    }
+                        
 
                     string price;
                     List<HtmlNode> yourPriceNode = col1Node.CssSelect(".your-price").ToList<HtmlNode>();
@@ -1894,6 +1906,22 @@ namespace CostcoWinForm
             emailMessage =  "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
             emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
 
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>Price up products: (" + priceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>Price down products: (" + priceDownProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>New products: (" + newProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>Discontinued products: (" + discontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>eBay listing price up products: (" + eBayListingPriceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>eBay listing price down products: (" + eBayListingPriceDownProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>eBay listing discontinued products: (" + eBayListingDiscontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             emailMessage += "</br>";
 

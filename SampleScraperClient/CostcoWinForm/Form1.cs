@@ -1636,6 +1636,15 @@ namespace CostcoWinForm
             driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
             driver.FindElements(By.ClassName("submit"))[2].Click();
 
+            driver.Navigate().GoToUrl("http://www.costco.com/");
+            driver.FindElement(By.Id("mini-shopping-cart")).Click();
+
+            while (driver.FindElements(By.LinkText("Remove from cart")).Count > 0)
+            {
+                driver.FindElements(By.LinkText("Remove from cart"))[0].Click();
+                System.Threading.Thread.Sleep(3000);
+            }
+            
             driver.Navigate().GoToUrl("http://www.costco.com/.product.100244524.html");
             driver.FindElement(By.Id("minQtyText")).Clear();
             driver.FindElement(By.Id("minQtyText")).SendKeys("2");
