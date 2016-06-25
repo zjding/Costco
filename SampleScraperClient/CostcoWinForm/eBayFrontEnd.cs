@@ -241,6 +241,14 @@ namespace CostcoWinForm
 
             GetProductInfo();
 
+            SecondTry();
+
+            GetProductInfo(false);
+
+            SecondTry();
+
+            GetProductInfo(false);
+
             PopulateTables();
 
             CompareProducts();
@@ -416,6 +424,7 @@ namespace CostcoWinForm
                 categoryTemp = brumbItem.InnerText;
                 if (categoryTemp.Contains("Other"))
                     categoryTemp = "Other";
+                categoryTemp = categoryTemp.Replace("'", "''");
                 categoryList.Add(categoryTemp);
             }
 
@@ -592,6 +601,9 @@ namespace CostcoWinForm
 
                 if (imageElement.FindElements(By.TagName("li")) != null)
                     imageNumber = imageElement.FindElements(By.TagName("li")).ToList().Count;
+
+                if (imageNumber == 0)
+                    imageNumber = 1;
 
                 return true;
             }
@@ -1200,64 +1212,108 @@ namespace CostcoWinForm
 
             foreach (string url in subCategoryArray)
             {
-                WebPage PageResult = Browser.NavigateToPage(new Uri(url));
-                var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                try
                 {
-                    List<HtmlNode> gridNodes = PageResult.Html.CssSelect(".grid-4col").ToList<HtmlNode>();
-                    if (gridNodes.Count() > 0)
-                    {
-                        List<HtmlNode> productNodes = gridNodes.CssSelect(".product-tile").ToList<HtmlNode>();
 
-                        foreach (HtmlNode productNode in productNodes)
+                    WebPage PageResult = Browser.NavigateToPage(new Uri(url));
+                    var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                    List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                    if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                    {
+                        List<HtmlNode> gridNodes = PageResult.Html.CssSelect(".grid-4col").ToList<HtmlNode>();
+                        if (gridNodes.Count() > 0)
                         {
-                            HtmlNode product = productNode.CssSelect(".product-tile-image-container ").First();
-                            if (((product.SelectNodes("a")).First().Attributes).First().Name == "href")
+                            List<HtmlNode> productNodes = gridNodes.CssSelect(".product-tile").ToList<HtmlNode>();
+
+                            foreach (HtmlNode productNode in productNodes)
                             {
-                                productUrlArray.Add(((product.SelectNodes("a")).First().Attributes).First().Value);
+                                HtmlNode product = productNode.CssSelect(".product-tile-image-container ").First();
+                                if (((product.SelectNodes("a")).First().Attributes).First().Name == "href")
+                                {
+                                    productUrlArray.Add(((product.SelectNodes("a")).First().Attributes).First().Value);
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception exception)
+                {
+                    continue;
+
+
+                }
             }
+                
 
             //MessageBox.Show("Get productUrlArray Done");
         }
 
-        private void GetProductInfo()
+        private void SecondTry()
         {
-            startDT = DateTime.Now;
+            productUrlArray.Clear();
 
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
 
             cn.Open();
-            string sqlString = "TRUNCATE TABLE Raw_ProductInfo";
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
 
-            sqlString = "TRUNCATE TABLE Costco_Categories";
+            string sqlString = @"select * from ProductInfo p 
+                        where 
+                        not exists
+                        (select 1 from Raw_ProductInfo sp where sp.UrlNumber = p.UrlNumber)";
             cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
+            SqlDataReader  rdr = cmd.ExecuteReader();
 
-            sqlString = "TRUNCATE TABLE Import_Errors";
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
+            while (rdr.Read())
+            {
+                productUrlArray.Add(rdr["Url"].ToString());
+            }
+
+            rdr.Close();
+            cn.Close();
+        }
+
+        private void GetProductInfo(bool bTruncate = true)
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString;
+
+            if (bTruncate)
+            {
+                startDT = DateTime.Now;
+
+                sqlString = "TRUNCATE TABLE Raw_ProductInfo";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+
+                sqlString = "TRUNCATE TABLE Costco_Categories";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+
+                sqlString = "TRUNCATE TABLE Import_Errors";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+            }
 
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
 
             int i = 1;
 
-            foreach (string productUrl in productUrlArray)
+            foreach (string pu in productUrlArray)
             {
                 try
                 {
 
                     i++;
+
+                    string productUrl = pu.Replace("%2c", ",");
 
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
                     UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
@@ -1326,6 +1382,7 @@ namespace CostcoWinForm
                     string productName = ((topReviewPanelNode[0]).SelectNodes("h1"))[0].InnerText;
                     productName = productName.Replace("???", "");
                     productName = productName.Replace("??", "");
+                    productName = productName.Trim();
 
                     List<HtmlNode> col1Node = productInfo.CssSelect(".col1").ToList<HtmlNode>();
                     string itemNumber = (col1Node[0].SelectNodes("p")[0]).InnerText;
@@ -1588,7 +1645,7 @@ namespace CostcoWinForm
                 }
                 catch (Exception exception)
                 {
-                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + productUrl + "','" + exception.Message + "')";
+                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + pu + "','" + exception.Message + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
 
