@@ -125,6 +125,8 @@ namespace CostcoWinForm
                 this.lvCategories.Items.Add(item);
             }
 
+            chkAll.Checked = true;
+
             this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
 
             timer.Tick += new EventHandler(timer_Tick);
