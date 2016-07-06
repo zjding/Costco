@@ -2037,6 +2037,7 @@ namespace CostcoWinForm
             {
                 stTag = SubstringInBetween(input, "<", ">", true, true);
                 input = input.Substring(stTag.Length);
+                input = input.TrimStart();
             }
 
             return input;
@@ -2209,143 +2210,171 @@ namespace CostcoWinForm
 
         private void ProcessCostcoOrderEmail(string body)
         {
-            body = body.Replace("\r", "");
-            body = body.Replace("\t", "");
-            body = body.Replace("\n", "");
-            string stOrderNumber = SubstringInBetween(body, "Order Number:</td>", "</td>", false, true);
-            stOrderNumber = SubstringEndBack(stOrderNumber, "</td>", ">", false, false);
-            stOrderNumber = stOrderNumber.Trim();
-
-            string stDatePlaced = SubstringInBetween(body, "Date Placed:</td>", "</td>", false, true);
-            stDatePlaced = SubstringEndBack(stDatePlaced, "</td>", ">", false, false);
-            stDatePlaced = stDatePlaced.Trim();
-
-            string stWorking = SubstringInBetween(body, "Item Total", "Shipping &amp; Terms", false, false);
-            stWorking = TrimTags(stWorking);
-
-            string stQuatity = stWorking.Substring(0, stWorking.IndexOf("<"));
-            stQuatity = stQuatity.Trim();
-
-            stWorking = stWorking.Substring(stQuatity.Length);
-            stWorking = TrimTags(stWorking);
-            string stProductName = stWorking.Substring(0, stWorking.IndexOf("<"));
-            stProductName = stProductName.Trim();
-
-            string stItemNum = stProductName.Substring(stProductName.IndexOf("Item#"));
-
-            stItemNum = stItemNum.Replace("Item#", "");
-            stItemNum = stItemNum.Trim();
-
-            string stShipping = SubstringInBetween(body, "Shipping Address", "Note:", false, false);
-
-            string stBuyerName = TrimTags(stShipping);
-
-            // Generate PDF for email
-            string destinationFileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + stOrderNumber;
-
-            File.WriteAllText(@"C:\temp\" + @"\" + destinationFileName + ".html", body);
-
-            FirefoxProfile profile = new FirefoxProfile();
-            profile.SetPreference("print.always_print_silent", true);
-
-            IWebDriver driver = new FirefoxDriver(profile);
-
-            driver.Navigate().GoToUrl(@"file:///" + @"C:\temp\" + @"\" + destinationFileName + ".html");
-
-            IJavaScriptExecutor js = driver as IJavaScriptExecutor;
-
-            js.ExecuteScript("window.print();");
-
-            driver.Dispose();
-
-            System.Threading.Thread.Sleep(3000);
-
-            // Process files
-            string sourceFileName = @"C:\temp\tempPDF\file__C__temp_" + destinationFileName + @"\" + "file_C_temp_" + destinationFileName + ".pdf";
-
-            File.Move(sourceFileName, @"C:\temp\CostcoOrderEmails\" + destinationFileName + ".pdf");
-
-            File.Delete(@"C:\temp\" + destinationFileName + ".html");
-            Directory.Delete(@"C:\temp\tempPDF\file__C__temp_" + destinationFileName);
-
-            // db stuff
-            string sqlString;
-            bool bExist = false;
-
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cn.Open();
-
-            if (stItemNum != "")
+            try
             {
-                sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE CostcoItemNumber = @_costcoItemNumber 
+                body = body.Replace("\r", "");
+                body = body.Replace("\t", "");
+                body = body.Replace("\n", "");
+                string stOrderNumber = SubstringInBetween(body, "Order Number:</td>", "</td>", false, true);
+                stOrderNumber = SubstringEndBack(stOrderNumber, "</td>", ">", false, false);
+                stOrderNumber = stOrderNumber.Trim();
+
+                string stDatePlaced = SubstringInBetween(body, "Date Placed:</td>", "</td>", false, true);
+                stDatePlaced = SubstringEndBack(stDatePlaced, "</td>", ">", false, false);
+                stDatePlaced = stDatePlaced.Trim();
+
+                string stWorking = SubstringInBetween(body, "Item Total", "Shipping &amp; Terms", false, false);
+                stWorking = TrimTags(stWorking);
+
+                string stQuatity = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stQuatity = stQuatity.Trim();
+
+                stWorking = stWorking.Substring(stQuatity.Length);
+                stWorking = TrimTags(stWorking);
+                string stProductName = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stProductName = stProductName.Trim();
+
+                string stItemNum = stProductName.Substring(stProductName.IndexOf("Item#"));
+
+                stItemNum = stItemNum.Replace("Item#", "");
+                stItemNum = stItemNum.Trim();
+
+                string stShipping = SubstringInBetween(body, "Shipping Address", "Note:", false, false);
+
+
+                stWorking = TrimTags(stShipping);
+
+                string stBuyerName = stWorking.Substring(0, stWorking.IndexOf("<"));
+
+                stWorking = stWorking.Replace(stBuyerName, "");
+
+                stWorking = TrimTags(stWorking);
+
+                string stAddress1 = stWorking.Substring(0, stWorking.IndexOf("<"));
+
+                stWorking = stWorking.Replace(stAddress1, "");
+
+                stWorking = TrimTags(stWorking);
+
+                string stAddress2 = stWorking.Substring(0, stWorking.IndexOf("<"));
+
+                // Generate PDF for email
+                File.WriteAllText(@"C:\temp\temp.html", body);
+
+                FirefoxProfile profile = new FirefoxProfile();
+                profile.SetPreference("print.always_print_silent", true);
+
+                IWebDriver driver = new FirefoxDriver(profile);
+
+                driver.Navigate().GoToUrl(@"file:///C:/temp/temp.html");
+
+                IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+
+                js.ExecuteScript("window.print();");
+
+                driver.Dispose();
+
+                System.Threading.Thread.Sleep(3000);
+
+                // Process files
+                string[] files = Directory.GetFiles(@"C:\temp\tempPDF\");
+
+                string sourceFileFullName = files[0];
+
+                string sourceFileName = sourceFileFullName.Replace(@"C:\temp\tempPDF\", "");
+
+                string destinationFileName = Convert.ToDateTime(stDatePlaced).ToString("yyyyMMddHHmmss") + "_" + stOrderNumber + ".pdf";
+
+                File.Delete(@"C:\temp\CostcoOrderEmails\" + destinationFileName);
+
+                File.Move(sourceFileFullName, @"C:\temp\CostcoOrderEmails\" + destinationFileName);
+
+                // db stuff
+                string sqlString;
+                bool bExist = false;
+
+                SqlConnection cn = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = cn;
+                cn.Open();
+
+                if (stItemNum != "")
+                {
+                    sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE CostcoItemNumber = @_costcoItemNumber 
                                 AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
 
-                cmd.CommandText = sqlString;
-                cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
-                cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
+                    cmd.CommandText = sqlString;
+                    cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
+                    cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
 
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    bExist = true;
-                }
-                reader.Close();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        bExist = true;
+                    }
+                    reader.Close();
 
-                if (bExist)
-                {
-                    sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
+                    if (bExist)
+                    {
+                        sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
                                 CostcoOrderEmailPdf = @_costcoOrderEmailPdf
                                 WHERE WHERE CostcoItemNumber = @_costcoItemNumber 
                                 AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
 
+                        cmd.CommandText = sqlString;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
+                        cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
+                        cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
+                        cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE CostcoItemName = @_costcoItemName
+                                AND BuyerName = @_buyerName AND CostcoOrderNumber IS NULL";
+
                     cmd.CommandText = sqlString;
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
-                    cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
-                    cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
+                    cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
                     cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
 
-                    cmd.ExecuteNonQuery();
-                }
-            }
-            else
-            {
-                sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE CostcoItemName = @_costcoItemName
-                                AND CostcoOrderNumber IS NULL";
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        bExist = true;
+                    }
+                    reader.Close();
 
-                cmd.CommandText = sqlString;
-                cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
-
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    bExist = true;
-                }
-                reader.Close();
-
-                if (bExist)
-                {
-                    sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
+                    if (bExist)
+                    {
+                        sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
                                 CostcoOrderEmailPdf = @_costcoOrderEmailPdf
                                 WHERE WHERE CostcoItemName = @_costcoItemName 
                                 AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
 
-                    cmd.CommandText = sqlString;
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
-                    cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
-                    cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
-                    cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
+                        cmd.CommandText = sqlString;
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
+                        cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
+                        cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
+                        cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+
+                cn.Close();
             }
+            catch (Exception e)
+            {
 
-            cn.Close();
-            
+            }
+            finally
+            {
 
+            }
         }
 
         private void btnSoldEmailExtract_Click(object sender, EventArgs e)
@@ -2396,7 +2425,7 @@ namespace CostcoWinForm
 
         private void btnCostcoOrderEmail_Click(object sender, EventArgs e)
         {
-            string body = @"<html><head></head><body><div dir='ltr'><div class='gmail_quote'><br>
+            string body = @"<div dir='ltr'><div class='gmail_quote'><div class='HOEnZb'><div class='h5'><div dir='ltr'><div class='gmail_quote'><br>
 <table border='0' cellpadding='0' cellspacing='0' width='650'>
 <tbody><tr>
   <td>
@@ -2432,7 +2461,7 @@ namespace CostcoWinForm
 
 
 
-                    <td style='padding:2px 0px 2px 0px;border-top:solid 1px #969696;border-bottom:solid 1px #969696'><b>1. Order Received</b>    <span style='color:#969696'>2. Sent to Fulfillment</span>    <span style='color:#969696'>3. Shipped</span></td>
+                    <td style='padding:2px 0px 2px 0px;border-top:solid 1px #969696;border-bottom:solid 1px #969696'><b>1. Order Received</b>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#969696'>2. Sent to Fulfillment</span>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#969696'>3. Shipped</span></td>
                   </tr>
                 </tbody></table></td>
             </tr>
@@ -2450,7 +2479,7 @@ namespace CostcoWinForm
           <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px;width:100px'>
           Order Number:</td>
           <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:normal;font-size:12px'>
-          597052288</td>
+          596503302</td>
         </tr>
 <tr>
           <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px;width:100px'>
@@ -2462,7 +2491,7 @@ namespace CostcoWinForm
           <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px;width:100px'>
           Date Placed:</td>
           <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:normal;font-size:12px'>
-          01/08/2016</td>
+          07/03/2016</td>
         </tr>
       </tbody></table>
     </td>
@@ -2479,17 +2508,16 @@ namespace CostcoWinForm
               <tbody><tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
 
                 <td>
-                Zhijun Ding
-                </td>
+                nanette crawley</td>
               </tr>
               <tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
 
-                <td>1642 Crossgate Dr</td>
+                <td>1040 buena Rd</td>
               </tr>
               
               <tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
 
-                <td>Vestavia, AL   35216-3181</td>
+                <td>Lake forest, IL &nbsp; 60045</td>
               </tr>
             </tbody></table>
           </td>
@@ -2581,36 +2609,26 @@ namespace CostcoWinForm
 
 <tr valign='top'>
 <td bgcolor='#f0f0f0' width='31' valign='middle'>
-<div align='center'>
-<font size='2' face='Arial'>
-
-1
-
-</font>
-</div>
+<div align='center'><font face='Arial'>1</font></div>
 </td>
 <td bgcolor='#f0f0f0' width='307' valign='middle'>
 <div align='center'>
 <font size='2' face='Arial'>
 
-Pacific Coast® Platinum European Comforter with Pyrénées Down - Year Round Warmth, F/Q
-- Item# 868374
-
-</font>
-</div>
+Every Man Jack 2-in-1 Shampoo &#43; Conditioner and Body Wash Combos - Item# 1068097</font></div>
 </td>
 
 <td bgcolor='#f0f0f0' width='125' valign='middle'>
 <div align='center'>
 
 
-<font size='2' face='Arial'>Standard 3 to 5 Business Days</font>
+<font size='2' face='Arial'>Standard Ground</font>
 
 </div>
 </td>
 
-<td bgcolor='#f0f0f0' width='104' valign='middle'><div align='center'><font size='2' face='Arial'>$109.99</font></div></td>
-<td bgcolor='#f0f0f0' width='125' valign='middle'><div align='center'><font size='2' face='Arial'>$109.99</font></div></td>
+<td bgcolor='#f0f0f0' width='104' valign='middle'><div align='center'><font size='2' face='Arial'>$23.99</font></div></td>
+<td bgcolor='#f0f0f0' width='125' valign='middle'><div align='center'><font size='2' face='Arial'>$95.96</font></div></td>
 <td width='68' valign='middle'><img height='1' border='0' width='1' alt=''></td>
 </tr>
 <tr valign='top'>
@@ -2641,7 +2659,7 @@ Pacific Coast® Platinum European Comforter with Pyrénées Down - Year Round Wa
 <tr valign='top'>
 <td bgcolor='#ffffcc' width='760'><font face='Arial'>
 
-Standard shipping via UPS Ground is included in the quoted price. <strong>The estimated delivery time will be approximately 3 - 5 business days from the time of order.</strong> 
+Standard shipping is via UPS Ground. <strong>The estimated delivery time will be approximately 3 - 5 business days from the time of order.</strong> 
  </font></td>
 </tr>
 </tbody>
@@ -2665,7 +2683,7 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
                 <strong>Costco Office Online</strong> - Save on your office supplies! <a href='http://www.costco.com/office-products.html?EMID=Transactional_OrderReceived_OfficeProducts' target='_blank'>Click here</a> to start savings TODAY!<br>
                 <br>
                 
-                Click to see <a href='http://www.costco.com/CatalogSearch?langId=-1&amp;storeId=10301&amp;catalogId=10701&amp;keyword=WhatsNewAZ&amp;sortBy=EnglishAverageRating%7C1&amp;EMID=Transactional_OrderReceived_WhatsNew' target='_blank'><strong>What&#39;s New</strong></a> at Costco.com. <br></td>
+                Click to see <a href='http://www.costco.com/CatalogSearch?langId=-1&amp;storeId=10301&amp;catalogId=10701&amp;keyword=WhatsNewAZ&amp;sortBy=EnglishAverageRating%7C1&amp;EMID=Transactional_OrderReceived_WhatsNew' target='_blank'><strong>What's New</strong></a> at Costco.com. <br></td>
             </tr>
           </tbody></table></td>
         <td>
@@ -2683,7 +2701,22 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
       </td>
       <td bgcolor='#ffffcc'>
         <div align='right'>
-          <font size='2' face='Arial'>$109.99</font>
+          <font size='2' face='Arial'>$95.96</font>
+        </div>
+      </td>
+    </tr>
+    
+    <tr>
+      <td bgcolor='#cee7ff'>
+        <div align='right'>
+          <font size='2' face='Arial'>
+            <b>Less Promo Code:</b>
+          </font>
+        </div>
+      </td>
+      <td bgcolor='#ffffcc'>
+        <div align='right'>
+          <font size='2' face='Arial'>-$20.00</font>
         </div>
       </td>
     </tr>
@@ -2728,7 +2761,7 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
       </td>
       <td bgcolor='#ffffcc'>
         <div align='right'>
-          <font size='2' face='Arial'>$6.60</font>
+          <font size='2' face='Arial'>$5.76</font>
         </div>
       </td>
     </tr>
@@ -2744,7 +2777,7 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
       <td bgcolor='#ffffcc'>
         <div align='right'>
           <font size='2' face='Arial'>
-            <b>$116.59</b>
+            <b>$81.72</b>
           </font>
         </div>
       </td>
@@ -2760,11 +2793,11 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
           <br>
           <b>Membership:</b> We will refund your membership fee in full at any time if you are dissatisfied.<br>
           <br>
-          <b>Merchandise:</b> We guarantee your satisfaction on every product we sell with a full refund. The return policy for televisions, computers, major appliances, tablets, cameras, camcorders, MP3 players, and cellular phones is 90 days from date of purchase.  Manufacturer&#39;s warranty service is available on all electronics products. See manufacturer&#39;s warranty for specific coverage terms. For TV, Computers (excluding tablets) and Major Appliances, Costco extends the manufacturer&#39;s warranty to two years from date of purchase. Please call Costco Concierge @ <a href='tel:1-866-861-0450' value='+18668610450' target='_blank'>1-866-861-0450</a> for warranty assistance, set-up help or technical support.<br>
+          <b>Merchandise:</b> We guarantee your satisfaction on every product we sell with a full refund. The following must be returned within 90 days of purchase for a refund: televisions, projectors, computers, cameras, camcorders, touchscreen tablets, MP3 players and cellular phones.<br>
           <br>
-          <b>How to Return:</b> Simply return your purchase at any one of our Costco warehouses worldwide for a refund (including shipping and handling). If you are unable to return your order at one of our warehouses, please contact <a href='https://customerservice.costco.com' target='_blank'>customer service</a> or call our customer service center at <a href='tel:1-800-955-2292' value='+18009552292' target='_blank'>1-800-955-2292</a> for assistance. To expedite the processing of your return, please reference your order number.</font><br>
+          <b>How to Return:</b> Simply return your purchase at any one of our Costco warehouses worldwide for a refund (including shipping and handling). If you are unable to return your order at one of our warehouses, please contact <a href='https://customerservice.costco.com' target='_blank'>customer service</a> or call our customer service center at <a href='tel:1-800-955-2292' value='&#43;18009552292' target='_blank'>1-800-955-2292</a> for assistance. To expedite the processing of your return, please reference your order number.</font><br>
           <br>
-          <p><font face='Arial' style='font-size:9pt'><strong>Costco.com</strong> <a href='https://customerservice.costco.com' target='_blank'>customer service</a> or call <strong><a href='tel:1-800-955-2292' value='+18009552292' target='_blank'>1-800-955-2292</a></strong></font></p>
+          <p><font face='Arial' style='font-size:9pt'><strong>Costco.com</strong> <a href='https://customerservice.costco.com' target='_blank'>customer service</a> or call <strong><a href='tel:1-800-955-2292' value='&#43;18009552292' target='_blank'>1-800-955-2292</a></strong></font></p>
                     <p><font face='Arial' style='font-size:9pt'>To expedite the processing of your return, please reference your order number.</font></p>
           <p><font face='Arial' style='font-size:9pt'>If you request an item be picked up for return, the item must be packaged and   available for pick up in the same manner as it was delivered. <br>
             If your order was delivered “curb side,” it will need to be available for curb side pick up. <br>
@@ -2778,7 +2811,8 @@ Standard shipping via UPS Ground is included in the quoted price. <strong>The es
 </tbody></table>
 
 </div><br></div>
-</body></html>";
+</div></div></div><br></div>
+";
 
             ProcessCostcoOrderEmail(body);
 
