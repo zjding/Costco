@@ -1915,7 +1915,7 @@ namespace CostcoWinForm
             stUnitePrice = stUnitePrice.Replace("USD", "");
             stUnitePrice = stUnitePrice.Trim();
 
-            stAmount = stAmount.Substring(stUnitePrice.Length);
+            stAmount = stAmount.Substring(stUnitePrice.Length+5);
 
             stAmount = TrimTags(stAmount);
 
