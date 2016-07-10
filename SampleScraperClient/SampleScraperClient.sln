@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerConsole", "CrawlerCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormCrawl", "WinFormCrawl\WinFormCrawl.csproj", "{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "CostcoDatabase", "CostcoDatabase\CostcoDatabase.sqlproj", "{F4C64944-92AC-4D0B-9BBD-BC054A457995}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,12 @@ Global
 		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FFA8CED-7B93-47F5-9A8F-55540D4C5A44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C64944-92AC-4D0B-9BBD-BC054A457995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4C64944-92AC-4D0B-9BBD-BC054A457995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4C64944-92AC-4D0B-9BBD-BC054A457995}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F4C64944-92AC-4D0B-9BBD-BC054A457995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4C64944-92AC-4D0B-9BBD-BC054A457995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4C64944-92AC-4D0B-9BBD-BC054A457995}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
