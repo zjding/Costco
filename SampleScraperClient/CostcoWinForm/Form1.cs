@@ -2933,6 +2933,444 @@ Standard shipping is via UPS Ground. <strong>The estimated delivery time will be
 
             cn.Close();
         }
+
+        private void btnCostcoShipEmail_Click(object sender, EventArgs e)
+        {
+            string body = @"<div dir='ltr'><div class='gmail_extra'><div class='gmail_quote'><blockquote class='gmail_quote' style='margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex'><div dir='ltr'><div class='gmail_extra'><div class='gmail_quote'><br><blockquote class='gmail_quote' style='margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex'>
+<table border='0' cellpadding='0' cellspacing='0' width='650'>
+<tbody><tr>
+  <td>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><table border='0' cellspacing='0' cellpadding='0' width='650'>
+            <tbody><tr>
+              <td><a href='//www.costco.com/?EMID=Transactional_OrderShipped_TopNav_Logo' target='_blank'><img border='0'></a> </td>
+            </tr>
+            <tr height='10'>
+              <td height='10'></td>
+            </tr>
+          </tbody></table></td>
+      </tr>
+    </tbody></table>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><table border='0' width='100%'>
+            <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+              <td><table border='0' width='300px' height='50px'>
+                  <tbody><tr>
+                    <td style='font-size:19pt'><b>Shipped</b></td>
+                  </tr>
+                </tbody></table></td>
+              <td style='width:149px'></td>
+              <td><table border='0' cellspacing='0' cellpadding='0' width='100%'>
+                  <tbody><tr>
+                    <td style='padding:0px 0px 3px 0px;text-align:left;font-size:14px;color:#1c6699;font-weight:bold;vertical-align:bottom'>STEPS FOR YOUR ORDER:</td>
+                  </tr>
+                  <tr>
+                    <td style='padding:2px 0px 2px 0px;border-top:solid 1px #969696;border-bottom:solid 1px #969696'><span style='color:#969696'>1. Order Received</span>&nbsp;&nbsp;&nbsp;&nbsp;<b>2. Shipped</b>&nbsp;&nbsp;&nbsp;&nbsp;<span style='color:#969696'>3. Delivered</span></td>
+                  </tr>
+                </tbody></table></td>
+            </tr>
+          </tbody></table></td>
+      </tr>
+    </tbody></table>
+    
+    
+
+<table border='0'>
+  <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+    <td>
+      <table border='0' cellpadding='2' cellspacing='2' height='90' width='250'>
+        <tbody><tr>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px;width:100px'>
+          Order Number:</td>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:normal;font-size:12px'>
+          596503302</td>
+        </tr>
+<tr>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px;width:100px'>
+          Membership Number:</td>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:normal;font-size:12px'>
+          111775568587</td>
+        </tr>
+        <tr>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px;width:100px'>
+          Date Placed:</td>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:normal;font-size:12px'>
+          06/23/2016</td>
+        </tr>
+      </tbody></table>
+    </td>
+
+    <td>
+      <table border='0' cellpadding='2' cellspacing='2' height='90' width='250'>
+        <tbody><tr>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px'>
+          Shipping Address</td>
+        </tr>
+        <tr>
+          <td style='background-color:#f0f0f0'>
+            <table border='0' cellspacing='0' cellpadding='0' width='100%' height='100%'>
+              <tbody><tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
+
+                <td>
+                nanette a crawley</td>
+              </tr>
+              <tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
+
+                <td>1040 buena Rd</td>
+              </tr>
+              
+              <tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
+
+                <td>Lake forest, IL &nbsp; 60045</td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody></table>
+    </td>
+
+    <td>
+      <table border='0' cellpadding='2' cellspacing='2' height='90' width='250'>
+        <tbody><tr>
+          <td style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#cee7ff;color:Black;font-weight:bold;font-size:12px'>
+          Note:</td>
+        </tr>
+        <tr>
+          <td style='background-color:#f1f1f1'>
+          This email was automatically generated from a mailbox that is not monitored. If you have any questions, please visit <a href='https://customerservice.costco.com' target='_blank'>customer service</a>.</td>
+        </tr>
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+<table border='0'>
+  <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+    <td>
+      <table border='0' cellpadding='0' cellspacing='0'>
+        <tbody><tr>
+          <td style='height:20px'></td>
+        </tr>
+      </tbody></table>
+    </td>
+  </tr>
+</tbody></table>
+
+
+    
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td>Dear Zhijun Ding,</td>
+      </tr>
+    </tbody></table>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td>Thank you for your order from <b><a href='//www.costco.com/?EMID=Transactional_OrderShipped_Main_Intro' target='_blank'>Costco.com</a></b>. The following item(s) have shipped.</td>
+      </tr>
+    </tbody></table>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><table border='0' cellpadding='0' cellspacing='0'>
+            <tbody><tr>
+              <td style='height:10px'></td>
+            </tr>
+          </tbody></table></td>
+      </tr>
+    </tbody></table>
+    
+
+<table cellspacing='0' cellpadding='0' border='0'>
+<tbody><tr valign='top'>
+<td width='768'>
+<table cellspacing='0' cellpadding='0' border='0'>
+<tbody><tr valign='top'>
+<td bgcolor='#6495ed' width='760' valign='middle' colspan='6'>
+<table cellspacing='0' cellpadding='0' border='0' width='100%'>
+<tbody><tr valign='top'>
+<td bgcolor='#6495ed' width='9%' valign='middle'><b><font size='2' face='Arial' color='#ffffff'>Shipped</font></b></td>
+<td bgcolor='#6495ed' width='91%' valign='middle'>
+<div align='right'><font size='2' face='Arial' color='#ffffff'>Orders with multiple items may ship from different locations, and may ship separately.</font></div>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+
+
+
+<tr valign='top'>
+<td bgcolor='#cee7ff' width='310' valign='middle'>
+<div align='center'><b><font size='2' face='Arial'>Description</font></b>
+</div>
+</td>
+<td bgcolor='#cee7ff' width='40' valign='middle'>
+<div align='center'><b><font size='2' face='Arial'>Qty</font>
+</b></div>
+</td>
+
+<td bgcolor='#cee7ff' width='120' valign='middle'>
+<div align='center'><b><font size='2' face='Arial'>Ship Date</font> </b></div>
+</td>
+<td bgcolor='#cee7ff' width='120' valign='middle'>
+<div align='center'><b><font size='2' face='Arial'>Est. Arrival Date</font> </b></div>
+</td>
+<td bgcolor='#cee7ff' width='167' valign='middle'>
+<div align='center'><b><font size='2' face='Arial'>Tracking #</font></b></div>
+</td>
+<td width='4' valign='middle'></td>
+</tr>
+
+<tr valign='top'>
+<td bgcolor='#f0f0f0' width='310' valign='middle'>
+<div align='center'>
+<font size='2' face='Arial'>
+
+Every Man Jack 2-in-1 Shampoo &#43; Conditioner and Body Wash Combos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;- Item# 1068097</font></div>
+</td>
+<td bgcolor='#f0f0f0' width='40' valign='middle'>
+<div align='center'>
+<font size='2' face='Arial'>
+
+1
+
+
+</font>
+</div>
+</td>
+
+<td bgcolor='#f0f0f0' width='120' valign='middle'>
+
+<div align='center'>
+<font size='2' face='Arial'>06/24/2016</font>
+</div>
+</td>
+<td bgcolor='#f0f0f0' width='120' valign='middle'>
+                        
+<div align='center'>07/01/2016
+<font size='2' face='Arial'> </font>
+</div>
+</td>
+<td bgcolor='#ffffcc' width='167' valign='middle'>
+                        
+<div align='center'>
+<a href='http://wwwapps.ups.com/etracking/tracking.cgi?tracknums_displayed=5&amp;TypeOfInquiryNumber=T&amp;HTMLVersion=4.0&amp;sort_by=status&amp;InquiryNumber1=1ZA929830341798369' rel='nofollow' target='_blank'> <u> <font size='2' face='Arial' color='#0000ff'>1ZA929830341798369</font> </u> </a>
+
+<font size='2' face='Arial'> </font>
+</div>
+</td>
+
+<td width='4' valign='middle'></td>
+</tr>
+
+<tr valign='top'>
+<td width='310' valign='middle'></td>
+</tr>
+
+                        
+                        <tr valign='top'>
+<td width='760' colspan='6' bgcolor='#ffffcc'><font face='Arial'> 
+ </font>
+</td>
+</tr>
+
+
+<tr valign='top'>
+<td bgcolor='#ffffcc' width='760' valign='middle' colspan='6'>
+<table cellspacing='0' cellpadding='0' border='0'>
+<tbody>
+<tr valign='top'>
+<td bgcolor='#ffffcc' width='760'><b><font size='2' face='Arial'>Shipping &amp; Terms</font></b></td>
+</tr>
+
+<tr valign='top'>
+<td width='760' valign='middle'><img height='1' border='0' width='1' alt=''></td>
+</tr>
+<tr valign='top'>
+<td bgcolor='#ffffcc' width='760'><font face='Arial'>
+
+<p>View <a href='https://customerservice.costco.com/app/answers/detail/a_id/1191/kw/return%20policy' target='_blank'>Costco's Return Policy</a>.</p><br>
+
+Costco.com products can be returned to any of our more than 600 Costco warehouses worldwide. 
+ </font></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+
+<font size='4' face='Times New Roman'> </font>
+<p><br>
+    
+    
+    </p><table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><p>Visit <a href='https://www.costco.com/OrderStatusCmd?storeId=10301&amp;catalogId=10701&amp;langId=-1&amp;orderStatusStyle=strong&amp;URL=OrderStatusSummaryView&amp;cm_re=Common-_-Top_Nav-_-Order_Status' target='_blank'>Order Status</a> to track shipped orders. When tracking your order, please note that the tracking information may not be updated immediately.</p>
+          <br></td>
+      </tr>
+    </tbody></table>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><table style='border:solid 1px #696969' cellpadding='5' cellspacing='2'>
+            <tbody><tr>
+              <td><b>Are you missing out on our LIMITED TIME OFFERS?</b> <br>
+                Sign up to receive <a href='http://costco.com' target='_blank'>costco.com</a> e-mails on the <a href='https://www.costco.com/LogonForm?langId=-1&amp;storeId=10301&amp;catalogId=10701&amp;URL=LogonForm&amp;cm_re=Common-_-Top_Nav-_-My_Account' target='_blank'>My Account</a> page.<br>
+                <br>
+                <strong>Costco Office Online</strong> - Save on your office supplies! <a href='//www.costco.com/office-products.html?EMID=Transactional_OrderShipped_OfficeProducts' target='_blank'>Click here</a> to start savings TODAY!<br>
+                
+                Click to see <a><strong>What's New</strong></a> at Costco.com. <br></td>
+            </tr>
+          </tbody></table></td>
+      </tr>
+    </tbody></table>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><p><br>
+            <font face='Arial' style='font-size:9pt'><b>Shop Confidently</b><br>
+            <br>
+            <b>Membership:</b> We will refund your membership fee in full at any time if you are dissatisfied.<br>
+            <br>
+            <b>Merchandise:</b> We guarantee your satisfaction on every product we sell with a full refund. The return policy for televisions, computers, major appliances, tablets, cameras, camcorders, MP3 players, and cellular phones is 90 days from date of purchase.  Manufacturer's warranty service is available on all electronics products. See manufacturer's warranty for specific coverage terms. For TV, Computers (excluding tablets) and Major Appliances, Costco extends the manufacturer's warranty to two years from date of purchase. Please call Costco Concierge @ <a href='tel:1-866-861-0450' value='&#43;18668610450' target='_blank'>1-866-861-0450</a> for warranty assistance, set-up help or technical support.<br>
+            <br>
+            <b>How to Return:</b> Simply return your purchase at any one of our Costco warehouses worldwide for a refund (including shipping and handling). If you are unable to return your order at one of our warehouses, please contact:</font></p>
+          <p><font face='Arial' style='font-size:9pt'><strong>Costco.com</strong> <a href='https://customerservice.costco.com' target='_blank'>customer service</a> or call <strong><a href='tel:1-800-955-2292' value='&#43;18009552292' target='_blank'>1-800-955-2292</a></strong></font></p>
+                    <p><font face='Arial' style='font-size:9pt'>To expedite the processing of your return, please reference your order number.</font></p>
+          <p><font face='Arial' style='font-size:9pt'>If you request an item be picked up for return, the item must be packaged and   available for pick up in the same manner as it was delivered. <br>
+            If your order   was delivered “curb side,” it will need to be available for curb side pick up. <br>
+            If the item arrived to you in a box, it will need to be in a box at the time   of pick up. </font> </p>
+          </td></tr></tbody></table><p></p>
+          <font face='Arial' style='font-size:9pt'> Please <a href='//www.costco.com/returns-replacements-refunds.html' target='_blank'>click here</a> for additional returns information.</font>
+          <p></p></td>
+      </tr>
+    </tbody></table>
+    <table border='0'>
+      <tbody><tr valign='top' cellspacing='0' cellpadding='0'>
+        <td><font face='Arial' style='font-size:9pt'>Please keep this email for future reference, and thank you for shopping at <b>Costco.com</b>.</font></td>
+      </tr>
+    </tbody></table>
+
+
+
+</blockquote></div><br></div></div>
+</blockquote></div><br></div></div>
+";
+
+            ProcessCostcoShipEmail(body);
+        }
+
+        private void ProcessCostcoShipEmail(string body)
+        {
+            
+            try
+            {
+                body = body.Replace("\r", "");
+                body = body.Replace("\t", "");
+                body = body.Replace("\n", "");
+                string stOrderNumber = SubstringInBetween(body, "Order Number:</td>", "</td>", false, true);
+                stOrderNumber = SubstringEndBack(stOrderNumber, "</td>", ">", false, false);
+                stOrderNumber = stOrderNumber.Trim();
+
+                string stWorking = SubstringInBetween(body, "Tracking #", "Shipping &amp; Terms", false, false);
+                stWorking = TrimTags(stWorking);
+
+                string stProductName = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stProductName = stProductName.Trim();
+
+                stWorking = stWorking.Substring(stProductName.Length);
+                stWorking = TrimTags(stWorking);
+
+                string stQuatity = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stQuatity = stQuatity.Trim();
+
+                stWorking = stWorking.Substring(stQuatity.Length);
+                stWorking = TrimTags(stWorking);
+
+                string stShipDate = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stShipDate = stShipDate.Trim();
+
+                stWorking = stWorking.Substring(stShipDate.Length);
+                stWorking = TrimTags(stWorking);
+
+                string stArriveDate = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stArriveDate = stArriveDate.Trim();
+
+                stWorking = stWorking.Substring(stArriveDate.Length);
+                stWorking = TrimTags(stWorking);
+
+                string stTrackNum = stWorking.Substring(0, stWorking.IndexOf("<"));
+                stTrackNum = stTrackNum.Trim();
+
+
+                // Generate PDF for email
+                File.WriteAllText(@"C:\temp\temp.html", body);
+
+                FirefoxProfile profile = new FirefoxProfile();
+                profile.SetPreference("print.always_print_silent", true);
+
+                IWebDriver driver = new FirefoxDriver(profile);
+
+                driver.Navigate().GoToUrl(@"file:///C:/temp/temp.html");
+
+                IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+
+                js.ExecuteScript("window.print();");
+
+                driver.Dispose();
+
+                System.Threading.Thread.Sleep(3000);
+
+                // Process files
+                string[] files = Directory.GetFiles(@"C:\temp\tempPDF\");
+
+                string sourceFileFullName = files[0];
+
+                string sourceFileName = sourceFileFullName.Replace(@"C:\temp\tempPDF\", "");
+
+                string destinationFileName = Convert.ToDateTime(stShipDate).ToString("yyyyMMddHHmmss") + "_" + stOrderNumber + ".pdf";
+
+                File.Delete(@"C:\temp\CostcoShipEmails\" + destinationFileName);
+
+                File.Move(sourceFileFullName, @"C:\temp\CostcoShipEmails\" + destinationFileName);
+
+                // db stuff
+                string sqlString;
+                bool bExist = false;
+
+                SqlConnection cn = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = cn;
+                cn.Open();
+
+                sqlString = @"UPDATE eBay_SoldTransactions SET CostcoTrackingNumber = @_costcoTrackingNumber,
+                        CostcoShipEmailPdf = @_costcoShipEmailPdf, CostcoShipDate = @_costcoShipDate 
+                        WHERE CostcoOrderNumber = @_costcoOrderNumber";
+
+                cmd.CommandText = sqlString;
+                cmd.Parameters.Clear();
+                cmd.Parameters.AddWithValue("@_costcoTrackingNumber", stTrackNum);
+                cmd.Parameters.AddWithValue("@_costcoShipEmailPdf", destinationFileName);
+                cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
+                cmd.Parameters.AddWithValue("@_costcoShipDate", stShipDate);
+
+                cmd.ExecuteNonQuery();
+
+                cn.Close();
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+    
     }
 
 }

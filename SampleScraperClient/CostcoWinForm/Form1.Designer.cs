@@ -48,6 +48,7 @@
             this.btnCostcoOrderEmail = new System.Windows.Forms.Button();
             this.btnFtp = new System.Windows.Forms.Button();
             this.btnListEmailExtract = new System.Windows.Forms.Button();
+            this.btnCostcoShipEmail = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnProductInfo
@@ -163,7 +164,7 @@
             // 
             // btnCreatePDF
             // 
-            this.btnCreatePDF.Location = new System.Drawing.Point(32, 278);
+            this.btnCreatePDF.Location = new System.Drawing.Point(32, 266);
             this.btnCreatePDF.Name = "btnCreatePDF";
             this.btnCreatePDF.Size = new System.Drawing.Size(118, 23);
             this.btnCreatePDF.TabIndex = 13;
@@ -173,7 +174,7 @@
             // 
             // btnFillWebForm
             // 
-            this.btnFillWebForm.Location = new System.Drawing.Point(32, 307);
+            this.btnFillWebForm.Location = new System.Drawing.Point(32, 295);
             this.btnFillWebForm.Name = "btnFillWebForm";
             this.btnFillWebForm.Size = new System.Drawing.Size(118, 23);
             this.btnFillWebForm.TabIndex = 14;
@@ -183,7 +184,7 @@
             // 
             // btnResearch
             // 
-            this.btnResearch.Location = new System.Drawing.Point(32, 345);
+            this.btnResearch.Location = new System.Drawing.Point(32, 324);
             this.btnResearch.Name = "btnResearch";
             this.btnResearch.Size = new System.Drawing.Size(118, 23);
             this.btnResearch.TabIndex = 15;
@@ -193,7 +194,7 @@
             // 
             // btnEmailExtract
             // 
-            this.btnEmailExtract.Location = new System.Drawing.Point(32, 403);
+            this.btnEmailExtract.Location = new System.Drawing.Point(32, 382);
             this.btnEmailExtract.Name = "btnEmailExtract";
             this.btnEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnEmailExtract.TabIndex = 16;
@@ -203,7 +204,7 @@
             // 
             // btnSoldEmailExtract
             // 
-            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 432);
+            this.btnSoldEmailExtract.Location = new System.Drawing.Point(32, 411);
             this.btnSoldEmailExtract.Name = "btnSoldEmailExtract";
             this.btnSoldEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnSoldEmailExtract.TabIndex = 17;
@@ -213,7 +214,7 @@
             // 
             // btnHtmlToPDF
             // 
-            this.btnHtmlToPDF.Location = new System.Drawing.Point(32, 490);
+            this.btnHtmlToPDF.Location = new System.Drawing.Point(32, 513);
             this.btnHtmlToPDF.Name = "btnHtmlToPDF";
             this.btnHtmlToPDF.Size = new System.Drawing.Size(118, 23);
             this.btnHtmlToPDF.TabIndex = 18;
@@ -223,7 +224,7 @@
             // 
             // btnCostcoOrderEmail
             // 
-            this.btnCostcoOrderEmail.Location = new System.Drawing.Point(32, 461);
+            this.btnCostcoOrderEmail.Location = new System.Drawing.Point(32, 440);
             this.btnCostcoOrderEmail.Name = "btnCostcoOrderEmail";
             this.btnCostcoOrderEmail.Size = new System.Drawing.Size(118, 23);
             this.btnCostcoOrderEmail.TabIndex = 19;
@@ -233,7 +234,7 @@
             // 
             // btnFtp
             // 
-            this.btnFtp.Location = new System.Drawing.Point(32, 519);
+            this.btnFtp.Location = new System.Drawing.Point(32, 542);
             this.btnFtp.Name = "btnFtp";
             this.btnFtp.Size = new System.Drawing.Size(118, 23);
             this.btnFtp.TabIndex = 20;
@@ -243,7 +244,7 @@
             // 
             // btnListEmailExtract
             // 
-            this.btnListEmailExtract.Location = new System.Drawing.Point(32, 374);
+            this.btnListEmailExtract.Location = new System.Drawing.Point(32, 353);
             this.btnListEmailExtract.Name = "btnListEmailExtract";
             this.btnListEmailExtract.Size = new System.Drawing.Size(118, 23);
             this.btnListEmailExtract.TabIndex = 21;
@@ -251,11 +252,22 @@
             this.btnListEmailExtract.UseVisualStyleBackColor = true;
             this.btnListEmailExtract.Click += new System.EventHandler(this.btnListEmailExtract_Click);
             // 
+            // btnCostcoShipEmail
+            // 
+            this.btnCostcoShipEmail.Location = new System.Drawing.Point(32, 469);
+            this.btnCostcoShipEmail.Name = "btnCostcoShipEmail";
+            this.btnCostcoShipEmail.Size = new System.Drawing.Size(118, 23);
+            this.btnCostcoShipEmail.TabIndex = 22;
+            this.btnCostcoShipEmail.Text = "Costco Ship Email";
+            this.btnCostcoShipEmail.UseVisualStyleBackColor = true;
+            this.btnCostcoShipEmail.Click += new System.EventHandler(this.btnCostcoShipEmail_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(923, 635);
+            this.Controls.Add(this.btnCostcoShipEmail);
             this.Controls.Add(this.btnListEmailExtract);
             this.Controls.Add(this.btnFtp);
             this.Controls.Add(this.btnCostcoOrderEmail);
@@ -306,6 +318,7 @@
         private System.Windows.Forms.Button btnCostcoOrderEmail;
         private System.Windows.Forms.Button btnFtp;
         private System.Windows.Forms.Button btnListEmailExtract;
+        private System.Windows.Forms.Button btnCostcoShipEmail;
     }
 }
 
