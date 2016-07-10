@@ -26,10 +26,9 @@
     [CostcoOrderNumber]    NVARCHAR (20)  NULL,
     [CostcoItemName]       NVARCHAR (200) NULL,
     [CostcoItemNumber]     NVARCHAR (20)  NULL,
+    [CostcoOrderEmailPdf]  NVARCHAR (100) NULL,
     [CostcoTrackingNumber] NVARCHAR (30)  NULL,
     [CostcoShipDate]       NCHAR (10)     NULL,
-    [CostcoTaxExemptPdf]   NVARCHAR (500) NULL,
-    [CostcoOrderEmailPdf]  NVARCHAR (100) NULL,
-    [CostcoShipEmailPdf]   NVARCHAR (100) NULL
+    [CostcoShipEmailPdf]   NVARCHAR (100) NULL,
+    [CostcoTaxExemptPdf]   NVARCHAR (500) NULL
 );
-
