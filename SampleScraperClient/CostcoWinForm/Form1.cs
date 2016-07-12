@@ -2258,6 +2258,14 @@ namespace CostcoWinForm
 
                 string stAddress2 = stWorking.Substring(0, stWorking.IndexOf("<"));
 
+                string stTax = SubstringInBetween(body, "Tax:", "</tr>", false, false);
+
+                stTax = TrimTags(stTax);
+
+                stTax = stTax.Substring(0, stTax.IndexOf("<"));
+
+                stTax = stTax.Replace("$", "");
+
                 // Generate PDF for email
                 File.WriteAllText(@"C:\temp\temp.html", body);
 
@@ -2317,14 +2325,15 @@ namespace CostcoWinForm
                     if (bExist)
                     {
                         sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
-                                CostcoOrderEmailPdf = @_costcoOrderEmailPdf
-                                WHERE WHERE CostcoItemNumber = @_costcoItemNumber 
+                                CostcoOrderEmailPdf = @_costcoOrderEmailPdf, CostcoTax = @_costcoTax 
+                                WHERE CostcoItemNumber = @_costcoItemNumber 
                                 AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
 
                         cmd.CommandText = sqlString;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
                         cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
+                        cmd.Parameters.AddWithValue("@_costcoTax", stTax);
                         cmd.Parameters.AddWithValue("@_costcoItemNumber", stItemNum);
                         cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
 
@@ -2350,14 +2359,15 @@ namespace CostcoWinForm
                     if (bExist)
                     {
                         sqlString = @"UPDATE eBay_SoldTransactions SET CostcoOrderNumber = @_costcoOrderNumber,
-                                CostcoOrderEmailPdf = @_costcoOrderEmailPdf
-                                WHERE WHERE CostcoItemName = @_costcoItemName 
+                                CostcoOrderEmailPdf = @_costcoOrderEmailPdf, CostcoTax = @_costcoTax 
+                                WHERE CostcoItemName = @_costcoItemName 
                                 AND BuyerName = @_buyerName AND  CostcoOrderNumber IS NULL";
 
                         cmd.CommandText = sqlString;
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@_costcoOrderNumber", stOrderNumber);
                         cmd.Parameters.AddWithValue("@_costcoOrderEmailPdf", destinationFileName);
+                        cmd.Parameters.AddWithValue("@_costcoTax", stTax);
                         cmd.Parameters.AddWithValue("@_costcoItemName", stProductName);
                         cmd.Parameters.AddWithValue("@_buyerName", stBuyerName);
 
@@ -2508,7 +2518,7 @@ namespace CostcoWinForm
               <tbody><tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
 
                 <td>
-                nanette crawley</td>
+                nanette a crawley</td>
               </tr>
               <tr style='font-family:Arial,Verdana,Helvetica,sans-serif;background-color:#f0f0f0;color:Black;font-weight:bold;font-size:12px'>
 

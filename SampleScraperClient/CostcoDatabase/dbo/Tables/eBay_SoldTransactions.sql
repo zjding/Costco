@@ -1,4 +1,14 @@
-﻿CREATE TABLE [dbo].[eBay_SoldTransactions] (
+USE [Costco]
+GO
+
+/****** Object: Table [dbo].[eBay_SoldTransactions] Script Date: 7/11/2016 8:35:59 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [PaypalTransactionID]  NVARCHAR (30)  NULL,
     [PaypalPaidDateTime]   DATETIME       NULL,
     [PaypalPaidEmailPdf]   NVARCHAR (100) NULL,
@@ -23,6 +33,7 @@
     [CostcoUrlNumber]      NVARCHAR (50)  NULL,
     [CostcoUrl]            NVARCHAR (500) NULL,
     [CostcoPrice]          MONEY          NULL,
+    [CostcoTax]            MONEY          NULL,
     [CostcoOrderNumber]    NVARCHAR (20)  NULL,
     [CostcoItemName]       NVARCHAR (200) NULL,
     [CostcoItemNumber]     NVARCHAR (20)  NULL,
@@ -32,3 +43,5 @@
     [CostcoShipEmailPdf]   NVARCHAR (100) NULL,
     [CostcoTaxExemptPdf]   NVARCHAR (500) NULL
 );
+
+
