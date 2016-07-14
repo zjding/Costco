@@ -16,8 +16,8 @@ namespace CostcoWinForm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new eBayFrontEnd());
-            Application.Run(new Form1());
+            Application.Run(new eBayFrontEnd());
+            //Application.Run(new Form1());
         }
     }
 }
