@@ -28,6 +28,7 @@ using OpenQA.Selenium.Chrome;
 using System.Collections;
 using iTextSharp.text.html.simpleparser;
 using System.Drawing.Imaging;
+using System.Web;
 
 namespace CostcoWinForm
 {
@@ -76,7 +77,7 @@ namespace CostcoWinForm
 
         public void ImportProducts()
         {
-            GetDepartmentArray();
+            //GetDepartmentArray();
 
             GetSubCategoryUrls();
 
@@ -195,10 +196,12 @@ namespace CostcoWinForm
 
             int i = 1;
 
-            foreach (string productUrl in productUrlArray)
+            foreach (string url in productUrlArray)
             {
                 try
                 {
+                    string productUrl = HttpUtility.HtmlDecode(url);
+
 
                     i++;
 
@@ -266,6 +269,7 @@ namespace CostcoWinForm
                     string productName = ((topReviewPanelNode[0]).SelectNodes("h1"))[0].InnerText;
                     productName = productName.Replace("???", "");
                     productName = productName.Replace("??", "");
+                    //productName = productName.Replace("'", "''");
 
                     List<HtmlNode> col1Node = productInfo.CssSelect(".col1").ToList<HtmlNode>();
                     string itemNumber = (col1Node[0].SelectNodes("p")[0]).InnerText;
@@ -507,7 +511,7 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url, NumberOfImage) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + productUrl + "'," + numImages.ToString() + ")";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount, Details, Specification, ImageLink, Url, NumberOfImage) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + description + "','" + specification + "','" + imageUrl + "','" + url.Replace("'", "''") + "'," + numImages.ToString() + ")";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
 
@@ -587,6 +591,9 @@ namespace CostcoWinForm
 
         private void GetSubCategoryUrls()
         {
+            categoryUrlArray.Clear();
+            categoryUrlArray.Add(@"/mens-clothing.html");
+
             foreach (var categoryUrl in categoryUrlArray)
             {
                 string url;

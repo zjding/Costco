@@ -24,6 +24,7 @@ using System.Drawing.Imaging;
 using OpenQA.Selenium.Firefox;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
+using System.Web;
 
 namespace CostcoWinForm
 {
@@ -235,11 +236,11 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            GetDepartmentArray();
+            //GetDepartmentArray();
 
-            GetSubCategoryUrls();
+            //GetSubCategoryUrls();
 
-            GetProductUrls();
+            //GetProductUrls();
 
             GetProductInfo();
 
@@ -1103,6 +1104,9 @@ namespace CostcoWinForm
 
         private void GetSubCategoryUrls()
         {
+            //categoryUrlArray.Clear();
+            //categoryUrlArray.Add(@"/mens-clothing.html");
+
             subCategoryArray.Clear();
 
             foreach (var categoryUrl in categoryUrlArray)
@@ -1303,6 +1307,9 @@ namespace CostcoWinForm
                 cmd.ExecuteNonQuery();
             }
 
+            productUrlArray.Clear();
+            productUrlArray.Add("http://www.costco.com/.product.100292287.html");
+
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
 
@@ -1315,7 +1322,8 @@ namespace CostcoWinForm
 
                     i++;
 
-                    string productUrl = pu.Replace("%2c", ",");
+                    string productUrl = HttpUtility.HtmlDecode(pu);
+                    productUrl = productUrl.Replace("%2c", ",");
 
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
                     UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
@@ -1637,7 +1645,7 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','"  + imageUrl + "','" + productUrl + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','"  + imageUrl.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
 
@@ -2324,6 +2332,11 @@ namespace CostcoWinForm
         private void tpPendingChanges_Enter(object sender, EventArgs e)
         {
             timer.Start();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
