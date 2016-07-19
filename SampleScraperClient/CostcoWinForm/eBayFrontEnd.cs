@@ -236,11 +236,11 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            //GetDepartmentArray();
+            GetDepartmentArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
             GetProductInfo();
 
@@ -1307,8 +1307,8 @@ namespace CostcoWinForm
                 cmd.ExecuteNonQuery();
             }
 
-            productUrlArray.Clear();
-            productUrlArray.Add("http://www.costco.com/.product.100292287.html");
+            //productUrlArray.Clear();
+            //productUrlArray.Add("http://www.costco.com/.product.100292287.html");
 
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;

@@ -173,5 +173,9 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Tables\eBay_SoldTransactions.sql" />
+    <Build Include="dbo\Tables\eBay_BookKeeping.sql">
+      <AnsiNulls>On</AnsiNulls>
+      <QuotedIdentifier>On</QuotedIdentifier>
+    </Build>
   </ItemGroup>
 </Project>
