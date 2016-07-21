@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpCostco = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -213,12 +213,25 @@
             this.eBaySoldTransactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dsEBaySold = new CostcoWinForm.dsEBaySold();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.tpTax = new System.Windows.Forms.TabPage();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnCalculate = new System.Windows.Forms.Button();
+            this.dtpFrom = new System.Windows.Forms.DateTimePicker();
+            this.btnGenerateFiles = new System.Windows.Forms.Button();
+            this.dtpTo = new System.Windows.Forms.DateTimePicker();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.gvSummary = new System.Windows.Forms.DataGridView();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.eBay_ToAddTableAdapter = new CostcoWinForm.ds_eBayToAddTableAdapters.eBay_ToAddTableAdapter();
             this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
             this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
             this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
+            this.btnSendEmail = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tpCostco.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -263,6 +276,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvEBaySold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
+            this.tpTax.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
+            this.splitContainer4.Panel1.SuspendLayout();
+            this.splitContainer4.Panel2.SuspendLayout();
+            this.splitContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvSummary)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -274,6 +295,7 @@
             this.tabControl1.Controls.Add(this.tpPendingChanges);
             this.tabControl1.Controls.Add(this.tpCurrentListing);
             this.tabControl1.Controls.Add(this.tpSold);
+            this.tabControl1.Controls.Add(this.tpTax);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -429,7 +451,6 @@
             this.button7.TabIndex = 5;
             this.button7.Text = "Regrab Categories";
             this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // webBrowser1
             // 
@@ -578,8 +599,8 @@
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -615,16 +636,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle8;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle9;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -1785,6 +1806,142 @@
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 0;
             // 
+            // tpTax
+            // 
+            this.tpTax.Controls.Add(this.splitContainer4);
+            this.tpTax.Location = new System.Drawing.Point(4, 22);
+            this.tpTax.Name = "tpTax";
+            this.tpTax.Padding = new System.Windows.Forms.Padding(3);
+            this.tpTax.Size = new System.Drawing.Size(1256, 605);
+            this.tpTax.TabIndex = 4;
+            this.tpTax.Text = "Tax";
+            this.tpTax.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.dataGridView1);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.btnSendEmail);
+            this.splitContainer4.Panel2.Controls.Add(this.btnCalculate);
+            this.splitContainer4.Panel2.Controls.Add(this.dtpFrom);
+            this.splitContainer4.Panel2.Controls.Add(this.btnGenerateFiles);
+            this.splitContainer4.Panel2.Controls.Add(this.dtpTo);
+            this.splitContainer4.Panel2.Controls.Add(this.groupBox8);
+            this.splitContainer4.Panel2.Controls.Add(this.label2);
+            this.splitContainer4.Panel2.Controls.Add(this.label3);
+            this.splitContainer4.Size = new System.Drawing.Size(1250, 599);
+            this.splitContainer4.SplitterDistance = 527;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(527, 599);
+            this.dataGridView1.TabIndex = 0;
+            // 
+            // btnCalculate
+            // 
+            this.btnCalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCalculate.Location = new System.Drawing.Point(635, 19);
+            this.btnCalculate.Name = "btnCalculate";
+            this.btnCalculate.Size = new System.Drawing.Size(75, 20);
+            this.btnCalculate.TabIndex = 4;
+            this.btnCalculate.Text = "Calculate";
+            this.btnCalculate.UseVisualStyleBackColor = true;
+            this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
+            // 
+            // dtpFrom
+            // 
+            this.dtpFrom.Location = new System.Drawing.Point(54, 20);
+            this.dtpFrom.Name = "dtpFrom";
+            this.dtpFrom.Size = new System.Drawing.Size(200, 20);
+            this.dtpFrom.TabIndex = 1;
+            // 
+            // btnGenerateFiles
+            // 
+            this.btnGenerateFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGenerateFiles.Location = new System.Drawing.Point(12, 569);
+            this.btnGenerateFiles.Name = "btnGenerateFiles";
+            this.btnGenerateFiles.Size = new System.Drawing.Size(112, 23);
+            this.btnGenerateFiles.TabIndex = 2;
+            this.btnGenerateFiles.Text = "Generate Files";
+            this.btnGenerateFiles.UseVisualStyleBackColor = true;
+            this.btnGenerateFiles.Click += new System.EventHandler(this.btnGenerateFiles_Click);
+            // 
+            // dtpTo
+            // 
+            this.dtpTo.Location = new System.Drawing.Point(309, 20);
+            this.dtpTo.Name = "dtpTo";
+            this.dtpTo.Size = new System.Drawing.Size(200, 20);
+            this.dtpTo.TabIndex = 3;
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox8.Controls.Add(this.label4);
+            this.groupBox8.Controls.Add(this.gvSummary);
+            this.groupBox8.Location = new System.Drawing.Point(12, 46);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(698, 517);
+            this.groupBox8.TabIndex = 1;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Summary";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 497);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(317, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Transactions = 20; Total tax = $230.00; Refundable Tax: $200.00";
+            // 
+            // gvSummary
+            // 
+            this.gvSummary.AllowUserToAddRows = false;
+            this.gvSummary.AllowUserToDeleteRows = false;
+            this.gvSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvSummary.Location = new System.Drawing.Point(6, 19);
+            this.gvSummary.Name = "gvSummary";
+            this.gvSummary.ReadOnly = true;
+            this.gvSummary.Size = new System.Drawing.Size(686, 475);
+            this.gvSummary.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(15, 23);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "From:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(280, 23);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "To:";
+            // 
             // productInfoTableAdapter1
             // 
             this.productInfoTableAdapter1.ClearBeforeFill = true;
@@ -1808,6 +1965,16 @@
             // eBay_SoldTransactionsTableAdapter
             // 
             this.eBay_SoldTransactionsTableAdapter.ClearBeforeFill = true;
+            // 
+            // btnSendEmail
+            // 
+            this.btnSendEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSendEmail.Location = new System.Drawing.Point(598, 569);
+            this.btnSendEmail.Name = "btnSendEmail";
+            this.btnSendEmail.Size = new System.Drawing.Size(112, 23);
+            this.btnSendEmail.TabIndex = 5;
+            this.btnSendEmail.Text = "Send Email";
+            this.btnSendEmail.UseVisualStyleBackColor = true;
             // 
             // eBayFrontEnd
             // 
@@ -1864,6 +2031,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.gvEBaySold)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).EndInit();
+            this.tpTax.ResumeLayout(false);
+            this.splitContainer4.Panel1.ResumeLayout(false);
+            this.splitContainer4.Panel2.ResumeLayout(false);
+            this.splitContainer4.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
+            this.splitContainer4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvSummary)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2057,5 +2234,18 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn costcoShipDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn costcoTaxExemptPdfDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn costcoOrderEmailPdfDataGridViewTextBoxColumn;
+        private System.Windows.Forms.TabPage tpTax;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnGenerateFiles;
+        private System.Windows.Forms.GroupBox groupBox8;
+        private System.Windows.Forms.DateTimePicker dtpTo;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.DateTimePicker dtpFrom;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnCalculate;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.DataGridView gvSummary;
+        private System.Windows.Forms.Button btnSendEmail;
     }
 }

@@ -1308,7 +1308,7 @@ namespace CostcoWinForm
             }
 
             //productUrlArray.Clear();
-            //productUrlArray.Add("http://www.costco.com/.product.100292287.html");
+            //productUrlArray.Add("http://www.costco.com/Nature's-Bounty-Hair,-Skin-and-Nails,-230-Gummies.product.100214116.html");
 
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
@@ -1462,6 +1462,10 @@ namespace CostcoWinForm
                             {
                                 int nShipping = shString.IndexOf("Shipping");
                                 int nQuantity = shString.ToUpper().IndexOf("QUANTITY");
+
+                                if (nShipping == -1 || nQuantity == -1)
+                                    continue;
+
                                 shString = shString.Substring(nShipping, nQuantity);
                                 Char[] strarr = shString.ToCharArray().Where(c => Char.IsDigit(c) || c.Equals('.')).ToArray();
                                 decimal number = Convert.ToDecimal(new string(strarr));
@@ -1655,7 +1659,10 @@ namespace CostcoWinForm
                 }
                 catch (Exception exception)
                 {
-                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + pu + "','" + exception.Message + "')";
+                    string productUrl = HttpUtility.HtmlDecode(pu);
+                    productUrl = productUrl.Replace("%2c", ",");
+                    productUrl = productUrl.Replace("'", "''");
+                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + productUrl + "','" + exception.Message + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
 
@@ -2334,9 +2341,131 @@ namespace CostcoWinForm
             timer.Start();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnCalculate_Click(object sender, EventArgs e)
         {
 
+
+            string stFrom = dtpFrom.Value.ToString("yyyy/MM/dd");
+            string stTo = dtpTo.Value.ToString("yyyy/MM/dd");
+
+            string sqlString = @"SELECT CostcoOrderNumber, CostcoItemName, CostcoOrderDate, CostcoPrice, CostcoTax, BuyerState 
+                                 FROM eBay_SoldTransactions 
+                                 WHERE CostcoOrderDate between '" + stFrom + "' AND '" + stTo + "'";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlDataAdapter dataadapter = new SqlDataAdapter(sqlString, connection);
+
+            DataSet ds = new DataSet();
+            connection.Open();
+            dataadapter.Fill(ds, "tbSoldTransactions");
+            connection.Close();
+            gvSummary.DataSource = ds;
+            gvSummary.DataMember = "tbSoldTransactions";
+
+            gvSummary.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            gvSummary.Columns["CostcoOrderNumber"].Width = 100;
+            gvSummary.Columns["CostcoItemName"].Width = 200;
+        }
+
+        private void btnGenerateFiles_Click(object sender, EventArgs e)
+        {
+
+            List<SoldProduct> products = new List<SoldProduct>();
+
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string stFrom = dtpFrom.Value.ToString("yyyy/MM/dd");
+            string stTo = dtpTo.Value.ToString("yyyy/MM/dd");
+
+            string sqlString = @"SELECT CostcoOrderNumber, CostcoItemName, CostcoOrderDate, CostcoPrice, CostcoTax, BuyerState 
+                                 FROM eBay_SoldTransactions 
+                                 WHERE CostcoOrderDate between '" + stFrom + "' AND '" + stTo + "'";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    SoldProduct p = new SoldProduct();
+                    p.CostcoOrderNumber = Convert.ToString(reader["CostcoOrderNumber"]);
+                    p.CostcoItemName = Convert.ToString(reader["CostcoItemName"]);
+                    p.CostcoOrderDate = Convert.ToString(reader["CostcoOrderDate"]);
+                    p.CostcoPrice = Convert.ToString(reader["CostcoPrice"]);
+                    p.CostcoTax = Convert.ToString(reader["CostcoTax"]);
+                    p.BuyerState = Convert.ToString(reader["BuyerState"]);
+
+                    products.Add(p);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            // add to Excel file
+            string sourceFileName = @"c:\ebay\documents\TaxTemplate.csv";
+            string destinFileName = @"c:\temp\tempPDF\TaxTemplate.csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+
+            foreach (SoldProduct p in products)
+            {
+                oSheet.Cells[i, 1].value = p.CostcoOrderNumber;
+                oSheet.Cells[i, 2].value = p.CostcoItemName;
+                oSheet.Cells[i, 3].value = p.CostcoOrderDate;
+                oSheet.Cells[i, 4].value = p.CostcoPrice;
+                oSheet.Cells[i, 5].value = p.CostcoTax;
+                oSheet.Cells[i, 6].value = p.BuyerState;
+
+                i++;
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+        }
+
+        private class SoldProduct
+        {
+            public string CostcoOrderNumber;
+            public string CostcoItemName;
+            public string CostcoOrderDate;
+            public string CostcoPrice;
+            public string CostcoTax;
+            public string BuyerState;
         }
     }
 }
