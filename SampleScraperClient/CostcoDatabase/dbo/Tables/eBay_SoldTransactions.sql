@@ -1,4 +1,4 @@
-USE [Costco]
+﻿USE [Costco]
 GO
 
 /****** Object: Table [dbo].[eBay_SoldTransactions] Script Date: 7/11/2016 8:35:59 PM ******/
@@ -35,6 +35,7 @@ CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [CostcoPrice]          MONEY          NULL,
     [CostcoTax]            MONEY          NULL,
     [CostcoOrderNumber]    NVARCHAR (20)  NULL,
+    [CostcoOrderDate]      DATE           NULL,
     [CostcoItemName]       NVARCHAR (200) NULL,
     [CostcoItemNumber]     NVARCHAR (20)  NULL,
     [CostcoOrderEmailPdf]  NVARCHAR (100) NULL,
@@ -43,5 +44,7 @@ CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [CostcoShipEmailPdf]   NVARCHAR (100) NULL,
     [CostcoTaxExemptPdf]   NVARCHAR (500) NULL
 );
+
+
 
 

@@ -25,6 +25,8 @@ using OpenQA.Selenium.Firefox;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System.Web;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace CostcoWinForm
 {
@@ -192,7 +194,7 @@ namespace CostcoWinForm
             } 
         }
 
-        public static Image GetImageFromUrl(string url)
+        public static System.Drawing.Image GetImageFromUrl(string url)
         {
             HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
             // if you have proxy server, you may need to set proxy details like below 
@@ -2371,7 +2373,7 @@ namespace CostcoWinForm
         private void btnGenerateFiles_Click(object sender, EventArgs e)
         {
 
-            List<SoldProduct> products = new List<SoldProduct>();
+            List<eBaySoldProduct> products = new List<eBaySoldProduct>();
 
             // get products from DB
             SqlConnection cn = new SqlConnection(connectionString);
@@ -2381,7 +2383,7 @@ namespace CostcoWinForm
             string stFrom = dtpFrom.Value.ToString("yyyy/MM/dd");
             string stTo = dtpTo.Value.ToString("yyyy/MM/dd");
 
-            string sqlString = @"SELECT CostcoOrderNumber, CostcoItemName, CostcoOrderDate, CostcoPrice, CostcoTax, BuyerState 
+            string sqlString = @"SELECT * 
                                  FROM eBay_SoldTransactions 
                                  WHERE CostcoOrderDate between '" + stFrom + "' AND '" + stTo + "'";
 
@@ -2392,15 +2394,17 @@ namespace CostcoWinForm
             {
                 while (reader.Read())
                 {
-                    SoldProduct p = new SoldProduct();
-                    p.CostcoOrderNumber = Convert.ToString(reader["CostcoOrderNumber"]);
-                    p.CostcoItemName = Convert.ToString(reader["CostcoItemName"]);
-                    p.CostcoOrderDate = Convert.ToString(reader["CostcoOrderDate"]);
-                    p.CostcoPrice = Convert.ToString(reader["CostcoPrice"]);
-                    p.CostcoTax = Convert.ToString(reader["CostcoTax"]);
-                    p.BuyerState = Convert.ToString(reader["BuyerState"]);
+                    eBaySoldProduct soldProduct = new eBaySoldProduct();
 
-                    products.Add(p);
+                    soldProduct.CostcoOrderNumber = Convert.ToString(reader["CostcoOrderNumber"]);
+                    soldProduct.CostcoItemName = Convert.ToString(reader["CostcoItemName"]);
+                    soldProduct.CostcoOrderDate = Convert.ToDateTime(reader["CostcoOrderDate"]).ToShortDateString();
+                    soldProduct.CostcoPrice = Convert.ToDecimal(reader["CostcoPrice"]);
+                    soldProduct.CostcoTax = Convert.ToDecimal(reader["CostcoTax"]);
+                    soldProduct.BuyerState = Convert.ToString(reader["BuyerState"]);
+                    soldProduct.CostcoOrderEmailPdf = Convert.ToString(reader["CostcoOrderEmailPdf"]);
+                    soldProduct.CostcoTaxExemptPdf = Convert.ToString(reader["CostcoTaxExemptPdf"]);
+                    products.Add(soldProduct);
                 }
             }
 
@@ -2410,6 +2414,7 @@ namespace CostcoWinForm
             // add to Excel file
             string sourceFileName = @"c:\ebay\documents\TaxTemplate.csv";
             string destinFileName = @"c:\temp\tempPDF\TaxTemplate.csv";
+            File.Delete(destinFileName);
             File.Copy(sourceFileName, destinFileName);
 
             Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
@@ -2438,9 +2443,11 @@ namespace CostcoWinForm
             Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
             Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
 
+            List<string> fileNames = new List<string>();
+
             int i = 2;
 
-            foreach (SoldProduct p in products)
+            foreach (eBaySoldProduct p in products)
             {
                 oSheet.Cells[i, 1].value = p.CostcoOrderNumber;
                 oSheet.Cells[i, 2].value = p.CostcoItemName;
@@ -2450,22 +2457,56 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 6].value = p.BuyerState;
 
                 i++;
+
+                fileNames.Add(@"C:\temp\CostcoOrderEmails\" + p.CostcoOrderEmailPdf);
+                fileNames.Add(@"C:\temp\TaxExemption\" + p.CostcoTaxExemptPdf);
             }
 
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
             oXL.Application.Quit();
             oXL.Quit();
+
+            string finalPDFName = @"C:\temp\tempPDF\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".pdf";
+            File.Delete(finalPDFName);
+            MergePDFs(fileNames, finalPDFName);
         }
 
-        private class SoldProduct
+        public bool MergePDFs(IEnumerable<string> fileNames, string targetPdf)
         {
-            public string CostcoOrderNumber;
-            public string CostcoItemName;
-            public string CostcoOrderDate;
-            public string CostcoPrice;
-            public string CostcoTax;
-            public string BuyerState;
+            bool merged = true;
+            using (FileStream stream = new FileStream(targetPdf, FileMode.Create))
+            {
+                Document document = new Document();
+                PdfCopy pdf = new PdfCopy(document, stream);
+                PdfReader reader = null;
+                try
+                {
+                    document.Open();
+                    foreach (string file in fileNames)
+                    {
+                        reader = new PdfReader(file);
+                        pdf.AddDocument(reader);
+                        reader.Close();
+                    }
+                }
+                catch (Exception)
+                {
+                    merged = false;
+                    if (reader != null)
+                    {
+                        reader.Close();
+                    }
+                }
+                finally
+                {
+                    if (document != null)
+                    {
+                        document.Close();
+                    }
+                }
+            }
+            return merged;
         }
     }
 }
