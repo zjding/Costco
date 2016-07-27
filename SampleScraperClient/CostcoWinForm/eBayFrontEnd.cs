@@ -191,7 +191,7 @@ namespace CostcoWinForm
                 {
                     e.Value = GetImageFromUrl(imageUrl);
                 }
-            } 
+            }
         }
 
         public static System.Drawing.Image GetImageFromUrl(string url)
@@ -218,7 +218,7 @@ namespace CostcoWinForm
                 Process.Start(@"chrome", url);
             } else if (e.ColumnIndex == 0)
             {
-                gvProducts.Rows[e.RowIndex].Cells[0] .Value = !Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value);
+                gvProducts.Rows[e.RowIndex].Cells[0].Value = !Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value);
                 if (Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value))
                 {
                     gvProducts.Rows[e.RowIndex].Selected = true;
@@ -952,7 +952,7 @@ namespace CostcoWinForm
         {
             List<string> selectedCategories = new List<string>();
 
-            foreach(ListViewItem item in lvCategories.Items)
+            foreach (ListViewItem item in lvCategories.Items)
             {
                 if (item.Checked)
                 {
@@ -971,7 +971,7 @@ namespace CostcoWinForm
 
             string selectCategoriesString = "";
 
-            foreach(string s in selectedCategories)
+            foreach (string s in selectedCategories)
             {
                 selectCategoriesString += "'" + s + "',";
             }
@@ -982,7 +982,7 @@ namespace CostcoWinForm
                                 Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
                                 FROM ProductInfo
                                 WHERE Category in (" + selectCategoriesString + ")";
-            
+
             SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
             CostcoDataSet4.ProductInfoDataTable table = new CostcoDataSet4.ProductInfoDataTable();
             table.Locale = System.Globalization.CultureInfo.InvariantCulture;
@@ -1005,7 +1005,7 @@ namespace CostcoWinForm
             if (bInit)
             {
 
-                
+
 
                 //CostcoDataSet4.ProductInfoDataTable table = new CostcoDataSet4.ProductInfoDataTable();
                 //table.Locale = System.Globalization.CultureInfo.InvariantCulture;
@@ -1027,7 +1027,7 @@ namespace CostcoWinForm
             if (!bInit)
                 return;
 
-            RefreshProductsGrid();   
+            RefreshProductsGrid();
         }
 
         private void RefreshProductsGrid()
@@ -1252,7 +1252,7 @@ namespace CostcoWinForm
 
                 }
             }
-                
+
 
             //MessageBox.Show("Get productUrlArray Done");
         }
@@ -1272,7 +1272,7 @@ namespace CostcoWinForm
                         not exists
                         (select 1 from Raw_ProductInfo sp where sp.UrlNumber = p.UrlNumber)";
             cmd.CommandText = sqlString;
-            SqlDataReader  rdr = cmd.ExecuteReader();
+            SqlDataReader rdr = cmd.ExecuteReader();
 
             while (rdr.Read())
             {
@@ -1411,7 +1411,7 @@ namespace CostcoWinForm
                         discount = discount.Replace("?", "");
                         discount = discount.Replace("'", "");
                     }
-                        
+
 
                     string price;
                     List<HtmlNode> yourPriceNode = col1Node.CssSelect(".your-price").ToList<HtmlNode>();
@@ -1651,7 +1651,7 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','"  + imageUrl.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + imageUrl.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
 
@@ -1979,7 +1979,7 @@ namespace CostcoWinForm
 
         private void SendEmail()
         {
-            emailMessage =  "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
+            emailMessage = "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
             emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
 
             emailMessage += "</br>";
@@ -2183,9 +2183,9 @@ namespace CostcoWinForm
             {
                 oSheet.Cells[i, 1].value = "Revise";
                 oSheet.Cells[i, 2].NumberFormat = "#";
-                oSheet.Cells[i, 2].value = product.eBayItemNumbr;        
+                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
                 oSheet.Cells[i, 3].value = product.NewPrice;
-               
+
                 i++;
             }
 
@@ -2219,7 +2219,7 @@ namespace CostcoWinForm
                 {
                     ProductUpdate p = new ProductUpdate();
                     p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-                    
+
                     products.Add(p);
                 }
             }
@@ -2268,7 +2268,7 @@ namespace CostcoWinForm
 
                 i++;
             }
-            
+
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
             oXL.Application.Quit();
@@ -2374,6 +2374,7 @@ namespace CostcoWinForm
         {
 
             List<eBaySoldProduct> products = new List<eBaySoldProduct>();
+            List<string> states = new List<string>();
 
             // get products from DB
             SqlConnection cn = new SqlConnection(connectionString);
@@ -2385,7 +2386,8 @@ namespace CostcoWinForm
 
             string sqlString = @"SELECT * 
                                  FROM eBay_SoldTransactions 
-                                 WHERE CostcoOrderDate between '" + stFrom + "' AND '" + stTo + "'";
+                                 WHERE CostcoOrderDate between '" + stFrom + "' AND '" + stTo + "' " +
+                                "AND UPPER(BuyerState) not in ('CA', 'CT', 'DC', 'FL', 'HI', 'IL', 'LA', 'MD', 'MA', 'TN')";
 
             cn.Open();
             cmd.CommandText = sqlString;
@@ -2405,15 +2407,20 @@ namespace CostcoWinForm
                     soldProduct.CostcoOrderEmailPdf = Convert.ToString(reader["CostcoOrderEmailPdf"]);
                     soldProduct.CostcoTaxExemptPdf = Convert.ToString(reader["CostcoTaxExemptPdf"]);
                     products.Add(soldProduct);
+
+                    if (!states.Contains(soldProduct.BuyerState))
+                    {
+                        states.Add(soldProduct.BuyerState.ToUpper());
+                    }
                 }
             }
 
             reader.Close();
-            cn.Close();
+
 
             // add to Excel file
             string sourceFileName = @"c:\ebay\documents\TaxTemplate.csv";
-            string destinFileName = @"c:\temp\tempPDF\TaxTemplate.csv";
+            string destinFileName = @"c:\temp\TaxExemption\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".csv";
             File.Delete(destinFileName);
             File.Copy(sourceFileName, destinFileName);
 
@@ -2462,6 +2469,46 @@ namespace CostcoWinForm
                 fileNames.Add(@"C:\temp\TaxExemption\" + p.CostcoTaxExemptPdf);
             }
 
+            if (states.Contains("AL") ||
+                states.Contains("CO") ||
+                states.Contains("GA") ||
+                states.Contains("ID") ||
+                states.Contains("IA") ||
+                states.Contains("KS") ||
+                states.Contains("KY") ||
+                states.Contains("MI") ||
+                states.Contains("MN") ||
+                states.Contains("MO") ||
+                states.Contains("NE") ||
+                states.Contains("NV") ||
+                states.Contains("NJ") ||
+                states.Contains("NM") ||
+                states.Contains("NC") ||
+                states.Contains("ND") ||
+                states.Contains("OH") ||
+                states.Contains("OK") ||
+                states.Contains("SC") ||
+                states.Contains("TX") ||
+                states.Contains("UT") ||
+                states.Contains("VT") ||
+                states.Contains("WA") ||
+                states.Contains("WI"))
+            {
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\Uniform.pdf");
+            }
+            if (states.Contains("AZ"))
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\Arizona.pdf");
+            if (states.Contains("IN"))
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\Indiana.pdf");
+            if (states.Contains("NY"))
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\NewYork.pdf");
+            if (states.Contains("PA"))
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\Pennsylvania.pdf");
+            if (states.Contains("SD"))
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\SouthDakota.pdf");
+            if (states.Contains("VA"))
+                fileNames.Add(@"C:\ebay\Documents\TaxExemptForms\Vaginia.pdf");
+
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
             oXL.Application.Quit();
@@ -2470,6 +2517,38 @@ namespace CostcoWinForm
             string finalPDFName = @"C:\temp\tempPDF\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".pdf";
             File.Delete(finalPDFName);
             MergePDFs(fileNames, finalPDFName);
+
+            File.Delete(@"C:\temp\TaxExemption\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".pdf");
+            File.Move(finalPDFName, @"C:\temp\TaxExemption\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".pdf");
+
+            sqlString = @"INSERT INTO TaxExemption (FromDate, ToDate, Report) VALUES ('" + stFrom + "',  '" + stTo + "',  '" + "TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + "')";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            gvTaxExemption_Refresh();
+        }
+
+        public void gvTaxExemption_Refresh()
+        {
+            string sqlString = @"SELECT FromDate, ToDate, Report, TotalSell, TotalTax, RefundableTax, Sent, Refund, ActualRefund 
+                                 FROM TaxExemption 
+                                 Order by FromDate DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlDataAdapter dataadapter = new SqlDataAdapter(sqlString, connection);
+
+            DataSet ds = new DataSet();
+            connection.Open();
+            dataadapter.Fill(ds, "tbTaxExemption");
+            connection.Close();
+            gvTaxExempt.DataSource = ds;
+            gvTaxExempt.DataMember = "tbTaxExemption";
+
+            gvTaxExempt.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            //gvTaxExempt.Columns["CostcoOrderNumber"].Width = 100;
+            //gvTaxExempt.Columns["CostcoItemName"].Width = 200;
         }
 
         public bool MergePDFs(IEnumerable<string> fileNames, string targetPdf)
@@ -2507,6 +2586,57 @@ namespace CostcoWinForm
                 }
             }
             return merged;
+        }
+
+        private void tpTax_Enter(object sender, EventArgs e)
+        {
+            gvTaxExemption_Refresh();
+        }
+
+        private void btnGenerateSaleTaxReport_Click(object sender, EventArgs e)
+        {
+            string stFrom = dtpSaleTaxFrom.Value.ToString("yyyy/MM/dd");
+            string stTo = dtpSaleTaxTo.Value.ToString("yyyy/MM/dd");
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @"Insert into SaleTax (FromDate, ToDate, NumberOfTransactions, StateSaleTax, CitySaleTax, CountySaleTax)
+                                  Select '" + stFrom + "', '" + stTo + 
+                                @"', Count(*), SUM(CostcoPrice)*0.03 as StateSaleTax, SUM(CostcoPrice)*0.03 as CitySaleTax, SUM(CostcoPrice)*0.03 as CountySaleTax
+                                  From eBay_SoldTransactions
+                                  where upper(BuyerState) in ('AL') 
+                                  and  CostcoOrderDate between '" + stFrom + "' and '" + stTo + "'";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            gvSaleTaxHistory_Refresh();
+        }
+
+        public void gvSaleTaxHistory_Refresh()
+        {
+            string sqlString = @"SELECT FromDate, ToDate, NumberOfTransactions, StateSaleTax, CitySaleTax, CountySaleTax, StateTaxSubmitted, CityTaxSubmitted, CountyTaxSubmitted 
+                                 FROM SaleTax 
+                                 Order by FromDate DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            SqlDataAdapter dataadapter = new SqlDataAdapter(sqlString, connection);
+
+            DataSet ds = new DataSet();
+            connection.Open();
+            dataadapter.Fill(ds, "tbSaleTax");
+            connection.Close();
+            gvSaleTaxHistory.DataSource = ds;
+            gvSaleTaxHistory.DataMember = "tbSaleTax";
+
+            gvSaleTaxHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            //gvTaxExempt.Columns["CostcoOrderNumber"].Width = 100;
+            //gvTaxExempt.Columns["CostcoItemName"].Width = 200;
         }
     }
 }
