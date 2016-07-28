@@ -234,13 +234,14 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSaleTax = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnSaleTaxSave = new System.Windows.Forms.Button();
+            this.gvSaleTaxHistory = new System.Windows.Forms.DataGridView();
             this.btnGenerateSaleTaxReport = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.dtpSaleTaxTo = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
             this.dtpSaleTaxFrom = new System.Windows.Forms.DateTimePicker();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.gvSaleTaxHistory = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eBayToAddBindingSource)).BeginInit();
@@ -2003,6 +2004,7 @@
             this.tpSaleTax.TabIndex = 5;
             this.tpSaleTax.Text = "Sale Tax";
             this.tpSaleTax.UseVisualStyleBackColor = true;
+            this.tpSaleTax.Enter += new System.EventHandler(this.tpSaleTax_Enter);
             // 
             // panel4
             // 
@@ -2017,6 +2019,43 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(1250, 599);
             this.panel4.TabIndex = 0;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox7.Controls.Add(this.btnSaleTaxSave);
+            this.groupBox7.Controls.Add(this.gvSaleTaxHistory);
+            this.groupBox7.Location = new System.Drawing.Point(3, 35);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(1244, 561);
+            this.groupBox7.TabIndex = 15;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Sale Tax History";
+            // 
+            // btnSaleTaxSave
+            // 
+            this.btnSaleTaxSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaleTaxSave.Location = new System.Drawing.Point(1160, 533);
+            this.btnSaleTaxSave.Name = "btnSaleTaxSave";
+            this.btnSaleTaxSave.Size = new System.Drawing.Size(78, 23);
+            this.btnSaleTaxSave.TabIndex = 16;
+            this.btnSaleTaxSave.Text = "Save";
+            this.btnSaleTaxSave.UseVisualStyleBackColor = true;
+            this.btnSaleTaxSave.Click += new System.EventHandler(this.btnSaleTaxSave_Click);
+            // 
+            // gvSaleTaxHistory
+            // 
+            this.gvSaleTaxHistory.AllowUserToAddRows = false;
+            this.gvSaleTaxHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvSaleTaxHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvSaleTaxHistory.Location = new System.Drawing.Point(6, 19);
+            this.gvSaleTaxHistory.Name = "gvSaleTaxHistory";
+            this.gvSaleTaxHistory.Size = new System.Drawing.Size(1232, 508);
+            this.gvSaleTaxHistory.TabIndex = 0;
             // 
             // btnGenerateSaleTaxReport
             // 
@@ -2059,29 +2098,6 @@
             this.dtpSaleTaxFrom.Name = "dtpSaleTaxFrom";
             this.dtpSaleTaxFrom.Size = new System.Drawing.Size(200, 20);
             this.dtpSaleTaxFrom.TabIndex = 10;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox7.Controls.Add(this.gvSaleTaxHistory);
-            this.groupBox7.Location = new System.Drawing.Point(3, 35);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(1244, 561);
-            this.groupBox7.TabIndex = 15;
-            this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Sale Tax History";
-            // 
-            // gvSaleTaxHistory
-            // 
-            this.gvSaleTaxHistory.AllowUserToAddRows = false;
-            this.gvSaleTaxHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvSaleTaxHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gvSaleTaxHistory.Location = new System.Drawing.Point(3, 16);
-            this.gvSaleTaxHistory.Name = "gvSaleTaxHistory";
-            this.gvSaleTaxHistory.Size = new System.Drawing.Size(1238, 542);
-            this.gvSaleTaxHistory.TabIndex = 0;
             // 
             // eBayFrontEnd
             // 
@@ -2367,5 +2383,6 @@
         private System.Windows.Forms.DateTimePicker dtpSaleTaxTo;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.DateTimePicker dtpSaleTaxFrom;
+        private System.Windows.Forms.Button btnSaleTaxSave;
     }
 }

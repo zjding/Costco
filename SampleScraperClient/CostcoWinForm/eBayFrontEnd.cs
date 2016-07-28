@@ -54,6 +54,8 @@ namespace CostcoWinForm
 
         List<Product> priceChangedProductArray = new List<Product>();
 
+        
+
         string emailMessage;
 
         string destinFileName;
@@ -238,11 +240,11 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            GetDepartmentArray();
+            //GetDepartmentArray();
 
-            GetSubCategoryUrls();
+            //GetSubCategoryUrls();
 
-            GetProductUrls();
+            //GetProductUrls();
 
             GetProductInfo();
 
@@ -1309,8 +1311,8 @@ namespace CostcoWinForm
                 cmd.ExecuteNonQuery();
             }
 
-            //productUrlArray.Clear();
-            //productUrlArray.Add("http://www.costco.com/Nature's-Bounty-Hair,-Skin-and-Nails,-230-Gummies.product.100214116.html");
+            productUrlArray.Clear();
+            productUrlArray.Add("http://www.costco.com/Xerox-Phaser%E2%84%A2-6500N-Color-Single-Function-Laser-Printer-.product.100014452.html");
 
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
@@ -2514,6 +2516,7 @@ namespace CostcoWinForm
             oXL.Application.Quit();
             oXL.Quit();
 
+
             string finalPDFName = @"C:\temp\tempPDF\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".pdf";
             File.Delete(finalPDFName);
             MergePDFs(fileNames, finalPDFName);
@@ -2604,39 +2607,157 @@ namespace CostcoWinForm
             cn.Open();
 
             string sqlString = @"Insert into SaleTax (FromDate, ToDate, NumberOfTransactions, StateSaleTax, CitySaleTax, CountySaleTax)
-                                  Select '" + stFrom + "', '" + stTo + 
+                                  Select '" + stFrom + "', '" + stTo +
                                 @"', Count(*), SUM(CostcoPrice)*0.03 as StateSaleTax, SUM(CostcoPrice)*0.03 as CitySaleTax, SUM(CostcoPrice)*0.03 as CountySaleTax
                                   From eBay_SoldTransactions
                                   where upper(BuyerState) in ('AL') 
-                                  and  CostcoOrderDate between '" + stFrom + "' and '" + stTo + "'";
+                                  and  PaypalPaidDateTime between '" + stFrom + "' and '" + stTo + "'";
 
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
             cn.Close();
 
             gvSaleTaxHistory_Refresh();
+
+            sqlString = @"SELECT PaypalPaidDateTime, PaypalTransactionID, eBayItemName, eBaySoldPrice, PaypalPaidEmailPdf, eBaySoldEmailPdf
+                                 FROM eBay_SoldTransactions 
+                                 where upper(BuyerState) in ('AL') 
+                                 and  PaypalPaidDateTime between '" + stFrom + "' and '" + stTo + "' Order by PaypalPaidDateTime Desc";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<eBaySoldProduct> products = new List<eBaySoldProduct>();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    eBaySoldProduct soldProduct = new eBaySoldProduct();
+
+                    soldProduct.PaypalPaidDateTime = Convert.ToDateTime(reader["PaypalPaidDateTime"]);
+                    soldProduct.PaypalTransactionID = Convert.ToString(reader["PaypalTransactionID"]);
+                    soldProduct.eBayItemName = Convert.ToString(reader["eBayItemName"]);
+                    soldProduct.eBaySoldPrice = Convert.ToDecimal(reader["eBaySoldPrice"]);
+                    soldProduct.PaypalPaidEmailPdf = Convert.ToString(reader["PaypalPaidEmailPdf"]);
+                    soldProduct.eBaySoldEmailPdf = Convert.ToString(reader["eBaySoldEmailPdf"]);
+                    products.Add(soldProduct);
+                }
+            }
+
+            // add to Excel file
+            string sourceFileName = @"C:\eBayApp\Files\Templates\SaleTaxTemplate.csv";
+            string destinFileName = @"C:\eBayApp\Files\Tax\SaleTax\SaleTax-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".csv";
+            File.Delete(destinFileName);
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            List<string> fileNames = new List<string>();
+
+            int i = 2;
+
+            foreach (eBaySoldProduct p in products)
+            {
+                oSheet.Cells[i, 1].value = p.PaypalPaidDateTime;
+                oSheet.Cells[i, 2].value = p.PaypalTransactionID;
+                oSheet.Cells[i, 3].value = p.eBayItemName;
+                oSheet.Cells[i, 4].value = p.eBaySoldPrice;
+
+                i++;
+
+                fileNames.Add(@"C:\eBayApp\Files\Emails\eBaySoldEmails\" + p.eBaySoldEmailPdf);
+                fileNames.Add(@"C:\eBayApp\Files\Emails\PaypalPaidEmails\" + p.PaypalPaidEmailPdf);
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+
+            string finalPDFName = @"C:\eBayApp\Files\Tax\SaleTax\TaxExemption-" + dtpFrom.Value.ToString("yyyyMMdd") + "-" + dtpTo.Value.ToString("yyyyMMdd") + ".pdf";
+            File.Delete(finalPDFName);
+            MergePDFs(fileNames, finalPDFName);
         }
+
+        SqlCommand cmdSaleTax;
+        SqlDataAdapter daSaleTax;
+        SqlCommandBuilder cmbSaleTax;
+        DataSet dsSaleTax;
+        DataTable dtSaleTax;
 
         public void gvSaleTaxHistory_Refresh()
         {
-            string sqlString = @"SELECT FromDate, ToDate, NumberOfTransactions, StateSaleTax, CitySaleTax, CountySaleTax, StateTaxSubmitted, CityTaxSubmitted, CountyTaxSubmitted 
+            string sqlString = @"SELECT ReportID, FromDate, ToDate, NumberOfTransactions, StateSaleTax, CitySaleTax, CountySaleTax, StateTaxSubmitted, CityTaxSubmitted, CountyTaxSubmitted 
                                  FROM SaleTax 
                                  Order by FromDate DESC";
 
             SqlConnection connection = new SqlConnection(connectionString);
-            SqlDataAdapter dataadapter = new SqlDataAdapter(sqlString, connection);
-
-            DataSet ds = new DataSet();
             connection.Open();
-            dataadapter.Fill(ds, "tbSaleTax");
+            cmdSaleTax = new SqlCommand(sqlString, connection);
+            daSaleTax = new SqlDataAdapter(cmdSaleTax);
+            cmbSaleTax = new SqlCommandBuilder(daSaleTax);
+            dsSaleTax = new DataSet();
+            daSaleTax.Fill(dsSaleTax, "tbSaleTax");
+            dtSaleTax = dsSaleTax.Tables["tbSaleTax"];
             connection.Close();
-            gvSaleTaxHistory.DataSource = ds;
-            gvSaleTaxHistory.DataMember = "tbSaleTax";
 
+           
+            gvSaleTaxHistory.DataSource = dsSaleTax.Tables["tbSaleTax"];
             gvSaleTaxHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            gvSaleTaxHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            gvSaleTaxHistory.Columns[0].Visible = false;
+
+            //daSaleTax = new SqlDataAdapter(sqlString, connection);
+
+            //dsSaleTax = new DataSet();
+            //connection.Open();
+            //daSaleTax.Fill(dsSaleTax, "tbSaleTax");
+            //dtSaleTax = dsSaleTax.Tables["tbSaleTax"];
+            //connection.Close();
+
+            //gvSaleTaxHistory.DataSource = dsSaleTax;
+            //gvSaleTaxHistory.DataMember = "tbSaleTax";
+
+            //gvSaleTaxHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             //gvTaxExempt.Columns["CostcoOrderNumber"].Width = 100;
             //gvTaxExempt.Columns["CostcoItemName"].Width = 200;
+        }
+
+        private void btnSaleTaxSave_Click(object sender, EventArgs e)
+        {
+            daSaleTax.Update(dtSaleTax);
+        }
+
+        private void tpSaleTax_Enter(object sender, EventArgs e)
+        {
+            gvSaleTaxHistory_Refresh();
         }
     }
 }

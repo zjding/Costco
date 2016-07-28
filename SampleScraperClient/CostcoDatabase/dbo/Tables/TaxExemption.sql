@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[TaxReport] (
+﻿CREATE TABLE [dbo].[TaxExemption] (
     [FromDate]      DATE           NULL,
     [ToDate]        DATE           NULL,
     [TotalSell]     MONEY          NULL,
