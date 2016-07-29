@@ -240,11 +240,11 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            //GetDepartmentArray();
+            GetDepartmentArray();
 
-            //GetSubCategoryUrls();
+            GetSubCategoryUrls();
 
-            //GetProductUrls();
+            GetProductUrls();
 
             GetProductInfo();
 
@@ -1311,8 +1311,8 @@ namespace CostcoWinForm
                 cmd.ExecuteNonQuery();
             }
 
-            productUrlArray.Clear();
-            productUrlArray.Add("http://www.costco.com/Xerox-Phaser%E2%84%A2-6500N-Color-Single-Function-Laser-Printer-.product.100014452.html");
+            //productUrlArray.Clear();
+            //productUrlArray.Add("http://www.costco.com/Nature's-Bounty-Hair,-Skin-and-Nails,-230-Gummies.product.100214116.html");
 
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
@@ -2758,6 +2758,213 @@ namespace CostcoWinForm
         private void tpSaleTax_Enter(object sender, EventArgs e)
         {
             gvSaleTaxHistory_Refresh();
+        }
+
+        private void ll1a_TextChanged(object sender, EventArgs e)
+        {
+            ll1.Text = (Convert.ToDecimal(ll1a.Text) + Convert.ToDecimal(ll1b.Text) + Convert.ToDecimal(ll1c.Text)).ToString();
+        }
+
+        private void ll1b_TextChanged(object sender, EventArgs e)
+        {
+            ll1a_TextChanged(sender, e);
+        }
+
+        private void ll1c_TextChanged(object sender, EventArgs e)
+        {
+            ll1a_TextChanged(sender, e);
+        }
+
+        private void ll1_TextChanged(object sender, EventArgs e)
+        {
+            ll3.Text = (Convert.ToDecimal(ll1.Text) - Convert.ToDecimal(ll2.Text) ).ToString();
+        }
+
+        private void ll2_TextChanged(object sender, EventArgs e)
+        {
+            ll1_TextChanged(sender, e);
+        }
+
+        private void ll3_TextChanged(object sender, EventArgs e)
+        {
+            ll5.Text = (Convert.ToDecimal(ll3.Text) - Convert.ToDecimal(ll4.Text)).ToString();
+        }
+
+        private void ll4_TextChanged(object sender, EventArgs e)
+        {
+            ll3_TextChanged(sender, e);
+        }
+
+        private void ll5_TextChanged(object sender, EventArgs e)
+        {
+            ll7.Text = (Convert.ToDecimal(ll5.Text) + Convert.ToDecimal(ll6.Text)).ToString();
+        }
+
+        private void ll6_TextChanged(object sender, EventArgs e)
+        {
+            ll5_TextChanged(sender, e);
+        }
+
+        private void ll8_TextChanged(object sender, EventArgs e)
+        {
+            ll28.Text = Convert.ToString(   Convert.ToDecimal(ll8.Text) +
+                                            Convert.ToDecimal(ll9.Text) +
+                                            Convert.ToDecimal(ll10.Text) +
+                                            Convert.ToDecimal(ll11.Text) +
+                                            Convert.ToDecimal(ll12.Text) +
+                                            Convert.ToDecimal(ll13.Text) +
+                                            Convert.ToDecimal(ll14.Text) +
+                                            Convert.ToDecimal(ll15.Text) +
+                                            Convert.ToDecimal(ll16a.Text) +
+                                            Convert.ToDecimal(ll16b.Text) +
+                                            Convert.ToDecimal(ll17.Text) +
+                                            Convert.ToDecimal(ll18.Text) +
+                                            Convert.ToDecimal(ll19.Text) +
+                                            Convert.ToDecimal(ll20a.Text) +
+                                            Convert.ToDecimal(ll20b.Text) +
+                                            Convert.ToDecimal(ll21.Text) +
+                                            Convert.ToDecimal(ll22.Text) +
+                                            Convert.ToDecimal(ll23.Text) +
+                                            Convert.ToDecimal(ll24a.Text) +
+                                            Convert.ToDecimal(ll24b.Text) +
+                                            Convert.ToDecimal(ll25.Text) +
+                                            Convert.ToDecimal(ll26.Text) +
+                                            Convert.ToDecimal(ll27.Text));
+        }
+
+        private void ll9_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll10_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll11_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll12_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll13_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll14_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll15_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll16a_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll16b_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll17_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll18_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll19_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll20a_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll20b_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll21_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll22_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll23_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll24a_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll24b_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll25_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll26_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll27_TextChanged(object sender, EventArgs e)
+        {
+            ll8_TextChanged(sender, e);
+        }
+
+        private void ll7_TextChanged(object sender, EventArgs e)
+        {
+            ll28_TextChanged(sender, e);
+        }
+
+        private void ll28_TextChanged(object sender, EventArgs e)
+        {
+            ll29.Text = (Convert.ToDecimal(ll7.Text) - Convert.ToDecimal(ll28.Text)).ToString();
+        }
+
+        private void ll29_TextChanged(object sender, EventArgs e)
+        {
+            ll31.Text = (Convert.ToDecimal(ll29.Text) - Convert.ToDecimal(ll30.Text)).ToString();
+        }
+
+        private void ll30_TextChanged(object sender, EventArgs e)
+        {
+            ll29_TextChanged(sender, e);
+        }
+
+        private void tpIncomeTax_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
