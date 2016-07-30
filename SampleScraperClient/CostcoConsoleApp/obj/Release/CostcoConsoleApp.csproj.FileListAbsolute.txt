@@ -13,3 +13,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoCo
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\bin\Release\ScrapySharp.Core.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\obj\Release\CostcoConsoleApp.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\obj\Release\CostcoConsoleApp.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoConsoleApp\obj\Release\CostcoConsoleApp.csprojResolveAssemblyReference.cache

@@ -35,6 +35,7 @@ namespace CostcoWinForm
         DataLayer dl = new DataLayer();
 
         ScrapingBrowser Browser = new ScrapingBrowser();
+        IWebDriver driver;
 
         List<string> categoryArray = new List<string>();
         List<string> subCategoryArray = new List<string>();
@@ -240,11 +241,14 @@ namespace CostcoWinForm
 
         public void runCrawl()
         {
-            GetDepartmentArray();
 
-            GetSubCategoryUrls();
+            GetProductUrls_New();
 
-            GetProductUrls();
+            //GetDepartmentArray();
+
+            //GetSubCategoryUrls();
+
+            //GetProductUrls();
 
             GetProductInfo();
 
@@ -1106,10 +1110,65 @@ namespace CostcoWinForm
             cn.Close();
         }
 
+        private string SubstringInBetween(string input, string start, string end, bool bIncludeStart, bool bIncludeEnd)
+        {
+            int iStart = input.IndexOf(start);
+
+            if (bIncludeStart)
+                input = input.Substring(iStart);
+            else
+                input = input.Substring(iStart + start.Length);
+
+            int iEnd = input.IndexOf(end);
+
+            if (bIncludeEnd)
+                input = input.Substring(0, iEnd + end.Length);
+            else
+                input = input.Substring(0, iEnd);
+
+            return input;
+        }
+
+        private string SubstringEndBack(string input, string end, string start, bool bIncludeStart, bool bIncludeEnd)
+        {
+            int iEnd = input.IndexOf(end);
+
+            if (bIncludeEnd)
+                input = input.Substring(0, iEnd + end.Length);
+            else
+                input = input.Substring(0, iEnd);
+
+            int iStart = input.LastIndexOf(">");
+
+            if (bIncludeStart)
+                input = input.Substring(iStart, input.Length - iStart);
+            else
+                input = input.Substring(iStart + start.Length, input.Length - iStart - start.Length);
+
+            return input;
+        }
+
+        private string TrimTags(string input)
+        {
+            int iStart = input.IndexOf("<");
+            string stTag;
+            input = input.Substring(iStart);
+
+            while (input.IndexOf("<") == 0)
+            {
+                stTag = SubstringInBetween(input, "<", ">", true, true);
+                input = input.Substring(stTag.Length);
+                input = input.TrimStart();
+            }
+
+            return input;
+        }
+
         private void GetSubCategoryUrls()
         {
             //categoryUrlArray.Clear();
             //categoryUrlArray.Add(@"/mens-clothing.html");
+            IWebDriver driver = new FirefoxDriver();
 
             subCategoryArray.Clear();
 
@@ -1123,87 +1182,125 @@ namespace CostcoWinForm
                     else
                         url = "http://www.costco.com" + categoryUrl;
 
-                    // level 0
-                    WebPage PageResult = Browser.NavigateToPage(new Uri(url));
-                    var mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                    if (mainContentWrapperNote == null)
-                        continue;
-                    List<HtmlNode> categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+                    driver.Navigate().GoToUrl(url);
 
-                    if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                    {
+                    IWebElement ShowMoreOptions = driver.FindElement(By.LinkText("Show More Options"));
+                    if (ShowMoreOptions != null)
+                        ShowMoreOptions.Click();
+
+                    // level 0
+                    IWebElement element = driver.FindElement(By.Id("search-filter"));
+                    element = element.FindElement(By.Id("accordion-filter_collapse-1"));
+                    var elements = element.FindElements(By.ClassName("style-check"));
+                    element = elements[elements.Count-1];
+
+                    element = element.FindElement(By.TagName("a"));
+                    var dimensionid = element.GetAttribute("data-dimensionid");
+                   
+                    string text = element.Text;
+
+                    if (!(text.Contains("(") && text.Contains(")")))
                         subCategoryArray.Add(url);
-                    }
                     else
                     {
-                        List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                        foreach (HtmlNode departmentNode in departmentNodes)
-                        {
-                            if (departmentNode.InnerText.Contains("("))
-                            {
-                                HtmlNode node = departmentNode.Descendants("a").First();
-                                string departmentUrl = node.Attributes["href"].Value;
 
-                                // level 1
-                                PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
-                                mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                                if (mainContentWrapperNote == null)
-                                    continue;
-                                categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
 
-                                if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                                {
-                                    subCategoryArray.Add(departmentUrl);
-                                }
-                                else
-                                {
-                                    List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                                    foreach (HtmlNode department_1_Node in department_1_Nodes)
-                                    {
-                                        if (department_1_Node.InnerText.Contains("("))
-                                        {
-                                            HtmlNode node_1 = department_1_Node.Descendants("a").First();
-                                            string departmentUrl_1 = node_1.Attributes["href"].Value;
-
-                                            // level 2
-                                            PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
-                                            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
-                                            if (mainContentWrapperNote == null)
-                                                continue;
-                                            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
-
-                                            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
-                                            {
-                                                subCategoryArray.Add(departmentUrl_1);
-                                            }
-                                            else
-                                            {
-                                                List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
-                                                foreach (HtmlNode department_2_Node in department_2_Nodes)
-                                                {
-                                                    HtmlNode node_2 = department_2_Node.Descendants("a").First();
-                                                    string department_2_Url = node_2.Attributes["href"].Value;
-                                                    subCategoryArray.Add(department_2_Url);
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            HtmlNode node_1 = departmentNode.Descendants("a").First();
-                                            string department_1_Url = node_1.Attributes["href"].Value;
-                                            subCategoryArray.Add(department_1_Url);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                HtmlNode node = departmentNode.Descendants("a").First();
-                                string departmentUrl = node.Attributes["href"].Value;
-                                subCategoryArray.Add(departmentUrl);
-                            }
-                        }
                     }
+
+
+                    //WebPage PageResult = Browser.NavigateToPage(new Uri(url));
+
+                    //var SearchFilterNodes = PageResult.Html.CssSelect("#search-filter");
+
+                    //var SearchAccordionNode = SearchFilterNodes.First().SelectSingleNode(".//div[@id='accordion-filter']");
+
+                    //var SearchPanelNodes = SearchAccordionNode.SelectNodes(".//div[@class='panel panel-default']");
+
+                    ///*var CategoryPanelNode = SearchPanelNode.SelectSingleNode("//div[@id='accordion-filter_collapse-1']");*/
+
+                    //var FilterNote = PageResult.Html.SelectSingleNode("//div[@id='search-filter']");
+
+                    //if (FilterNote == null)
+                    //    continue;
+
+                    //var SearchAccordionNote = FilterNote.SelectNodes("//div")[1];
+                    //var CategoryNote = FilterNote.SelectSingleNode("//div[@class='panel panel-default']");
+                    //List<HtmlNode> categoryNodes = CategoryNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                    //if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                    //{
+                    //    subCategoryArray.Add(url);
+                    //}
+                    //else
+                    //{
+                    //    List<HtmlNode> departmentNodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                    //    foreach (HtmlNode departmentNode in departmentNodes)
+                    //    {
+                    //        if (departmentNode.InnerText.Contains("("))
+                    //        {
+                    //            HtmlNode node = departmentNode.Descendants("a").First();
+                    //            string departmentUrl = node.Attributes["href"].Value;
+
+                    //            // level 1
+                    //            PageResult = Browser.NavigateToPage(new Uri(departmentUrl));
+                    //            mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                    //            if (mainContentWrapperNote == null)
+                    //                continue;
+                    //            categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                    //            if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                    //            {
+                    //                subCategoryArray.Add(departmentUrl);
+                    //            }
+                    //            else
+                    //            {
+                    //                List<HtmlNode> department_1_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                    //                foreach (HtmlNode department_1_Node in department_1_Nodes)
+                    //                {
+                    //                    if (department_1_Node.InnerText.Contains("("))
+                    //                    {
+                    //                        HtmlNode node_1 = department_1_Node.Descendants("a").First();
+                    //                        string departmentUrl_1 = node_1.Attributes["href"].Value;
+
+                    //                        // level 2
+                    //                        PageResult = Browser.NavigateToPage(new Uri(departmentUrl_1));
+                    //                        mainContentWrapperNote = PageResult.Html.SelectSingleNode("//div[@id='main_content_wrapper']");
+                    //                        if (mainContentWrapperNote == null)
+                    //                            continue;
+                    //                        categoryNodes = mainContentWrapperNote.CssSelect(".department_facets").ToList<HtmlNode>();
+
+                    //                        if (categoryNodes.CssSelect(".departmentContainer").Count() == 0)
+                    //                        {
+                    //                            subCategoryArray.Add(departmentUrl_1);
+                    //                        }
+                    //                        else
+                    //                        {
+                    //                            List<HtmlNode> department_2_Nodes = categoryNodes.CssSelect(".departmentContainer").ToList<HtmlNode>();
+                    //                            foreach (HtmlNode department_2_Node in department_2_Nodes)
+                    //                            {
+                    //                                HtmlNode node_2 = department_2_Node.Descendants("a").First();
+                    //                                string department_2_Url = node_2.Attributes["href"].Value;
+                    //                                subCategoryArray.Add(department_2_Url);
+                    //                            }
+                    //                        }
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        HtmlNode node_1 = departmentNode.Descendants("a").First();
+                    //                        string department_1_Url = node_1.Attributes["href"].Value;
+                    //                        subCategoryArray.Add(department_1_Url);
+                    //                    }
+                    //                }
+                    //            }
+                    //        }
+                    //        else
+                    //        {
+                    //            HtmlNode node = departmentNode.Descendants("a").First();
+                    //            string departmentUrl = node.Attributes["href"].Value;
+                    //            subCategoryArray.Add(departmentUrl);
+                    //        }
+                    //    }
+                    //}
                 }
                 catch (Exception exception)
                 {
@@ -1214,6 +1311,105 @@ namespace CostcoWinForm
             }
 
             //MessageBox.Show("Get subCategoryUrlArray Done");
+        }
+
+        private bool hasElement(IWebElement webElement, By by)
+        {
+            try
+            {
+                webElement.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException e)
+            {
+                return false;
+            }
+        }
+
+        private bool hasElement(IWebDriver webDriver, By by)
+        {
+            try
+            {
+                webDriver.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException e)
+            {
+                return false;
+            }
+        }
+
+        private void GetProductUrls_New()
+        {
+            categoryUrlArray = new List<string>();
+            categoryUrlArray.Add(@"http://www.costco.com/womens-clothing.html");
+            categoryUrlArray.Add(@"http://www.costco.com/all-vitamins-supplements.html");
+
+            driver = new FirefoxDriver();
+
+            List<string> subCategory = new List<string>();
+            List<string> productListPages = new List<string>();
+
+            int i = 0;
+
+            while (i < categoryUrlArray.Count)
+            {
+                driver.Navigate().GoToUrl(categoryUrlArray[i]);
+                if (hasElement(driver, By.ClassName("categoryclist")))
+                {
+                    var categoryList = driver.FindElement(By.ClassName("categoryclist"));
+
+                    var subCategoryList = categoryList.FindElements(By.ClassName("col-xs-6"));
+                    foreach (var s in subCategoryList)
+                    {
+                        categoryUrlArray.Add(s.FindElement(By.TagName("a")).GetAttribute("href"));
+                    }
+                }
+
+                if (hasElement(driver, By.ClassName("product-list")))
+                {
+                    var productList = driver.FindElement(By.ClassName("product-list"));
+
+                    if (hasElement(productList, By.ClassName("paging")))
+                    {
+                        if (hasElement(productList, By.ClassName("page")))
+                        {
+                            foreach (var pg in productList.FindElements(By.ClassName("page")))
+                            {
+                                productListPages.Add(pg.FindElement(By.TagName("a")).GetAttribute("href"));
+                            }
+                        }
+                        else
+                        {
+                            productListPages.Add(categoryUrlArray[i]);
+                        }
+                    }
+                }
+
+                i++;
+            }
+
+            foreach (var pl in productListPages)
+            {
+                AddProductUrls(pl);
+            }
+
+            driver.Close();
+        }
+
+        private void AddProductUrls(string url)
+        {
+            driver.Navigate().GoToUrl(url);
+
+            if (hasElement(driver, By.ClassName("product-list")))
+            {
+                var productList = driver.FindElement(By.ClassName("product-list"));
+
+                foreach (var p in productList.FindElements(By.ClassName("product")))
+                {
+                    productUrlArray.Add(p.FindElement(By.TagName("a")).GetAttribute("href"));
+                }
+            }
         }
 
         private void GetProductUrls()
@@ -1332,20 +1528,6 @@ namespace CostcoWinForm
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
                     UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
 
-
-                    //webBrowser1.ScriptErrorsSuppressed = true;
-                    //webBrowser1.Navigate(productUrl);
-
-                    //waitTillLoad(this.webBrowser1);
-
-                    //return;
-
-                    //HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-                    //var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
-                    //StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
-                    //doc.Load(sr);
-
-                    //HtmlNode html = doc.DocumentNode;
 
                     PageResult = Browser.NavigateToPage(new Uri(productUrl));
 
@@ -1479,175 +1661,11 @@ namespace CostcoWinForm
                     }
 
 
-                    //List<HtmlNode> productsNode = col1Node.CssSelect(".products").ToList<HtmlNode>();
-                    //if (productsNode.Count > 0)
-                    //    shipping = productsNode[0].SelectSingleNode("li").SelectSingleNode("p") == null ? "-1" : productsNode[0].SelectSingleNode("li").SelectSingleNode("p").InnerText;
-                    //else
-                    //    shipping = "-1";
-
-                    /*
-                    string description = "";
-
-
-
-                    driver.Navigate().GoToUrl(productUrl);
-
-                    IWebElement element = driver.FindElement(By.Id("product-tab1"));
-                    //string elementHtml = element.GetAttribute("outerHTML");
-
-                    //driver.Dispose();
-
-                    //var pageTypeElements = element.FindElements(By.Id("wc-power-page"));
-
-                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-
-                    // Create an Encoder object based on the GUID
-                    // for the Quality parameter category.
-                    System.Drawing.Imaging.Encoder myEncoder =
-                        System.Drawing.Imaging.Encoder.Quality;
-
-                    // Create an EncoderParameters object.
-                    // An EncoderParameters object has an array of EncoderParameter
-                    // objects. In this case, there is only one
-                    // EncoderParameter object in the array.
-                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
-                    EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 70L);
-                    myEncoderParameters.Param[0] = myEncoderParameter;
-
-                    var screenshotDriver = driver as ITakesScreenshot;
-                    Screenshot screenshot = screenshotDriver.GetScreenshot();
-                    var bmpScreen = new Bitmap(new MemoryStream(screenshot.AsByteArray));
-
-                    System.Drawing.Rectangle cropArea;
-
-                    if (element.FindElements(By.Id("wc-power-page")).Count > 0)
-                    {
-
-                        //bmpScreen.Save(@"C:\temp\" + UrlNum + ".jpg");
-
-                        IWebElement e = element.FindElement(By.Id("wc-power-page"));
-                        Size s = e.Size;
-                        s.Height = s.Height - 100;
-                        cropArea = new System.Drawing.Rectangle(e.Location, s);
-
-
-
-                        description = ProcessPowerPage(element.FindElement(By.Id("wc-power-page")));
-                    }
-                    else if (element.FindElements(By.Id("sp_inline_product")).Count > 0)
-                    {
-
-                        IWebElement e = element.FindElement(By.Id("sp_inline_product"));
-
-                        Size s = e.Size;
-                        s.Height = s.Height - 60;
-
-                        Point p = e.Location;
-                        p.Y = p.Y + 30;
-
-                        cropArea = new System.Drawing.Rectangle(p, s);
-
-
-
-                        description = ProcessInlineProduct(element.FindElement(By.Id("sp_inline_product")));
-                    }
-                    else
-                    {
-                        IWebElement e = element.FindElement(By.Id("product-tab1"));
-
-                        Size s = e.Size;
-                        s.Height = s.Height - 60;
-
-                        Point p = e.Location;
-                        p.Y = p.Y + 30;
-
-                        cropArea = new System.Drawing.Rectangle(p, s);
-                    }
-
-                    bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\" + UrlNum + ".jpg", jpgEncoder, myEncoderParameters);
-
-                    using (WebClient client = new WebClient())
-                    {
-                        client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
-                        client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\" + UrlNum + ".jpg");
-                    }
-
-                    // images
-                    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
-
-
-                    int numImages = 1;
-                    if (imageElement.FindElements(By.TagName("li")) != null)
-                        numImages = imageElement.FindElements(By.TagName("li")).ToList().Count;
-
-
-
-                    //string description = GetProductionDescription(productUrl);
-                    description = ProcessHtml(description);
-
-                    description = description.Replace("???", "");
-                    description = description.Replace("??", "");
-                    description = description.Replace("'", "");
-                    description = description.Replace("\"", "");
-
-                    HtmlNode productDetailTabsNode = html.CssSelect(".product-detail-tabs").ToList<HtmlNode>().First();
-                    if (description == "")
-                    {
-                        var productDetailTab1Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab1']");
-
-                        var productDescriptionNode = productDetailTab1Node.SelectSingleNode("//p[@itemprop='description']");
-
-                        description = productDescriptionNode.InnerHtml;
-
-                        description = ProcessHtml(description);
-
-                        description = description.Replace("???", "");
-                        description = description.Replace("??", "");
-                        description = description.Replace("'", "");
-
-                        if (description.Contains("<div style=text-align:center;>"))
-                        {
-                            string stStart = "<div style=text-align:center;>";
-                            string stEnd = "</div>";
-
-                            int iStart = description.IndexOf(stStart);
-
-                            int iEnd = description.IndexOf(stEnd, iStart);
-                            iEnd += stEnd.Length;
-
-                            string stReplace = description.Substring(iStart, iEnd - iStart);
-
-                            description = description.Replace(stReplace, "");
-                        }
-                    }
-
-                    Regex emailReplace = new Regex(@"[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}", RegexOptions.IgnoreCase);
-                    emailReplace.Replace(description, "");
-
-                    var productDetailTab2Node = productDetailTabsNode.SelectSingleNode("//div[@id='product-tab2']");
-
-                    string specification = "";
-                    if (productDetailTab2Node != null)
-                    {
-                        specification = productDetailTab2Node.InnerHtml;
-                        string temp = specification;
-                        //string convertedSpecification = HtmlToText.ConvertHtml(specification);
-                        //specification = convertedSpecification.Replace("'", "");
-                        //specification = convertedSpecification.Replace("\r", "");
-                        //specification = convertedSpecification.Replace("\t", "");
-                        //specification = convertedSpecification.Replace("\n", "");
-                        temp = ProcessHtml(temp);
-                        specification = temp;
-                    }
-                    */
+                    
 
                     HtmlNode imageColumnNode = html.CssSelect(".image-column").ToList<HtmlNode>().First();
 
-                    //HtmlNode carouselWrapNode = imageColumnNode.CssSelect(".product-image-carousel").ToList<HtmlNode>().First();
-                    //var thumbHolderNode = carouselWrapNode.SelectNodes("//ul[@id='thumb_holder']");
-
-                    //var thumbNodes = thumbHolderNode.SelectNodes("/li");
+                   
 
                     HtmlNode imageNode = imageColumnNode.SelectSingleNode("//img[@itemprop='image']");
 
@@ -1665,8 +1683,8 @@ namespace CostcoWinForm
                 {
                     string productUrl = HttpUtility.HtmlDecode(pu);
                     productUrl = productUrl.Replace("%2c", ",");
-                    productUrl = productUrl.Replace("'", "''");
-                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + productUrl + "','" + exception.Message + "')";
+                    productUrl = productUrl.Replace(@"'", @"''");
+                    sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + productUrl + "','" + exception.Message.Replace(@"'", @"''") + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
 
@@ -2034,7 +2052,7 @@ namespace CostcoWinForm
             emailMessage += "<h3>New products: (" + newProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             if (newProductArray.Count == 0)
-                emailMessage = "<p>No new product</p>" + "</br>";
+                emailMessage += "<p>No new product</p>" + "</br>";
             else
             {
                 foreach (string newProduct in newProductArray)
@@ -2048,7 +2066,7 @@ namespace CostcoWinForm
             emailMessage += "<h3>Discontinued products: (" + discontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             if (this.discontinueddProductArray.Count == 0)
-                emailMessage = "<p>No new product</p>" + "</br>";
+                emailMessage += "<p>No new product</p>" + "</br>";
             else
             {
                 foreach (string discontinueddProduct in discontinueddProductArray)

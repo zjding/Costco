@@ -1,12 +1,12 @@
-﻿USE [Costco]
-GO
+﻿--USE [Costco]
+--GO
 
-/****** Object: Table [dbo].[eBay_SoldTransactions] Script Date: 7/11/2016 8:35:59 PM ******/
-SET ANSI_NULLS ON
-GO
+--/****** Object: Table [dbo].[eBay_SoldTransactions] Script Date: 7/11/2016 8:35:59 PM ******/
+--SET ANSI_NULLS ON
+--GO
 
-SET QUOTED_IDENTIFIER ON
-GO
+--SET QUOTED_IDENTIFIER ON
+--GO
 
 CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [PaypalTransactionID]  NVARCHAR (30)  NULL,
