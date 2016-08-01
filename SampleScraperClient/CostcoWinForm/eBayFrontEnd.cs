@@ -55,13 +55,17 @@ namespace CostcoWinForm
 
         List<Product> priceChangedProductArray = new List<Product>();
 
-        
+        int nScanProducts = 0;
+        int nImportProducts = 0;
+        int nSkipProducts = 0;
+        int nImportErrors = 0;
 
         string emailMessage;
 
         string destinFileName;
 
         DateTime startDT;
+        DateTime productListEndDT;
         DateTime endDT;
 
         List<string> selectedItems = new List<string>();
@@ -242,15 +246,17 @@ namespace CostcoWinForm
         public void runCrawl()
         {
 
+            startDT = DateTime.Now;
+
+            GetDepartmentArray();
+
             GetProductUrls_New();
 
-            //GetDepartmentArray();
-
-            //GetSubCategoryUrls();
-
-            //GetProductUrls();
-
             GetProductInfo();
+
+            ////// test
+            //GetProductInfo(false);
+            //// end test
 
             SecondTry();
 
@@ -265,6 +271,8 @@ namespace CostcoWinForm
             CompareProducts();
 
             ArchieveProducts();
+
+            endDT = DateTime.Now;
 
             SendEmail();
         }
@@ -1341,9 +1349,9 @@ namespace CostcoWinForm
 
         private void GetProductUrls_New()
         {
-            categoryUrlArray = new List<string>();
-            categoryUrlArray.Add(@"http://www.costco.com/womens-clothing.html");
-            categoryUrlArray.Add(@"http://www.costco.com/all-vitamins-supplements.html");
+            //categoryUrlArray = new List<string>();
+            //categoryUrlArray.Add(@"http://www.costco.com/womens-clothing.html");
+            //categoryUrlArray.Add(@"http://www.costco.com/all-vitamins-supplements.html");
 
             driver = new FirefoxDriver();
 
@@ -1354,7 +1362,13 @@ namespace CostcoWinForm
 
             while (i < categoryUrlArray.Count)
             {
-                driver.Navigate().GoToUrl(categoryUrlArray[i]);
+                string url;
+                if (categoryUrlArray[i].Contains("http"))
+                    url = categoryUrlArray[i];
+                else
+                    url = "http://www.costco.com" + categoryUrlArray[i];
+
+                driver.Navigate().GoToUrl(url);
                 if (hasElement(driver, By.ClassName("categoryclist")))
                 {
                     var categoryList = driver.FindElement(By.ClassName("categoryclist"));
@@ -1381,7 +1395,7 @@ namespace CostcoWinForm
                         }
                         else
                         {
-                            productListPages.Add(categoryUrlArray[i]);
+                            productListPages.Add(url);
                         }
                     }
                 }
@@ -1395,6 +1409,26 @@ namespace CostcoWinForm
             }
 
             driver.Close();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = "TRUNCATE TABLE ProductList";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            foreach (var pu in productUrlArray)
+            {
+                sqlString = @"INSERT INTO ProductList (Url) VALUES ('" + pu.Replace(@"'", @"''") + "')";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+            }
+
+            cn.Close();
+
+            productListEndDT = DateTime.Now;
         }
 
         private void AddProductUrls(string url)
@@ -1465,10 +1499,14 @@ namespace CostcoWinForm
 
             cn.Open();
 
-            string sqlString = @"select * from ProductInfo p 
-                        where 
-                        not exists
-                        (select 1 from Raw_ProductInfo sp where sp.UrlNumber = p.UrlNumber)";
+            //string sqlString = @"select * from ProductInfo p 
+            //            where 
+            //            not exists
+            //            (select 1 from Raw_ProductInfo sp where sp.UrlNumber = p.UrlNumber)";
+
+            string sqlString = @"select Url from Import_Skips 
+                        where SkipPoint = 'Product not found'";
+
             cmd.CommandText = sqlString;
             SqlDataReader rdr = cmd.ExecuteReader();
 
@@ -1478,6 +1516,25 @@ namespace CostcoWinForm
             }
 
             rdr.Close();
+
+            sqlString = @"select Url from Import_Error";
+
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            while (rdr.Read())
+            {
+                productUrlArray.Add(rdr["Url"].ToString());
+            }
+
+            rdr.Close();
+
+            sqlString = @"delete from Import_Skips 
+                        where SkipPoint = 'Product not found'";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
             cn.Close();
         }
 
@@ -1492,9 +1549,11 @@ namespace CostcoWinForm
 
             if (bTruncate)
             {
-                startDT = DateTime.Now;
-
                 sqlString = "TRUNCATE TABLE Raw_ProductInfo";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+
+                sqlString = "TRUNCATE TABLE Import_Skips";
                 cmd.CommandText = sqlString;
                 cmd.ExecuteNonQuery();
 
@@ -1508,7 +1567,7 @@ namespace CostcoWinForm
             }
 
             //productUrlArray.Clear();
-            //productUrlArray.Add("http://www.costco.com/Nature's-Bounty-Hair,-Skin-and-Nails,-230-Gummies.product.100214116.html");
+            //productUrlArray.Add("http://www.costco.com/Orgain%c2%ae-Healthy-Kids-Organic-Shake-18ct--8.25oz-Chocolate.product.100083891.html");
 
             //IWebDriver driver = new FirefoxDriver();
             WebPage PageResult;
@@ -1518,9 +1577,9 @@ namespace CostcoWinForm
             foreach (string pu in productUrlArray)
             {
                 try
-                {
-
+                {  
                     i++;
+                    nScanProducts++;
 
                     string productUrl = HttpUtility.HtmlDecode(pu);
                     productUrl = productUrl.Replace("%2c", ",");
@@ -1528,14 +1587,19 @@ namespace CostcoWinForm
                     string UrlNum = productUrl.Substring(0, productUrl.LastIndexOf('.'));
                     UrlNum = UrlNum.Substring(UrlNum.LastIndexOf('.') + 1);
 
-
                     PageResult = Browser.NavigateToPage(new Uri(productUrl));
 
                     HtmlNode html = PageResult.Html;
 
                     if (html.InnerText.Contains("Product Not Found"))
+                    {
+                        sqlString = "INSERT INTO Import_Skips (Url, SkipPoint) VALUES ('" + pu.Replace(@"'", @"''") + "','" + "Product not found" + "')";
+                        cmd.CommandText = sqlString;
+                        cmd.ExecuteNonQuery();
+                        nSkipProducts++;
                         continue;
-
+                    }
+                        
                     string stSubCategories = "";
 
                     HtmlNode category = html.SelectSingleNode("//ul[@itemprop='breadcrumb']");
@@ -1596,7 +1660,6 @@ namespace CostcoWinForm
                         discount = discount.Replace("'", "");
                     }
 
-
                     string price;
                     List<HtmlNode> yourPriceNode = col1Node.CssSelect(".your-price").ToList<HtmlNode>();
                     if (yourPriceNode.Count > 0)
@@ -1624,6 +1687,10 @@ namespace CostcoWinForm
                     {
                         if (productSHNode.InnerText.ToUpper().Contains("OPTIONS"))
                         {
+                            sqlString = "INSERT INTO Import_Skips (Url, SkipPoint) VALUES ('" + pu.Replace(@"'", @"''") + "','" + "Options" + "')";
+                            cmd.CommandText = sqlString;
+                            cmd.ExecuteNonQuery();
+                            nSkipProducts++;
                             continue;
                         }
                         else if (productSHNode.InnerText.ToUpper().Contains("INCLUDED") || productSHNode.InnerText.ToUpper().Contains("INLCUDED"))
@@ -1650,7 +1717,13 @@ namespace CostcoWinForm
                                 int nQuantity = shString.ToUpper().IndexOf("QUANTITY");
 
                                 if (nShipping == -1 || nQuantity == -1)
+                                {
+                                    sqlString = "INSERT INTO Import_Skips (Url, SkipPoint) VALUES ('" + pu.Replace(@"'", @"''") + "','" + "Shipping and Quantity" + "')";
+                                    cmd.CommandText = sqlString;
+                                    cmd.ExecuteNonQuery();
+                                    nSkipProducts++;
                                     continue;
+                                }
 
                                 shString = shString.Substring(nShipping, nQuantity);
                                 Char[] strarr = shString.ToCharArray().Where(c => Char.IsDigit(c) || c.Equals('.')).ToArray();
@@ -1660,12 +1733,7 @@ namespace CostcoWinForm
                         }
                     }
 
-
-                    
-
                     HtmlNode imageColumnNode = html.CssSelect(".image-column").ToList<HtmlNode>().First();
-
-                   
 
                     HtmlNode imageNode = imageColumnNode.SelectSingleNode("//img[@itemprop='image']");
 
@@ -1674,6 +1742,7 @@ namespace CostcoWinForm
                     sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + imageUrl.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
+                    nImportProducts++;
 
                     sqlString = "INSERT INTO Costco_Categories (" + columns + ") VALUES (" + values + ")";
                     cmd.CommandText = sqlString;
@@ -1687,6 +1756,7 @@ namespace CostcoWinForm
                     sqlString = "INSERT INTO Import_Errors (Url, Exception) VALUES ('" + productUrl + "','" + exception.Message.Replace(@"'", @"''") + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
+                    nImportErrors++;
 
                     continue;
                 }
@@ -1694,7 +1764,7 @@ namespace CostcoWinForm
 
             cn.Close();
 
-            endDT = DateTime.Now;
+            
 
             //driver.Dispose();
 
@@ -2000,7 +2070,15 @@ namespace CostcoWinForm
         private void SendEmail()
         {
             emailMessage = "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
+            emailMessage += "<p>Productlist End: " + productListEndDT.ToLongTimeString() + "</p></br>";
             emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
+
+            emailMessage += "</br>";
+
+            emailMessage += "<p>Product Scanned: " + nScanProducts.ToString() + "</p></br>";
+            emailMessage += "<p>Product Imported: " + nImportProducts.ToString() + "</p></br>";
+            emailMessage += "<p>Product Skipped: " + nSkipProducts.ToString() + "</p></br>";
+            emailMessage += "<p>Product Errored: " + nImportErrors.ToString() + "</p></br>";
 
             emailMessage += "</br>";
             emailMessage += "</br>";
@@ -2982,7 +3060,50 @@ namespace CostcoWinForm
 
         private void tpIncomeTax_Enter(object sender, EventArgs e)
         {
+            cmbIncomeTaxYear.Text = DateTime.Now.Year.ToString();
+        }
 
+        private void btnIncomeTaxCalculate_Click(object sender, EventArgs e)
+        {
+            string year = cmbIncomeTaxYear.Text;
+
+            string yearStart = year + "/1/1";
+            string yearEnd = year + "/12/31";
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            // 1a - Sales
+            string sqlString = @" Select Sum(eBaySoldPrice)  from eBay_SoldTransactions where eBaySoldDateTime between
+                                  '" + yearStart + "' and '" + yearEnd + "'";
+
+            cmd.CommandText = sqlString;
+            ll1a.Text = Convert.ToDecimal(cmd.ExecuteScalar()).ToString("#,##0.00");
+
+            // 1b - Sales Tax Collected
+            sqlString = @" Select Sum(eBaySaleTax) from eBay_SoldTransactions where eBaySoldDateTime between
+                                  '" + yearStart + "' and '" + yearEnd + "'";
+
+            cmd.CommandText = sqlString;
+            ll1b.Text = Convert.ToDecimal(cmd.ExecuteScalar()).ToString("#,##0.00");
+
+            // 2 - Returns and allowances
+            sqlString = @" Select Sum(CostcoTax) from eBay_SoldTransactions where eBaySoldDateTime between
+                                  '" + yearStart + "' and '" + yearEnd + "'";
+
+            cmd.CommandText = sqlString;
+            ll2.Text = Convert.ToDecimal(cmd.ExecuteScalar()).ToString("#,##0.00");
+
+            // 4 - Cost of goods sold
+            sqlString = @" Select Sum(CostcoPrice + CostcoTax) from eBay_SoldTransactions where eBaySoldDateTime between
+                                  '" + yearStart + "' and '" + yearEnd + "'";
+
+            cmd.CommandText = sqlString;
+            ll4.Text = Convert.ToDecimal(cmd.ExecuteScalar()).ToString("#,##0.00");
+
+            cn.Close();
         }
     }
 }
