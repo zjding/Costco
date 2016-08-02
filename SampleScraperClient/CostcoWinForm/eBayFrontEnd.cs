@@ -130,6 +130,22 @@ namespace CostcoWinForm
             //    this.lvCategories.Items.Add(item);
             //}
 
+            RefreshLVCategories();
+
+            this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
+
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = (1000) * (3);              // Timer will tick evert second
+            timer.Enabled = true;                       // Enable the timer
+            timer.Start();
+
+            bInit = true;
+        }
+
+        private void RefreshLVCategories()
+        {
+            lvCategories.Items.Clear();
+
             List<Category> categories = dl.GetCategoryArray();
 
             foreach (Category catetory in categories)
@@ -149,15 +165,6 @@ namespace CostcoWinForm
             }
 
             chkAll.Checked = true;
-
-            this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
-
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = (1000) * (3);              // Timer will tick evert second
-            timer.Enabled = true;                       // Enable the timer
-            timer.Start();
-
-            bInit = true;
         }
 
         void timer_Tick(object sender, EventArgs e)
@@ -265,9 +272,9 @@ namespace CostcoWinForm
 
             GetProductUrls_New();
 
-            PopulateDevTables();
+            //PopulateDevTables();
 
-            //GetProductInfo();
+            GetProductInfo();
 
             ////// test
             //GetProductInfo(false);
@@ -295,6 +302,9 @@ namespace CostcoWinForm
         private void btnCrawl_Click(object sender, EventArgs e)
         {
             runCrawl();
+
+            RefreshLVCategories();
+            RefreshProductsGrid();
         }
 
         private void btnAddPending_Click(object sender, EventArgs e)
@@ -3266,44 +3276,8 @@ namespace CostcoWinForm
 
         private void btnCostcoCategory_Click(object sender, EventArgs e)
         {
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cn.Open();
-
-            string sqlString = "TRUNCATE TABLE Costco_Departments";
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-
-            driver = new FirefoxDriver();
-
-            driver.Navigate().GoToUrl("http://www.costco.com/view-more.html");
-
-            var viewMoreColumns = driver.FindElements(By.ClassName("viewmore-column"));
-
-            foreach(var v in viewMoreColumns)
-            {
-                var viewMoreHeader = v.FindElement(By.ClassName("viewmore-column-header"));
-
-                string department = viewMoreHeader.Text;
-
-                var lis = v.FindElements(By.TagName("li"));
-
-                foreach (var l in lis)
-                {
-                    var a = l.FindElement(By.TagName("a"));
-
-                    string url = a.GetAttribute("href");
-                    string category = a.Text;
-
-                    sqlString = @"INSERT INTO Costco_Departments (DepartmentName, CategoryName, CategoryUrl) VALUES ('" + department + "','" + url + "','" + category.Replace("'", "''") + "')";
-                    cmd.CommandText = sqlString;
-                    cmd.ExecuteNonQuery();
-                }
-            }
-
-            cn.Close();
-            driver.Close();
+            FrmCostcoCategories frmCategories = new FrmCostcoCategories();
+            frmCategories.ShowDialog();
         }
     }
 }
