@@ -43,6 +43,7 @@ namespace CostcoWinForm
 
         List<String> categoryUrlArray = new List<string>();
         List<String> subCategoryUrlArray = new List<string>();
+        List<string> productListPages = new List<string>();
 
         List<String> newProductArray = new List<string>();
         List<String> discontinueddProductArray = new List<string>();
@@ -68,6 +69,15 @@ namespace CostcoWinForm
         DateTime productListEndDT;
         DateTime endDT;
 
+        List<string> firstTry = new List<string>();
+        List<string> secondTry = new List<string>();
+        List<string> firstTryResult = new List<string>();
+        List<string> secondTryResult = new List<string>();
+
+        int nProductListPages;
+        int nProductUrlArray;
+        int nCategoryUrlArray;
+
         List<string> selectedItems = new List<string>();
 
         List<string> selectedListingItems = new List<string>();
@@ -79,6 +89,9 @@ namespace CostcoWinForm
         bool bInit = false;
 
         bool bCheckingAll = false;
+
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public eBayFrontEnd()
         {
@@ -252,17 +265,19 @@ namespace CostcoWinForm
 
             GetProductUrls_New();
 
-            GetProductInfo();
+            PopulateDevTables();
+
+            //GetProductInfo();
 
             ////// test
             //GetProductInfo(false);
             //// end test
 
-            SecondTry();
+            SecondTry(1);
 
             GetProductInfo(false);
 
-            SecondTry();
+            SecondTry(2);
 
             GetProductInfo(false);
 
@@ -1104,7 +1119,7 @@ namespace CostcoWinForm
             cmd.Connection = cn;
 
             cn.Open();
-            sqlString = "SELECT CategoryUrl FROM Costco_Departments WHERE bInclude = 1";
+            sqlString = "SELECT CategoryName FROM Costco_Departments WHERE bInclude = 1";
             cmd.CommandText = sqlString;
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
@@ -1353,10 +1368,11 @@ namespace CostcoWinForm
             //categoryUrlArray.Add(@"http://www.costco.com/womens-clothing.html");
             //categoryUrlArray.Add(@"http://www.costco.com/all-vitamins-supplements.html");
 
+            log.Info(DateTime.Now.ToLongTimeString());
+
             driver = new FirefoxDriver();
 
             List<string> subCategory = new List<string>();
-            List<string> productListPages = new List<string>();
 
             int i = 0;
 
@@ -1368,6 +1384,7 @@ namespace CostcoWinForm
                 else
                     url = "http://www.costco.com" + categoryUrlArray[i];
 
+                log.Info("categoryUrlArray: " + url);
                 driver.Navigate().GoToUrl(url);
                 if (hasElement(driver, By.ClassName("categoryclist")))
                 {
@@ -1403,32 +1420,66 @@ namespace CostcoWinForm
                 i++;
             }
 
+            nCategoryUrlArray = categoryUrlArray.Count;
+            nProductListPages = productListPages.Count;
+
             foreach (var pl in productListPages)
             {
+                log.Info("productListPages: " + pl);
+
                 AddProductUrls(pl);
             }
 
+            nProductUrlArray = productUrlArray.Count;
+
             driver.Close();
 
+            productListEndDT = DateTime.Now;
+
+            AddDevTables();
+        }
+
+        private void AddDevTables()
+        {
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
             cn.Open();
 
-            string sqlString = "TRUNCATE TABLE ProductList";
+            string sqlString = "TRUNCATE TABLE Dev_CategoryUrlArray_Staging";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            foreach (var pu in categoryUrlArray)
+            {
+                sqlString = @"INSERT INTO Dev_CategoryUrlArray_Staging (Url) VALUES ('" + pu.Replace(@"'", @"''") + "')";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+            }
+
+            sqlString = "TRUNCATE TABLE Dev_ProductListPages_Staging";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            foreach (var pu in productListPages)
+            {
+                sqlString = @"INSERT INTO Dev_ProductListPages_Staging (Url) VALUES ('" + pu.Replace(@"'", @"''") + "')";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+            }
+
+            sqlString = "TRUNCATE TABLE Dev_ProductUrlArray_Staging";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
             foreach (var pu in productUrlArray)
             {
-                sqlString = @"INSERT INTO ProductList (Url) VALUES ('" + pu.Replace(@"'", @"''") + "')";
+                sqlString = @"INSERT INTO Dev_ProductUrlArray_Staging (Url) VALUES ('" + pu.Replace(@"'", @"''") + "')";
                 cmd.CommandText = sqlString;
                 cmd.ExecuteNonQuery();
             }
 
             cn.Close();
-
-            productListEndDT = DateTime.Now;
         }
 
         private void AddProductUrls(string url)
@@ -1489,7 +1540,7 @@ namespace CostcoWinForm
             //MessageBox.Show("Get productUrlArray Done");
         }
 
-        private void SecondTry()
+        private void SecondTry(int i = 0)
         {
             productUrlArray.Clear();
 
@@ -1513,11 +1564,19 @@ namespace CostcoWinForm
             while (rdr.Read())
             {
                 productUrlArray.Add(rdr["Url"].ToString());
+                if (i == 1)
+                {
+                    firstTry.Add(rdr["Url"].ToString());
+                }
+                else if (i == 2)
+                {
+                    secondTry.Add(rdr["Url"].ToString());
+                }
             }
 
             rdr.Close();
 
-            sqlString = @"select Url from Import_Error";
+            sqlString = @"select Url from Import_Errors";
 
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
@@ -1739,6 +1798,12 @@ namespace CostcoWinForm
 
                     string imageUrl = (imageNode.Attributes["src"]).Value;
 
+                    if (firstTry.Contains(pu))
+                        firstTryResult.Add(pu);
+
+                    if (secondTry.Contains(pu))
+                        secondTryResult.Add(pu);
+
                     sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + imageUrl.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
@@ -1848,6 +1913,67 @@ namespace CostcoWinForm
             }// catch
         }
 
+        private void PopulateDevTables()
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader rdr;
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString;
+            
+            //sqlString = @"select url from Dev_CategoryUrlArray";
+
+            //cmd.CommandText = sqlString;
+            //cmd.ExecuteNonQuery();
+
+            //rdr = cmd.ExecuteReader();
+
+            //while (rdr.Read())
+            //{
+            //    priceUpProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+            //}
+
+            //rdr.Close();
+
+            //
+            sqlString = "TRUNCATE TABLE Dev_CategoryUrlArray";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into Dev_CategoryUrlArray(url)
+                        select url 
+                        from dbo.Dev_CategoryUrlArray_Staging";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            //
+            sqlString = "TRUNCATE TABLE Dev_ProductListPages";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into Dev_ProductListPages(url)
+                        select url 
+                        from dbo.Dev_ProductListPages_Staging";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            //
+            sqlString = "TRUNCATE TABLE Dev_ProductUrlArray";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            sqlString = @"insert into Dev_ProductListPages(url)
+                        select url 
+                        from dbo.Dev_ProductUrlArray_Staging";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+        }
+
         private void PopulateTables()
         {
             SqlConnection cn = new SqlConnection(connectionString);
@@ -1882,6 +2008,8 @@ namespace CostcoWinForm
 
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
+
+            
         }
 
         private void CompareProducts()
@@ -2074,11 +2202,41 @@ namespace CostcoWinForm
             emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
 
             emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<p>nCategoryUrlArray: " + nCategoryUrlArray.ToString() + "</p></br>";
+            emailMessage += "<p>nProductListPages: " + nProductListPages.ToString() + "</p></br>";
+            emailMessage += "<p>nProductUrlArray: " + nProductUrlArray.ToString() + "</p></br>";
+
+            emailMessage += "</br>";
+            emailMessage += "</br>";
 
             emailMessage += "<p>Product Scanned: " + nScanProducts.ToString() + "</p></br>";
             emailMessage += "<p>Product Imported: " + nImportProducts.ToString() + "</p></br>";
             emailMessage += "<p>Product Skipped: " + nSkipProducts.ToString() + "</p></br>";
             emailMessage += "<p>Product Errored: " + nImportErrors.ToString() + "</p></br>";
+
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>First try fix products: (" + firstTryResult.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            
+            foreach (string a in firstTryResult)
+            {
+                emailMessage += "<p>" + a + "</p></br>";
+            }
+            
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>Second try fix products: (" + secondTryResult.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+
+            foreach (string a in secondTryResult)
+            {
+                emailMessage += "<p>" + a + "</p></br>";
+            }
 
             emailMessage += "</br>";
             emailMessage += "</br>";
@@ -3104,6 +3262,48 @@ namespace CostcoWinForm
             ll4.Text = Convert.ToDecimal(cmd.ExecuteScalar()).ToString("#,##0.00");
 
             cn.Close();
+        }
+
+        private void btnCostcoCategory_Click(object sender, EventArgs e)
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = "TRUNCATE TABLE Costco_Departments";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            driver = new FirefoxDriver();
+
+            driver.Navigate().GoToUrl("http://www.costco.com/view-more.html");
+
+            var viewMoreColumns = driver.FindElements(By.ClassName("viewmore-column"));
+
+            foreach(var v in viewMoreColumns)
+            {
+                var viewMoreHeader = v.FindElement(By.ClassName("viewmore-column-header"));
+
+                string department = viewMoreHeader.Text;
+
+                var lis = v.FindElements(By.TagName("li"));
+
+                foreach (var l in lis)
+                {
+                    var a = l.FindElement(By.TagName("a"));
+
+                    string url = a.GetAttribute("href");
+                    string category = a.Text;
+
+                    sqlString = @"INSERT INTO Costco_Departments (DepartmentName, CategoryName, CategoryUrl) VALUES ('" + department + "','" + url + "','" + category.Replace("'", "''") + "')";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            cn.Close();
+            driver.Close();
         }
     }
 }

@@ -23,3 +23,5 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\obj\Release\WinFormCrawl.csproj.GenerateResource.Cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\obj\Release\WinFormCrawl.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\obj\Release\WinFormCrawl.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Release\log4net.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Release\log4net.xml

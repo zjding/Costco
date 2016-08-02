@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.costcoDataSet4 = new CostcoWinForm.CostcoDataSet4();
             this.eBayToAddBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -205,7 +205,7 @@
             this.Category_6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Category_7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Category_8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button7 = new System.Windows.Forms.Button();
+            this.btnCostcoCategory = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button9 = new System.Windows.Forms.Button();
@@ -244,6 +244,7 @@
             this.dtpSaleTaxFrom = new System.Windows.Forms.DateTimePicker();
             this.tpIncomeTax = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.btnIncomeTaxCalculate = new System.Windows.Forms.Button();
             this.cmbIncomeTaxYear = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -361,7 +362,6 @@
             this.label64 = new System.Windows.Forms.Label();
             this.ll66d = new System.Windows.Forms.Label();
             this.ll1 = new System.Windows.Forms.LinkLabel();
-            this.btnIncomeTaxCalculate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eBayToAddBindingSource)).BeginInit();
@@ -1731,7 +1731,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
-            this.splitContainer1.Panel1.Controls.Add(this.button7);
+            this.splitContainer1.Panel1.Controls.Add(this.btnCostcoCategory);
             // 
             // splitContainer1.Panel2
             // 
@@ -1849,15 +1849,16 @@
             this.Category_8.Text = "Category8";
             this.Category_8.Width = 100;
             // 
-            // button7
+            // btnCostcoCategory
             // 
-            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button7.Location = new System.Drawing.Point(191, 3);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(113, 23);
-            this.button7.TabIndex = 5;
-            this.button7.Text = "Regrab Categories";
-            this.button7.UseVisualStyleBackColor = true;
+            this.btnCostcoCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCostcoCategory.Location = new System.Drawing.Point(191, 3);
+            this.btnCostcoCategory.Name = "btnCostcoCategory";
+            this.btnCostcoCategory.Size = new System.Drawing.Size(113, 23);
+            this.btnCostcoCategory.TabIndex = 5;
+            this.btnCostcoCategory.Text = "Costco Categories";
+            this.btnCostcoCategory.UseVisualStyleBackColor = true;
+            this.btnCostcoCategory.Click += new System.EventHandler(this.btnCostcoCategory_Click);
             // 
             // webBrowser1
             // 
@@ -2008,8 +2009,8 @@
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -2045,16 +2046,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle5;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle6;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -2249,6 +2250,16 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1250, 628);
             this.panel5.TabIndex = 0;
+            // 
+            // btnIncomeTaxCalculate
+            // 
+            this.btnIncomeTaxCalculate.Location = new System.Drawing.Point(141, 4);
+            this.btnIncomeTaxCalculate.Name = "btnIncomeTaxCalculate";
+            this.btnIncomeTaxCalculate.Size = new System.Drawing.Size(75, 21);
+            this.btnIncomeTaxCalculate.TabIndex = 2;
+            this.btnIncomeTaxCalculate.Text = "Calculate";
+            this.btnIncomeTaxCalculate.UseVisualStyleBackColor = true;
+            this.btnIncomeTaxCalculate.Click += new System.EventHandler(this.btnIncomeTaxCalculate_Click);
             // 
             // cmbIncomeTaxYear
             // 
@@ -4008,16 +4019,6 @@
             this.ll1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ll1.TextChanged += new System.EventHandler(this.ll1_TextChanged);
             // 
-            // btnIncomeTaxCalculate
-            // 
-            this.btnIncomeTaxCalculate.Location = new System.Drawing.Point(141, 4);
-            this.btnIncomeTaxCalculate.Name = "btnIncomeTaxCalculate";
-            this.btnIncomeTaxCalculate.Size = new System.Drawing.Size(75, 21);
-            this.btnIncomeTaxCalculate.TabIndex = 2;
-            this.btnIncomeTaxCalculate.Text = "Calculate";
-            this.btnIncomeTaxCalculate.UseVisualStyleBackColor = true;
-            this.btnIncomeTaxCalculate.Click += new System.EventHandler(this.btnIncomeTaxCalculate_Click);
-            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4274,7 +4275,7 @@
         private System.Windows.Forms.ColumnHeader Category_6;
         private System.Windows.Forms.ColumnHeader Category_7;
         private System.Windows.Forms.ColumnHeader Category_8;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button btnCostcoCategory;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button9;

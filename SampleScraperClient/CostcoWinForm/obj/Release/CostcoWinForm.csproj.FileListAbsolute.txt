@@ -35,3 +35,5 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWi
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Release\de\PdfSharp.Charting.resources.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Release\CostcoWinForm.eBayFrontEnd.resources
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Release\CostcoWinForm.ListedProducts.resources
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Release\log4net.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Release\log4net.xml
