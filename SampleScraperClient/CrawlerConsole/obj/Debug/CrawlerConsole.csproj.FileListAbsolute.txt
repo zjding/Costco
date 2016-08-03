@@ -20,3 +20,5 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Debug\CrawlerConsole.csprojResolveAssemblyReference.cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Debug\CrawlerConsole.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Debug\CrawlerConsole.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\log4net.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\log4net.xml

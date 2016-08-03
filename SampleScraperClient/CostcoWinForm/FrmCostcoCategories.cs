@@ -63,7 +63,7 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            driver = new FirefoxDriver();
+            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
             driver.Navigate().GoToUrl("http://www.costco.com/view-more.html");
 

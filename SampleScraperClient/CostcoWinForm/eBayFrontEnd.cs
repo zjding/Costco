@@ -169,20 +169,25 @@ namespace CostcoWinForm
 
         void timer_Tick(object sender, EventArgs e)
         {
-            if (tpPendingChanges == tabControl1.SelectedTab)
+            if (this.tpToAdd == tabControl1.SelectedTab)
             {
                 eBayToAddBindingSource.ResetBindings(false);
                 this.eBay_ToAddTableAdapter.Fill(this.ds_eBayToAdd.eBay_ToAdd);
                 this.gvToAdd.Refresh();
-
+            }
+            else if (this.tpEBayToModify == tabControl1.SelectedTab)
+            {
                 eBayToChangeBindingSource.ResetBindings(false);
                 this.eBay_ToChangeTableAdapter.Fill(this.costcoDataSet6.eBay_ToChange);
                 this.gvToChange.Refresh();
-
+            }
+            else if (this.tpEbayToDelete == tabControl1.SelectedTab)
+            {
                 eBayToRemoveBindingSource.ResetBindings(false);
                 this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
                 this.gvToDelete.Refresh();
-            } else if (tpCurrentListing == tabControl1.SelectedTab)
+            }
+            else if (tpCurrentListing == tabControl1.SelectedTab)
             {
                 eBayCurrentListingsBindingSource.ResetBindings(false);
                 eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
@@ -192,7 +197,9 @@ namespace CostcoWinForm
 
         private void btnRefreshProducts_Click(object sender, EventArgs e)
         {
-            RefreshProductsGrid();
+            //RefreshProductsGrid();
+
+            gvProducts.Sort(gvProducts.Columns["Name"], ListSortDirection.Ascending);
         }
 
         private void chkAll_CheckedChanged(object sender, EventArgs e)
@@ -354,7 +361,7 @@ namespace CostcoWinForm
             reader.Close();
             cn.Close();
 
-            IWebDriver driver = new FirefoxDriver();
+            IWebDriver driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
             int screenshotWidth, screenshotHeight, imageNumber;
 
             cn.Open();
@@ -1201,7 +1208,7 @@ namespace CostcoWinForm
         {
             //categoryUrlArray.Clear();
             //categoryUrlArray.Add(@"/mens-clothing.html");
-            IWebDriver driver = new FirefoxDriver();
+            IWebDriver driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
             subCategoryArray.Clear();
 
@@ -1380,7 +1387,7 @@ namespace CostcoWinForm
 
             log.Info(DateTime.Now.ToLongTimeString());
 
-            driver = new FirefoxDriver();
+            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
             List<string> subCategory = new List<string>();
 
@@ -3271,6 +3278,19 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             ll4.Text = Convert.ToDecimal(cmd.ExecuteScalar()).ToString("#,##0.00");
 
+            List<string> expenseCategories = new List<string> { "8", "9", "10", "11", "12", "13", "14", "15", "16a", "16b", "17", "18", "19",
+                                                                "20a", "20b", "21", "22", "23", "24a", "24b", "25", "26", "27" };
+
+            foreach (string c in expenseCategories)
+            {
+                sqlString = @" Select ISNULL(Sum(Amount), 0.00) from BookKeeping where Date between
+                                  '" + yearStart + "' and '" + yearEnd + "' and CategoryCode = '" + c + "' and Expense = 1";
+
+                cmd.CommandText = sqlString;
+                var result = cmd.ExecuteScalar();
+                this.Controls.Find("ll" + c, true)[0].Text = Convert.ToDecimal(result).ToString("#,##0.00");
+            }
+
             cn.Close();
         }
 
@@ -3278,6 +3298,25 @@ namespace CostcoWinForm
         {
             FrmCostcoCategories frmCategories = new FrmCostcoCategories();
             frmCategories.ShowDialog();
+        }
+
+        private void ll1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            
+        }
+
+        private void ll_LinkClicked(string categoryCode, string year)
+        {
+            frmBookKeeping frmBK = new frmBookKeeping();
+            frmBK.m_CategoryCode = categoryCode;
+            frmBK.m_Year = year;
+
+            frmBK.ShowDialog();
+        }
+
+        private void ll8_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            ll_LinkClicked(8.ToString(), cmbIncomeTaxYear.Text);
         }
     }
 }

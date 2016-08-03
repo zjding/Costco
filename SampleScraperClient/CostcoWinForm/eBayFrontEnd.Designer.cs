@@ -48,32 +48,68 @@
             this.tpSold = new System.Windows.Forms.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gvEBaySold = new System.Windows.Forms.DataGridView();
+            this.paypalTransactionIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.paypalPaidDateTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.paypalPaidEmailPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayItemNumberDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBaySoldDateTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayItemNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayListingQualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBaySoldQualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayRemainingQualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBaySoldPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayUrlDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBaySoldEmailPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerAddress1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerAddress2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerStateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerEmailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buyerNoteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoUrlNumberDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoUrlDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoPriceDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoOrderNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoItemNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoItemNumberDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoTrackingNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoShipDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoTaxExemptPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoOrderEmailPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBaySoldTransactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dsEBaySold = new CostcoWinForm.dsEBaySold();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tpCurrentListing = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.btnReloadCurrentListing = new System.Windows.Forms.Button();
             this.gvCurrentListing = new System.Windows.Forms.DataGridView();
+            this.iDDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayListingNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayCategoryIDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayItemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayListingPriceDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayDescriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayEndTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.eBayUrlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoUrlNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoItemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoUrlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.costcoPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.imageLinkDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SelectListing = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.eBayCurrentListingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dseBayCurrentListings = new CostcoWinForm.dseBayCurrentListings();
             this.btnListingModify = new System.Windows.Forms.Button();
             this.btnListingDelete = new System.Windows.Forms.Button();
-            this.tpPendingChanges = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnDelete = new System.Windows.Forms.Button();
-            this.gvToAdd = new System.Windows.Forms.DataGridView();
-            this.btnUpload = new System.Windows.Forms.Button();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.btnToChangeUpdate = new System.Windows.Forms.Button();
-            this.btnToChangeDelete = new System.Windows.Forms.Button();
-            this.btnToChangeUpload = new System.Windows.Forms.Button();
-            this.gvToChange = new System.Windows.Forms.DataGridView();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.btnToDeleteUpload = new System.Windows.Forms.Button();
-            this.gvToDelete = new System.Windows.Forms.DataGridView();
+            this.eBayToAddBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ds_eBayToAdd = new CostcoWinForm.ds_eBayToAdd();
+            this.eBayToChangeBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.costcoDataSet6 = new CostcoWinForm.CostcoDataSet6();
+            this.eBayToRemoveBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ds_eBayToRemove = new CostcoWinForm.CostcoDataSet5();
             this.tpCostco = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -100,6 +136,22 @@
             this.btnAddPending = new System.Windows.Forms.Button();
             this.btnRefreshProducts = new System.Windows.Forms.Button();
             this.gvProducts = new System.Windows.Forms.DataGridView();
+            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
+            this.UrlNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shippingDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Limit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.detailsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.specificationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.imageLinkDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.costcoDataSet4 = new CostcoWinForm.CostcoDataSet4();
             this.btnCrawl = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSaleTax = new System.Windows.Forms.TabPage();
@@ -232,8 +284,17 @@
             this.label64 = new System.Windows.Forms.Label();
             this.ll66d = new System.Windows.Forms.Label();
             this.ll1 = new System.Windows.Forms.LinkLabel();
-            this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.costcoDataSet4 = new CostcoWinForm.CostcoDataSet4();
+            this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
+            this.eBay_ToAddTableAdapter = new CostcoWinForm.ds_eBayToAddTableAdapters.eBay_ToAddTableAdapter();
+            this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
+            this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
+            this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
+            this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
+            this.tpToAdd = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnDelete = new System.Windows.Forms.Button();
+            this.gvToAdd = new System.Windows.Forms.DataGridView();
             this.iDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.urlNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -253,8 +314,13 @@
             this.eBayCategoryIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descriptionImageWidthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descriptionImageHeightDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayToAddBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.ds_eBayToAdd = new CostcoWinForm.ds_eBayToAdd();
+            this.btnUpload = new System.Windows.Forms.Button();
+            this.tpEBayToModify = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnToChangeUpdate = new System.Windows.Forms.Button();
+            this.btnToChangeDelete = new System.Windows.Forms.Button();
+            this.btnToChangeUpload = new System.Windows.Forms.Button();
+            this.gvToChange = new System.Windows.Forms.DataGridView();
             this.iDDataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.costcoUrlNumberDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -277,8 +343,10 @@
             this.eBayCategoryIDDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descriptionImageWidthDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.descriptionImageHeightDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayToChangeBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.costcoDataSet6 = new CostcoWinForm.CostcoDataSet6();
+            this.tpEbayToDelete = new System.Windows.Forms.TabPage();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.btnToDeleteUpload = new System.Windows.Forms.Button();
+            this.gvToDelete = new System.Windows.Forms.DataGridView();
             this.iDDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nameDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.eBayListingNameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -293,75 +361,6 @@
             this.costcoUrlDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.costcoPriceDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.imageLinkDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayToRemoveBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.ds_eBayToRemove = new CostcoWinForm.CostcoDataSet5();
-            this.iDDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayListingNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayCategoryIDDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayItemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayListingPriceDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayDescriptionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayEndTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayUrlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoUrlNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoItemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoUrlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.imageLinkDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayCurrentListingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dseBayCurrentListings = new CostcoWinForm.dseBayCurrentListings();
-            this.paypalTransactionIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.paypalPaidDateTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.paypalPaidEmailPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayItemNumberDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBaySoldDateTimeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayItemNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayListingQualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBaySoldQualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayRemainingQualityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBaySoldPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBayUrlDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBaySoldEmailPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerAddress1DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerAddress2DataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerStateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerEmailDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.buyerNoteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoUrlNumberDataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoUrlDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoPriceDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoOrderNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoItemNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoItemNumberDataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoTrackingNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoShipDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoTaxExemptPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.costcoOrderEmailPdfDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eBaySoldTransactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dsEBaySold = new CostcoWinForm.dsEBaySold();
-            this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
-            this.eBay_ToAddTableAdapter = new CostcoWinForm.ds_eBayToAddTableAdapters.eBay_ToAddTableAdapter();
-            this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
-            this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
-            this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
-            this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
-            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
-            this.UrlNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shippingDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Limit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.detailsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.specificationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.imageLinkDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -373,26 +372,20 @@
             this.tpSold.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBaySold)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
             this.tpCurrentListing.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvCurrentListing)).BeginInit();
-            this.tpPendingChanges.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvToAdd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvToChange)).BeginInit();
-            this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvToDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayCurrentListingsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dseBayCurrentListings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayToAddBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToAdd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayToChangeBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayToRemoveBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToRemove)).BeginInit();
             this.tpCostco.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -401,6 +394,8 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpSaleTax.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -411,18 +406,15 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToAddBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToAdd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToChangeBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToRemoveBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToRemove)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayCurrentListingsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dseBayCurrentListings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
+            this.tpToAdd.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvToAdd)).BeginInit();
+            this.tpEBayToModify.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvToChange)).BeginInit();
+            this.tpEbayToDelete.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvToDelete)).BeginInit();
             this.SuspendLayout();
             // 
             // tpTax
@@ -638,6 +630,190 @@
             this.gvEBaySold.Size = new System.Drawing.Size(1244, 595);
             this.gvEBaySold.TabIndex = 1;
             // 
+            // paypalTransactionIDDataGridViewTextBoxColumn
+            // 
+            this.paypalTransactionIDDataGridViewTextBoxColumn.DataPropertyName = "PaypalTransactionID";
+            this.paypalTransactionIDDataGridViewTextBoxColumn.HeaderText = "PaypalTransactionID";
+            this.paypalTransactionIDDataGridViewTextBoxColumn.Name = "paypalTransactionIDDataGridViewTextBoxColumn";
+            // 
+            // paypalPaidDateTimeDataGridViewTextBoxColumn
+            // 
+            this.paypalPaidDateTimeDataGridViewTextBoxColumn.DataPropertyName = "PaypalPaidDateTime";
+            this.paypalPaidDateTimeDataGridViewTextBoxColumn.HeaderText = "PaypalPaidDateTime";
+            this.paypalPaidDateTimeDataGridViewTextBoxColumn.Name = "paypalPaidDateTimeDataGridViewTextBoxColumn";
+            // 
+            // paypalPaidEmailPdfDataGridViewTextBoxColumn
+            // 
+            this.paypalPaidEmailPdfDataGridViewTextBoxColumn.DataPropertyName = "PaypalPaidEmailPdf";
+            this.paypalPaidEmailPdfDataGridViewTextBoxColumn.HeaderText = "PaypalPaidEmailPdf";
+            this.paypalPaidEmailPdfDataGridViewTextBoxColumn.Name = "paypalPaidEmailPdfDataGridViewTextBoxColumn";
+            // 
+            // eBayItemNumberDataGridViewTextBoxColumn3
+            // 
+            this.eBayItemNumberDataGridViewTextBoxColumn3.DataPropertyName = "eBayItemNumber";
+            this.eBayItemNumberDataGridViewTextBoxColumn3.HeaderText = "eBayItemNumber";
+            this.eBayItemNumberDataGridViewTextBoxColumn3.Name = "eBayItemNumberDataGridViewTextBoxColumn3";
+            // 
+            // eBaySoldDateTimeDataGridViewTextBoxColumn
+            // 
+            this.eBaySoldDateTimeDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldDateTime";
+            this.eBaySoldDateTimeDataGridViewTextBoxColumn.HeaderText = "eBaySoldDateTime";
+            this.eBaySoldDateTimeDataGridViewTextBoxColumn.Name = "eBaySoldDateTimeDataGridViewTextBoxColumn";
+            // 
+            // eBayItemNameDataGridViewTextBoxColumn
+            // 
+            this.eBayItemNameDataGridViewTextBoxColumn.DataPropertyName = "eBayItemName";
+            this.eBayItemNameDataGridViewTextBoxColumn.HeaderText = "eBayItemName";
+            this.eBayItemNameDataGridViewTextBoxColumn.Name = "eBayItemNameDataGridViewTextBoxColumn";
+            // 
+            // eBayListingQualityDataGridViewTextBoxColumn
+            // 
+            this.eBayListingQualityDataGridViewTextBoxColumn.DataPropertyName = "eBayListingQuality";
+            this.eBayListingQualityDataGridViewTextBoxColumn.HeaderText = "eBayListingQuality";
+            this.eBayListingQualityDataGridViewTextBoxColumn.Name = "eBayListingQualityDataGridViewTextBoxColumn";
+            // 
+            // eBaySoldQualityDataGridViewTextBoxColumn
+            // 
+            this.eBaySoldQualityDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldQuality";
+            this.eBaySoldQualityDataGridViewTextBoxColumn.HeaderText = "eBaySoldQuality";
+            this.eBaySoldQualityDataGridViewTextBoxColumn.Name = "eBaySoldQualityDataGridViewTextBoxColumn";
+            // 
+            // eBayRemainingQualityDataGridViewTextBoxColumn
+            // 
+            this.eBayRemainingQualityDataGridViewTextBoxColumn.DataPropertyName = "eBayRemainingQuality";
+            this.eBayRemainingQualityDataGridViewTextBoxColumn.HeaderText = "eBayRemainingQuality";
+            this.eBayRemainingQualityDataGridViewTextBoxColumn.Name = "eBayRemainingQualityDataGridViewTextBoxColumn";
+            // 
+            // eBaySoldPriceDataGridViewTextBoxColumn
+            // 
+            this.eBaySoldPriceDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldPrice";
+            this.eBaySoldPriceDataGridViewTextBoxColumn.HeaderText = "eBaySoldPrice";
+            this.eBaySoldPriceDataGridViewTextBoxColumn.Name = "eBaySoldPriceDataGridViewTextBoxColumn";
+            // 
+            // eBayUrlDataGridViewTextBoxColumn2
+            // 
+            this.eBayUrlDataGridViewTextBoxColumn2.DataPropertyName = "eBayUrl";
+            this.eBayUrlDataGridViewTextBoxColumn2.HeaderText = "eBayUrl";
+            this.eBayUrlDataGridViewTextBoxColumn2.Name = "eBayUrlDataGridViewTextBoxColumn2";
+            // 
+            // eBaySoldEmailPdfDataGridViewTextBoxColumn
+            // 
+            this.eBaySoldEmailPdfDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldEmailPdf";
+            this.eBaySoldEmailPdfDataGridViewTextBoxColumn.HeaderText = "eBaySoldEmailPdf";
+            this.eBaySoldEmailPdfDataGridViewTextBoxColumn.Name = "eBaySoldEmailPdfDataGridViewTextBoxColumn";
+            // 
+            // buyerNameDataGridViewTextBoxColumn
+            // 
+            this.buyerNameDataGridViewTextBoxColumn.DataPropertyName = "BuyerName";
+            this.buyerNameDataGridViewTextBoxColumn.HeaderText = "BuyerName";
+            this.buyerNameDataGridViewTextBoxColumn.Name = "buyerNameDataGridViewTextBoxColumn";
+            // 
+            // buyerIDDataGridViewTextBoxColumn
+            // 
+            this.buyerIDDataGridViewTextBoxColumn.DataPropertyName = "BuyerID";
+            this.buyerIDDataGridViewTextBoxColumn.HeaderText = "BuyerID";
+            this.buyerIDDataGridViewTextBoxColumn.Name = "buyerIDDataGridViewTextBoxColumn";
+            // 
+            // buyerAddress1DataGridViewTextBoxColumn
+            // 
+            this.buyerAddress1DataGridViewTextBoxColumn.DataPropertyName = "BuyerAddress1";
+            this.buyerAddress1DataGridViewTextBoxColumn.HeaderText = "BuyerAddress1";
+            this.buyerAddress1DataGridViewTextBoxColumn.Name = "buyerAddress1DataGridViewTextBoxColumn";
+            // 
+            // buyerAddress2DataGridViewTextBoxColumn
+            // 
+            this.buyerAddress2DataGridViewTextBoxColumn.DataPropertyName = "BuyerAddress2";
+            this.buyerAddress2DataGridViewTextBoxColumn.HeaderText = "BuyerAddress2";
+            this.buyerAddress2DataGridViewTextBoxColumn.Name = "buyerAddress2DataGridViewTextBoxColumn";
+            // 
+            // buyerStateDataGridViewTextBoxColumn
+            // 
+            this.buyerStateDataGridViewTextBoxColumn.DataPropertyName = "BuyerState";
+            this.buyerStateDataGridViewTextBoxColumn.HeaderText = "BuyerState";
+            this.buyerStateDataGridViewTextBoxColumn.Name = "buyerStateDataGridViewTextBoxColumn";
+            // 
+            // buyerEmailDataGridViewTextBoxColumn
+            // 
+            this.buyerEmailDataGridViewTextBoxColumn.DataPropertyName = "BuyerEmail";
+            this.buyerEmailDataGridViewTextBoxColumn.HeaderText = "BuyerEmail";
+            this.buyerEmailDataGridViewTextBoxColumn.Name = "buyerEmailDataGridViewTextBoxColumn";
+            // 
+            // buyerNoteDataGridViewTextBoxColumn
+            // 
+            this.buyerNoteDataGridViewTextBoxColumn.DataPropertyName = "BuyerNote";
+            this.buyerNoteDataGridViewTextBoxColumn.HeaderText = "BuyerNote";
+            this.buyerNoteDataGridViewTextBoxColumn.Name = "buyerNoteDataGridViewTextBoxColumn";
+            // 
+            // costcoUrlNumberDataGridViewTextBoxColumn3
+            // 
+            this.costcoUrlNumberDataGridViewTextBoxColumn3.DataPropertyName = "CostcoUrlNumber";
+            this.costcoUrlNumberDataGridViewTextBoxColumn3.HeaderText = "CostcoUrlNumber";
+            this.costcoUrlNumberDataGridViewTextBoxColumn3.Name = "costcoUrlNumberDataGridViewTextBoxColumn3";
+            // 
+            // costcoUrlDataGridViewTextBoxColumn2
+            // 
+            this.costcoUrlDataGridViewTextBoxColumn2.DataPropertyName = "CostcoUrl";
+            this.costcoUrlDataGridViewTextBoxColumn2.HeaderText = "CostcoUrl";
+            this.costcoUrlDataGridViewTextBoxColumn2.Name = "costcoUrlDataGridViewTextBoxColumn2";
+            // 
+            // costcoPriceDataGridViewTextBoxColumn2
+            // 
+            this.costcoPriceDataGridViewTextBoxColumn2.DataPropertyName = "CostcoPrice";
+            this.costcoPriceDataGridViewTextBoxColumn2.HeaderText = "CostcoPrice";
+            this.costcoPriceDataGridViewTextBoxColumn2.Name = "costcoPriceDataGridViewTextBoxColumn2";
+            // 
+            // costcoOrderNumberDataGridViewTextBoxColumn
+            // 
+            this.costcoOrderNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoOrderNumber";
+            this.costcoOrderNumberDataGridViewTextBoxColumn.HeaderText = "CostcoOrderNumber";
+            this.costcoOrderNumberDataGridViewTextBoxColumn.Name = "costcoOrderNumberDataGridViewTextBoxColumn";
+            // 
+            // costcoItemNameDataGridViewTextBoxColumn
+            // 
+            this.costcoItemNameDataGridViewTextBoxColumn.DataPropertyName = "CostcoItemName";
+            this.costcoItemNameDataGridViewTextBoxColumn.HeaderText = "CostcoItemName";
+            this.costcoItemNameDataGridViewTextBoxColumn.Name = "costcoItemNameDataGridViewTextBoxColumn";
+            // 
+            // costcoItemNumberDataGridViewTextBoxColumn2
+            // 
+            this.costcoItemNumberDataGridViewTextBoxColumn2.DataPropertyName = "CostcoItemNumber";
+            this.costcoItemNumberDataGridViewTextBoxColumn2.HeaderText = "CostcoItemNumber";
+            this.costcoItemNumberDataGridViewTextBoxColumn2.Name = "costcoItemNumberDataGridViewTextBoxColumn2";
+            // 
+            // costcoTrackingNumberDataGridViewTextBoxColumn
+            // 
+            this.costcoTrackingNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoTrackingNumber";
+            this.costcoTrackingNumberDataGridViewTextBoxColumn.HeaderText = "CostcoTrackingNumber";
+            this.costcoTrackingNumberDataGridViewTextBoxColumn.Name = "costcoTrackingNumberDataGridViewTextBoxColumn";
+            // 
+            // costcoShipDateDataGridViewTextBoxColumn
+            // 
+            this.costcoShipDateDataGridViewTextBoxColumn.DataPropertyName = "CostcoShipDate";
+            this.costcoShipDateDataGridViewTextBoxColumn.HeaderText = "CostcoShipDate";
+            this.costcoShipDateDataGridViewTextBoxColumn.Name = "costcoShipDateDataGridViewTextBoxColumn";
+            // 
+            // costcoTaxExemptPdfDataGridViewTextBoxColumn
+            // 
+            this.costcoTaxExemptPdfDataGridViewTextBoxColumn.DataPropertyName = "CostcoTaxExemptPdf";
+            this.costcoTaxExemptPdfDataGridViewTextBoxColumn.HeaderText = "CostcoTaxExemptPdf";
+            this.costcoTaxExemptPdfDataGridViewTextBoxColumn.Name = "costcoTaxExemptPdfDataGridViewTextBoxColumn";
+            // 
+            // costcoOrderEmailPdfDataGridViewTextBoxColumn
+            // 
+            this.costcoOrderEmailPdfDataGridViewTextBoxColumn.DataPropertyName = "CostcoOrderEmailPdf";
+            this.costcoOrderEmailPdfDataGridViewTextBoxColumn.HeaderText = "CostcoOrderEmailPdf";
+            this.costcoOrderEmailPdfDataGridViewTextBoxColumn.Name = "costcoOrderEmailPdfDataGridViewTextBoxColumn";
+            // 
+            // eBaySoldTransactionsBindingSource
+            // 
+            this.eBaySoldTransactionsBindingSource.DataMember = "eBay_SoldTransactions";
+            this.eBaySoldTransactionsBindingSource.DataSource = this.dsEBaySold;
+            // 
+            // dsEBaySold
+            // 
+            this.dsEBaySold.DataSetName = "dsEBaySold";
+            this.dsEBaySold.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -724,10 +900,110 @@
             this.gvCurrentListing.TabIndex = 2;
             this.gvCurrentListing.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvCurrentListing_CellClick);
             // 
+            // iDDataGridViewTextBoxColumn2
+            // 
+            this.iDDataGridViewTextBoxColumn2.DataPropertyName = "ID";
+            this.iDDataGridViewTextBoxColumn2.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn2.Name = "iDDataGridViewTextBoxColumn2";
+            this.iDDataGridViewTextBoxColumn2.ReadOnly = true;
+            this.iDDataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // nameDataGridViewTextBoxColumn2
+            // 
+            this.nameDataGridViewTextBoxColumn2.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn2.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn2.Name = "nameDataGridViewTextBoxColumn2";
+            this.nameDataGridViewTextBoxColumn2.Visible = false;
+            // 
+            // eBayListingNameDataGridViewTextBoxColumn
+            // 
+            this.eBayListingNameDataGridViewTextBoxColumn.DataPropertyName = "eBayListingName";
+            this.eBayListingNameDataGridViewTextBoxColumn.HeaderText = "eBayListingName";
+            this.eBayListingNameDataGridViewTextBoxColumn.Name = "eBayListingNameDataGridViewTextBoxColumn";
+            // 
+            // eBayCategoryIDDataGridViewTextBoxColumn1
+            // 
+            this.eBayCategoryIDDataGridViewTextBoxColumn1.DataPropertyName = "eBayCategoryID";
+            this.eBayCategoryIDDataGridViewTextBoxColumn1.HeaderText = "eBayCategoryID";
+            this.eBayCategoryIDDataGridViewTextBoxColumn1.Name = "eBayCategoryIDDataGridViewTextBoxColumn1";
+            // 
+            // eBayItemNumberDataGridViewTextBoxColumn
+            // 
+            this.eBayItemNumberDataGridViewTextBoxColumn.DataPropertyName = "eBayItemNumber";
+            this.eBayItemNumberDataGridViewTextBoxColumn.HeaderText = "eBayItemNumber";
+            this.eBayItemNumberDataGridViewTextBoxColumn.Name = "eBayItemNumberDataGridViewTextBoxColumn";
+            // 
+            // eBayListingPriceDataGridViewTextBoxColumn1
+            // 
+            this.eBayListingPriceDataGridViewTextBoxColumn1.DataPropertyName = "eBayListingPrice";
+            this.eBayListingPriceDataGridViewTextBoxColumn1.HeaderText = "eBayListingPrice";
+            this.eBayListingPriceDataGridViewTextBoxColumn1.Name = "eBayListingPriceDataGridViewTextBoxColumn1";
+            // 
+            // eBayDescriptionDataGridViewTextBoxColumn
+            // 
+            this.eBayDescriptionDataGridViewTextBoxColumn.DataPropertyName = "eBayDescription";
+            this.eBayDescriptionDataGridViewTextBoxColumn.HeaderText = "eBayDescription";
+            this.eBayDescriptionDataGridViewTextBoxColumn.Name = "eBayDescriptionDataGridViewTextBoxColumn";
+            // 
+            // eBayEndTimeDataGridViewTextBoxColumn
+            // 
+            this.eBayEndTimeDataGridViewTextBoxColumn.DataPropertyName = "eBayEndTime";
+            this.eBayEndTimeDataGridViewTextBoxColumn.HeaderText = "eBayEndTime";
+            this.eBayEndTimeDataGridViewTextBoxColumn.Name = "eBayEndTimeDataGridViewTextBoxColumn";
+            // 
+            // eBayUrlDataGridViewTextBoxColumn
+            // 
+            this.eBayUrlDataGridViewTextBoxColumn.DataPropertyName = "eBayUrl";
+            this.eBayUrlDataGridViewTextBoxColumn.HeaderText = "eBayUrl";
+            this.eBayUrlDataGridViewTextBoxColumn.Name = "eBayUrlDataGridViewTextBoxColumn";
+            // 
+            // costcoUrlNumberDataGridViewTextBoxColumn
+            // 
+            this.costcoUrlNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoUrlNumber";
+            this.costcoUrlNumberDataGridViewTextBoxColumn.HeaderText = "CostcoUrlNumber";
+            this.costcoUrlNumberDataGridViewTextBoxColumn.Name = "costcoUrlNumberDataGridViewTextBoxColumn";
+            this.costcoUrlNumberDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // costcoItemNumberDataGridViewTextBoxColumn
+            // 
+            this.costcoItemNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoItemNumber";
+            this.costcoItemNumberDataGridViewTextBoxColumn.HeaderText = "CostcoItemNumber";
+            this.costcoItemNumberDataGridViewTextBoxColumn.Name = "costcoItemNumberDataGridViewTextBoxColumn";
+            this.costcoItemNumberDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // costcoUrlDataGridViewTextBoxColumn
+            // 
+            this.costcoUrlDataGridViewTextBoxColumn.DataPropertyName = "CostcoUrl";
+            this.costcoUrlDataGridViewTextBoxColumn.HeaderText = "CostcoUrl";
+            this.costcoUrlDataGridViewTextBoxColumn.Name = "costcoUrlDataGridViewTextBoxColumn";
+            // 
+            // costcoPriceDataGridViewTextBoxColumn
+            // 
+            this.costcoPriceDataGridViewTextBoxColumn.DataPropertyName = "CostcoPrice";
+            this.costcoPriceDataGridViewTextBoxColumn.HeaderText = "CostcoPrice";
+            this.costcoPriceDataGridViewTextBoxColumn.Name = "costcoPriceDataGridViewTextBoxColumn";
+            // 
+            // imageLinkDataGridViewTextBoxColumn2
+            // 
+            this.imageLinkDataGridViewTextBoxColumn2.DataPropertyName = "ImageLink";
+            this.imageLinkDataGridViewTextBoxColumn2.HeaderText = "ImageLink";
+            this.imageLinkDataGridViewTextBoxColumn2.Name = "imageLinkDataGridViewTextBoxColumn2";
+            this.imageLinkDataGridViewTextBoxColumn2.Visible = false;
+            // 
             // SelectListing
             // 
             this.SelectListing.HeaderText = "Select";
             this.SelectListing.Name = "SelectListing";
+            // 
+            // eBayCurrentListingsBindingSource
+            // 
+            this.eBayCurrentListingsBindingSource.DataMember = "eBay_CurrentListings";
+            this.eBayCurrentListingsBindingSource.DataSource = this.dseBayCurrentListings;
+            // 
+            // dseBayCurrentListings
+            // 
+            this.dseBayCurrentListings.DataSetName = "dseBayCurrentListings";
+            this.dseBayCurrentListings.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // btnListingModify
             // 
@@ -751,282 +1027,35 @@
             this.btnListingDelete.UseVisualStyleBackColor = true;
             this.btnListingDelete.Click += new System.EventHandler(this.btnListingDelete_Click);
             // 
-            // tpPendingChanges
+            // eBayToAddBindingSource
             // 
-            this.tpPendingChanges.Controls.Add(this.panel2);
-            this.tpPendingChanges.Location = new System.Drawing.Point(4, 22);
-            this.tpPendingChanges.Name = "tpPendingChanges";
-            this.tpPendingChanges.Padding = new System.Windows.Forms.Padding(3);
-            this.tpPendingChanges.Size = new System.Drawing.Size(1256, 634);
-            this.tpPendingChanges.TabIndex = 1;
-            this.tpPendingChanges.Text = "Pending Changes";
-            this.tpPendingChanges.UseVisualStyleBackColor = true;
-            this.tpPendingChanges.Enter += new System.EventHandler(this.tpPendingChanges_Enter);
+            this.eBayToAddBindingSource.DataMember = "eBay_ToAdd";
+            this.eBayToAddBindingSource.DataSource = this.ds_eBayToAdd;
             // 
-            // panel2
+            // ds_eBayToAdd
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.splitContainer2);
-            this.panel2.Location = new System.Drawing.Point(6, 6);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1243, 622);
-            this.panel2.TabIndex = 0;
+            this.ds_eBayToAdd.DataSetName = "ds_eBayToAdd";
+            this.ds_eBayToAdd.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // splitContainer2
+            // eBayToChangeBindingSource
             // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.eBayToChangeBindingSource.DataMember = "eBay_ToChange";
+            this.eBayToChangeBindingSource.DataSource = this.costcoDataSet6;
             // 
-            // splitContainer2.Panel1
+            // costcoDataSet6
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.groupBox3);
+            this.costcoDataSet6.DataSetName = "CostcoDataSet6";
+            this.costcoDataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // splitContainer2.Panel2
+            // eBayToRemoveBindingSource
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(1243, 622);
-            this.splitContainer2.SplitterDistance = 191;
-            this.splitContainer2.TabIndex = 2;
+            this.eBayToRemoveBindingSource.DataMember = "eBay_ToRemove";
+            this.eBayToRemoveBindingSource.DataSource = this.ds_eBayToRemove;
             // 
-            // groupBox3
+            // ds_eBayToRemove
             // 
-            this.groupBox3.Controls.Add(this.btnSave);
-            this.groupBox3.Controls.Add(this.btnDelete);
-            this.groupBox3.Controls.Add(this.gvToAdd);
-            this.groupBox3.Controls.Add(this.btnUpload);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1243, 191);
-            this.groupBox3.TabIndex = 0;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "To be Added Items";
-            // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(1081, 10);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 4;
-            this.btnSave.Text = "Update";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(1000, 10);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 5;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // gvToAdd
-            // 
-            this.gvToAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gvToAdd.AutoGenerateColumns = false;
-            this.gvToAdd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvToAdd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iDDataGridViewTextBoxColumn1,
-            this.nameDataGridViewTextBoxColumn1,
-            this.urlNumberDataGridViewTextBoxColumn,
-            this.itemNumberDataGridViewTextBoxColumn1,
-            this.categoryDataGridViewTextBoxColumn,
-            this.priceDataGridViewTextBoxColumn1,
-            this.shippingDataGridViewTextBoxColumn1,
-            this.eBayReferencePriceDataGridViewTextBoxColumn,
-            this.eBayListingPriceDataGridViewTextBoxColumn,
-            this.limitDataGridViewTextBoxColumn,
-            this.discountDataGridViewTextBoxColumn,
-            this.detailsDataGridViewTextBoxColumn1,
-            this.specificationDataGridViewTextBoxColumn1,
-            this.imageLinkDataGridViewTextBoxColumn1,
-            this.numberOfImageDataGridViewTextBoxColumn,
-            this.urlDataGridViewTextBoxColumn1,
-            this.eBayCategoryIDDataGridViewTextBoxColumn,
-            this.descriptionImageWidthDataGridViewTextBoxColumn,
-            this.descriptionImageHeightDataGridViewTextBoxColumn});
-            this.gvToAdd.DataSource = this.eBayToAddBindingSource;
-            this.gvToAdd.Location = new System.Drawing.Point(6, 39);
-            this.gvToAdd.Name = "gvToAdd";
-            this.gvToAdd.Size = new System.Drawing.Size(1231, 146);
-            this.gvToAdd.TabIndex = 0;
-            // 
-            // btnUpload
-            // 
-            this.btnUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpload.Location = new System.Drawing.Point(1162, 10);
-            this.btnUpload.Name = "btnUpload";
-            this.btnUpload.Size = new System.Drawing.Size(75, 23);
-            this.btnUpload.TabIndex = 2;
-            this.btnUpload.Text = "Upload";
-            this.btnUpload.UseVisualStyleBackColor = true;
-            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            this.splitContainer3.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.groupBox4);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.groupBox5);
-            this.splitContainer3.Size = new System.Drawing.Size(1243, 427);
-            this.splitContainer3.SplitterDistance = 210;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.btnToChangeUpdate);
-            this.groupBox4.Controls.Add(this.btnToChangeDelete);
-            this.groupBox4.Controls.Add(this.btnToChangeUpload);
-            this.groupBox4.Controls.Add(this.gvToChange);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(1243, 210);
-            this.groupBox4.TabIndex = 1;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "To be Modified Items";
-            // 
-            // btnToChangeUpdate
-            // 
-            this.btnToChangeUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeUpdate.Location = new System.Drawing.Point(1081, 9);
-            this.btnToChangeUpdate.Name = "btnToChangeUpdate";
-            this.btnToChangeUpdate.Size = new System.Drawing.Size(75, 23);
-            this.btnToChangeUpdate.TabIndex = 6;
-            this.btnToChangeUpdate.Text = "Update";
-            this.btnToChangeUpdate.UseVisualStyleBackColor = true;
-            this.btnToChangeUpdate.Click += new System.EventHandler(this.btnToChangeUpdate_Click);
-            // 
-            // btnToChangeDelete
-            // 
-            this.btnToChangeDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeDelete.Location = new System.Drawing.Point(1000, 9);
-            this.btnToChangeDelete.Name = "btnToChangeDelete";
-            this.btnToChangeDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnToChangeDelete.TabIndex = 6;
-            this.btnToChangeDelete.Text = "Delete";
-            this.btnToChangeDelete.UseVisualStyleBackColor = true;
-            this.btnToChangeDelete.Click += new System.EventHandler(this.btnToChangeDelete_Click);
-            // 
-            // btnToChangeUpload
-            // 
-            this.btnToChangeUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeUpload.Location = new System.Drawing.Point(1162, 9);
-            this.btnToChangeUpload.Name = "btnToChangeUpload";
-            this.btnToChangeUpload.Size = new System.Drawing.Size(75, 23);
-            this.btnToChangeUpload.TabIndex = 3;
-            this.btnToChangeUpload.Text = "Upload";
-            this.btnToChangeUpload.UseVisualStyleBackColor = true;
-            this.btnToChangeUpload.Click += new System.EventHandler(this.btnToChangeUpload_Click);
-            // 
-            // gvToChange
-            // 
-            this.gvToChange.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gvToChange.AutoGenerateColumns = false;
-            this.gvToChange.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvToChange.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iDDataGridViewTextBoxColumn4,
-            this.nameDataGridViewTextBoxColumn4,
-            this.costcoUrlNumberDataGridViewTextBoxColumn2,
-            this.eBayItemNumberDataGridViewTextBoxColumn2,
-            this.eBayOldListingPriceDataGridViewTextBoxColumn,
-            this.eBayNewListingPriceDataGridViewTextBoxColumn,
-            this.eBayReferencePriceDataGridViewTextBoxColumn1,
-            this.costcoOldPriceDataGridViewTextBoxColumn,
-            this.costcoNewPriceDataGridViewTextBoxColumn,
-            this.priceChangeDataGridViewTextBoxColumn,
-            this.categoryDataGridViewTextBoxColumn1,
-            this.shippingDataGridViewTextBoxColumn2,
-            this.limitDataGridViewTextBoxColumn1,
-            this.discountDataGridViewTextBoxColumn1,
-            this.detailsDataGridViewTextBoxColumn2,
-            this.specificationDataGridViewTextBoxColumn2,
-            this.imageLinkDataGridViewTextBoxColumn4,
-            this.numberOfImageDataGridViewTextBoxColumn1,
-            this.urlDataGridViewTextBoxColumn2,
-            this.eBayCategoryIDDataGridViewTextBoxColumn3,
-            this.descriptionImageWidthDataGridViewTextBoxColumn1,
-            this.descriptionImageHeightDataGridViewTextBoxColumn1});
-            this.gvToChange.DataSource = this.eBayToChangeBindingSource;
-            this.gvToChange.Location = new System.Drawing.Point(6, 38);
-            this.gvToChange.Name = "gvToChange";
-            this.gvToChange.Size = new System.Drawing.Size(1231, 166);
-            this.gvToChange.TabIndex = 0;
-            this.gvToChange.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.gvToChange_CellBeginEdit);
-            this.gvToChange.SelectionChanged += new System.EventHandler(this.gvToChange_SelectionChanged);
-            this.gvToChange.Enter += new System.EventHandler(this.gvToChange_Enter);
-            this.gvToChange.Leave += new System.EventHandler(this.gvToChange_Leave);
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.btnToDeleteUpload);
-            this.groupBox5.Controls.Add(this.gvToDelete);
-            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox5.Location = new System.Drawing.Point(0, 0);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(1243, 213);
-            this.groupBox5.TabIndex = 1;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "To be Deleted Items";
-            // 
-            // btnToDeleteUpload
-            // 
-            this.btnToDeleteUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToDeleteUpload.Location = new System.Drawing.Point(1162, 10);
-            this.btnToDeleteUpload.Name = "btnToDeleteUpload";
-            this.btnToDeleteUpload.Size = new System.Drawing.Size(75, 23);
-            this.btnToDeleteUpload.TabIndex = 3;
-            this.btnToDeleteUpload.Text = "Upload";
-            this.btnToDeleteUpload.UseVisualStyleBackColor = true;
-            this.btnToDeleteUpload.Click += new System.EventHandler(this.btnToDeleteUpload_Click);
-            // 
-            // gvToDelete
-            // 
-            this.gvToDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gvToDelete.AutoGenerateColumns = false;
-            this.gvToDelete.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvToDelete.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iDDataGridViewTextBoxColumn3,
-            this.nameDataGridViewTextBoxColumn3,
-            this.eBayListingNameDataGridViewTextBoxColumn1,
-            this.eBayCategoryIDDataGridViewTextBoxColumn2,
-            this.eBayItemNumberDataGridViewTextBoxColumn1,
-            this.eBayListingPriceDataGridViewTextBoxColumn2,
-            this.eBayDescriptionDataGridViewTextBoxColumn1,
-            this.eBayEndTimeDataGridViewTextBoxColumn1,
-            this.eBayUrlDataGridViewTextBoxColumn1,
-            this.costcoUrlNumberDataGridViewTextBoxColumn1,
-            this.costcoItemNumberDataGridViewTextBoxColumn1,
-            this.costcoUrlDataGridViewTextBoxColumn1,
-            this.costcoPriceDataGridViewTextBoxColumn1,
-            this.imageLinkDataGridViewTextBoxColumn3});
-            this.gvToDelete.DataSource = this.eBayToRemoveBindingSource;
-            this.gvToDelete.Location = new System.Drawing.Point(6, 39);
-            this.gvToDelete.Name = "gvToDelete";
-            this.gvToDelete.Size = new System.Drawing.Size(1231, 168);
-            this.gvToDelete.TabIndex = 0;
+            this.ds_eBayToRemove.DataSetName = "ds_eBayToRemove";
+            this.ds_eBayToRemove.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // tpCostco
             // 
@@ -1311,6 +1340,119 @@
             this.gvProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvProducts_CellClick);
             this.gvProducts.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvProducts_CellFormatting);
             // 
+            // Check
+            // 
+            this.Check.HeaderText = "";
+            this.Check.Name = "Check";
+            this.Check.Width = 20;
+            // 
+            // iDDataGridViewTextBoxColumn
+            // 
+            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
+            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
+            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.iDDataGridViewTextBoxColumn.Width = 40;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.nameDataGridViewTextBoxColumn.Width = 300;
+            // 
+            // Image
+            // 
+            this.Image.HeaderText = "Image";
+            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.Image.Name = "Image";
+            this.Image.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Image.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // UrlNumber
+            // 
+            this.UrlNumber.DataPropertyName = "UrlNumber";
+            this.UrlNumber.HeaderText = "UrlNumber";
+            this.UrlNumber.Name = "UrlNumber";
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            // 
+            // shippingDataGridViewTextBoxColumn
+            // 
+            this.shippingDataGridViewTextBoxColumn.DataPropertyName = "Shipping";
+            this.shippingDataGridViewTextBoxColumn.HeaderText = "Shipping";
+            this.shippingDataGridViewTextBoxColumn.Name = "shippingDataGridViewTextBoxColumn";
+            // 
+            // Discount
+            // 
+            this.Discount.DataPropertyName = "Discount";
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle2;
+            this.Discount.HeaderText = "Discount";
+            this.Discount.Name = "Discount";
+            // 
+            // Limit
+            // 
+            this.Limit.DataPropertyName = "Limit";
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Limit.HeaderText = "Limit";
+            this.Limit.Name = "Limit";
+            this.Limit.Width = 80;
+            // 
+            // detailsDataGridViewTextBoxColumn
+            // 
+            this.detailsDataGridViewTextBoxColumn.DataPropertyName = "Details";
+            this.detailsDataGridViewTextBoxColumn.HeaderText = "Details";
+            this.detailsDataGridViewTextBoxColumn.Name = "detailsDataGridViewTextBoxColumn";
+            this.detailsDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // specificationDataGridViewTextBoxColumn
+            // 
+            this.specificationDataGridViewTextBoxColumn.DataPropertyName = "Specification";
+            this.specificationDataGridViewTextBoxColumn.HeaderText = "Specification";
+            this.specificationDataGridViewTextBoxColumn.Name = "specificationDataGridViewTextBoxColumn";
+            this.specificationDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // imageLinkDataGridViewTextBoxColumn
+            // 
+            this.imageLinkDataGridViewTextBoxColumn.DataPropertyName = "ImageLink";
+            this.imageLinkDataGridViewTextBoxColumn.HeaderText = "ImageLink";
+            this.imageLinkDataGridViewTextBoxColumn.Name = "imageLinkDataGridViewTextBoxColumn";
+            this.imageLinkDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // urlDataGridViewTextBoxColumn
+            // 
+            this.urlDataGridViewTextBoxColumn.DataPropertyName = "Url";
+            this.urlDataGridViewTextBoxColumn.HeaderText = "Url";
+            this.urlDataGridViewTextBoxColumn.Name = "urlDataGridViewTextBoxColumn";
+            this.urlDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemNumberDataGridViewTextBoxColumn
+            // 
+            this.itemNumberDataGridViewTextBoxColumn.DataPropertyName = "ItemNumber";
+            this.itemNumberDataGridViewTextBoxColumn.HeaderText = "ItemNumber";
+            this.itemNumberDataGridViewTextBoxColumn.Name = "itemNumberDataGridViewTextBoxColumn";
+            this.itemNumberDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // productInfoBindingSource
+            // 
+            this.productInfoBindingSource.DataMember = "ProductInfo";
+            this.productInfoBindingSource.DataSource = this.costcoDataSet4;
+            // 
+            // costcoDataSet4
+            // 
+            this.costcoDataSet4.DataSetName = "CostcoDataSet4";
+            this.costcoDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // btnCrawl
             // 
             this.btnCrawl.Location = new System.Drawing.Point(3, 3);
@@ -1327,8 +1469,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tpCostco);
-            this.tabControl1.Controls.Add(this.tpPendingChanges);
+            this.tabControl1.Controls.Add(this.tpToAdd);
             this.tabControl1.Controls.Add(this.tpCurrentListing);
+            this.tabControl1.Controls.Add(this.tpEBayToModify);
+            this.tabControl1.Controls.Add(this.tpEbayToDelete);
             this.tabControl1.Controls.Add(this.tpSold);
             this.tabControl1.Controls.Add(this.tpTax);
             this.tabControl1.Controls.Add(this.tpSaleTax);
@@ -2680,6 +2824,7 @@
             this.ll8.TabStop = true;
             this.ll8.Text = "0.00";
             this.ll8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ll8.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ll8_LinkClicked);
             this.ll8.TextChanged += new System.EventHandler(this.ll8_TextChanged);
             // 
             // label43
@@ -3233,17 +3378,110 @@
             this.ll1.TabStop = true;
             this.ll1.Text = "0.00";
             this.ll1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ll1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ll1_LinkClicked);
             this.ll1.TextChanged += new System.EventHandler(this.ll1_TextChanged);
             // 
-            // productInfoBindingSource
+            // productInfoTableAdapter1
             // 
-            this.productInfoBindingSource.DataMember = "ProductInfo";
-            this.productInfoBindingSource.DataSource = this.costcoDataSet4;
+            this.productInfoTableAdapter1.ClearBeforeFill = true;
             // 
-            // costcoDataSet4
+            // eBay_ToAddTableAdapter
             // 
-            this.costcoDataSet4.DataSetName = "CostcoDataSet4";
-            this.costcoDataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.eBay_ToAddTableAdapter.ClearBeforeFill = true;
+            // 
+            // eBay_CurrentListingsTableAdapter
+            // 
+            this.eBay_CurrentListingsTableAdapter.ClearBeforeFill = true;
+            // 
+            // eBay_ToRemoveTableAdapter
+            // 
+            this.eBay_ToRemoveTableAdapter.ClearBeforeFill = true;
+            // 
+            // eBay_ToChangeTableAdapter
+            // 
+            this.eBay_ToChangeTableAdapter.ClearBeforeFill = true;
+            // 
+            // eBay_SoldTransactionsTableAdapter
+            // 
+            this.eBay_SoldTransactionsTableAdapter.ClearBeforeFill = true;
+            // 
+            // tpToAdd
+            // 
+            this.tpToAdd.Controls.Add(this.groupBox3);
+            this.tpToAdd.Location = new System.Drawing.Point(4, 22);
+            this.tpToAdd.Name = "tpToAdd";
+            this.tpToAdd.Padding = new System.Windows.Forms.Padding(3);
+            this.tpToAdd.Size = new System.Drawing.Size(1256, 634);
+            this.tpToAdd.TabIndex = 7;
+            this.tpToAdd.Text = "To Add";
+            this.tpToAdd.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.btnSave);
+            this.groupBox3.Controls.Add(this.btnDelete);
+            this.groupBox3.Controls.Add(this.gvToAdd);
+            this.groupBox3.Controls.Add(this.btnUpload);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(1250, 628);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "To be Added Items";
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(1088, 10);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 4;
+            this.btnSave.Text = "Update";
+            this.btnSave.UseVisualStyleBackColor = true;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDelete.Location = new System.Drawing.Point(1007, 10);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 5;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            // 
+            // gvToAdd
+            // 
+            this.gvToAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvToAdd.AutoGenerateColumns = false;
+            this.gvToAdd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvToAdd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.iDDataGridViewTextBoxColumn1,
+            this.nameDataGridViewTextBoxColumn1,
+            this.urlNumberDataGridViewTextBoxColumn,
+            this.itemNumberDataGridViewTextBoxColumn1,
+            this.categoryDataGridViewTextBoxColumn,
+            this.priceDataGridViewTextBoxColumn1,
+            this.shippingDataGridViewTextBoxColumn1,
+            this.eBayReferencePriceDataGridViewTextBoxColumn,
+            this.eBayListingPriceDataGridViewTextBoxColumn,
+            this.limitDataGridViewTextBoxColumn,
+            this.discountDataGridViewTextBoxColumn,
+            this.detailsDataGridViewTextBoxColumn1,
+            this.specificationDataGridViewTextBoxColumn1,
+            this.imageLinkDataGridViewTextBoxColumn1,
+            this.numberOfImageDataGridViewTextBoxColumn,
+            this.urlDataGridViewTextBoxColumn1,
+            this.eBayCategoryIDDataGridViewTextBoxColumn,
+            this.descriptionImageWidthDataGridViewTextBoxColumn,
+            this.descriptionImageHeightDataGridViewTextBoxColumn});
+            this.gvToAdd.DataSource = this.eBayToAddBindingSource;
+            this.gvToAdd.Location = new System.Drawing.Point(6, 39);
+            this.gvToAdd.Name = "gvToAdd";
+            this.gvToAdd.Size = new System.Drawing.Size(1238, 583);
+            this.gvToAdd.TabIndex = 0;
             // 
             // iDDataGridViewTextBoxColumn1
             // 
@@ -3360,15 +3598,106 @@
             this.descriptionImageHeightDataGridViewTextBoxColumn.HeaderText = "DescriptionImageHeight";
             this.descriptionImageHeightDataGridViewTextBoxColumn.Name = "descriptionImageHeightDataGridViewTextBoxColumn";
             // 
-            // eBayToAddBindingSource
+            // btnUpload
             // 
-            this.eBayToAddBindingSource.DataMember = "eBay_ToAdd";
-            this.eBayToAddBindingSource.DataSource = this.ds_eBayToAdd;
+            this.btnUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUpload.Location = new System.Drawing.Point(1169, 10);
+            this.btnUpload.Name = "btnUpload";
+            this.btnUpload.Size = new System.Drawing.Size(75, 23);
+            this.btnUpload.TabIndex = 2;
+            this.btnUpload.Text = "Upload";
+            this.btnUpload.UseVisualStyleBackColor = true;
             // 
-            // ds_eBayToAdd
+            // tpEBayToModify
             // 
-            this.ds_eBayToAdd.DataSetName = "ds_eBayToAdd";
-            this.ds_eBayToAdd.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.tpEBayToModify.Controls.Add(this.groupBox4);
+            this.tpEBayToModify.Location = new System.Drawing.Point(4, 22);
+            this.tpEBayToModify.Name = "tpEBayToModify";
+            this.tpEBayToModify.Padding = new System.Windows.Forms.Padding(3);
+            this.tpEBayToModify.Size = new System.Drawing.Size(1256, 634);
+            this.tpEBayToModify.TabIndex = 8;
+            this.tpEBayToModify.Text = "eBay To Modify";
+            this.tpEBayToModify.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnToChangeUpdate);
+            this.groupBox4.Controls.Add(this.btnToChangeDelete);
+            this.groupBox4.Controls.Add(this.btnToChangeUpload);
+            this.groupBox4.Controls.Add(this.gvToChange);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(3, 3);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(1250, 628);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "To be Modified Items";
+            // 
+            // btnToChangeUpdate
+            // 
+            this.btnToChangeUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToChangeUpdate.Location = new System.Drawing.Point(1088, 9);
+            this.btnToChangeUpdate.Name = "btnToChangeUpdate";
+            this.btnToChangeUpdate.Size = new System.Drawing.Size(75, 23);
+            this.btnToChangeUpdate.TabIndex = 6;
+            this.btnToChangeUpdate.Text = "Update";
+            this.btnToChangeUpdate.UseVisualStyleBackColor = true;
+            // 
+            // btnToChangeDelete
+            // 
+            this.btnToChangeDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToChangeDelete.Location = new System.Drawing.Point(1007, 9);
+            this.btnToChangeDelete.Name = "btnToChangeDelete";
+            this.btnToChangeDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnToChangeDelete.TabIndex = 6;
+            this.btnToChangeDelete.Text = "Delete";
+            this.btnToChangeDelete.UseVisualStyleBackColor = true;
+            // 
+            // btnToChangeUpload
+            // 
+            this.btnToChangeUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToChangeUpload.Location = new System.Drawing.Point(1169, 9);
+            this.btnToChangeUpload.Name = "btnToChangeUpload";
+            this.btnToChangeUpload.Size = new System.Drawing.Size(75, 23);
+            this.btnToChangeUpload.TabIndex = 3;
+            this.btnToChangeUpload.Text = "Upload";
+            this.btnToChangeUpload.UseVisualStyleBackColor = true;
+            // 
+            // gvToChange
+            // 
+            this.gvToChange.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvToChange.AutoGenerateColumns = false;
+            this.gvToChange.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvToChange.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.iDDataGridViewTextBoxColumn4,
+            this.nameDataGridViewTextBoxColumn4,
+            this.costcoUrlNumberDataGridViewTextBoxColumn2,
+            this.eBayItemNumberDataGridViewTextBoxColumn2,
+            this.eBayOldListingPriceDataGridViewTextBoxColumn,
+            this.eBayNewListingPriceDataGridViewTextBoxColumn,
+            this.eBayReferencePriceDataGridViewTextBoxColumn1,
+            this.costcoOldPriceDataGridViewTextBoxColumn,
+            this.costcoNewPriceDataGridViewTextBoxColumn,
+            this.priceChangeDataGridViewTextBoxColumn,
+            this.categoryDataGridViewTextBoxColumn1,
+            this.shippingDataGridViewTextBoxColumn2,
+            this.limitDataGridViewTextBoxColumn1,
+            this.discountDataGridViewTextBoxColumn1,
+            this.detailsDataGridViewTextBoxColumn2,
+            this.specificationDataGridViewTextBoxColumn2,
+            this.imageLinkDataGridViewTextBoxColumn4,
+            this.numberOfImageDataGridViewTextBoxColumn1,
+            this.urlDataGridViewTextBoxColumn2,
+            this.eBayCategoryIDDataGridViewTextBoxColumn3,
+            this.descriptionImageWidthDataGridViewTextBoxColumn1,
+            this.descriptionImageHeightDataGridViewTextBoxColumn1});
+            this.gvToChange.DataSource = this.eBayToChangeBindingSource;
+            this.gvToChange.Location = new System.Drawing.Point(6, 38);
+            this.gvToChange.Name = "gvToChange";
+            this.gvToChange.Size = new System.Drawing.Size(1238, 584);
+            this.gvToChange.TabIndex = 0;
             // 
             // iDDataGridViewTextBoxColumn4
             // 
@@ -3503,15 +3832,66 @@
             this.descriptionImageHeightDataGridViewTextBoxColumn1.HeaderText = "DescriptionImageHeight";
             this.descriptionImageHeightDataGridViewTextBoxColumn1.Name = "descriptionImageHeightDataGridViewTextBoxColumn1";
             // 
-            // eBayToChangeBindingSource
+            // tpEbayToDelete
             // 
-            this.eBayToChangeBindingSource.DataMember = "eBay_ToChange";
-            this.eBayToChangeBindingSource.DataSource = this.costcoDataSet6;
+            this.tpEbayToDelete.Controls.Add(this.groupBox5);
+            this.tpEbayToDelete.Location = new System.Drawing.Point(4, 22);
+            this.tpEbayToDelete.Name = "tpEbayToDelete";
+            this.tpEbayToDelete.Padding = new System.Windows.Forms.Padding(3);
+            this.tpEbayToDelete.Size = new System.Drawing.Size(1256, 634);
+            this.tpEbayToDelete.TabIndex = 9;
+            this.tpEbayToDelete.Text = "eBay To Delete";
+            this.tpEbayToDelete.UseVisualStyleBackColor = true;
             // 
-            // costcoDataSet6
+            // groupBox5
             // 
-            this.costcoDataSet6.DataSetName = "CostcoDataSet6";
-            this.costcoDataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.groupBox5.Controls.Add(this.btnToDeleteUpload);
+            this.groupBox5.Controls.Add(this.gvToDelete);
+            this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox5.Location = new System.Drawing.Point(3, 3);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(1250, 628);
+            this.groupBox5.TabIndex = 2;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "To be Deleted Items";
+            // 
+            // btnToDeleteUpload
+            // 
+            this.btnToDeleteUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToDeleteUpload.Location = new System.Drawing.Point(1169, 10);
+            this.btnToDeleteUpload.Name = "btnToDeleteUpload";
+            this.btnToDeleteUpload.Size = new System.Drawing.Size(75, 23);
+            this.btnToDeleteUpload.TabIndex = 3;
+            this.btnToDeleteUpload.Text = "Upload";
+            this.btnToDeleteUpload.UseVisualStyleBackColor = true;
+            // 
+            // gvToDelete
+            // 
+            this.gvToDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvToDelete.AutoGenerateColumns = false;
+            this.gvToDelete.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvToDelete.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.iDDataGridViewTextBoxColumn3,
+            this.nameDataGridViewTextBoxColumn3,
+            this.eBayListingNameDataGridViewTextBoxColumn1,
+            this.eBayCategoryIDDataGridViewTextBoxColumn2,
+            this.eBayItemNumberDataGridViewTextBoxColumn1,
+            this.eBayListingPriceDataGridViewTextBoxColumn2,
+            this.eBayDescriptionDataGridViewTextBoxColumn1,
+            this.eBayEndTimeDataGridViewTextBoxColumn1,
+            this.eBayUrlDataGridViewTextBoxColumn1,
+            this.costcoUrlNumberDataGridViewTextBoxColumn1,
+            this.costcoItemNumberDataGridViewTextBoxColumn1,
+            this.costcoUrlDataGridViewTextBoxColumn1,
+            this.costcoPriceDataGridViewTextBoxColumn1,
+            this.imageLinkDataGridViewTextBoxColumn3});
+            this.gvToDelete.DataSource = this.eBayToRemoveBindingSource;
+            this.gvToDelete.Location = new System.Drawing.Point(6, 39);
+            this.gvToDelete.Name = "gvToDelete";
+            this.gvToDelete.Size = new System.Drawing.Size(1238, 583);
+            this.gvToDelete.TabIndex = 0;
             // 
             // iDDataGridViewTextBoxColumn3
             // 
@@ -3598,427 +3978,6 @@
             this.imageLinkDataGridViewTextBoxColumn3.HeaderText = "ImageLink";
             this.imageLinkDataGridViewTextBoxColumn3.Name = "imageLinkDataGridViewTextBoxColumn3";
             // 
-            // eBayToRemoveBindingSource
-            // 
-            this.eBayToRemoveBindingSource.DataMember = "eBay_ToRemove";
-            this.eBayToRemoveBindingSource.DataSource = this.ds_eBayToRemove;
-            // 
-            // ds_eBayToRemove
-            // 
-            this.ds_eBayToRemove.DataSetName = "ds_eBayToRemove";
-            this.ds_eBayToRemove.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // iDDataGridViewTextBoxColumn2
-            // 
-            this.iDDataGridViewTextBoxColumn2.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn2.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn2.Name = "iDDataGridViewTextBoxColumn2";
-            this.iDDataGridViewTextBoxColumn2.ReadOnly = true;
-            this.iDDataGridViewTextBoxColumn2.Visible = false;
-            // 
-            // nameDataGridViewTextBoxColumn2
-            // 
-            this.nameDataGridViewTextBoxColumn2.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn2.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn2.Name = "nameDataGridViewTextBoxColumn2";
-            this.nameDataGridViewTextBoxColumn2.Visible = false;
-            // 
-            // eBayListingNameDataGridViewTextBoxColumn
-            // 
-            this.eBayListingNameDataGridViewTextBoxColumn.DataPropertyName = "eBayListingName";
-            this.eBayListingNameDataGridViewTextBoxColumn.HeaderText = "eBayListingName";
-            this.eBayListingNameDataGridViewTextBoxColumn.Name = "eBayListingNameDataGridViewTextBoxColumn";
-            // 
-            // eBayCategoryIDDataGridViewTextBoxColumn1
-            // 
-            this.eBayCategoryIDDataGridViewTextBoxColumn1.DataPropertyName = "eBayCategoryID";
-            this.eBayCategoryIDDataGridViewTextBoxColumn1.HeaderText = "eBayCategoryID";
-            this.eBayCategoryIDDataGridViewTextBoxColumn1.Name = "eBayCategoryIDDataGridViewTextBoxColumn1";
-            // 
-            // eBayItemNumberDataGridViewTextBoxColumn
-            // 
-            this.eBayItemNumberDataGridViewTextBoxColumn.DataPropertyName = "eBayItemNumber";
-            this.eBayItemNumberDataGridViewTextBoxColumn.HeaderText = "eBayItemNumber";
-            this.eBayItemNumberDataGridViewTextBoxColumn.Name = "eBayItemNumberDataGridViewTextBoxColumn";
-            // 
-            // eBayListingPriceDataGridViewTextBoxColumn1
-            // 
-            this.eBayListingPriceDataGridViewTextBoxColumn1.DataPropertyName = "eBayListingPrice";
-            this.eBayListingPriceDataGridViewTextBoxColumn1.HeaderText = "eBayListingPrice";
-            this.eBayListingPriceDataGridViewTextBoxColumn1.Name = "eBayListingPriceDataGridViewTextBoxColumn1";
-            // 
-            // eBayDescriptionDataGridViewTextBoxColumn
-            // 
-            this.eBayDescriptionDataGridViewTextBoxColumn.DataPropertyName = "eBayDescription";
-            this.eBayDescriptionDataGridViewTextBoxColumn.HeaderText = "eBayDescription";
-            this.eBayDescriptionDataGridViewTextBoxColumn.Name = "eBayDescriptionDataGridViewTextBoxColumn";
-            // 
-            // eBayEndTimeDataGridViewTextBoxColumn
-            // 
-            this.eBayEndTimeDataGridViewTextBoxColumn.DataPropertyName = "eBayEndTime";
-            this.eBayEndTimeDataGridViewTextBoxColumn.HeaderText = "eBayEndTime";
-            this.eBayEndTimeDataGridViewTextBoxColumn.Name = "eBayEndTimeDataGridViewTextBoxColumn";
-            // 
-            // eBayUrlDataGridViewTextBoxColumn
-            // 
-            this.eBayUrlDataGridViewTextBoxColumn.DataPropertyName = "eBayUrl";
-            this.eBayUrlDataGridViewTextBoxColumn.HeaderText = "eBayUrl";
-            this.eBayUrlDataGridViewTextBoxColumn.Name = "eBayUrlDataGridViewTextBoxColumn";
-            // 
-            // costcoUrlNumberDataGridViewTextBoxColumn
-            // 
-            this.costcoUrlNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoUrlNumber";
-            this.costcoUrlNumberDataGridViewTextBoxColumn.HeaderText = "CostcoUrlNumber";
-            this.costcoUrlNumberDataGridViewTextBoxColumn.Name = "costcoUrlNumberDataGridViewTextBoxColumn";
-            this.costcoUrlNumberDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // costcoItemNumberDataGridViewTextBoxColumn
-            // 
-            this.costcoItemNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoItemNumber";
-            this.costcoItemNumberDataGridViewTextBoxColumn.HeaderText = "CostcoItemNumber";
-            this.costcoItemNumberDataGridViewTextBoxColumn.Name = "costcoItemNumberDataGridViewTextBoxColumn";
-            this.costcoItemNumberDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // costcoUrlDataGridViewTextBoxColumn
-            // 
-            this.costcoUrlDataGridViewTextBoxColumn.DataPropertyName = "CostcoUrl";
-            this.costcoUrlDataGridViewTextBoxColumn.HeaderText = "CostcoUrl";
-            this.costcoUrlDataGridViewTextBoxColumn.Name = "costcoUrlDataGridViewTextBoxColumn";
-            // 
-            // costcoPriceDataGridViewTextBoxColumn
-            // 
-            this.costcoPriceDataGridViewTextBoxColumn.DataPropertyName = "CostcoPrice";
-            this.costcoPriceDataGridViewTextBoxColumn.HeaderText = "CostcoPrice";
-            this.costcoPriceDataGridViewTextBoxColumn.Name = "costcoPriceDataGridViewTextBoxColumn";
-            // 
-            // imageLinkDataGridViewTextBoxColumn2
-            // 
-            this.imageLinkDataGridViewTextBoxColumn2.DataPropertyName = "ImageLink";
-            this.imageLinkDataGridViewTextBoxColumn2.HeaderText = "ImageLink";
-            this.imageLinkDataGridViewTextBoxColumn2.Name = "imageLinkDataGridViewTextBoxColumn2";
-            this.imageLinkDataGridViewTextBoxColumn2.Visible = false;
-            // 
-            // eBayCurrentListingsBindingSource
-            // 
-            this.eBayCurrentListingsBindingSource.DataMember = "eBay_CurrentListings";
-            this.eBayCurrentListingsBindingSource.DataSource = this.dseBayCurrentListings;
-            // 
-            // dseBayCurrentListings
-            // 
-            this.dseBayCurrentListings.DataSetName = "dseBayCurrentListings";
-            this.dseBayCurrentListings.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // paypalTransactionIDDataGridViewTextBoxColumn
-            // 
-            this.paypalTransactionIDDataGridViewTextBoxColumn.DataPropertyName = "PaypalTransactionID";
-            this.paypalTransactionIDDataGridViewTextBoxColumn.HeaderText = "PaypalTransactionID";
-            this.paypalTransactionIDDataGridViewTextBoxColumn.Name = "paypalTransactionIDDataGridViewTextBoxColumn";
-            // 
-            // paypalPaidDateTimeDataGridViewTextBoxColumn
-            // 
-            this.paypalPaidDateTimeDataGridViewTextBoxColumn.DataPropertyName = "PaypalPaidDateTime";
-            this.paypalPaidDateTimeDataGridViewTextBoxColumn.HeaderText = "PaypalPaidDateTime";
-            this.paypalPaidDateTimeDataGridViewTextBoxColumn.Name = "paypalPaidDateTimeDataGridViewTextBoxColumn";
-            // 
-            // paypalPaidEmailPdfDataGridViewTextBoxColumn
-            // 
-            this.paypalPaidEmailPdfDataGridViewTextBoxColumn.DataPropertyName = "PaypalPaidEmailPdf";
-            this.paypalPaidEmailPdfDataGridViewTextBoxColumn.HeaderText = "PaypalPaidEmailPdf";
-            this.paypalPaidEmailPdfDataGridViewTextBoxColumn.Name = "paypalPaidEmailPdfDataGridViewTextBoxColumn";
-            // 
-            // eBayItemNumberDataGridViewTextBoxColumn3
-            // 
-            this.eBayItemNumberDataGridViewTextBoxColumn3.DataPropertyName = "eBayItemNumber";
-            this.eBayItemNumberDataGridViewTextBoxColumn3.HeaderText = "eBayItemNumber";
-            this.eBayItemNumberDataGridViewTextBoxColumn3.Name = "eBayItemNumberDataGridViewTextBoxColumn3";
-            // 
-            // eBaySoldDateTimeDataGridViewTextBoxColumn
-            // 
-            this.eBaySoldDateTimeDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldDateTime";
-            this.eBaySoldDateTimeDataGridViewTextBoxColumn.HeaderText = "eBaySoldDateTime";
-            this.eBaySoldDateTimeDataGridViewTextBoxColumn.Name = "eBaySoldDateTimeDataGridViewTextBoxColumn";
-            // 
-            // eBayItemNameDataGridViewTextBoxColumn
-            // 
-            this.eBayItemNameDataGridViewTextBoxColumn.DataPropertyName = "eBayItemName";
-            this.eBayItemNameDataGridViewTextBoxColumn.HeaderText = "eBayItemName";
-            this.eBayItemNameDataGridViewTextBoxColumn.Name = "eBayItemNameDataGridViewTextBoxColumn";
-            // 
-            // eBayListingQualityDataGridViewTextBoxColumn
-            // 
-            this.eBayListingQualityDataGridViewTextBoxColumn.DataPropertyName = "eBayListingQuality";
-            this.eBayListingQualityDataGridViewTextBoxColumn.HeaderText = "eBayListingQuality";
-            this.eBayListingQualityDataGridViewTextBoxColumn.Name = "eBayListingQualityDataGridViewTextBoxColumn";
-            // 
-            // eBaySoldQualityDataGridViewTextBoxColumn
-            // 
-            this.eBaySoldQualityDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldQuality";
-            this.eBaySoldQualityDataGridViewTextBoxColumn.HeaderText = "eBaySoldQuality";
-            this.eBaySoldQualityDataGridViewTextBoxColumn.Name = "eBaySoldQualityDataGridViewTextBoxColumn";
-            // 
-            // eBayRemainingQualityDataGridViewTextBoxColumn
-            // 
-            this.eBayRemainingQualityDataGridViewTextBoxColumn.DataPropertyName = "eBayRemainingQuality";
-            this.eBayRemainingQualityDataGridViewTextBoxColumn.HeaderText = "eBayRemainingQuality";
-            this.eBayRemainingQualityDataGridViewTextBoxColumn.Name = "eBayRemainingQualityDataGridViewTextBoxColumn";
-            // 
-            // eBaySoldPriceDataGridViewTextBoxColumn
-            // 
-            this.eBaySoldPriceDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldPrice";
-            this.eBaySoldPriceDataGridViewTextBoxColumn.HeaderText = "eBaySoldPrice";
-            this.eBaySoldPriceDataGridViewTextBoxColumn.Name = "eBaySoldPriceDataGridViewTextBoxColumn";
-            // 
-            // eBayUrlDataGridViewTextBoxColumn2
-            // 
-            this.eBayUrlDataGridViewTextBoxColumn2.DataPropertyName = "eBayUrl";
-            this.eBayUrlDataGridViewTextBoxColumn2.HeaderText = "eBayUrl";
-            this.eBayUrlDataGridViewTextBoxColumn2.Name = "eBayUrlDataGridViewTextBoxColumn2";
-            // 
-            // eBaySoldEmailPdfDataGridViewTextBoxColumn
-            // 
-            this.eBaySoldEmailPdfDataGridViewTextBoxColumn.DataPropertyName = "eBaySoldEmailPdf";
-            this.eBaySoldEmailPdfDataGridViewTextBoxColumn.HeaderText = "eBaySoldEmailPdf";
-            this.eBaySoldEmailPdfDataGridViewTextBoxColumn.Name = "eBaySoldEmailPdfDataGridViewTextBoxColumn";
-            // 
-            // buyerNameDataGridViewTextBoxColumn
-            // 
-            this.buyerNameDataGridViewTextBoxColumn.DataPropertyName = "BuyerName";
-            this.buyerNameDataGridViewTextBoxColumn.HeaderText = "BuyerName";
-            this.buyerNameDataGridViewTextBoxColumn.Name = "buyerNameDataGridViewTextBoxColumn";
-            // 
-            // buyerIDDataGridViewTextBoxColumn
-            // 
-            this.buyerIDDataGridViewTextBoxColumn.DataPropertyName = "BuyerID";
-            this.buyerIDDataGridViewTextBoxColumn.HeaderText = "BuyerID";
-            this.buyerIDDataGridViewTextBoxColumn.Name = "buyerIDDataGridViewTextBoxColumn";
-            // 
-            // buyerAddress1DataGridViewTextBoxColumn
-            // 
-            this.buyerAddress1DataGridViewTextBoxColumn.DataPropertyName = "BuyerAddress1";
-            this.buyerAddress1DataGridViewTextBoxColumn.HeaderText = "BuyerAddress1";
-            this.buyerAddress1DataGridViewTextBoxColumn.Name = "buyerAddress1DataGridViewTextBoxColumn";
-            // 
-            // buyerAddress2DataGridViewTextBoxColumn
-            // 
-            this.buyerAddress2DataGridViewTextBoxColumn.DataPropertyName = "BuyerAddress2";
-            this.buyerAddress2DataGridViewTextBoxColumn.HeaderText = "BuyerAddress2";
-            this.buyerAddress2DataGridViewTextBoxColumn.Name = "buyerAddress2DataGridViewTextBoxColumn";
-            // 
-            // buyerStateDataGridViewTextBoxColumn
-            // 
-            this.buyerStateDataGridViewTextBoxColumn.DataPropertyName = "BuyerState";
-            this.buyerStateDataGridViewTextBoxColumn.HeaderText = "BuyerState";
-            this.buyerStateDataGridViewTextBoxColumn.Name = "buyerStateDataGridViewTextBoxColumn";
-            // 
-            // buyerEmailDataGridViewTextBoxColumn
-            // 
-            this.buyerEmailDataGridViewTextBoxColumn.DataPropertyName = "BuyerEmail";
-            this.buyerEmailDataGridViewTextBoxColumn.HeaderText = "BuyerEmail";
-            this.buyerEmailDataGridViewTextBoxColumn.Name = "buyerEmailDataGridViewTextBoxColumn";
-            // 
-            // buyerNoteDataGridViewTextBoxColumn
-            // 
-            this.buyerNoteDataGridViewTextBoxColumn.DataPropertyName = "BuyerNote";
-            this.buyerNoteDataGridViewTextBoxColumn.HeaderText = "BuyerNote";
-            this.buyerNoteDataGridViewTextBoxColumn.Name = "buyerNoteDataGridViewTextBoxColumn";
-            // 
-            // costcoUrlNumberDataGridViewTextBoxColumn3
-            // 
-            this.costcoUrlNumberDataGridViewTextBoxColumn3.DataPropertyName = "CostcoUrlNumber";
-            this.costcoUrlNumberDataGridViewTextBoxColumn3.HeaderText = "CostcoUrlNumber";
-            this.costcoUrlNumberDataGridViewTextBoxColumn3.Name = "costcoUrlNumberDataGridViewTextBoxColumn3";
-            // 
-            // costcoUrlDataGridViewTextBoxColumn2
-            // 
-            this.costcoUrlDataGridViewTextBoxColumn2.DataPropertyName = "CostcoUrl";
-            this.costcoUrlDataGridViewTextBoxColumn2.HeaderText = "CostcoUrl";
-            this.costcoUrlDataGridViewTextBoxColumn2.Name = "costcoUrlDataGridViewTextBoxColumn2";
-            // 
-            // costcoPriceDataGridViewTextBoxColumn2
-            // 
-            this.costcoPriceDataGridViewTextBoxColumn2.DataPropertyName = "CostcoPrice";
-            this.costcoPriceDataGridViewTextBoxColumn2.HeaderText = "CostcoPrice";
-            this.costcoPriceDataGridViewTextBoxColumn2.Name = "costcoPriceDataGridViewTextBoxColumn2";
-            // 
-            // costcoOrderNumberDataGridViewTextBoxColumn
-            // 
-            this.costcoOrderNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoOrderNumber";
-            this.costcoOrderNumberDataGridViewTextBoxColumn.HeaderText = "CostcoOrderNumber";
-            this.costcoOrderNumberDataGridViewTextBoxColumn.Name = "costcoOrderNumberDataGridViewTextBoxColumn";
-            // 
-            // costcoItemNameDataGridViewTextBoxColumn
-            // 
-            this.costcoItemNameDataGridViewTextBoxColumn.DataPropertyName = "CostcoItemName";
-            this.costcoItemNameDataGridViewTextBoxColumn.HeaderText = "CostcoItemName";
-            this.costcoItemNameDataGridViewTextBoxColumn.Name = "costcoItemNameDataGridViewTextBoxColumn";
-            // 
-            // costcoItemNumberDataGridViewTextBoxColumn2
-            // 
-            this.costcoItemNumberDataGridViewTextBoxColumn2.DataPropertyName = "CostcoItemNumber";
-            this.costcoItemNumberDataGridViewTextBoxColumn2.HeaderText = "CostcoItemNumber";
-            this.costcoItemNumberDataGridViewTextBoxColumn2.Name = "costcoItemNumberDataGridViewTextBoxColumn2";
-            // 
-            // costcoTrackingNumberDataGridViewTextBoxColumn
-            // 
-            this.costcoTrackingNumberDataGridViewTextBoxColumn.DataPropertyName = "CostcoTrackingNumber";
-            this.costcoTrackingNumberDataGridViewTextBoxColumn.HeaderText = "CostcoTrackingNumber";
-            this.costcoTrackingNumberDataGridViewTextBoxColumn.Name = "costcoTrackingNumberDataGridViewTextBoxColumn";
-            // 
-            // costcoShipDateDataGridViewTextBoxColumn
-            // 
-            this.costcoShipDateDataGridViewTextBoxColumn.DataPropertyName = "CostcoShipDate";
-            this.costcoShipDateDataGridViewTextBoxColumn.HeaderText = "CostcoShipDate";
-            this.costcoShipDateDataGridViewTextBoxColumn.Name = "costcoShipDateDataGridViewTextBoxColumn";
-            // 
-            // costcoTaxExemptPdfDataGridViewTextBoxColumn
-            // 
-            this.costcoTaxExemptPdfDataGridViewTextBoxColumn.DataPropertyName = "CostcoTaxExemptPdf";
-            this.costcoTaxExemptPdfDataGridViewTextBoxColumn.HeaderText = "CostcoTaxExemptPdf";
-            this.costcoTaxExemptPdfDataGridViewTextBoxColumn.Name = "costcoTaxExemptPdfDataGridViewTextBoxColumn";
-            // 
-            // costcoOrderEmailPdfDataGridViewTextBoxColumn
-            // 
-            this.costcoOrderEmailPdfDataGridViewTextBoxColumn.DataPropertyName = "CostcoOrderEmailPdf";
-            this.costcoOrderEmailPdfDataGridViewTextBoxColumn.HeaderText = "CostcoOrderEmailPdf";
-            this.costcoOrderEmailPdfDataGridViewTextBoxColumn.Name = "costcoOrderEmailPdfDataGridViewTextBoxColumn";
-            // 
-            // eBaySoldTransactionsBindingSource
-            // 
-            this.eBaySoldTransactionsBindingSource.DataMember = "eBay_SoldTransactions";
-            this.eBaySoldTransactionsBindingSource.DataSource = this.dsEBaySold;
-            // 
-            // dsEBaySold
-            // 
-            this.dsEBaySold.DataSetName = "dsEBaySold";
-            this.dsEBaySold.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // productInfoTableAdapter1
-            // 
-            this.productInfoTableAdapter1.ClearBeforeFill = true;
-            // 
-            // eBay_ToAddTableAdapter
-            // 
-            this.eBay_ToAddTableAdapter.ClearBeforeFill = true;
-            // 
-            // eBay_CurrentListingsTableAdapter
-            // 
-            this.eBay_CurrentListingsTableAdapter.ClearBeforeFill = true;
-            // 
-            // eBay_ToRemoveTableAdapter
-            // 
-            this.eBay_ToRemoveTableAdapter.ClearBeforeFill = true;
-            // 
-            // eBay_ToChangeTableAdapter
-            // 
-            this.eBay_ToChangeTableAdapter.ClearBeforeFill = true;
-            // 
-            // eBay_SoldTransactionsTableAdapter
-            // 
-            this.eBay_SoldTransactionsTableAdapter.ClearBeforeFill = true;
-            // 
-            // Check
-            // 
-            this.Check.HeaderText = "";
-            this.Check.Name = "Check";
-            this.Check.Width = 20;
-            // 
-            // iDDataGridViewTextBoxColumn
-            // 
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
-            this.iDDataGridViewTextBoxColumn.Width = 40;
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.nameDataGridViewTextBoxColumn.Width = 300;
-            // 
-            // Image
-            // 
-            this.Image.HeaderText = "Image";
-            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.Image.Name = "Image";
-            this.Image.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Image.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // UrlNumber
-            // 
-            this.UrlNumber.DataPropertyName = "UrlNumber";
-            this.UrlNumber.HeaderText = "UrlNumber";
-            this.UrlNumber.Name = "UrlNumber";
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // shippingDataGridViewTextBoxColumn
-            // 
-            this.shippingDataGridViewTextBoxColumn.DataPropertyName = "Shipping";
-            this.shippingDataGridViewTextBoxColumn.HeaderText = "Shipping";
-            this.shippingDataGridViewTextBoxColumn.Name = "shippingDataGridViewTextBoxColumn";
-            // 
-            // Discount
-            // 
-            this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Discount.HeaderText = "Discount";
-            this.Discount.Name = "Discount";
-            // 
-            // Limit
-            // 
-            this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Limit.HeaderText = "Limit";
-            this.Limit.Name = "Limit";
-            this.Limit.Width = 80;
-            // 
-            // detailsDataGridViewTextBoxColumn
-            // 
-            this.detailsDataGridViewTextBoxColumn.DataPropertyName = "Details";
-            this.detailsDataGridViewTextBoxColumn.HeaderText = "Details";
-            this.detailsDataGridViewTextBoxColumn.Name = "detailsDataGridViewTextBoxColumn";
-            this.detailsDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // specificationDataGridViewTextBoxColumn
-            // 
-            this.specificationDataGridViewTextBoxColumn.DataPropertyName = "Specification";
-            this.specificationDataGridViewTextBoxColumn.HeaderText = "Specification";
-            this.specificationDataGridViewTextBoxColumn.Name = "specificationDataGridViewTextBoxColumn";
-            this.specificationDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // imageLinkDataGridViewTextBoxColumn
-            // 
-            this.imageLinkDataGridViewTextBoxColumn.DataPropertyName = "ImageLink";
-            this.imageLinkDataGridViewTextBoxColumn.HeaderText = "ImageLink";
-            this.imageLinkDataGridViewTextBoxColumn.Name = "imageLinkDataGridViewTextBoxColumn";
-            this.imageLinkDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // urlDataGridViewTextBoxColumn
-            // 
-            this.urlDataGridViewTextBoxColumn.DataPropertyName = "Url";
-            this.urlDataGridViewTextBoxColumn.HeaderText = "Url";
-            this.urlDataGridViewTextBoxColumn.Name = "urlDataGridViewTextBoxColumn";
-            this.urlDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // itemNumberDataGridViewTextBoxColumn
-            // 
-            this.itemNumberDataGridViewTextBoxColumn.DataPropertyName = "ItemNumber";
-            this.itemNumberDataGridViewTextBoxColumn.HeaderText = "ItemNumber";
-            this.itemNumberDataGridViewTextBoxColumn.Name = "itemNumberDataGridViewTextBoxColumn";
-            this.itemNumberDataGridViewTextBoxColumn.Visible = false;
-            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4041,26 +4000,20 @@
             this.tpSold.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvEBaySold)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).EndInit();
             this.tpCurrentListing.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvCurrentListing)).EndInit();
-            this.tpPendingChanges.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvToAdd)).EndInit();
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvToChange)).EndInit();
-            this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvToDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayCurrentListingsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dseBayCurrentListings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayToAddBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToAdd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayToChangeBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.eBayToRemoveBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToRemove)).EndInit();
             this.tpCostco.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -4071,6 +4024,8 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tpSaleTax.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
@@ -4085,18 +4040,15 @@
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToAddBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToAdd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToChangeBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToRemoveBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToRemove)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayCurrentListingsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dseBayCurrentListings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).EndInit();
+            this.tpToAdd.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvToAdd)).EndInit();
+            this.tpEBayToModify.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvToChange)).EndInit();
+            this.tpEbayToDelete.ResumeLayout(false);
+            this.groupBox5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvToDelete)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4188,78 +4140,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn2;
         private System.Windows.Forms.Button btnListingModify;
         private System.Windows.Forms.Button btnListingDelete;
-        private System.Windows.Forms.TabPage tpPendingChanges;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.DataGridView gvToAdd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn urlNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn shippingDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayReferencePriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayListingPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn limitDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn discountDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn detailsDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn specificationDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfImageDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayCategoryIDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageWidthDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageHeightDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button btnUpload;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button btnToChangeUpdate;
-        private System.Windows.Forms.Button btnToChangeDelete;
-        private System.Windows.Forms.Button btnToChangeUpload;
-        private System.Windows.Forms.DataGridView gvToChange;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoUrlNumberDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayItemNumberDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayOldListingPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayNewListingPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayReferencePriceDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoOldPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoNewPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn priceChangeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn shippingDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn limitDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn discountDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn detailsDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn specificationDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfImageDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayCategoryIDDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageWidthDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageHeightDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button btnToDeleteUpload;
-        private System.Windows.Forms.DataGridView gvToDelete;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayListingNameDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayCategoryIDDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayItemNumberDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayListingPriceDataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayDescriptionDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayEndTimeDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eBayUrlDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoUrlNumberDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoItemNumberDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoUrlDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn costcoPriceDataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn3;
         private System.Windows.Forms.TabPage tpCostco;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -4432,5 +4312,76 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.TabPage tpToAdd;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.DataGridView gvToAdd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn urlNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn shippingDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayReferencePriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayListingPriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn limitDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn discountDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn detailsDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn specificationDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfImageDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayCategoryIDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageWidthDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageHeightDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button btnUpload;
+        private System.Windows.Forms.TabPage tpEBayToModify;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button btnToChangeUpdate;
+        private System.Windows.Forms.Button btnToChangeDelete;
+        private System.Windows.Forms.Button btnToChangeUpload;
+        private System.Windows.Forms.DataGridView gvToChange;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoUrlNumberDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayItemNumberDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayOldListingPriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayNewListingPriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayReferencePriceDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoOldPriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoNewPriceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn priceChangeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn shippingDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn limitDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn discountDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn detailsDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn specificationDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfImageDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayCategoryIDDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageWidthDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn descriptionImageHeightDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.TabPage tpEbayToDelete;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button btnToDeleteUpload;
+        private System.Windows.Forms.DataGridView gvToDelete;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayListingNameDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayCategoryIDDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayItemNumberDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayListingPriceDataGridViewTextBoxColumn2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayDescriptionDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayEndTimeDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn eBayUrlDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoUrlNumberDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoItemNumberDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoUrlDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn costcoPriceDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn3;
     }
 }
