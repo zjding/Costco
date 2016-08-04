@@ -1131,6 +1131,8 @@ namespace CostcoWinForm
         {
             string sqlString;
 
+            categoryUrlArray.Clear();
+
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
@@ -1387,6 +1389,9 @@ namespace CostcoWinForm
 
             log.Info(DateTime.Now.ToLongTimeString());
 
+            productListPages.Clear();
+            productUrlArray.Clear();
+
             driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
             List<string> subCategory = new List<string>();
@@ -1640,6 +1645,11 @@ namespace CostcoWinForm
                 sqlString = "TRUNCATE TABLE Import_Errors";
                 cmd.CommandText = sqlString;
                 cmd.ExecuteNonQuery();
+
+                nScanProducts = 0;
+                nImportProducts = 0;
+                nSkipProducts = 0;
+                nImportErrors = 0;
             }
 
             //productUrlArray.Clear();
@@ -2047,6 +2057,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
 
+            priceUpProductArray.Clear();
+
             while (rdr.Read())
             {
                 priceUpProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
@@ -2061,6 +2073,8 @@ namespace CostcoWinForm
                         and s.Price < p.Price";
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
+
+            priceDownProductArray.Clear();
 
             while (rdr.Read())
             {
@@ -2077,6 +2091,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
 
+            newProductArray.Clear();
+
             while (rdr.Read())
             {
                 newProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
@@ -2092,6 +2108,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
 
+            discontinueddProductArray.Clear();
+
             while (rdr.Read())
             {
                 discontinueddProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
@@ -2106,6 +2124,8 @@ namespace CostcoWinForm
                             and s.CostcoPrice < p.Price";
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
+
+            eBayListingPriceUpProductArray.Clear();
 
             while (rdr.Read())
             {
@@ -2134,6 +2154,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
 
+            eBayListingPriceDownProductArray.Clear();
+
             while (rdr.Read())
             {
                 eBayListingPriceDownProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
@@ -2160,6 +2182,9 @@ namespace CostcoWinForm
                         (select 1 from Staging_ProductInfo sp where sp.UrlNumber = p.CostcoUrlNumber)";
             cmd.CommandText = sqlString;
             rdr = cmd.ExecuteReader();
+
+            eBayListingDiscontinueddProductArray.Clear();
+
 
             while (rdr.Read())
             {
