@@ -75,6 +75,7 @@
       <HintPath>..\..\..\..\..\Desktop\SelectPdf-HtmlToPdf-v2.2.0\Assemblies\net40\Select.HtmlToPdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />

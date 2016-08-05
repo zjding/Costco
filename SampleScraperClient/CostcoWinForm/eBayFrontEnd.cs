@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 
 using ScrapySharp.Core;
 using ScrapySharp.Html.Parsing;
@@ -84,7 +85,7 @@ namespace CostcoWinForm
 
         Timer timer = new Timer();
 
-        string connectionString = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        string connectionString; // = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         bool bInit = false;
 
@@ -96,6 +97,8 @@ namespace CostcoWinForm
         public eBayFrontEnd()
         {
             InitializeComponent();
+
+            connectionString = ConfigurationManager.ConnectionStrings["connection"].ConnectionString;
         }
 
         private void eBayFrontEnd_Load(object sender, EventArgs e)
@@ -132,6 +135,8 @@ namespace CostcoWinForm
 
             RefreshLVCategories();
 
+            
+
             this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
 
             timer.Tick += new EventHandler(timer_Tick);
@@ -146,6 +151,7 @@ namespace CostcoWinForm
         {
             lvCategories.Items.Clear();
 
+            dl.connectionString = connectionString;
             List<Category> categories = dl.GetCategoryArray();
 
             foreach (Category catetory in categories)
@@ -3322,6 +3328,7 @@ namespace CostcoWinForm
         private void btnCostcoCategory_Click(object sender, EventArgs e)
         {
             FrmCostcoCategories frmCategories = new FrmCostcoCategories();
+            frmCategories.connectionString = this.connectionString;
             frmCategories.ShowDialog();
         }
 
@@ -3333,6 +3340,7 @@ namespace CostcoWinForm
         private void ll_LinkClicked(string categoryCode, string year)
         {
             frmBookKeeping frmBK = new frmBookKeeping();
+            frmBK.connectionString = connectionString;
             frmBK.m_CategoryCode = categoryCode;
             frmBK.m_Year = year;
 
@@ -3343,5 +3351,7 @@ namespace CostcoWinForm
         {
             ll_LinkClicked(8.ToString(), cmbIncomeTaxYear.Text);
         }
+
+        
     }
 }
