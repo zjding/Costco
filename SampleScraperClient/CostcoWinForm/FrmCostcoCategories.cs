@@ -103,5 +103,10 @@ namespace CostcoWinForm
         {
             daCostcoCategories.Update(dtCostcoCategories);
         }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            daCostcoCategories.Update(dtCostcoCategories);
+        }
     }
 }

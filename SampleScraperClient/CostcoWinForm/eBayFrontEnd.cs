@@ -28,6 +28,7 @@ using System.Net.Mail;
 using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Collections.ObjectModel;
 
 namespace CostcoWinForm
 {
@@ -281,17 +282,19 @@ namespace CostcoWinForm
 
             startDT = DateTime.Now;
 
-            GetDepartmentArray();
+            //GetDepartmentArray();
 
-            GetProductUrls_New();
+            //GetProductUrls_New();
 
-            //PopulateDevTables();
+            ////PopulateDevTables();
 
-            GetProductInfo();
+            //GetProductInfo();
 
-            ////// test
-            //GetProductInfo(false);
-            //// end test
+            //// test
+            productUrlArray.Clear();
+            productUrlArray.Add("http://www.costco.com/Cooke-Street%C2%AE-Men's-Aloha-Shirt.product.100233212.html");
+            GetProductInfo(false);
+            // end test
 
             SecondTry(1);
 
@@ -571,12 +574,48 @@ namespace CostcoWinForm
             screenshotWidth = 0;
             screenshotHeight = 0;
 
+            string swatchString = string.Empty;
+            string optionString = string.Empty;
+
             try
             {
+                IJavaScriptExecutor js = driver as IJavaScriptExecutor;
 
                 driver.Navigate().GoToUrl(productUrl);
 
                 IWebElement element = driver.FindElement(By.Id("product-tab1"));
+
+                var val = js.ExecuteScript("return products");
+
+                string optionsAvailable = string.Empty;
+
+                var a = val as System.Collections.ObjectModel.ReadOnlyCollection<object>;
+
+                var b = a[0] as System.Collections.ObjectModel.ReadOnlyCollection<object>;
+
+                List<object> l = b.ToList();
+
+                foreach (var o in l)
+                {
+                    var v = ((Dictionary<string, object>)o)["options"];
+
+                    var c = ((System.Collections.ObjectModel.ReadOnlyCollection<object>)v).ToList();
+
+                    c.Reverse();
+
+                    foreach (var d in c)
+                    {
+                        optionsAvailable += d + "-";
+                    }
+
+                    optionsAvailable = optionsAvailable.Substring(0, optionsAvailable.Length - 1);
+
+                    optionsAvailable += "|";
+                }
+
+                optionsAvailable = optionsAvailable.Substring(0, optionsAvailable.Length - 1);
+
+                //var matches = from v in l where v.Key == "options" select v.Value;
 
                 ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
 
@@ -654,6 +693,7 @@ namespace CostcoWinForm
                     client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
                 }
 
+                // thumb
                 IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
 
                 if (imageElement.FindElements(By.TagName("li")) != null)
@@ -661,6 +701,72 @@ namespace CostcoWinForm
 
                 if (imageNumber == 0)
                     imageNumber = 1;
+
+                List<string> optionsArray = new List<string>();
+
+                // options
+                optionString = string.Empty;
+                var optionElements = driver.FindElements(By.ClassName("product-option"));
+
+                if (optionElements.Count > 0)
+                {
+                    foreach (IWebElement o in optionElements)
+                    {
+                        IWebElement selectElement = o.FindElement(By.TagName("select"));
+
+                        if (selectElement != null)
+                        {
+                            string selectTitle = selectElement.GetAttribute("title");
+                            string traitName = selectTitle.Split(' ').Last();
+
+                            optionString += traitName + "=";
+
+                            var options = selectElement.FindElements(By.TagName("option"));
+
+                            foreach (IWebElement opt in options)
+                            {
+                                if (opt.GetAttribute("value").ToUpper() == "UNSELECTED")
+                                    continue;
+
+                                string swatch = opt.GetAttribute("swatch");
+                                string value = opt.GetAttribute("value");
+                                string option = opt.Text;
+
+                                optionsAvailable = optionsAvailable.Replace(value, option);
+
+                                if (!string.IsNullOrEmpty(option))
+                                    optionString += option;
+
+                                if (!string.IsNullOrEmpty(swatch))
+                                    optionString += "(" + swatch + ")";
+
+                                optionString += ";";
+                            }
+
+                            optionString = optionString.Substring(0, optionString.Length - 1);
+
+                            //int swatchStringLength = swatchString.Length;
+                            //int optionStringLength = optionString.Length;
+
+                            //if (swatchStringLength > 0)
+                            //    swatchString = swatchString.Substring(0, swatchStringLength-1);
+
+                            //if (optionStringLength > 0)
+                            //    optionString = optionString.Substring(0, optionStringLength-1);
+
+                            //optionsArray.Add(swatchString + "+" + optionString);
+                        }
+
+                        optionString += "|";
+                    }
+
+                    optionString = optionString.Substring(0, optionString.Length - 1);
+
+                    List<string> t = optionsAvailable.Split('|').ToList();
+                    t.Sort();
+                    optionsAvailable = String.Join("|", t.ToArray());
+                }
+            
 
                 return true;
             }
@@ -885,9 +991,9 @@ namespace CostcoWinForm
             oXL.Application.Quit();
             oXL.Quit();
 
-            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+            //string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
-            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+            //System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
         }
 
         private void btnListingDelete_Click(object sender, EventArgs e)
@@ -1130,6 +1236,11 @@ namespace CostcoWinForm
 
             gvProducts.DataSource = productTable;
             gvProducts.Refresh();
+
+            foreach (DataGridViewRow row in gvProducts.Rows)
+            {
+                row.HeaderCell.Value = (row.Index + 1).ToString();
+            }
         }
 
 
@@ -1777,15 +1888,16 @@ namespace CostcoWinForm
 
                     if (productSHNode != null)
                     {
-                        if (productSHNode.InnerText.ToUpper().Contains("OPTIONS"))
-                        {
-                            sqlString = "INSERT INTO Import_Skips (Url, SkipPoint) VALUES ('" + pu.Replace(@"'", @"''") + "','" + "Options" + "')";
-                            cmd.CommandText = sqlString;
-                            cmd.ExecuteNonQuery();
-                            nSkipProducts++;
-                            continue;
-                        }
-                        else if (productSHNode.InnerText.ToUpper().Contains("INCLUDED") || productSHNode.InnerText.ToUpper().Contains("INLCUDED"))
+                        //if (productSHNode.InnerText.ToUpper().Contains("OPTIONS"))
+                        //{
+                        //    sqlString = "INSERT INTO Import_Skips (Url, SkipPoint) VALUES ('" + pu.Replace(@"'", @"''") + "','" + "Options" + "')";
+                        //    cmd.CommandText = sqlString;
+                        //    cmd.ExecuteNonQuery();
+                        //    nSkipProducts++;
+                        //    continue;
+                        //}
+                        //else 
+                        if (productSHNode.InnerText.ToUpper().Contains("INCLUDED") || productSHNode.InnerText.ToUpper().Contains("INLCUDED"))
                         {
                             shipping = "0";
                         }
@@ -3352,6 +3464,5 @@ namespace CostcoWinForm
             ll_LinkClicked(8.ToString(), cmbIncomeTaxYear.Text);
         }
 
-        
     }
 }
