@@ -292,7 +292,7 @@ namespace CostcoWinForm
 
             //// test
             productUrlArray.Clear();
-            productUrlArray.Add("http://www.costco.com/Cooke-Street%C2%AE-Men's-Aloha-Shirt.product.100233212.html");
+            productUrlArray.Add("http://www.costco.com/.product.100118307.html");
             GetProductInfo(false);
             // end test
 
@@ -744,17 +744,6 @@ namespace CostcoWinForm
                             }
 
                             optionString = optionString.Substring(0, optionString.Length - 1);
-
-                            //int swatchStringLength = swatchString.Length;
-                            //int optionStringLength = optionString.Length;
-
-                            //if (swatchStringLength > 0)
-                            //    swatchString = swatchString.Substring(0, swatchStringLength-1);
-
-                            //if (optionStringLength > 0)
-                            //    optionString = optionString.Substring(0, optionStringLength-1);
-
-                            //optionsArray.Add(swatchString + "+" + optionString);
                         }
 
                         optionString += "|";
@@ -991,9 +980,9 @@ namespace CostcoWinForm
             oXL.Application.Quit();
             oXL.Quit();
 
-            //string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
-            //System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
         }
 
         private void btnListingDelete_Click(object sender, EventArgs e)
@@ -1863,6 +1852,8 @@ namespace CostcoWinForm
                         discount = discount.Replace("'", "");
                     }
 
+                    discount = discount.Replace("Free Shipping", "");
+
                     string price;
                     List<HtmlNode> yourPriceNode = col1Node.CssSelect(".your-price").ToList<HtmlNode>();
                     if (yourPriceNode.Count > 0)
@@ -1954,7 +1945,35 @@ namespace CostcoWinForm
                     cmd.ExecuteNonQuery();
                     nImportProducts++;
 
-                    sqlString = "INSERT INTO Costco_Categories (" + columns + ") VALUES (" + values + ")";
+                    sqlString = @"IF NOT EXISTS (SELECT * FROM Costco_Categories WHERE ";
+                    int j = 1;
+                    foreach (var c in stSubCategories.Split('|'))
+                    {
+                        sqlString += "Category" + j.ToString() + "='" + c + "'";
+                        if (j < stSubCategories.Split('|').Count())
+                        {
+                            sqlString += " AND ";
+                        }
+                        j++;
+                    }
+                    sqlString += @") BEGIN
+                                    INSERT INTO Costco_Categories (" + columns + ") VALUES (" + values + ") END";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+
+                    sqlString = @"IF NOT EXISTS (SELECT * FROM Costco_eBay_Categories WHERE ";
+                    j = 1;
+                    foreach(var c in stSubCategories.Split('|'))
+                    {
+                        sqlString += "Category" + j.ToString() + "='" + c + "'";
+                        if (j < stSubCategories.Split('|').Count())
+                        {
+                            sqlString += " AND ";
+                        }
+                        j++;
+                    }
+                    sqlString += @") BEGIN
+                                    INSERT INTO Costco_eBay_Categories (" + columns + ") VALUES (" + values + ") END";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
@@ -3464,5 +3483,33 @@ namespace CostcoWinForm
             ll_LinkClicked(8.ToString(), cmbIncomeTaxYear.Text);
         }
 
+        private void btnResearch_Click(object sender, EventArgs e)
+        {
+            string storeURL = txtStoreLink.Text;
+
+            string storeName = storeURL.Split('/')[2];
+
+            List<string> storeLinkList = new List<string>();
+
+            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+
+            driver.Navigate().GoToUrl(storeURL);
+
+            if (hasElement(driver, By.ClassName("pages")))
+            {
+                IWebElement pagesElement = driver.FindElement(By.ClassName("pages"));
+
+                var tagas = pagesElement.FindElements(By.TagName("a"));
+
+                foreach (IWebElement a in tagas)
+                {
+                    storeLinkList.Add(a.GetAttribute("href"));
+                }
+            }
+            else
+            {
+                storeLinkList.Add(storeURL);
+            }
+        }
     }
 }

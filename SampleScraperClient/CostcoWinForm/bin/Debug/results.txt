@@ -6,7 +6,7 @@
 <title>Upload File Programmatically</title><script language="JavaScript"><!--
 								var pageName = "File Exchange Upload";
 													
-							//--></script><script language="javascript" src="http://include.ebaystatic.com/js/e951/us/legacy/globals_e9512us.js"> </script><script src="http://include.ebaystatic.com/js/e973/us/legacy/common_functions_e9732us.js"> </script></head>
+							//--></script><script language="javascript" src="http://include.ebaystatic.com/js/e951/us/legacy/globals_e9512us.js"> </script><script src="http://include.ebaystatic.com/js/e979/us/legacy/common_functions_e9792us.js"> </script></head>
 <body>
-				File upload successful. Your ref # is 745892557.<br><a href="javascript:void(0);" onclick="self.close();return false;">Close</a></body>
+				File upload successful. Your ref # is 750181617.<br><a href="javascript:void(0);" onclick="self.close();return false;">Close</a></body>
 </html>

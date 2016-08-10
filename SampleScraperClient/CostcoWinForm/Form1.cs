@@ -1715,7 +1715,7 @@ namespace CostcoWinForm
             int iUserEnd = feedbackUrl1.IndexOf("&", iUserStart);
             string UserId = feedbackUrl1.Substring(iUserStart + 7, iUserEnd - iUserStart - 7);
 
-            for (int i = 1; i <= 5; i++)
+            for (int i = 1; i <= 20; i++)
             {
                 sellers.Add(feedbackUrl1 + i.ToString());
             }
@@ -1736,13 +1736,14 @@ namespace CostcoWinForm
 
             foreach (string url in sellers)
             {
-                try
+
+                driver.Navigate().GoToUrl(url);
+
+                var trs = driver.FindElements(By.XPath("//tr[contains(@class, 'bot')]"));
+
+                foreach (IWebElement tr in trs)
                 {
-                    driver.Navigate().GoToUrl(url);
-
-                    var trs = driver.FindElements(By.XPath("//tr[contains(@class, 'bot')]"));
-
-                    foreach (IWebElement tr in trs)
+                    try
                     {
                         var tds = tr.FindElements(By.XPath(".//td"));
 
@@ -1766,7 +1767,7 @@ namespace CostcoWinForm
                         string Url = a.GetAttribute("href");
 
                         // Insert to DB
-                        sqlString = "SELECT Name FROM eBay_ProductsResearch WHERE Name = '" + Name + "' AND eBayUserId = '" + UserId + "'" ;
+                        sqlString = "SELECT Name FROM eBay_ProductsResearch WHERE Name = '" + Name + "' AND eBayUserId = '" + UserId + "'";
 
                         cmd.CommandText = sqlString;
                         SqlDataReader reader = cmd.ExecuteReader();
@@ -1786,10 +1787,10 @@ namespace CostcoWinForm
                         cmd.CommandText = sqlString;
                         cmd.ExecuteNonQuery();
                     }
-                }
-                catch (Exception ex)
-                {
-                    continue;
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
                 }
             }
 

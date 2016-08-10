@@ -362,6 +362,10 @@
             this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
             this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
+            this.tpResearch = new System.Windows.Forms.TabPage();
+            this.btnResearch = new System.Windows.Forms.Button();
+            this.txtStoreLink = new System.Windows.Forms.TextBox();
+            this.label66 = new System.Windows.Forms.Label();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -417,6 +421,7 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            this.tpResearch.SuspendLayout();
             this.SuspendLayout();
             // 
             // tpTax
@@ -1486,6 +1491,7 @@
             this.tabControl1.Controls.Add(this.tpTax);
             this.tabControl1.Controls.Add(this.tpSaleTax);
             this.tabControl1.Controls.Add(this.tpIncomeTax);
+            this.tabControl1.Controls.Add(this.tpResearch);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -3988,6 +3994,45 @@
             // 
             this.eBay_SoldTransactionsTableAdapter.ClearBeforeFill = true;
             // 
+            // tpResearch
+            // 
+            this.tpResearch.Controls.Add(this.label66);
+            this.tpResearch.Controls.Add(this.txtStoreLink);
+            this.tpResearch.Controls.Add(this.btnResearch);
+            this.tpResearch.Location = new System.Drawing.Point(4, 22);
+            this.tpResearch.Name = "tpResearch";
+            this.tpResearch.Padding = new System.Windows.Forms.Padding(3);
+            this.tpResearch.Size = new System.Drawing.Size(1244, 634);
+            this.tpResearch.TabIndex = 10;
+            this.tpResearch.Text = "Research";
+            this.tpResearch.UseVisualStyleBackColor = true;
+            // 
+            // btnResearch
+            // 
+            this.btnResearch.Location = new System.Drawing.Point(1163, 6);
+            this.btnResearch.Name = "btnResearch";
+            this.btnResearch.Size = new System.Drawing.Size(75, 23);
+            this.btnResearch.TabIndex = 0;
+            this.btnResearch.Text = "Research";
+            this.btnResearch.UseVisualStyleBackColor = true;
+            this.btnResearch.Click += new System.EventHandler(this.btnResearch_Click);
+            // 
+            // txtStoreLink
+            // 
+            this.txtStoreLink.Location = new System.Drawing.Point(70, 8);
+            this.txtStoreLink.Name = "txtStoreLink";
+            this.txtStoreLink.Size = new System.Drawing.Size(1087, 20);
+            this.txtStoreLink.TabIndex = 1;
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(6, 11);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(58, 13);
+            this.label66.TabIndex = 2;
+            this.label66.Text = "Store Link:";
+            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4060,6 +4105,8 @@
             this.tableLayoutPanel3.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            this.tpResearch.ResumeLayout(false);
+            this.tpResearch.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4395,5 +4442,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.TabPage tpResearch;
+        private System.Windows.Forms.Label label66;
+        private System.Windows.Forms.TextBox txtStoreLink;
+        private System.Windows.Forms.Button btnResearch;
     }
 }

@@ -25,7 +25,7 @@ namespace CostcoWinForm
             Application.Run(new eBayFrontEnd());
             //Application.Run(new Form1());
 
-            
+
         }
     }
 }
