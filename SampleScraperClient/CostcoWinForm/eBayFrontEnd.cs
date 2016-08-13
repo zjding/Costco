@@ -2667,9 +2667,9 @@ namespace CostcoWinForm
 
             cn.Open();
 
-            // price up
-            string sqlString = @"insert into [dbo].[Archieve] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, ImportedDT)
-                                select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, GETDATE()
+            // Archieve
+            string sqlString = @"insert into [dbo].[Archieve] (Name, urlNumber, itemnumber, Category, price, shipping, limit, discount, details, specification, imageLink, url, ImportedDT, NumberOfImage, Options)
+                                select distinct Name, urlNumber, itemnumber, Category, price, shipping, limit, discount, details, specification, imageLink, url, GETDATE(), NumberOfImage, Options
                                 from  [dbo].[ProductInfo]";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();

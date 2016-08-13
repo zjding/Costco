@@ -1,16 +1,19 @@
 ﻿CREATE TABLE [dbo].[Staging_ProductInfo] (
-    [Name]          NVARCHAR (MAX) NULL,
-    [UrlNumber]     NVARCHAR (MAX) NULL,
-    [ItemNumber]    NVARCHAR (50)  NULL,
-    [Category]      NVARCHAR (MAX) NULL,
-    [Price]         MONEY          NULL,
-    [Shipping]      SMALLMONEY     NULL,
-    [Limit]         INT            NULL,
-    [Discount]      NVARCHAR (MAX) NULL,
-    [Details]       NVARCHAR (MAX) NULL,
-    [Specification] NVARCHAR (MAX) NULL,
-    [ImageLink]     NVARCHAR (MAX) NULL,
-    [Url]           NVARCHAR (MAX) NULL,
-    [NumberOfImage] INT            NULL
+    [Name]          NVARCHAR (200)  NULL,
+    [UrlNumber]     NVARCHAR (200)  NULL,
+    [ItemNumber]    NVARCHAR (50)   NULL,
+    [Category]      NVARCHAR (200)  NULL,
+    [Price]         MONEY           NULL,
+    [Shipping]      SMALLMONEY      NULL,
+    [Limit]         INT             NULL,
+    [Discount]      NVARCHAR (500)  NULL,
+    [Details]       NVARCHAR (4000) NULL,
+    [Specification] NVARCHAR (4000) NULL,
+    [ImageLink]     NVARCHAR (4000) NULL,
+    [Url]           NVARCHAR (500)  NULL,
+    [NumberOfImage] INT             NULL,
+    [Options]       NVARCHAR (2000) NULL
 );
+
+
 
