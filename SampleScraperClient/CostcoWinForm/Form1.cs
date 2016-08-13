@@ -1636,6 +1636,7 @@ namespace CostcoWinForm
 
             //driver.Dispose();
 
+            /*
             IWebDriver driver = new FirefoxDriver();
 
             driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
@@ -1701,6 +1702,81 @@ namespace CostcoWinForm
             driver.FindElement(By.Id("paymentSubButtonBot")).Click();
 
             //driver.FindElement(By.Id("orderButton")).Click();
+            */
+
+            IWebDriver driver = new FirefoxDriver();
+            driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+            IWebElement logonForm = driver.FindElement(By.Id("LogonForm"));
+            logonForm.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+            logonForm.FindElement(By.Id("logonPassword")).SendKeys("721123");
+            logonForm.FindElement(By.ClassName("submit")).Click();
+            driver.Navigate().GoToUrl("http://www.costco.com/Adidas%C2%AE-Men%E2%80%99s-Adissage-SUPERCLOUD%E2%84%A2-Slide-Sandal-Black-%2526-Lime.product.100234752.html");
+            var productOptions = driver.FindElements(By.ClassName("product-option"));
+
+            List<string> selectList = new List<string>();
+
+            foreach (var productOption in productOptions)
+            {
+                selectList.Add(productOption.FindElement(By.TagName("select")).GetAttribute("id").ToString());
+            }
+
+            string optionsString = string.Empty;
+
+
+            if (selectList.Count == 2)
+            {
+                #region
+                IWebElement selectElement0 = driver.FindElement(By.Id(selectList[0]));
+                var options0 = selectElement0.FindElements(By.TagName("option"));
+                foreach (IWebElement option0 in options0)
+                {
+                    if (option0.GetAttribute("value").ToString().ToUpper() != "UNSELECTED")
+                    {
+                        string option0String = option0.Text;
+                        string swatch0 = option0.GetAttribute("swatch") == string.Empty ? string.Empty : "(" + option0.GetAttribute("swatch") + ")";
+
+                        option0.Click();
+
+                        IWebElement selectElement1 = driver.FindElement(By.Id(selectList[1]));
+                        var options1 = selectElement1.FindElements(By.TagName("option"));
+
+                        optionsString += option0String + swatch0 + ":";
+
+                        foreach (IWebElement option1 in options1)
+                        {
+                            if (option1.GetAttribute("value").ToString().ToUpper() != "UNSELECTED")
+                            {
+                                if (option1.Text.Contains("-"))
+                                {
+                                    optionsString += option1.Text.Split('-')[0].Trim() + ";";
+                                }
+                            }
+                        }
+
+                        optionsString = optionsString.Substring(0, optionsString.Length - 1);
+                        optionsString += "|";
+                    }
+                }
+
+                optionsString = optionsString.Substring(0, optionsString.Length - 1);
+                #endregion
+            }
+            else if (selectList.Count == 1)
+            {
+                IWebElement selectElement0 = driver.FindElement(By.Id(selectList[0]));
+                var options0 = selectElement0.FindElements(By.TagName("option"));
+                foreach (IWebElement option0 in options0)
+                {
+                    if (option0.GetAttribute("value").ToString().ToUpper() != "UNSELECTED")
+                    {
+                        if (option0.Text.Contains("-"))
+                        {
+                            optionsString += option0.Text.Split('-')[0].Trim() + ";";
+                        }
+                    }
+                }
+                optionsString = optionsString.Substring(0, optionsString.Length - 1);
+            }
         }
 
         private void btnResearch_Click(object sender, EventArgs e)

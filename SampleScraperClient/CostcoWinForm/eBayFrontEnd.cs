@@ -51,6 +51,7 @@ namespace CostcoWinForm
         List<String> discontinueddProductArray = new List<string>();
         List<String> priceUpProductArray = new List<string>();
         List<String> priceDownProductArray = new List<string>();
+        List<String> stockChangeProductArray = new List<string>();
 
         List<String> eBayListingDiscontinueddProductArray = new List<string>();
         List<String> eBayListingPriceUpProductArray = new List<string>();
@@ -230,7 +231,7 @@ namespace CostcoWinForm
                 string imageUrl = (this.gvProducts.Rows[e.RowIndex].Cells[11]).FormattedValue.ToString();
                 if (imageUrl != "")
                 {
-                    e.Value = GetImageFromUrl(imageUrl);
+                    //e.Value = GetImageFromUrl(imageUrl);
                 }
             }
         }
@@ -282,19 +283,19 @@ namespace CostcoWinForm
 
             startDT = DateTime.Now;
 
-            //GetDepartmentArray();
+            GetDepartmentArray();
 
-            //GetProductUrls_New();
+            GetProductUrls_New();
 
-            ////PopulateDevTables();
+            //PopulateDevTables();
 
-            //GetProductInfo();
+            GetProductInfo();
 
-            //// test
-            productUrlArray.Clear();
-            productUrlArray.Add("http://www.costco.com/.product.100118307.html");
-            GetProductInfo(false);
-            // end test
+            ////// test
+            //productUrlArray.Clear();
+            //productUrlArray.Add("http://www.costco.com/Kirkland-Signature%E2%84%A2-Men's-Tailored-Fit-Dress-Shirt-Gray-Blue-Plaid.product.100307927.html");
+            //GetProductInfo(false);
+            //// end test
 
             SecondTry(1);
 
@@ -423,7 +424,7 @@ namespace CostcoWinForm
                 }
 
             }
-
+            
             cn.Close();
             driver.Dispose();
         }
@@ -601,7 +602,7 @@ namespace CostcoWinForm
 
                     var c = ((System.Collections.ObjectModel.ReadOnlyCollection<object>)v).ToList();
 
-                    c.Reverse();
+                    //c.Reverse();
 
                     foreach (var d in c)
                     {
@@ -694,14 +695,18 @@ namespace CostcoWinForm
                 }
 
                 // thumb
-                IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
+                if (driver.FindElements(By.ClassName("product-option")).Count == 0)
+                {
+                    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
 
-                if (imageElement.FindElements(By.TagName("li")) != null)
-                    imageNumber = imageElement.FindElements(By.TagName("li")).ToList().Count;
+                    if (imageElement.FindElements(By.TagName("li")) != null)
+                        imageNumber = imageElement.FindElements(By.TagName("li")).ToList().Count;
 
-                if (imageNumber == 0)
-                    imageNumber = 1;
+                    if (imageNumber == 0)
+                        imageNumber = 1;
+                }
 
+                /*
                 List<string> optionsArray = new List<string>();
 
                 // options
@@ -728,7 +733,7 @@ namespace CostcoWinForm
                                 if (opt.GetAttribute("value").ToUpper() == "UNSELECTED")
                                     continue;
 
-                                string swatch = opt.GetAttribute("swatch");
+                                //string swatch = opt.GetAttribute("swatch");
                                 string value = opt.GetAttribute("value");
                                 string option = opt.Text;
 
@@ -737,8 +742,8 @@ namespace CostcoWinForm
                                 if (!string.IsNullOrEmpty(option))
                                     optionString += option;
 
-                                if (!string.IsNullOrEmpty(swatch))
-                                    optionString += "(" + swatch + ")";
+                                //if (!string.IsNullOrEmpty(swatch))
+                                //    optionString += "(" + swatch + ")";
 
                                 optionString += ";";
                             }
@@ -755,7 +760,7 @@ namespace CostcoWinForm
                     t.Sort();
                     optionsAvailable = String.Join("|", t.ToArray());
                 }
-            
+                */
 
                 return true;
             }
@@ -1756,8 +1761,15 @@ namespace CostcoWinForm
                 nImportProducts = 0;
                 nSkipProducts = 0;
                 nImportErrors = 0;
-            }
 
+                driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+                driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+                IWebElement logonForm = driver.FindElement(By.Id("LogonForm"));
+                logonForm.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+                logonForm.FindElement(By.Id("logonPassword")).SendKeys("721123");
+                logonForm.FindElement(By.ClassName("submit")).Click();
+            }
+                
             //productUrlArray.Clear();
             //productUrlArray.Add("http://www.costco.com/Orgain%c2%ae-Healthy-Kids-Organic-Shake-18ct--8.25oz-Chocolate.product.100083891.html");
 
@@ -1877,18 +1889,119 @@ namespace CostcoWinForm
 
                     var productSHNode = col1Node[0].SelectSingleNode("//li[@class='product']");
 
+                    string optionsString = string.Empty;
+                    string imagesString = string.Empty;
+
                     if (productSHNode != null)
                     {
-                        //if (productSHNode.InnerText.ToUpper().Contains("OPTIONS"))
-                        //{
-                        //    sqlString = "INSERT INTO Import_Skips (Url, SkipPoint) VALUES ('" + pu.Replace(@"'", @"''") + "','" + "Options" + "')";
-                        //    cmd.CommandText = sqlString;
-                        //    cmd.ExecuteNonQuery();
-                        //    nSkipProducts++;
-                        //    continue;
-                        //}
-                        //else 
-                        if (productSHNode.InnerText.ToUpper().Contains("INCLUDED") || productSHNode.InnerText.ToUpper().Contains("INLCUDED"))
+                        if (productSHNode.InnerText.ToUpper().Contains("OPTIONS"))
+                        {
+                            #region
+                            driver.Navigate().GoToUrl(productUrl);
+                            var productOptions = driver.FindElements(By.ClassName("product-option"));
+
+                            List<string> selectList = new List<string>();
+
+                            foreach (var productOption in productOptions)
+                            {
+                                selectList.Add(productOption.FindElement(By.TagName("select")).GetAttribute("id").ToString());
+                            }
+
+                            if (selectList.Count == 2)
+                            {
+                                IWebElement selectElement0 = driver.FindElement(By.Id(selectList[0]));
+                                var options0 = selectElement0.FindElements(By.TagName("option"));
+                                foreach (IWebElement option0 in options0)
+                                {
+                                    if (option0.GetAttribute("value").ToString().ToUpper() != "UNSELECTED")
+                                    {
+                                        // optionsString
+                                        string option0String = option0.Text;
+                                        //string swatch0 = option0.GetAttribute("swatch") == string.Empty ? string.Empty : "(" + option0.GetAttribute("swatch") + ")";
+
+                                        option0.Click();
+
+                                        IWebElement selectElement1 = driver.FindElement(By.Id(selectList[1]));
+                                        var options1 = selectElement1.FindElements(By.TagName("option"));
+
+                                        optionsString += option0String + /*swatch0 +*/ ":";
+
+                                        foreach (IWebElement option1 in options1)
+                                        {
+                                            if (option1.GetAttribute("value").ToString().ToUpper() != "UNSELECTED")
+                                            {
+                                                if (option1.Text.Contains("$"))
+                                                {
+                                                    optionsString += option1.Text.Substring(0, option1.Text.LastIndexOf("- $")-1) + ";";
+                                                }
+                                                else
+                                                {
+                                                    optionsString += option1.Text + ";";
+                                                }
+                                            }
+                                        }
+                                        
+                                        optionsString = optionsString.Substring(0, optionsString.Length - 1);
+                                        optionsString += "|";
+
+                                        // imagesString
+                                        IWebElement thumb_holder = driver.FindElement(By.Id("thumb_holder"));
+                                        var thumblis = thumb_holder.FindElements(By.TagName("li"));
+
+                                        imagesString += option0String + /*swatch0 +*/ ":";
+
+                                        foreach (IWebElement li in thumblis)
+                                        {
+                                            string imgUrl = li.FindElement(By.TagName("img")).GetAttribute("src");
+                                            imgUrl = imgUrl.Replace(@"/50-", @"/500-");
+                                            imagesString += imgUrl + ";";
+                                        }
+
+                                        imagesString = imagesString.Substring(0, imagesString.Length - 1);
+                                        imagesString += "|";
+                                    }
+                                }
+
+                                optionsString = optionsString.Substring(0, optionsString.Length - 1);
+                                imagesString = imagesString.Substring(0, imagesString.Length - 1);
+
+                            }
+                            else if (selectList.Count == 1)
+                            {
+                                IWebElement selectElement0 = driver.FindElement(By.Id(selectList[0]));
+                                var options0 = selectElement0.FindElements(By.TagName("option"));
+                                foreach (IWebElement option0 in options0)
+                                {
+                                    if (option0.GetAttribute("value").ToString().ToUpper() != "UNSELECTED")
+                                    {
+                                        if (option0.Text.Contains("$"))
+                                        {
+                                            optionsString += option0.Text.Substring(0, option0.Text.LastIndexOf("- $") - 1) + ";";
+                                        }
+                                        else
+                                        {
+                                            optionsString += option0.Text + ";";
+                                        }
+                                    }
+                                }
+                                optionsString = optionsString.Substring(0, optionsString.Length - 1);
+
+                                // imagesString
+                                IWebElement thumb_holder = driver.FindElement(By.Id("thumb_holder"));
+                                var thumblis = thumb_holder.FindElements(By.TagName("li"));
+
+                                foreach (IWebElement li in thumblis)
+                                {
+                                    string imgUrl = li.FindElement(By.TagName("img")).GetAttribute("src");
+                                    imgUrl = imgUrl.Replace(@"/50-", @"/500-");
+                                    imagesString += imgUrl + ";";
+                                }
+
+                                imagesString = imagesString.Substring(0, imagesString.Length - 1);
+                            }
+                            #endregion
+                        }
+                        else if (productSHNode.InnerText.ToUpper().Contains("INCLUDED") || productSHNode.InnerText.ToUpper().Contains("INLCUDED"))
                         {
                             shipping = "0";
                         }
@@ -1928,11 +2041,14 @@ namespace CostcoWinForm
                         }
                     }
 
-                    HtmlNode imageColumnNode = html.CssSelect(".image-column").ToList<HtmlNode>().First();
+                    if (string.IsNullOrEmpty(imagesString))
+                    {
+                        HtmlNode imageColumnNode = html.CssSelect(".image-column").ToList<HtmlNode>().First();
 
-                    HtmlNode imageNode = imageColumnNode.SelectSingleNode("//img[@itemprop='image']");
+                        HtmlNode imageNode = imageColumnNode.SelectSingleNode("//img[@itemprop='image']");
 
-                    string imageUrl = (imageNode.Attributes["src"]).Value;
+                        imagesString = (imageNode.Attributes["src"]).Value;
+                    }
 
                     if (firstTry.Contains(pu))
                         firstTryResult.Add(pu);
@@ -1940,7 +2056,7 @@ namespace CostcoWinForm
                     if (secondTry.Contains(pu))
                         secondTryResult.Add(pu);
 
-                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + imageUrl.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "')";
+                    sqlString = "INSERT INTO Raw_ProductInfo (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Discount,  ImageLink, Url, Options) VALUES ('" + productName.Replace("'", "''") + "','" + UrlNum + "','" + itemNumber + "','" + stSubCategories + "'," + price + "," + shipping + "," + "'" + discount + "','" + imagesString.Replace("'", "''") + "','" + productUrl.Replace("'", "''") + "','" + optionsString + "')";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                     nImportProducts++;
@@ -1993,7 +2109,8 @@ namespace CostcoWinForm
 
             cn.Close();
 
-            
+            if (bTruncate)
+                driver.Close();
 
             //driver.Dispose();
 
@@ -2150,8 +2267,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            sqlString = @"insert into dbo.staging_productInfo (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
-                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url
+            sqlString = @"insert into dbo.staging_productInfo (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, options)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, options
                         from dbo.Raw_ProductInfo
                         where Price > 0
                         order by UrlNumber";
@@ -2160,21 +2277,204 @@ namespace CostcoWinForm
             cmd.ExecuteNonQuery();
 
             // copy to staging_productInfo_filtered
-            sqlString = "TRUNCATE TABLE Staging_ProductInfo_Filtered";
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
+            //sqlString = "TRUNCATE TABLE Staging_ProductInfo_Filtered";
+            //cmd.CommandText = sqlString;
+            //cmd.ExecuteNonQuery();
 
-            sqlString = @"insert into dbo.Staging_ProductInfo_Filtered(Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
-                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url 
-                        from dbo.Raw_ProductInfo 
-                        where Price > 0 and Price < 100 and Shipping = 0
-                        order by UrlNumber";
+            //sqlString = @"insert into dbo.Staging_ProductInfo_Filtered(Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
+            //            select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url 
+            //            from dbo.Raw_ProductInfo 
+            //            where Price > 0 and Price < 100 and Shipping = 0
+            //            order by UrlNumber";
 
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
+            //cmd.CommandText = sqlString;
+            //cmd.ExecuteNonQuery();
 
             
         }
+
+        // private void CompareProducts()
+        // {
+        //     SqlConnection cn = new SqlConnection(connectionString);
+        //     SqlCommand cmd = new SqlCommand();
+        //     cmd.Connection = cn;
+
+        //     SqlDataReader rdr;
+
+        //     cn.Open();
+
+        //     // price up
+        //     string sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url 
+        //                         from [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+        //                         where s.UrlNumber = p.UrlNumber
+        //                         and s.Price > p.Price";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     priceUpProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         priceUpProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+        //     }
+
+        //     rdr.Close();
+
+        //     // price down
+        //     sqlString = @"select s.Name, s.Price as newPrice, p.Price as oldPrice, s.Url from 
+        //                 [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+        //                 where s.UrlNumber = p.UrlNumber
+        //                 and s.Price < p.Price";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     priceDownProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         priceDownProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+        //     }
+
+        //     rdr.Close();
+
+        //     // new products
+        //     sqlString = @"select * from Staging_ProductInfo sp
+        //                 where 
+        //                 not exists
+        //                 (select 1 from ProductInfo p  where sp.UrlNumber = p.UrlNumber)";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     newProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         newProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+        //     }
+
+        //     rdr.Close();
+
+        //     // discontinued products
+        //     sqlString = @"select * from ProductInfo p 
+        //                 where 
+        //                 not exists
+        //                 (select 1 from Staging_ProductInfo sp where sp.UrlNumber = p.UrlNumber)";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     discontinueddProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         discontinueddProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+        //     }
+
+        //     rdr.Close();
+
+        //     // stockChange products
+        //     sqlString = @"select s.Name, s.Url from 
+        //                 [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+        //                 where s.UrlNumber = p.UrlNumber
+        //                 and s.Options <> p.Options";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     stockChangeProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         stockChangeProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>");
+        //     }
+
+        //     rdr.Close();
+
+        //     // eBay listing price up
+        //     sqlString = @"select s.Name, s.CostcoPrice as OldBasePrice, s.eBayListingPrice as eBayListingPrice, p.Price as NewBasePrice, p.Url as CostcoUrl, s.eBayItemNumber as eBayItemNumber
+        //                     from [dbo].[eBay_CurrentListings] s, [dbo].[Staging_ProductInfo] p
+        //                     where s.CostcoUrlNumber = p.UrlNumber
+        //                     and s.CostcoPrice < p.Price";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     eBayListingPriceUpProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         eBayListingPriceUpProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
+        //     }
+
+        //     rdr.Close();
+
+        //     sqlString = @"INSERT INTO [dbo].[eBay_ToChange] (Name, CostcoUrlNumber, eBayItemNumber, eBayOldListingPrice, 
+        //eBayNewListingPrice, eBayReferencePrice, 
+        //CostcoOldPrice, CostcoNewPrice, PriceChange)
+        //                     SELECT l.Name, l.CostcoUrlNumber, l.eBayItemNumber, l.eBayListingPrice, l.eBayListingPrice, 
+        //                     l.eBayReferencePrice, l.CostcoPrice, r.Price, 'up'
+        //                     FROM [dbo].[eBay_CurrentListings] l, [dbo].[Staging_ProductInfo] r
+        //                     WHERE l.CostcoPrice < r.Price 
+        //                     AND l.CostcoUrlNumber = r.UrlNumber";
+
+        //     cmd.CommandText = sqlString;
+        //     cmd.ExecuteNonQuery();
+
+        //     // eBay listing price down
+        //     sqlString = @"select s.Name, s.CostcoPrice as OldBasePrice, s.eBayListingPrice as eBayListingPrice, p.Price as NewBasePrice, p.Url as CostcoUrl, s.eBayItemNumber as eBayItemNumber
+        //                     from [dbo].[eBay_CurrentListings] s, [dbo].[Staging_ProductInfo] p
+        //                     where s.CostcoUrlNumber = p.UrlNumber
+        //                     and s.CostcoPrice > p.Price";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     eBayListingPriceDownProductArray.Clear();
+
+        //     while (rdr.Read())
+        //     {
+        //         eBayListingPriceDownProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
+        //     }
+
+        //     rdr.Close();
+
+        //     sqlString = @"INSERT INTO [dbo].[eBay_ToChange] (Name, CostcoUrlNumber, eBayItemNumber, eBayOldListingPrice, 
+        //eBayNewListingPrice, eBayReferencePrice, 
+        //CostcoOldPrice, CostcoNewPrice, PriceChange)
+        //                     SELECT l.Name, l.CostcoUrlNumber, l.eBayItemNumber, l.eBayListingPrice, l.eBayListingPrice, 
+        //                     l.eBayReferencePrice, l.CostcoPrice, r.Price, 'down'
+        //                     FROM [dbo].[eBay_CurrentListings] l, [dbo].[Staging_ProductInfo] r
+        //                     WHERE l.CostcoPrice < r.Price
+        //                     AND l.CostcoUrlNumber = r.UrlNumber";
+
+        //     cmd.CommandText = sqlString;
+        //     cmd.ExecuteNonQuery();
+
+        //     // eBay listing discontinused 
+        //     sqlString = @"select * from eBay_CurrentListings p 
+        //                 where 
+        //                 not exists
+        //                 (select 1 from Staging_ProductInfo sp where sp.UrlNumber = p.CostcoUrlNumber)";
+        //     cmd.CommandText = sqlString;
+        //     rdr = cmd.ExecuteReader();
+
+        //     eBayListingDiscontinueddProductArray.Clear();
+
+
+        //     while (rdr.Read())
+        //     {
+        //         eBayListingDiscontinueddProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["CostcoPrice"].ToString());
+        //     }
+
+        //     rdr.Close();
+
+        //     sqlString = @"INSERT INTO [dbo].[eBay_ToRemove] (Name, CostcoUrlNumber, eBayItemNumber)
+        //                     SELECT l.Name, l.CostcoUrlNumber, l.eBayItemNumber
+        //                     FROM [dbo].[eBay_CurrentListings] l
+        //                     WHERE not exists 
+        //                  (SELECT 1 FROM [dbo].[Staging_ProductInfo] r where r.UrlNumber = l.CostcoUrlNumber)";
+
+        //     cmd.CommandText = sqlString;
+        //     cmd.ExecuteNonQuery();
+
+        //     cn.Close();
+        // }
 
         private void CompareProducts()
         {
@@ -2198,7 +2498,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                priceUpProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+                priceUpProductArray.Add("<a href='" + rdr["Url"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
             }
 
             rdr.Close();
@@ -2215,7 +2515,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                priceDownProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
+                priceDownProductArray.Add("<a href='" + rdr["Url"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["newPrice"].ToString() + "|(" + rdr["oldPrice"].ToString() + ")");
             }
 
             rdr.Close();
@@ -2232,7 +2532,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                newProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+                newProductArray.Add("<a href='" + rdr["Url"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
             }
 
             rdr.Close();
@@ -2249,7 +2549,24 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                discontinueddProductArray.Add("<a href='" + rdr["Url"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+                discontinueddProductArray.Add("<a href='" + rdr["Url"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["Price"].ToString());
+            }
+
+            rdr.Close();
+
+            // stockChange products
+            sqlString = @"select s.Name, s.Url from 
+                        [dbo].[Staging_ProductInfo] s, [dbo].[ProductInfo] p
+                        where s.UrlNumber = p.UrlNumber
+                        and s.Options <> p.Options";
+            cmd.CommandText = sqlString;
+            rdr = cmd.ExecuteReader();
+
+            stockChangeProductArray.Clear();
+
+            while (rdr.Read())
+            {
+                stockChangeProductArray.Add("<a href='" + rdr["Url"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>");
             }
 
             rdr.Close();
@@ -2266,7 +2583,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                eBayListingPriceUpProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
+                eBayListingPriceUpProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
             }
 
             rdr.Close();
@@ -2295,7 +2612,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                eBayListingPriceDownProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
+                eBayListingPriceDownProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["NewBasePrice"].ToString() + "|(" + rdr["OldBasePrice"].ToString() + ")");
             }
 
             rdr.Close();
@@ -2325,7 +2642,7 @@ namespace CostcoWinForm
 
             while (rdr.Read())
             {
-                eBayListingDiscontinueddProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString() + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["CostcoPrice"].ToString());
+                eBayListingDiscontinueddProductArray.Add("<a href='" + rdr["CostcoUrl"].ToString().Replace("'", "''") + "'>" + rdr["Name"].ToString() + "</a>|" + rdr["CostcoPrice"].ToString());
             }
 
             rdr.Close();
@@ -2361,8 +2678,8 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            sqlString = @"insert into [dbo].[ProductInfo] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url)
-                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url
+            sqlString = @"insert into [dbo].[ProductInfo] (Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, options)
+                        select distinct Name, urlNumber, itemnumber, Category, price, shipping, discount, details, specification, imageLink, url, options
                         from  dbo.staging_productInfo";
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
@@ -2377,48 +2694,53 @@ namespace CostcoWinForm
         private void SendEmail()
         {
             emailMessage = "<p>Start: " + startDT.ToLongTimeString() + "</p></br>";
-            emailMessage += "<p>Productlist End: " + productListEndDT.ToLongTimeString() + "</p></br>";
+            //emailMessage += "<p>Productlist End: " + productListEndDT.ToLongTimeString() + "</p></br>";
             emailMessage += "<p>End: " + endDT.ToLongTimeString() + "</p></br>";
 
             emailMessage += "</br>";
             emailMessage += "</br>";
 
-            emailMessage += "<p>nCategoryUrlArray: " + nCategoryUrlArray.ToString() + "</p></br>";
-            emailMessage += "<p>nProductListPages: " + nProductListPages.ToString() + "</p></br>";
-            emailMessage += "<p>nProductUrlArray: " + nProductUrlArray.ToString() + "</p></br>";
-
+            emailMessage += "<p>Product scanned: " + nScanProducts.ToString() + "</p></br>";
+            emailMessage += "<p>Product imported: " + nImportProducts.ToString() + "</p></br>";
             emailMessage += "</br>";
             emailMessage += "</br>";
 
-            emailMessage += "<p>Product Scanned: " + nScanProducts.ToString() + "</p></br>";
-            emailMessage += "<p>Product Imported: " + nImportProducts.ToString() + "</p></br>";
-            emailMessage += "<p>Product Skipped: " + nSkipProducts.ToString() + "</p></br>";
-            emailMessage += "<p>Product Errored: " + nImportErrors.ToString() + "</p></br>";
+            //emailMessage += "<p>nCategoryUrlArray: " + nCategoryUrlArray.ToString() + "</p></br>";
+            //emailMessage += "<p>nProductListPages: " + nProductListPages.ToString() + "</p></br>";
+            //emailMessage += "<p>nProductUrlArray: " + nProductUrlArray.ToString() + "</p></br>";
 
-            emailMessage += "</br>";
-            emailMessage += "</br>";
+            //emailMessage += "</br>";
+            //emailMessage += "</br>";
 
-            emailMessage += "<h3>First try fix products: (" + firstTryResult.Count.ToString() + ")</h3>" + "</br>";
-            emailMessage += "</br>";
-            
-            foreach (string a in firstTryResult)
-            {
-                emailMessage += "<p>" + a + "</p></br>";
-            }
-            
-            emailMessage += "</br>";
-            emailMessage += "</br>";
+            //emailMessage += "<p>Product Scanned: " + nScanProducts.ToString() + "</p></br>";
+            //emailMessage += "<p>Product Imported: " + nImportProducts.ToString() + "</p></br>";
+            //emailMessage += "<p>Product Skipped: " + nSkipProducts.ToString() + "</p></br>";
+            //emailMessage += "<p>Product Errored: " + nImportErrors.ToString() + "</p></br>";
 
-            emailMessage += "<h3>Second try fix products: (" + secondTryResult.Count.ToString() + ")</h3>" + "</br>";
-            emailMessage += "</br>";
+            //emailMessage += "</br>";
+            //emailMessage += "</br>";
 
-            foreach (string a in secondTryResult)
-            {
-                emailMessage += "<p>" + a + "</p></br>";
-            }
+            //emailMessage += "<h3>First try fix products: (" + firstTryResult.Count.ToString() + ")</h3>" + "</br>";
+            //emailMessage += "</br>";
 
-            emailMessage += "</br>";
-            emailMessage += "</br>";
+            //foreach (string a in firstTryResult)
+            //{
+            //    emailMessage += "<p>" + a + "</p></br>";
+            //}
+
+            //emailMessage += "</br>";
+            //emailMessage += "</br>";
+
+            //emailMessage += "<h3>Second try fix products: (" + secondTryResult.Count.ToString() + ")</h3>" + "</br>";
+            //emailMessage += "</br>";
+
+            //foreach (string a in secondTryResult)
+            //{
+            //    emailMessage += "<p>" + a + "</p></br>";
+            //}
+
+            //emailMessage += "</br>";
+            //emailMessage += "</br>";
 
             emailMessage += "<h3>Price up products: (" + priceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
@@ -2427,6 +2749,8 @@ namespace CostcoWinForm
             emailMessage += "<h3>New products: (" + newProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             emailMessage += "<h3>Discontinued products: (" + discontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            emailMessage += "<h3>Stock changed products: (" + stockChangeProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             emailMessage += "<h3>eBay listing price up products: (" + eBayListingPriceUpProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
@@ -2481,12 +2805,27 @@ namespace CostcoWinForm
             emailMessage += "<h3>Discontinued products: (" + discontinueddProductArray.Count.ToString() + ")</h3>" + "</br>";
             emailMessage += "</br>";
             if (this.discontinueddProductArray.Count == 0)
-                emailMessage += "<p>No new product</p>" + "</br>";
+                emailMessage += "<p>No discontinued product</p>" + "</br>";
             else
             {
                 foreach (string discontinueddProduct in discontinueddProductArray)
                 {
                     emailMessage += "<p>" + discontinueddProduct + "</P></br>";
+                }
+            }
+
+            emailMessage += "</br>";
+            emailMessage += "</br>";
+
+            emailMessage += "<h3>Stock changed products: (" + stockChangeProductArray.Count.ToString() + ")</h3>" + "</br>";
+            emailMessage += "</br>";
+            if (this.stockChangeProductArray.Count == 0)
+                emailMessage += "<p>No stock changed product</p>" + "</br>";
+            else
+            {
+                foreach (string stockChangeProduct in stockChangeProductArray)
+                {
+                    emailMessage += "<p>" + stockChangeProduct + "</P></br>";
                 }
             }
 
@@ -3485,15 +3824,28 @@ namespace CostcoWinForm
 
         private void btnResearch_Click(object sender, EventArgs e)
         {
-            string storeURL = txtStoreLink.Text;
+            string sqlString = string.Empty;
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
 
-            string storeName = storeURL.Split('/')[2];
+            string storeName = cmbStore.Text;
+
+            string storeUrl = "http://www.ebay.com/sch/***/m.html?_nkw=&_armrs=1&_ipg=&_from=";
+
+            storeUrl = storeUrl.Replace("***", storeName);
+
+            sqlString = @"DELETE FROM eBay_ProductsResearch WHERE eBayUserId = '" + storeName + "'";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
 
             List<string> storeLinkList = new List<string>();
 
             driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
-            driver.Navigate().GoToUrl(storeURL);
+            driver.Navigate().GoToUrl(storeUrl);
 
             if (hasElement(driver, By.ClassName("pages")))
             {
@@ -3508,7 +3860,143 @@ namespace CostcoWinForm
             }
             else
             {
-                storeLinkList.Add(storeURL);
+                storeLinkList.Add(storeUrl);
+            }
+
+            foreach (string url in storeLinkList)
+            {
+                driver.Navigate().GoToUrl(url);
+
+                if (hasElement(driver, By.Id("ResultSetItems")))
+                {
+                    var lis = driver.FindElement(By.Id("ResultSetItems")).FindElements(By.ClassName("lvresult"));
+
+                    foreach (IWebElement li in lis)
+                    {
+                        string itemName = li.FindElement(By.ClassName("lvtitle")).Text;
+                        string itemURL = li.FindElement(By.ClassName("lvtitle")).FindElement(By.TagName("a")).GetAttribute("href");
+                        string itemPrice = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).Text;
+                        string trending = string.Empty;
+                        if (hasElement(li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")), By.ClassName("medprc")))
+                            trending = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).FindElement(By.ClassName("medprc")).Text;
+                        if (!string.IsNullOrEmpty(trending))
+                            itemPrice = itemPrice.Replace(trending, "").Replace("$","").Replace("\r","").Replace("\n", "");
+                        else
+                            itemPrice = itemPrice.Replace("$", "").Replace("\r", "").Replace("\n", "");
+
+                        string extra = string.Empty;
+                        IWebElement lvextras;
+
+                        if (hasElement(li, By.ClassName("lvextras")))
+                        {
+                            lvextras = li.FindElement(By.ClassName("lvextras"));
+
+                            if (hasElement(lvextras, By.ClassName("red")))
+                                lvextras = lvextras.FindElement(By.ClassName("red"));
+
+                            extra = lvextras.Text;
+                        }
+                        
+                        string numberSold = string.Empty;
+                        if (extra.Contains("sold"))
+                        {
+                            numberSold = extra.Replace("sold", "").Replace("+", "").Trim();
+                        }
+
+                        sqlString = @"INSERT INTO eBay_ProductsResearch (Name, eBayUrl, eBayPrice, eBaySoldNumber, eBayUserId) VALUES ('" +
+                                    itemName.Replace("'", "") + "','" + itemURL.Replace("'", "") + "','" + itemPrice + "'," + (string.IsNullOrEmpty(numberSold) ? "NULL" : numberSold) + ", '" + storeName.Replace("'", "") + "')";
+
+                        cmd.CommandText = sqlString;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            cn.Close();
+            driver.Close();
+
+            gvEBayResearch_Refresh();
+        }
+
+        private void tpResearch_Enter(object sender, EventArgs e)
+        {
+            string sqlString = @"select distinct eBayUserId from [Costco].[dbo].[eBay_ProductsResearch]" ;
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            cmbStore.Items.Add("All");
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    cmbStore.Items.Add(Convert.ToString(reader["eBayUserId"]));
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+        }
+
+        private void cmbStore_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gvEBayResearch_Refresh();
+        }
+
+        public void gvEBayResearch_Refresh()
+        {
+            string sqlString = @"SELECT Name, eBayUrl, eBayPrice, eBaySoldNumber, eBayUserId
+                                 FROM eBay_ProductsResearch ";
+
+            if (cmbStore.Text != "All")
+                sqlString += "WHERE eBayUserId = '" + cmbStore.Text + "'";
+                                
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            cmdSaleTax = new SqlCommand(sqlString, connection);
+            daSaleTax = new SqlDataAdapter(cmdSaleTax);
+            cmbSaleTax = new SqlCommandBuilder(daSaleTax);
+            dsSaleTax = new DataSet();
+            daSaleTax.Fill(dsSaleTax, "tbEBayResearch");
+            dtSaleTax = dsSaleTax.Tables["tbEBayResearch"];
+            connection.Close();
+
+
+            gvEBayResearch.DataSource = dsSaleTax.Tables["tbEBayResearch"];
+            gvEBayResearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            gvEBayResearch.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            DataGridViewLinkColumn lnk = new DataGridViewLinkColumn();
+            gvEBayResearch.Columns.Insert(0, lnk);
+            lnk.UseColumnTextForLinkValue = false;
+            lnk.HeaderText = "eBayItemName";
+            lnk.Name = "eBayItemName";
+            lnk.Width = 500;
+
+            gvEBayResearch.Columns[1].Visible = false;
+            gvEBayResearch.Columns[2].Visible = false;
+        }
+
+        private void gvEBayResearch_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (this.gvEBayResearch.Columns[e.ColumnIndex].Name == "eBayItemName")
+            {
+                string name = (this.gvEBayResearch.Rows[e.RowIndex].Cells["Name"]).FormattedValue.ToString();
+                ((DataGridViewLinkCell)(gvEBayResearch.Rows[e.RowIndex].Cells["eBayItemName"])).Value = name;
+            }
+        }
+
+        private void gvEBayResearch_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0 && e.RowIndex != -1)
+            {
+                string url = gvEBayResearch.Rows[e.RowIndex].Cells["eBayUrl"].FormattedValue.ToString();
+
+                Process.Start(@"chrome", url);
             }
         }
     }
