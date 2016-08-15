@@ -9,11 +9,14 @@
     [Discount]      NVARCHAR (500)  NULL,
     [Details]       NVARCHAR (4000) NULL,
     [Specification] NVARCHAR (4000) NULL,
-    [ImageLink]     NVARCHAR (4000) NULL,
     [Url]           NVARCHAR (500)  NULL,
-    [NumberOfImage] INT             NULL,
-    [Options]       NVARCHAR (2000) NULL
+    [Options]       NVARCHAR (2000) NULL,
+    [ImageLink]     NVARCHAR (500)  NULL,
+    [ImageOptions]  NVARCHAR (4000) NULL,
+    [NumberOfImage] INT             NULL
 );
+
+
 
 
 

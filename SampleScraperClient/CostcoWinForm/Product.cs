@@ -21,6 +21,8 @@ namespace CostcoWinForm
         public string ImageLink { get; set; } = "";
         public string Url { get; set; } = "";
         public int NumberOfImage { get; set; }
+        public string ImageOptions { get; set; } = "";
+        public string Options { get; set; } = "";
 
         public int DescriptionImageWidth { get; set; }
         public int DescriptionImageHeight { get; set; }
@@ -30,7 +32,9 @@ namespace CostcoWinForm
         public string eBayItemNumber { get; set; } = "";
         public string eBayUrl { get; set; } = "";
         public string eBayCategoryID { get; set; } = "";
-        public decimal eBayListingPrice { get; set; } 
+        public decimal eBayListingPrice { get; set; }
+
+        public string TemplateName { get; set; } = "";
 
     }
 

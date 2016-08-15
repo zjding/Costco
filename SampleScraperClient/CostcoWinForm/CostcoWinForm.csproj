@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Crawler">
+      <HintPath>..\..\..\..\..\Google Drive\eBayApp\Debug\Crawler.exe</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\ScrapySharp.2.2.63\lib\net40\FSharp.Core.dll</HintPath>
     </Reference>
