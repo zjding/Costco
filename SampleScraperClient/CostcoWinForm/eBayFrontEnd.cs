@@ -401,14 +401,14 @@ namespace CostcoWinForm
                     p.eBayCategoryID = Convert.ToString(categoryIDAndPrice.Split('|')[0]);
 
                     sqlString = @"UPDATE Costco_eBay_Categories SET eBay_Category_Number = " + p.eBayCategoryID + " WHERE " +
-                                @"  ISNULL(c.Category1, '') + IIF(c.Category2 is NULL, '', '|') + 
-                                    ISNULL(c.Category2, '') + IIF(c.Category3 is NULL, '', '|') +
-                                    ISNULL(c.Category3, '') + IIF(c.Category4 is NULL, '', '|') +
-                                    ISNULL(c.Category4, '') + IIF(c.Category5 is NULL, '', '|') +
-                                    ISNULL(c.Category5, '') + IIF(c.Category6 is NULL, '', '|') +
-                                    ISNULL(c.Category6, '') + IIF(c.Category7 is NULL, '', '|') +
-                                    ISNULL(c.Category7, '') + IIF(c.Category8 is NULL, '', '|') +
-                                    ISNULL(c.Category8, '') = " + p.Category;
+                                @"  ISNULL(Category1, '') + IIF(Category2 is NULL, '', '|') + 
+                                    ISNULL(Category2, '') + IIF(Category3 is NULL, '', '|') +
+                                    ISNULL(Category3, '') + IIF(Category4 is NULL, '', '|') +
+                                    ISNULL(Category4, '') + IIF(Category5 is NULL, '', '|') +
+                                    ISNULL(Category5, '') + IIF(Category6 is NULL, '', '|') +
+                                    ISNULL(Category6, '') + IIF(Category7 is NULL, '', '|') +
+                                    ISNULL(Category7, '') + IIF(Category8 is NULL, '', '|') +
+                                    ISNULL(Category8, '') = '" + p.Category + "'";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
                 }
@@ -537,8 +537,8 @@ namespace CostcoWinForm
                 //}
 
                 string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
-                                    "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2).Replace("'", "''") + "' AND " +
-                                    "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1).Replace("'", "''") + "'";
+                                    "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
+                                    "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1) + "'";
 
 
 
@@ -977,39 +977,83 @@ namespace CostcoWinForm
                 int i = 2;
                 foreach (Product product in products)
                 {
+                    string relationshipDetails;
+                    List<string> relationshipDetailsArray;
+                    List<string> imageOptionArray;
+
+                    GenerateVariations(product.Options, product.ImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
+
                     oSheet.Cells[i, 1] = "Add";
                     oSheet.Cells[i, 3] = product.eBayCategoryID;
                     oSheet.Cells[i, 5] = product.Name;
                     // RelationshipDetails
-                    oSheet.Cells[i, 8] = product.Details;
-                    oSheet.Cells[i, 6] = "1000";
-
-                    string imageLinks = "";
-                    string imageLink = product.ImageLink.Substring(0, product.ImageLink.Length - 5);
-                    for (int j = 1; j <= product.NumberOfImage; j++)
-                    {
-                        imageLinks += imageLink + j.ToString() + ".jpg|";
-                    }
-
-                    imageLinks = imageLinks.Substring(0, imageLinks.Length - 1);
-
-                    oSheet.Cells[i, 7] = imageLinks;
-                    oSheet.Cells[i, 8] = "1";
-                    oSheet.Cells[i, 9] = "FixedPrice";
-                    oSheet.Cells[i, 10] = product.eBayListingPrice;
-                    oSheet.Cells[i, 12] = "30";
-                    oSheet.Cells[i, 13] = "1";
-                    oSheet.Cells[i, 14] = "AL USA";
-                    oSheet.Cells[i, 16] = "1";
-                    oSheet.Cells[i, 17] = "zjding@outlook.com";
-                    oSheet.Cells[i, 22] = "Flat";
-                    oSheet.Cells[i, 23] = "USPSPriority";
-                    oSheet.Cells[i, 24] = "0";
-                    oSheet.Cells[i, 25] = "1";
-                    oSheet.Cells[i, 31] = "1";
-                    oSheet.Cells[i, 33] = "ReturnsNotAccepted";
+                    oSheet.Cells[i, 8] = relationshipDetails;
+                    // Condition
+                    oSheet.Cells[i, 9] = "1000";
+                    // C:Brand
+                    oSheet.Cells[i, 10] = product.Name.Split(' ').First();
+                    // C:Style
+                    oSheet.Cells[i, 11] = "Western";
+                    // C:Size Type
+                    oSheet.Cells[i, 12] = "Regular";
+                    // C:Bottoms Size (Men's)
+                    oSheet.Cells[i, 14] = relationshipDetails.Split('|')[1].Replace("Size=", "");
+                    // PicURL
+                    oSheet.Cells[i, 21] = product.ImageLink;
+                    // Description
+                    oSheet.Cells[i, 23] = product.Details;
+                    // Format
+                    oSheet.Cells[i, 24] = "FixedPrice";
+                    // duration
+                    oSheet.Cells[i, 25] = "30";
+                    // PaypalAccepted
+                    oSheet.Cells[i, 29] = "1";
+                    // PaypalEmailAddress
+                    oSheet.Cells[i, 30] = "zjding@outlook.com";
+                    // Location
+                    oSheet.Cells[i, 33] = "AL USA";
+                    // ShippingType
+                    oSheet.Cells[i, 34] = "Flat";
+                    // ShippingService-1:Option
+                    oSheet.Cells[i, 35] = "USPSPriority";
+                    // ShippingService-1:Cost
+                    oSheet.Cells[i, 36] = "0";
+                    // *DispatchTimeMax
+                    oSheet.Cells[i, 39] = "1";
+                    // *ReturnsAcceptedOption
+                    oSheet.Cells[i, 43] = "ReturnsNotAccepted";
+                    // UseTaxTable
+                    oSheet.Cells[i, 48] = "1";
 
                     i++;
+
+                    foreach (string relationshipDetail in relationshipDetailsArray)
+                    {
+                        // Relationship
+                        oSheet.Cells[i, 7] = "Variation";
+                        // RelationshipDetails
+                        oSheet.Cells[i, 8] = relationshipDetail;
+                        // *C:Size (Men's)
+                        string size = relationshipDetail.Split('|')[1].Replace("Size=", "");
+                        oSheet.Cells[i, 13] = size;
+                        // C:Bottoms Size (Men's)
+                        //oSheet.Cells[i, 14] = Regex.Match(relationshipDetail.Split('|')[1].Replace("Size=", ""), @"\d+").Value.ToString();
+                        oSheet.Cells[i, 14] = size;
+                        // C:Color
+                        string color = relationshipDetail.Split('|')[0].Replace("Color=", "");
+                        oSheet.Cells[i, 17] = color;
+                        // PicURL
+                        string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
+                        oSheet.Cells[i, 21] = colorImage;
+                        // *StartPrice
+                        oSheet.Cells[i, 26] = product.eBayListingPrice;
+                        // *Quantity
+                        oSheet.Cells[i, 28] = "1";
+
+                        i++;
+                    }
+
+
                 }
             }
 
@@ -1023,10 +1067,11 @@ namespace CostcoWinForm
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
         }
 
-        private void GenerateVariations(string inputString, out string relationshipDetails, out List<string> relationshipDetailsArray)
+        private void GenerateVariations(string inputString, string imageOptionString, out string relationshipDetails, out List<string> relationshipDetailsArray, out List<string> imageOptionArray)
         {
             relationshipDetails = string.Empty;
             relationshipDetailsArray = new List<string>();
+            imageOptionArray = new List<string>();
 
             string _Color = "Color=";
             string _Size = "Size=";
@@ -1042,7 +1087,7 @@ namespace CostcoWinForm
 
                     _Color += color + ";";
 
-                    sizeList.Concat(sizes.Split(';').ToList());
+                    sizeList = sizeList.Union(sizes.Split(';').ToList()).ToList();
 
                     foreach (var size in sizes.Split(';').ToList())
                     {
@@ -1062,6 +1107,15 @@ namespace CostcoWinForm
                 _Size = _Size.Substring(0, _Size.Length - 1);
 
                 relationshipDetails = _Color + "|" + _Size;
+            }
+
+            if (imageOptionString.Contains("~"))
+            {
+                imageOptionArray = imageOptionString.Split('~').ToList();
+            }
+            else
+            {
+                imageOptionArray.Add(imageOptionString);
             }
         }
 
@@ -4073,6 +4127,66 @@ namespace CostcoWinForm
 
                 Process.Start(@"chrome", url);
             }
+        }
+
+        private void btnEBayItemSpecifics_Click(object sender, EventArgs e)
+        {
+            string fileName = @"C:\eBayApp\Instructions\eBayCSA_ItemSpecifics.xls";
+
+            Microsoft.Office.Interop.Excel.Application xlApp;
+            Microsoft.Office.Interop.Excel.Workbook xlWorkBook;
+            Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet;
+            Microsoft.Office.Interop.Excel.Range range;
+
+            string str;
+            int rCnt = 0;
+            int cCnt = 0;
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = string.Empty;
+
+            xlApp = new Microsoft.Office.Interop.Excel.Application();
+            xlWorkBook = xlApp.Workbooks.Open(fileName, 0, true, 5, "", "", true, Microsoft.Office.Interop.Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+            xlWorkSheet = (Microsoft.Office.Interop.Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+
+            range = xlWorkSheet.UsedRange;
+
+            string category = string.Empty;
+            string specifics = string.Empty;
+            int iLastLeftBracket = 0;
+            int iLastRightBracket = 0;
+            string categoryId = string.Empty;
+
+            for (rCnt = 2; rCnt <= range.Rows.Count; rCnt++)
+            {
+                for (cCnt = 1; cCnt <= range.Columns.Count; cCnt++)
+                {
+                    if (cCnt == 1)
+                        category = (string)(range.Cells[rCnt, cCnt] as Microsoft.Office.Interop.Excel.Range).Value2;
+                    if (cCnt == 2)
+                        specifics = (string)(range.Cells[rCnt, cCnt] as Microsoft.Office.Interop.Excel.Range).Value2;
+                }
+
+                iLastLeftBracket = category.LastIndexOf('(');
+                iLastRightBracket = category.LastIndexOf(')');
+
+                categoryId = category.Substring(iLastLeftBracket+1, iLastRightBracket - iLastLeftBracket -1);
+                categoryId = categoryId.Replace("#", "");
+
+                if (specifics != "No Specifics Required")
+                {
+                    sqlString = @"UPDATE eBay_Categories SET Specifics = '" + specifics.Replace("'", "''") + "' WHERE CategoryId = '" + categoryId + "'";
+                    cmd.CommandText = sqlString;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            cn.Close();
+
         }
     }
 }
