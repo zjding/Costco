@@ -35,7 +35,7 @@ namespace CostcoWinForm
         public decimal eBayListingPrice { get; set; }
 
         public string TemplateName { get; set; } = "";
-
+        public string Specifics { get; set; } = "";
     }
 
     class ProductUpdate

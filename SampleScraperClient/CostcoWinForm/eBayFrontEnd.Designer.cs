@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tpTax = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.gvTaxExempt = new System.Windows.Forms.DataGridView();
@@ -361,14 +361,15 @@
             this.cmbStore = new System.Windows.Forms.ComboBox();
             this.label66 = new System.Windows.Forms.Label();
             this.btnResearch = new System.Windows.Forms.Button();
+            this.tpMaintenance = new System.Windows.Forms.TabPage();
+            this.btnEBayItemSpecifics = new System.Windows.Forms.Button();
             this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.eBay_ToAddTableAdapter = new CostcoWinForm.ds_eBayToAddTableAdapters.eBay_ToAddTableAdapter();
             this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
             this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
             this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
-            this.tpMaintenance = new System.Windows.Forms.TabPage();
-            this.btnEBayItemSpecifics = new System.Windows.Forms.Button();
+            this.gvAdd = new System.Windows.Forms.DataGridView();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -427,6 +428,7 @@
             this.tpResearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayResearch)).BeginInit();
             this.tpMaintenance.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvAdd)).BeginInit();
             this.SuspendLayout();
             // 
             // tpTax
@@ -1376,8 +1378,8 @@
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle13;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1413,16 +1415,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle14;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle15;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -1514,9 +1516,11 @@
             this.tpToAdd.TabIndex = 7;
             this.tpToAdd.Text = "To Add";
             this.tpToAdd.UseVisualStyleBackColor = true;
+            this.tpToAdd.Enter += new System.EventHandler(this.tpToAdd_Enter);
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.gvAdd);
             this.groupBox3.Controls.Add(this.btnSave);
             this.groupBox3.Controls.Add(this.btnDelete);
             this.groupBox3.Controls.Add(this.gvToAdd);
@@ -1538,6 +1542,7 @@
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Update";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click_1);
             // 
             // btnDelete
             // 
@@ -1548,6 +1553,7 @@
             this.btnDelete.TabIndex = 5;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click_1);
             // 
             // gvToAdd
             // 
@@ -1577,9 +1583,9 @@
             this.descriptionImageWidthDataGridViewTextBoxColumn,
             this.descriptionImageHeightDataGridViewTextBoxColumn});
             this.gvToAdd.DataSource = this.eBayToAddBindingSource;
-            this.gvToAdd.Location = new System.Drawing.Point(6, 39);
+            this.gvToAdd.Location = new System.Drawing.Point(6, 407);
             this.gvToAdd.Name = "gvToAdd";
-            this.gvToAdd.Size = new System.Drawing.Size(1226, 583);
+            this.gvToAdd.Size = new System.Drawing.Size(1226, 215);
             this.gvToAdd.TabIndex = 0;
             // 
             // iDDataGridViewTextBoxColumn1
@@ -4032,6 +4038,27 @@
             this.btnResearch.UseVisualStyleBackColor = true;
             this.btnResearch.Click += new System.EventHandler(this.btnResearch_Click);
             // 
+            // tpMaintenance
+            // 
+            this.tpMaintenance.Controls.Add(this.btnEBayItemSpecifics);
+            this.tpMaintenance.Location = new System.Drawing.Point(4, 22);
+            this.tpMaintenance.Name = "tpMaintenance";
+            this.tpMaintenance.Padding = new System.Windows.Forms.Padding(3);
+            this.tpMaintenance.Size = new System.Drawing.Size(1244, 634);
+            this.tpMaintenance.TabIndex = 11;
+            this.tpMaintenance.Text = "Maintenance";
+            this.tpMaintenance.UseVisualStyleBackColor = true;
+            // 
+            // btnEBayItemSpecifics
+            // 
+            this.btnEBayItemSpecifics.Location = new System.Drawing.Point(6, 6);
+            this.btnEBayItemSpecifics.Name = "btnEBayItemSpecifics";
+            this.btnEBayItemSpecifics.Size = new System.Drawing.Size(165, 23);
+            this.btnEBayItemSpecifics.TabIndex = 0;
+            this.btnEBayItemSpecifics.Text = "Import eBay Item Specifics";
+            this.btnEBayItemSpecifics.UseVisualStyleBackColor = true;
+            this.btnEBayItemSpecifics.Click += new System.EventHandler(this.btnEBayItemSpecifics_Click);
+            // 
             // productInfoTableAdapter1
             // 
             this.productInfoTableAdapter1.ClearBeforeFill = true;
@@ -4056,26 +4083,14 @@
             // 
             this.eBay_SoldTransactionsTableAdapter.ClearBeforeFill = true;
             // 
-            // tpMaintenance
+            // gvAdd
             // 
-            this.tpMaintenance.Controls.Add(this.btnEBayItemSpecifics);
-            this.tpMaintenance.Location = new System.Drawing.Point(4, 22);
-            this.tpMaintenance.Name = "tpMaintenance";
-            this.tpMaintenance.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMaintenance.Size = new System.Drawing.Size(1244, 634);
-            this.tpMaintenance.TabIndex = 11;
-            this.tpMaintenance.Text = "Maintenance";
-            this.tpMaintenance.UseVisualStyleBackColor = true;
-            // 
-            // btnEBayItemSpecifics
-            // 
-            this.btnEBayItemSpecifics.Location = new System.Drawing.Point(6, 6);
-            this.btnEBayItemSpecifics.Name = "btnEBayItemSpecifics";
-            this.btnEBayItemSpecifics.Size = new System.Drawing.Size(165, 23);
-            this.btnEBayItemSpecifics.TabIndex = 0;
-            this.btnEBayItemSpecifics.Text = "Import eBay Item Specifics";
-            this.btnEBayItemSpecifics.UseVisualStyleBackColor = true;
-            this.btnEBayItemSpecifics.Click += new System.EventHandler(this.btnEBayItemSpecifics_Click);
+            this.gvAdd.AllowUserToAddRows = false;
+            this.gvAdd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvAdd.Location = new System.Drawing.Point(6, 39);
+            this.gvAdd.Name = "gvAdd";
+            this.gvAdd.Size = new System.Drawing.Size(1226, 362);
+            this.gvAdd.TabIndex = 6;
             // 
             // eBayFrontEnd
             // 
@@ -4153,6 +4168,7 @@
             this.tpResearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayResearch)).EndInit();
             this.tpMaintenance.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvAdd)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4495,5 +4511,6 @@
         private System.Windows.Forms.ComboBox cmbStore;
         private System.Windows.Forms.TabPage tpMaintenance;
         private System.Windows.Forms.Button btnEBayItemSpecifics;
+        private System.Windows.Forms.DataGridView gvAdd;
     }
 }

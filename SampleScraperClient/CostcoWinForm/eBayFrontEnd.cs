@@ -346,7 +346,7 @@ namespace CostcoWinForm
             cn.Open();
 
             string sqlString = @"SELECT  i.Name, i.UrlNumber, i.ItemNumber, i.Category, i.Price, i.Shipping, i.Limit, i.Discount, i.ImageLink, i.Url, i.ImageOptions, i.Options,
-                                         c.eBay_Category_Number, c.Template_Name 
+                                         c.eBay_Category_Number, c.Template_Name
                                 FROM ProductInfo i, Costco_eBay_Categories c
                                 WHERE i.Category = 
 		                                ISNULL(c.Category1, '') + IIF(c.Category2 is NULL, '', '|') + 
@@ -356,7 +356,7 @@ namespace CostcoWinForm
 		                                ISNULL(c.Category5, '') + IIF(c.Category6 is NULL, '', '|') + 
 		                                ISNULL(c.Category6, '') + IIF(c.Category7 is NULL, '', '|') + 
 		                                ISNULL(c.Category7, '') + IIF(c.Category8 is NULL, '', '|') + 
-		                                ISNULL(c.Category8, '')";
+		                                ISNULL(c.Category8, '') ";
 
             sqlString += " AND UrlNumber in (" + urlNumbers + ")";
             cmd.CommandText = sqlString;
@@ -411,6 +411,16 @@ namespace CostcoWinForm
                                     ISNULL(Category8, '') = '" + p.Category + "'";
                     cmd.CommandText = sqlString;
                     cmd.ExecuteNonQuery();
+
+                    sqlString = @"SELECT Specifics FROM eBay_Categories WHERE CategoryId = '" + p.eBayCategoryID + "'";
+                    cmd.CommandText = sqlString;
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    if (rdr.Read())
+                    {
+                        p.Specifics = (rdr["Specifics"].ToString());
+                    }
+                    rdr.Close();
                 }
 
                 p.eBayReferencePrice = Convert.ToDecimal(categoryIDAndPrice.Split('|')[1]);
@@ -429,9 +439,9 @@ namespace CostcoWinForm
 
                     sqlString = @"INSERT INTO eBay_ToAdd
                                 (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
-                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName)
+                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime)
                                 VALUES (@_Name, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
-                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName)";
+                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE())";
 
                     cmd.CommandText = sqlString;
                     cmd.Parameters.Clear();
@@ -455,6 +465,7 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_DescriptionImageWidth", p.DescriptionImageWidth);
                     cmd.Parameters.AddWithValue("@_DescriptionImageHeight", p.DescriptionImageHeight);
                     cmd.Parameters.AddWithValue("@_TemplateName", p.TemplateName);
+                    cmd.Parameters.AddWithValue("@_Specifics", p.Specifics);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -462,7 +473,7 @@ namespace CostcoWinForm
             }
             
             cn.Close();
-            driver.Dispose();
+            driver.Close();
         }
 
         private string GetEbayCategoryIDAndPrice(string productName, bool bCategoryID = true)
@@ -4187,6 +4198,55 @@ namespace CostcoWinForm
 
             cn.Close();
 
+        }
+
+        SqlCommand cmdToAdd;
+        SqlDataAdapter daToAdd;
+        SqlCommandBuilder cmbToAdd;
+        DataSet dsToAdd;
+        DataTable dtToAdd;
+
+        public void gvAdd_Refresh()
+        {
+            string sqlString = @"SELECT ID, Name, Category, Price, Shipping, Limit, Options, Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, Specifics
+                                 FROM eBay_ToAdd 
+                                 Order by InsertTime DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            cmdToAdd = new SqlCommand(sqlString, connection);
+            daToAdd = new SqlDataAdapter(cmdToAdd);
+            cmbToAdd = new SqlCommandBuilder(daToAdd);
+            dsToAdd = new DataSet();
+            daToAdd.Fill(dsToAdd, "tbToAdd");
+            dtToAdd = dsToAdd.Tables["tbToAdd"];
+            connection.Close();
+
+
+            gvAdd.DataSource = dsToAdd.Tables["tbToAdd"];
+            gvAdd.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            gvAdd.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            gvAdd.Columns[0].Visible = false;
+        }
+
+        private void tpToAdd_Enter(object sender, EventArgs e)
+        {
+            gvAdd_Refresh();
+        }
+
+        private void btnSave_Click_1(object sender, EventArgs e)
+        {
+            daToAdd.Update(dtToAdd);
+        }
+
+        private void btnDelete_Click_1(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in gvAdd.SelectedRows)
+            {
+                gvAdd.Rows.RemoveAt(row.Index);
+            }
+
+            daToAdd.Update(dtToAdd);
         }
     }
 }
