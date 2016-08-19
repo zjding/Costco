@@ -4,15 +4,12 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\CostcoWinForm.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\ScrapySharp.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\WebDriver.dll
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\itextsharp.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\ScrapySharp.Core.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\FSharp.Core.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\CostcoWinForm.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\ScrapySharp.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\WebDriver.xml
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.pdb
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\itextsharp.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\ScrapySharp.Core.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\ScrapySharp.Core.xml
@@ -25,3 +22,6 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\obj\Debug\WinFormCrawl.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\log4net.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\log4net.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\Crawler.exe
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\Crawler.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\obj\Debug\WinFormCrawl.csproj.WinFormCrawl.exe.config
