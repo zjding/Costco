@@ -119,7 +119,7 @@ namespace CostcoWinForm
             // TODO: This line of code loads data into the 'ds_eBayToAdd.eBay_ToAdd' table. You can move, or remove it, as needed.
             
             // TODO: This line of code loads data into the 'costcoDataSet4.ProductInfo' table. You can move, or remove it, as needed.
-            this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
+            //this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
             //this.TopMost = true;
             this.WindowState = FormWindowState.Maximized;
 
@@ -138,9 +138,9 @@ namespace CostcoWinForm
 
             RefreshLVCategories();
 
-            
+            RefreshProductsGrid();
 
-            this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
+            //this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
 
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = (1000) * (3);              // Timer will tick evert second
@@ -200,9 +200,9 @@ namespace CostcoWinForm
 
         private void btnRefreshProducts_Click(object sender, EventArgs e)
         {
-            //RefreshProductsGrid();
+            RefreshProductsGrid();
 
-            gvProducts.Sort(gvProducts.Columns["Name"], ListSortDirection.Ascending);
+            //gvProducts.Sort(gvProducts.Columns["Name"], ListSortDirection.Ascending);
         }
 
         private void chkAll_CheckedChanged(object sender, EventArgs e)
@@ -1280,6 +1280,8 @@ namespace CostcoWinForm
             productInfoBindingSource.ResetBindings(false);
             productInfoTableAdapter1.Fill(table);
             this.gvProducts.Refresh();
+
+            //this.gvCostcoProducts_Refresh();
 
             //eBayCurrentListingsBindingSource.ResetBindings(false);
             //this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
@@ -4349,67 +4351,126 @@ namespace CostcoWinForm
             
         }
 
-        SqlCommand cmdCostcoProducts;
-        SqlDataAdapter daCostcoProducts;
-        SqlCommandBuilder cmbCostcoProducts;
-        DataSet dsCostcoProducts;
-        DataTable dtCostcoProducts;
+        //SqlCommand cmdCostcoProducts;
+        //SqlDataAdapter daCostcoProducts;
+        //SqlCommandBuilder cmbCostcoProducts;
+        //DataSet dsCostcoProducts;
+        //DataTable dtCostcoProducts;
 
-        public void gvCostcoProducts_Refresh()
-        {
-            string sqlString = @"SELECT * FROM ProductInfo";
+        //public void gvCostcoProducts_Refresh()
+        //{
+        //    List<string> selectedCategories = new List<string>();
 
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            cmdCostcoProducts = new SqlCommand(sqlString, connection);
-            daCostcoProducts = new SqlDataAdapter(cmdCostcoProducts);
-            cmbCostcoProducts = new SqlCommandBuilder(daCostcoProducts);
-            dsCostcoProducts = new DataSet();
-            daCostcoProducts.Fill(dsCostcoProducts, "tbCostcoProducts");
-            dtCostcoProducts = dsCostcoProducts.Tables["tbCostcoProducts"];
-            connection.Close();
+        //    foreach (ListViewItem item in lvCategories.Items)
+        //    {
+        //        if (item.Checked)
+        //        {
+        //            string category = "";
+
+        //            for (int i = 0; i < 8; i++)
+        //            {
+        //                if (item.SubItems[i].Text.Length > 0)
+        //                {
+        //                    category += item.SubItems[i].Text + "|";
+        //                }
+        //            }
+
+        //            category = category.Substring(0, category.Length - 1);
+
+        //            selectedCategories.Add(category);
+        //        }
+        //    }
+
+        //    string selectCategoriesString = "";
+
+        //    foreach (string s in selectedCategories)
+        //    {
+        //        selectCategoriesString += "'" + s + "',";
+        //    }
+
+        //    if (selectCategoriesString.Length > 0)
+        //        selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
+        //    else
+        //        selectCategoriesString = "''";
+
+        //    string sqlString = @"SELECT * FROM ProductInfo WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text;
+
+        //    SqlConnection connection = new SqlConnection(connectionString);
+        //    connection.Open();
+        //    cmdCostcoProducts = new SqlCommand(sqlString, connection);
+        //    daCostcoProducts = new SqlDataAdapter(cmdCostcoProducts);
+        //    cmbCostcoProducts = new SqlCommandBuilder(daCostcoProducts);
+        //    dsCostcoProducts = new DataSet();
+        //    daCostcoProducts.Fill(dsCostcoProducts, "tbCostcoProducts");
+        //    dtCostcoProducts = dsCostcoProducts.Tables["tbCostcoProducts"];
+        //    connection.Close();
+
+        //    gvCostcoProducts.DataSource = dsCostcoProducts.Tables["tbCostcoProducts"];
+        //    gvCostcoProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
 
-            gvCostcoProducts.DataSource = dsCostcoProducts.Tables["tbCostcoProducts"];
-            gvCostcoProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            gvCostcoProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            gvCostcoProducts.Columns[0].Visible = false;
-            
-            DataGridViewImageColumn imgCol = new DataGridViewImageColumn();
-            gvCostcoProducts.Columns.Insert(1, imgCol);
-            imgCol.HeaderText = "Image";
-            imgCol.Name = "Image";
-            imgCol.Width = 100;
-            imgCol.ImageLayout = DataGridViewImageCellLayout.Stretch;
+        //    //DataGridViewImageColumn imgCol = new DataGridViewImageColumn();
+        //    //gvCostcoProducts.Columns.Insert(1, imgCol);
+        //    //imgCol.HeaderText = "Image";
+        //    //imgCol.Name = "Image";
+        //    //imgCol.Width = 100;
+        //    //imgCol.ImageLayout = DataGridViewImageCellLayout.Stretch;
 
-            ThreadPool.QueueUserWorkItem(delegate
-            {
-                foreach (DataGridViewRow row in gvCostcoProducts.Rows)
-                {
-                    row.Cells["Image"].Value = GetImageFromUrl(row.Cells["ImageLink"].Value.ToString());
-                }
-            });
-        }
+        //    //DataGridViewLinkColumn inkCol = new DataGridViewLinkColumn();
+        //    //gvCostcoProducts.Columns.Insert(2, inkCol);
+        //    //inkCol.HeaderText = "Name";
+        //    //inkCol.Name = "LinkName";
+
+        //    //DataGridViewCheckBoxColumn chkCol = new DataGridViewCheckBoxColumn();
+        //    //gvCostcoProducts.Columns.Insert(0, chkCol);
+        //    //chkCol.HeaderText = "Select";
+        //    //chkCol.Name = "Select";
+        //    //chkCol.Width = 20;
+
+        //    //ThreadPool.QueueUserWorkItem(delegate
+        //    //{
+        //    //    foreach (DataGridViewRow row in gvCostcoProducts.Rows)
+        //    //    {
+        //    //        row.Cells["ProductImage"].Value = GetImageFromUrl(row.Cells["ImageLink"].Value.ToString());
+        //    //        row.Cells["ProductLinkName"].Value = row.Cells["Name"].Value.ToString();
+        //    //    }
+        //    //});
+        //}
 
         private void tpCostco_Enter(object sender, EventArgs e)
         {
-            gvCostcoProducts_Refresh();
+            
         }
 
-        private void gvCostcoProducts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            string imageUrl = gvCostcoProducts.Rows[e.RowIndex].Cells["ImageLink"].Value.ToString();
-            gvCostcoProducts.Rows[e.RowIndex].Cells["Image"].Value = GetImageFromUrl(imageUrl);
-        }
+        //private void gvCostcoProducts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    string imageUrl = gvCostcoProducts.Rows[e.RowIndex].Cells["ImageLink"].Value.ToString();
+        //    gvCostcoProducts.Rows[e.RowIndex].Cells["Image"].Value = GetImageFromUrl(imageUrl);
+        //}
 
-        private void gvCostcoProducts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
+        //private void gvCostcoProducts_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        //{
 
-        }
+        //}
 
-        private void gvCostcoProducts_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            gvCostcoProducts.Rows[e.RowIndex].Height = 100;
-        }
+        //private void gvCostcoProducts_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        //{
+        //    gvCostcoProducts.Rows[e.RowIndex].Height = 100;
+        //}
+
+        //private void gvCostcoProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.ColumnIndex == 2)
+        //    {
+        //        string url = gvCostcoProducts.Rows[e.RowIndex].Cells["Url"].FormattedValue.ToString();
+
+        //        Process.Start(@"chrome", url);
+        //    }
+        //}
+
+        //private void gvCostcoProducts_Sorted(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }
