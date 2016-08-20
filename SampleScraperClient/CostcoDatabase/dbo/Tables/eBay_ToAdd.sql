@@ -21,8 +21,13 @@
     [DescriptionImageWidth]  INT             NULL,
     [DescriptionImageHeight] INT             NULL,
     [TemplateName]           NVARCHAR (100)  NULL,
+    [Specifics]              NVARCHAR (500)  NULL,
+    [InsertTime]             DATETIME        NULL,
+    [DeleteTime]             DATETIME        NULL,
     CONSTRAINT [PK_eBayToAdd] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

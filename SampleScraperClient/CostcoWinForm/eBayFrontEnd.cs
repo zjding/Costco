@@ -172,7 +172,7 @@ namespace CostcoWinForm
 
                 this.lvCategories.Items.Add(item);
             }
-
+            
             chkAll.Checked = true;
         }
 
@@ -223,7 +223,7 @@ namespace CostcoWinForm
         {
             if (this.gvProducts.Columns[e.ColumnIndex].Name == "Image")
             {
-                string imageUrl = (this.gvProducts.Rows[e.RowIndex].Cells[11]).FormattedValue.ToString();
+                string imageUrl = (this.gvProducts.Rows[e.RowIndex].Cells[13]).FormattedValue.ToString();
                 if (imageUrl != "")
                 {
                     e.Value = GetImageFromUrl(imageUrl);
@@ -471,6 +471,8 @@ namespace CostcoWinForm
             
             cn.Close();
             driver.Close();
+
+            RefreshProductsGrid();
         }
 
         private string GetEbayCategoryIDAndPrice(string productName, bool bCategoryID = true)
@@ -1235,78 +1237,9 @@ namespace CostcoWinForm
             this.gvCurrentListing.Refresh();
         }
 
-        private void lvCategories_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            List<string> selectedCategories = new List<string>();
-
-            foreach (ListViewItem item in lvCategories.Items)
-            {
-                if (item.Checked)
-                {
-                    string category = "";
-
-                    for (int i = 0; i < 8; i++)
-                    {
-                        category += item.SubItems[i].Text + "|";
-                    }
-
-                    category = category.Substring(0, category.Length - 1);
-
-                    selectedCategories.Add(category);
-                }
-            }
-
-            string selectCategoriesString = "";
-
-            foreach (string s in selectedCategories)
-            {
-                selectCategoriesString += "'" + s + "',";
-            }
-
-            selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
-
-            string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
-                                Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
-                                FROM ProductInfo
-                                WHERE Category in (" + selectCategoriesString + ")";
-
-            SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
-            CostcoDataSet4.ProductInfoDataTable table = new CostcoDataSet4.ProductInfoDataTable();
-            table.Locale = System.Globalization.CultureInfo.InvariantCulture;
-            //dataAdapter.Fill(table);
-
-            //this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
-
-            productInfoBindingSource.ResetBindings(false);
-            productInfoTableAdapter1.Fill(table);
-            this.gvProducts.Refresh();
-
-            //this.gvCostcoProducts_Refresh();
-
-            //eBayCurrentListingsBindingSource.ResetBindings(false);
-            //this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
-            ////this.gvToAdd.Update();
-            //this.gvCurrentListing.Refresh();
-        }
-
-        private void lvCategories_ItemCheck(object sender, ItemCheckEventArgs e)
-        {
-            if (bInit)
-            {
 
 
-
-                //CostcoDataSet4.ProductInfoDataTable table = new CostcoDataSet4.ProductInfoDataTable();
-                //table.Locale = System.Globalization.CultureInfo.InvariantCulture;
-                ////dataAdapter.Fill(table);
-
-                ////this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
-
-                //productInfoBindingSource.ResetBindings(false);
-                //productInfoTableAdapter1.Fill(table);
-                //this.gvProducts.Refresh();
-            }
-        }
+        
 
         private void lvCategories_ItemChecked(object sender, ItemCheckedEventArgs e)
         {
@@ -1358,7 +1291,8 @@ namespace CostcoWinForm
             string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
                                 Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
                                 FROM ProductInfo
-                                WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text;
+                                WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text +
+                                @" AND UrlNumber not in (SELECT UrlNumber FROM eBay_ToAdd) AND UrlNumber not in (SELECT CostcoUrlNumber FROM eBay_CurrentListings)";
 
             SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
             DataSet products = new DataSet();
@@ -4439,7 +4373,7 @@ namespace CostcoWinForm
 
         private void tpCostco_Enter(object sender, EventArgs e)
         {
-            
+            RefreshProductsGrid();
         }
 
         //private void gvCostcoProducts_CellEndEdit(object sender, DataGridViewCellEventArgs e)

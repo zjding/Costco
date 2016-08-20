@@ -8,6 +8,9 @@
     [Category7]            NVARCHAR (100) NULL,
     [Category8]            NVARCHAR (100) NULL,
     [eBay_Category_Number] NVARCHAR (20)  NULL,
-    [Template_Name]        NVARCHAR (100) NULL
+    [Template_Name]        NVARCHAR (100) NULL,
+    [Specifics]            NVARCHAR (500) NULL
 );
+
+
 

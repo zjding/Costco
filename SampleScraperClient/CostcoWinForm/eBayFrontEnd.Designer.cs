@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tpTax = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.gvTaxExempt = new System.Windows.Forms.DataGridView();
@@ -135,21 +135,6 @@
             this.btnAddPending = new System.Windows.Forms.Button();
             this.btnRefreshProducts = new System.Windows.Forms.Button();
             this.gvProducts = new System.Windows.Forms.DataGridView();
-            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
-            this.UrlNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.shippingDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Limit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.detailsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.specificationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.imageLinkDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.itemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.costcoDataSet4 = new CostcoWinForm.CostcoDataSet4();
             this.btnCrawl = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -343,11 +328,26 @@
             this.tpMaintenance = new System.Windows.Forms.TabPage();
             this.btnImportEBayCatetories = new System.Windows.Forms.Button();
             this.btnEBayItemSpecifics = new System.Windows.Forms.Button();
-            this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
             this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
             this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
+            this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
+            this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ImageLink = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UrlNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.priceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.shippingDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Discount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Limit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.detailsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.specificationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.itemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -380,7 +380,6 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpToAdd.SuspendLayout();
@@ -404,6 +403,7 @@
             this.tpResearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayResearch)).BeginInit();
             this.tpMaintenance.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tpTax
@@ -1135,9 +1135,7 @@
             this.lvCategories.TabIndex = 0;
             this.lvCategories.UseCompatibleStateImageBehavior = false;
             this.lvCategories.View = System.Windows.Forms.View.Details;
-            this.lvCategories.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.lvCategories_ItemCheck);
             this.lvCategories.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvCategories_ItemChecked);
-            this.lvCategories.SelectedIndexChanged += new System.EventHandler(this.lvCategories_SelectedIndexChanged);
             // 
             // Select
             // 
@@ -1300,13 +1298,13 @@
             this.gvProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gvProducts.AutoGenerateColumns = false;
             this.gvProducts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvProducts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Check,
             this.iDDataGridViewTextBoxColumn,
             this.nameDataGridViewTextBoxColumn,
             this.Image,
+            this.ImageLink,
             this.UrlNumber,
             this.priceDataGridViewTextBoxColumn,
             this.shippingDataGridViewTextBoxColumn,
@@ -1314,10 +1312,8 @@
             this.Limit,
             this.detailsDataGridViewTextBoxColumn,
             this.specificationDataGridViewTextBoxColumn,
-            this.imageLinkDataGridViewTextBoxColumn,
             this.urlDataGridViewTextBoxColumn,
             this.itemNumberDataGridViewTextBoxColumn});
-            this.gvProducts.DataSource = this.productInfoBindingSource;
             this.gvProducts.Location = new System.Drawing.Point(6, 45);
             this.gvProducts.Name = "gvProducts";
             this.gvProducts.RowTemplate.Height = 100;
@@ -1327,114 +1323,6 @@
             this.gvProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvProducts_CellClick);
             this.gvProducts.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvProducts_CellFormatting);
             this.gvProducts.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.gvProducts_RowsAdded);
-            // 
-            // Check
-            // 
-            this.Check.HeaderText = "";
-            this.Check.Name = "Check";
-            this.Check.Width = 20;
-            // 
-            // iDDataGridViewTextBoxColumn
-            // 
-            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
-            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
-            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
-            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
-            this.iDDataGridViewTextBoxColumn.Width = 40;
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.nameDataGridViewTextBoxColumn.Width = 300;
-            // 
-            // Image
-            // 
-            this.Image.HeaderText = "Image";
-            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.Image.Name = "Image";
-            this.Image.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Image.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // UrlNumber
-            // 
-            this.UrlNumber.DataPropertyName = "UrlNumber";
-            this.UrlNumber.HeaderText = "UrlNumber";
-            this.UrlNumber.Name = "UrlNumber";
-            // 
-            // priceDataGridViewTextBoxColumn
-            // 
-            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
-            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
-            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
-            // 
-            // shippingDataGridViewTextBoxColumn
-            // 
-            this.shippingDataGridViewTextBoxColumn.DataPropertyName = "Shipping";
-            this.shippingDataGridViewTextBoxColumn.HeaderText = "Shipping";
-            this.shippingDataGridViewTextBoxColumn.Name = "shippingDataGridViewTextBoxColumn";
-            // 
-            // Discount
-            // 
-            this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Discount.HeaderText = "Discount";
-            this.Discount.Name = "Discount";
-            // 
-            // Limit
-            // 
-            this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle3;
-            this.Limit.HeaderText = "Limit";
-            this.Limit.Name = "Limit";
-            this.Limit.Width = 80;
-            // 
-            // detailsDataGridViewTextBoxColumn
-            // 
-            this.detailsDataGridViewTextBoxColumn.DataPropertyName = "Details";
-            this.detailsDataGridViewTextBoxColumn.HeaderText = "Details";
-            this.detailsDataGridViewTextBoxColumn.Name = "detailsDataGridViewTextBoxColumn";
-            this.detailsDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // specificationDataGridViewTextBoxColumn
-            // 
-            this.specificationDataGridViewTextBoxColumn.DataPropertyName = "Specification";
-            this.specificationDataGridViewTextBoxColumn.HeaderText = "Specification";
-            this.specificationDataGridViewTextBoxColumn.Name = "specificationDataGridViewTextBoxColumn";
-            this.specificationDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // imageLinkDataGridViewTextBoxColumn
-            // 
-            this.imageLinkDataGridViewTextBoxColumn.DataPropertyName = "ImageLink";
-            this.imageLinkDataGridViewTextBoxColumn.HeaderText = "ImageLink";
-            this.imageLinkDataGridViewTextBoxColumn.Name = "imageLinkDataGridViewTextBoxColumn";
-            this.imageLinkDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // urlDataGridViewTextBoxColumn
-            // 
-            this.urlDataGridViewTextBoxColumn.DataPropertyName = "Url";
-            this.urlDataGridViewTextBoxColumn.HeaderText = "Url";
-            this.urlDataGridViewTextBoxColumn.Name = "urlDataGridViewTextBoxColumn";
-            this.urlDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // itemNumberDataGridViewTextBoxColumn
-            // 
-            this.itemNumberDataGridViewTextBoxColumn.DataPropertyName = "ItemNumber";
-            this.itemNumberDataGridViewTextBoxColumn.HeaderText = "ItemNumber";
-            this.itemNumberDataGridViewTextBoxColumn.Name = "itemNumberDataGridViewTextBoxColumn";
-            this.itemNumberDataGridViewTextBoxColumn.Visible = false;
-            // 
-            // productInfoBindingSource
-            // 
-            this.productInfoBindingSource.DataMember = "ProductInfo";
-            this.productInfoBindingSource.DataSource = this.costcoDataSet4;
             // 
             // costcoDataSet4
             // 
@@ -3900,10 +3788,6 @@
             this.btnEBayItemSpecifics.UseVisualStyleBackColor = true;
             this.btnEBayItemSpecifics.Click += new System.EventHandler(this.btnEBayItemSpecifics_Click);
             // 
-            // productInfoTableAdapter1
-            // 
-            this.productInfoTableAdapter1.ClearBeforeFill = true;
-            // 
             // eBay_CurrentListingsTableAdapter
             // 
             this.eBay_CurrentListingsTableAdapter.ClearBeforeFill = true;
@@ -3919,6 +3803,118 @@
             // eBay_SoldTransactionsTableAdapter
             // 
             this.eBay_SoldTransactionsTableAdapter.ClearBeforeFill = true;
+            // 
+            // productInfoTableAdapter1
+            // 
+            this.productInfoTableAdapter1.ClearBeforeFill = true;
+            // 
+            // productInfoBindingSource
+            // 
+            this.productInfoBindingSource.DataMember = "ProductInfo";
+            this.productInfoBindingSource.DataSource = this.costcoDataSet4;
+            // 
+            // Check
+            // 
+            this.Check.HeaderText = "";
+            this.Check.Name = "Check";
+            this.Check.Width = 20;
+            // 
+            // iDDataGridViewTextBoxColumn
+            // 
+            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
+            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
+            this.iDDataGridViewTextBoxColumn.ReadOnly = true;
+            this.iDDataGridViewTextBoxColumn.Width = 40;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.nameDataGridViewTextBoxColumn.Width = 300;
+            // 
+            // Image
+            // 
+            this.Image.HeaderText = "Image";
+            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.Image.Name = "Image";
+            this.Image.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.Image.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // ImageLink
+            // 
+            this.ImageLink.DataPropertyName = "ImageLink";
+            this.ImageLink.HeaderText = "ImageLink";
+            this.ImageLink.Name = "ImageLink";
+            this.ImageLink.Visible = false;
+            // 
+            // UrlNumber
+            // 
+            this.UrlNumber.DataPropertyName = "UrlNumber";
+            this.UrlNumber.HeaderText = "UrlNumber";
+            this.UrlNumber.Name = "UrlNumber";
+            // 
+            // priceDataGridViewTextBoxColumn
+            // 
+            this.priceDataGridViewTextBoxColumn.DataPropertyName = "Price";
+            this.priceDataGridViewTextBoxColumn.HeaderText = "Price";
+            this.priceDataGridViewTextBoxColumn.Name = "priceDataGridViewTextBoxColumn";
+            // 
+            // shippingDataGridViewTextBoxColumn
+            // 
+            this.shippingDataGridViewTextBoxColumn.DataPropertyName = "Shipping";
+            this.shippingDataGridViewTextBoxColumn.HeaderText = "Shipping";
+            this.shippingDataGridViewTextBoxColumn.Name = "shippingDataGridViewTextBoxColumn";
+            // 
+            // Discount
+            // 
+            this.Discount.DataPropertyName = "Discount";
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle11;
+            this.Discount.HeaderText = "Discount";
+            this.Discount.Name = "Discount";
+            // 
+            // Limit
+            // 
+            this.Limit.DataPropertyName = "Limit";
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle12;
+            this.Limit.HeaderText = "Limit";
+            this.Limit.Name = "Limit";
+            this.Limit.Width = 80;
+            // 
+            // detailsDataGridViewTextBoxColumn
+            // 
+            this.detailsDataGridViewTextBoxColumn.DataPropertyName = "Details";
+            this.detailsDataGridViewTextBoxColumn.HeaderText = "Details";
+            this.detailsDataGridViewTextBoxColumn.Name = "detailsDataGridViewTextBoxColumn";
+            this.detailsDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // specificationDataGridViewTextBoxColumn
+            // 
+            this.specificationDataGridViewTextBoxColumn.DataPropertyName = "Specification";
+            this.specificationDataGridViewTextBoxColumn.HeaderText = "Specification";
+            this.specificationDataGridViewTextBoxColumn.Name = "specificationDataGridViewTextBoxColumn";
+            this.specificationDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // urlDataGridViewTextBoxColumn
+            // 
+            this.urlDataGridViewTextBoxColumn.DataPropertyName = "Url";
+            this.urlDataGridViewTextBoxColumn.HeaderText = "Url";
+            this.urlDataGridViewTextBoxColumn.Name = "urlDataGridViewTextBoxColumn";
+            this.urlDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // itemNumberDataGridViewTextBoxColumn
+            // 
+            this.itemNumberDataGridViewTextBoxColumn.DataPropertyName = "ItemNumber";
+            this.itemNumberDataGridViewTextBoxColumn.HeaderText = "ItemNumber";
+            this.itemNumberDataGridViewTextBoxColumn.Name = "itemNumberDataGridViewTextBoxColumn";
+            this.itemNumberDataGridViewTextBoxColumn.Visible = false;
             // 
             // eBayFrontEnd
             // 
@@ -3965,7 +3961,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tpToAdd.ResumeLayout(false);
@@ -3994,14 +3989,13 @@
             this.tpResearch.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayResearch)).EndInit();
             this.tpMaintenance.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private CostcoDataSet4 costcoDataSet4;
-        private System.Windows.Forms.BindingSource productInfoBindingSource;
-        private CostcoDataSet4TableAdapters.ProductInfoTableAdapter productInfoTableAdapter1;
         private dseBayCurrentListings dseBayCurrentListings;
         private System.Windows.Forms.BindingSource eBayCurrentListingsBindingSource;
         private dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter eBay_CurrentListingsTableAdapter;
@@ -4301,10 +4295,13 @@
         private System.Windows.Forms.Button btnEBayItemSpecifics;
         private System.Windows.Forms.DataGridView gvAdd;
         private System.Windows.Forms.Button btnImportEBayCatetories;
+        private CostcoDataSet4TableAdapters.ProductInfoTableAdapter productInfoTableAdapter1;
+        private System.Windows.Forms.BindingSource productInfoBindingSource;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewLinkColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewImageColumn Image;
+        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn UrlNumber;
         private System.Windows.Forms.DataGridViewTextBoxColumn priceDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn shippingDataGridViewTextBoxColumn;
@@ -4312,8 +4309,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Limit;
         private System.Windows.Forms.DataGridViewTextBoxColumn detailsDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn specificationDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn imageLinkDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ImageLink;
     }
 }
