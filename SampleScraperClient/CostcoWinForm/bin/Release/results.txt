@@ -1,0 +1,12 @@
+<html>
+<head>
+<!--eBay V3- msxml 6.0 XXXXXXXXXXXXXXXXXXXXXXXXXX-->
+<!--srcId - File Exchange Programmatically Upload-->
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+<title>Upload File Programmatically</title><script language="JavaScript"><!--
+								var pageName = "File Exchange Upload";
+													
+							//--></script><script language="javascript" src="http://include.ebaystatic.com/js/e951/us/legacy/globals_e9512us.js"> </script><script src="http://include.ebaystatic.com/js/e979/us/legacy/common_functions_e9792us.js"> </script></head>
+<body>
+				File upload successful. Your ref # is 751465397.<br><a href="javascript:void(0);" onclick="self.close();return false;">Close</a></body>
+</html>

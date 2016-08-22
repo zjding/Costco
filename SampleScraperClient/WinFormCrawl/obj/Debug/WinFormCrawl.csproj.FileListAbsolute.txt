@@ -23,5 +23,6 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\log4net.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\log4net.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\Crawler.exe
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\Crawler.pdb
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\obj\Debug\WinFormCrawl.csproj.WinFormCrawl.exe.config
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.xml

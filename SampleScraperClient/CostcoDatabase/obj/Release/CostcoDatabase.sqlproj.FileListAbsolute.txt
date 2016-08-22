@@ -3,3 +3,7 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDa
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\obj\Release\CostcoDatabase.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\bin\Release\CostcoDatabase.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\bin\Release\CostcoDatabase.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\obj\Release\Model.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\obj\Release\refactor.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\obj\Release\postdeploy.sql
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoDatabase\obj\Release\predeploy.sql

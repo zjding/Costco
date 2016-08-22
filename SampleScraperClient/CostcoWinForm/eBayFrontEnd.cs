@@ -4376,6 +4376,23 @@ namespace CostcoWinForm
             RefreshProductsGrid();
         }
 
+        private void btnChangeForEBayListings_Click(object sender, EventArgs e)
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            SqlDataReader rdr;
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString;
+
+            sqlString = "TRUNCATE TABLE Raw_ProductInfo";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+
+        }
+
         //private void gvCostcoProducts_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         //{
         //    string imageUrl = gvCostcoProducts.Rows[e.RowIndex].Cells["ImageLink"].Value.ToString();
