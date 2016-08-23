@@ -26,3 +26,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\WinFormCrawl\bin\Debug\Crawler.pdb

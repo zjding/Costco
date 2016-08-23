@@ -101,11 +101,36 @@ namespace CostcoWinForm
         {
             InitializeComponent();
 
-            connectionString = ConfigurationManager.ConnectionStrings["connection"].ConnectionString;
+            //connectionString = ConfigurationManager.ConnectionStrings["connection"].ConnectionString;
+        }
+
+        public void SetConnectionString()
+        {
+            string azureConnectionString = "Server=tcp:zjding.database.windows.net,1433;Initial Catalog=Costco;Persist Security Info=False;User ID=zjding;Password=G4indigo;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+
+            SqlConnection cn = new SqlConnection(azureConnectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+            string sqlString = "SELECT ConnectionString FROM DatabaseToUse WHERE bUse = 1 and ApplicationName = 'Crawler'";
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    connectionString = (reader.GetString(0)).ToString();
+                }
+            }
+            reader.Close();
+            cn.Close();
         }
 
         private void eBayFrontEnd_Load(object sender, EventArgs e)
         {
+            SetConnectionString();
+
             // TODO: This line of code loads data into the 'dsEBaySold.eBay_SoldTransactions' table. You can move, or remove it, as needed.
             this.eBay_SoldTransactionsTableAdapter.Fill(this.dsEBaySold.eBay_SoldTransactions);
             // TODO: This line of code loads data into the 'costcoDataSet6.eBay_ToChange' table. You can move, or remove it, as needed.
@@ -301,7 +326,7 @@ namespace CostcoWinForm
             GetProductInfo(false);
 
             PopulateTables();
-
+            
             CompareProducts();
 
             ArchieveProducts();
@@ -4378,18 +4403,13 @@ namespace CostcoWinForm
 
         private void btnChangeForEBayListings_Click(object sender, EventArgs e)
         {
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            SqlDataReader rdr;
-            cmd.Connection = cn;
-            cn.Open();
+            int nEBayListingChangePriceUp = 0;
+            int nEBayListingChangePriceDown = 0;
+            int nEBayListingChangeDiscontinue = 0;
+            int nEBayListingChangeOptions = 0;
 
-            string sqlString;
-
-            sqlString = "TRUNCATE TABLE Raw_ProductInfo";
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-
+            Crawler.Form1 crawler = new Crawler.Form1();
+            crawler.CheckEBayListing(out nEBayListingChangePriceUp, out nEBayListingChangePriceDown, out nEBayListingChangeDiscontinue, out nEBayListingChangeOptions);
 
         }
 
