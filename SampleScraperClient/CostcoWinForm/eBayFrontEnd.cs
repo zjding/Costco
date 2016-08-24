@@ -3095,11 +3095,10 @@ namespace CostcoWinForm
             }
 
             reader.Close();
-            cn.Close();
 
             // add to Excel file
-            string sourceFileName = @"c:\ebay\documents\" + "FileExchangeRemove.csv";
-            string destinFileName = @"c:\ebay\upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeRemove.csv";
+            string destinFileName = @"C:\eBayApp\Upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
             File.Copy(sourceFileName, destinFileName);
 
             Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
@@ -3144,9 +3143,17 @@ namespace CostcoWinForm
             oXL.Application.Quit();
             oXL.Quit();
 
-            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+            string command = "c:\\eBayApp\\Curl\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+
+            sqlString = "UPDATE eBay_ToRemove SET DeleteTime = GETDATE()"; // WHERE shipping = 0.00 and Price < 100";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+            cn.Close();
+
+            gvDelete_Refresh();
         }
 
         private void btnToChangeDelete_Click(object sender, EventArgs e)
@@ -4411,6 +4418,139 @@ namespace CostcoWinForm
             Crawler.Form1 crawler = new Crawler.Form1();
             crawler.CheckEBayListing(out nEBayListingChangePriceUp, out nEBayListingChangePriceDown, out nEBayListingChangeDiscontinue, out nEBayListingChangeOptions);
 
+            this.llEBayDiscontinue.Text = nEBayListingChangeDiscontinue.ToString();
+            this.llEBayPriceUp.Text = nEBayListingChangePriceUp.ToString();
+            this.llEBayPriceDown.Text = nEBayListingChangePriceDown.ToString();
+            this.llEBayOptions.Text = nEBayListingChangeOptions.ToString();
+
+        }
+
+        private void llEBayDiscontinue_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "Discontinue");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_Discontinue]";
+            cmd.CommandText = sqlString;
+            llEBayDiscontinue.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        private void tpDashboard_Enter(object sender, EventArgs e)
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            //SqlDataReader rdr;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_PriceUp]";
+            cmd.CommandText = sqlString;
+            llEBayPriceUp.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_PriceDown]";
+            cmd.CommandText = sqlString;
+            llEBayPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_Discontinue]";
+            cmd.CommandText = sqlString;
+            llEBayDiscontinue.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_OptionChange]";
+            cmd.CommandText = sqlString;
+            llEBayOptions.Text = Convert.ToString(cmd.ExecuteScalar());
+        }
+
+        private void llEBayPriceUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "PriceUp");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_PriceUp]";
+            cmd.CommandText = sqlString;
+            llEBayPriceUp.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        SqlCommand cmdToDelete;
+        SqlDataAdapter daToDelete;
+        SqlCommandBuilder cmbToDelete;
+        DataSet dsToDelete;
+        DataTable dtToDelete;
+
+        public void gvDelete_Refresh()
+        {
+            string sqlString = @"SELECT ID, Name, CostcoUrl, CostcoUrlNumber, eBayItemNumber
+                                 FROM eBay_ToRemove 
+                                 WHERE DeleteTime is NULL
+                                 Order by InsertTime DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            cmdToDelete = new SqlCommand(sqlString, connection);
+            daToDelete = new SqlDataAdapter(cmdToDelete);
+            cmbToDelete = new SqlCommandBuilder(daToDelete);
+            dsToDelete = new DataSet();
+            daToDelete.Fill(dsToDelete, "tbToDelete");
+            dtToDelete = dsToDelete.Tables["tbToDelete"];
+            connection.Close();
+
+            gvDelete.DataSource = dsToDelete.Tables["tbToDelete"];
+            gvDelete.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            //gvDelete.Columns["Select"].Width = 20;
+            gvDelete.Columns["ID"].Visible = false;
+            gvDelete.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvDelete.Columns["CostcoUrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvDelete.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvDelete.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+        }
+
+        private void tpEbayToDelete_Enter(object sender, EventArgs e)
+        {
+            gvDelete_Refresh();
+        }
+
+        private void gvDelete_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            if (e.ColumnIndex == 0)
+            {
+                foreach (DataGridViewRow row in gvDelete.Rows)
+                {
+                    if (row.Cells["ToDeleteSelect"].Value != null && ((bool)row.Cells["ToDeleteSelect"].Value) == true)
+                    {
+                        gvDelete.Rows[row.Index].Selected = true;
+                        gvDelete.Rows[row.Index].DefaultCellStyle.BackColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        gvDelete.Rows[row.Index].Selected = false;
+                        gvDelete.Rows[row.Index].DefaultCellStyle.BackColor = Color.White;
+                    }
+
+                }
+            }
         }
 
         //private void gvCostcoProducts_CellEndEdit(object sender, DataGridViewCellEventArgs e)

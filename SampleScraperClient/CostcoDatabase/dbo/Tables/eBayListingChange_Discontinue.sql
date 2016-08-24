@@ -3,6 +3,9 @@
     [Name]           NVARCHAR (200) NULL,
     [CostcoUrl]      NVARCHAR (200) NULL,
     [UrlNumber]      NVARCHAR (200) NULL,
-    [eBayItemNumber] NVARCHAR (50)  NULL
+    [eBayItemNumber] NVARCHAR (50)  NULL,
+    CONSTRAINT [PK_eBayListingChange_Discontinue] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 

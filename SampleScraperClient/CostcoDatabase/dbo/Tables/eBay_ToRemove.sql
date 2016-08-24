@@ -12,6 +12,10 @@
     [CostcoItemNumber] NVARCHAR (50)  NULL,
     [CostcoUrl]        NVARCHAR (MAX) NULL,
     [CostcoPrice]      MONEY          NULL,
-    [ImageLink]        NVARCHAR (MAX) NULL
+    [ImageLink]        NVARCHAR (MAX) NULL,
+    [InsertTime]       DATETIME       NULL,
+    [DeleteTime]       DATETIME       NULL
 );
+
+
 

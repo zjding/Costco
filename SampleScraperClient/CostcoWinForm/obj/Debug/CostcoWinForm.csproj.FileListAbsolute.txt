@@ -42,3 +42,4 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWi
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.frmBookKeeping.resources
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\Crawler.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\bin\Debug\Crawler.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CostcoWinForm\obj\Debug\CostcoWinForm.frmEBayListingChange_Discontinue.resources

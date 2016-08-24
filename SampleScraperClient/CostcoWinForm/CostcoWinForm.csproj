@@ -186,6 +186,12 @@
     <Compile Include="FrmCostcoCategories.Designer.cs">
       <DependentUpon>FrmCostcoCategories.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmEBayListingChange_Discontinue.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEBayListingChange_Discontinue.Designer.cs">
+      <DependentUpon>frmEBayListingChange_Discontinue.cs</DependentUpon>
+    </Compile>
     <Compile Include="HtmlToText.cs" />
     <Compile Include="ListedProducts.cs">
       <SubType>Form</SubType>
@@ -213,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCostcoCategories.resx">
       <DependentUpon>FrmCostcoCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEBayListingChange_Discontinue.resx">
+      <DependentUpon>frmEBayListingChange_Discontinue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ListedProducts.resx">
       <DependentUpon>ListedProducts.cs</DependentUpon>
