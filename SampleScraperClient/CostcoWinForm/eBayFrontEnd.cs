@@ -137,8 +137,7 @@ namespace CostcoWinForm
             this.eBay_ToChangeTableAdapter.Fill(this.costcoDataSet6.eBay_ToChange);
             bInit = false;
 
-            // TODO: This line of code loads data into the 'costcoDataSet5.eBay_ToRemove' table. You can move, or remove it, as needed.
-            this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
+            
             // TODO: This line of code loads data into the 'dseBayCurrentListings.eBay_CurrentListings' table. You can move, or remove it, as needed.
             this.eBay_CurrentListingsTableAdapter.Fill(this.dseBayCurrentListings.eBay_CurrentListings);
             // TODO: This line of code loads data into the 'ds_eBayToAdd.eBay_ToAdd' table. You can move, or remove it, as needed.
@@ -208,12 +207,6 @@ namespace CostcoWinForm
                 eBayToChangeBindingSource.ResetBindings(false);
                 this.eBay_ToChangeTableAdapter.Fill(this.costcoDataSet6.eBay_ToChange);
                 this.gvToChange.Refresh();
-            }
-            else if (this.tpEbayToDelete == tabControl1.SelectedTab)
-            {
-                eBayToRemoveBindingSource.ResetBindings(false);
-                this.eBay_ToRemoveTableAdapter.Fill(this.ds_eBayToRemove.eBay_ToRemove);
-                this.gvToDelete.Refresh();
             }
             else if (tpCurrentListing == tabControl1.SelectedTab)
             {
@@ -4213,6 +4206,44 @@ namespace CostcoWinForm
             daToAdd.Update(dtToAdd);
         }
 
+        SqlCommand cmdToChange;
+        SqlDataAdapter daToChange;
+        SqlCommandBuilder cmbToChange;
+        DataSet dsToChange;
+        DataTable dtToChange;
+
+        public void gvChange_Refresh()
+        {
+            string sqlString = @"SELECT ID, Name, eBayReferencePrice, eBayOldListingPrice, eBayNewListingPrice, CostcoOldPrice, CostcoNewPrice, OldOptions, NewOptions, Url
+                                 FROM eBay_ToChange 
+                                 WHERE DeleteTime is NULL
+                                 Order by InsertTime DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            cmdToChange = new SqlCommand(sqlString, connection);
+            daToChange = new SqlDataAdapter(cmdToChange);
+            cmbToChange = new SqlCommandBuilder(daToChange);
+            dsToChange = new DataSet();
+            daToChange.Fill(dsToChange, "tbToChange");
+            dtToChange = dsToChange.Tables["tbToChange"];
+            connection.Close();
+
+            gvChange.DataSource = dsToChange.Tables["tbToChange"];
+            gvChange.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            gvChange.Columns["ID"].Visible = false;
+            gvChange.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayOldListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayNewListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["CostcoOldPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["CostcoNewPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["OldOptions"].Width = 150;
+            gvChange.Columns["NewOptions"].Width = 150;
+            gvChange.Columns["Url"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
+
         private int GetColumnIndex(ref Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet, string columnName)
         {
             Microsoft.Office.Interop.Excel.Range range = xlWorkSheet.UsedRange;
@@ -4551,6 +4582,49 @@ namespace CostcoWinForm
 
                 }
             }
+        }
+
+        private void llEBayPriceDown_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "PriceDown");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_PriceDown]";
+            cmd.CommandText = sqlString;
+            llEBayPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        private void llEBayOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "OptionChange");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_OptionChange]";
+            cmd.CommandText = sqlString;
+            llEBayOptions.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        private void tpEBayToModify_Enter(object sender, EventArgs e)
+        {
+            gvChange_Refresh();
         }
 
         //private void gvCostcoProducts_CellEndEdit(object sender, DataGridViewCellEventArgs e)

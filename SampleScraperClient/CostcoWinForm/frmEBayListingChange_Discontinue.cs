@@ -75,9 +75,9 @@ namespace CostcoWinForm
 
             gvEBayListingChangeDiscontinue.Columns["Select"].Width = 20;
             gvEBayListingChangeDiscontinue.Columns["ID"].Visible = false;
-            gvEBayListingChangeDiscontinue.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvEBayListingChangeDiscontinue.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvEBayListingChangeDiscontinue.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvEBayListingChangeDiscontinue.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvEBayListingChangeDiscontinue.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvEBayListingChangeDiscontinue.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             if (mode == "Discontinue")

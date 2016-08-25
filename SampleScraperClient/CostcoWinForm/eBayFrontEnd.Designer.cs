@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tpTax = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.gvTaxExempt = new System.Windows.Forms.DataGridView();
@@ -209,9 +209,9 @@
             this.costcoDataSet6 = new CostcoWinForm.CostcoDataSet6();
             this.tpEbayToDelete = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.gvDelete = new System.Windows.Forms.DataGridView();
+            this.ToDeleteSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btnToDeleteUpload = new System.Windows.Forms.Button();
-            this.gvToDelete = new System.Windows.Forms.DataGridView();
-            this.eBayToRemoveBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tpSaleTax = new System.Windows.Forms.TabPage();
             this.panel4 = new System.Windows.Forms.Panel();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -352,14 +352,12 @@
             this.btnEBayItemSpecifics = new System.Windows.Forms.Button();
             this.costcoDataSet4 = new CostcoWinForm.CostcoDataSet4();
             this.eBay_CurrentListingsTableAdapter = new CostcoWinForm.dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter();
-            this.eBay_ToRemoveTableAdapter = new CostcoWinForm.CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter();
             this.eBay_ToChangeTableAdapter = new CostcoWinForm.CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter();
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
             this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.gvDelete = new System.Windows.Forms.DataGridView();
-            this.ToDeleteSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ds_eBayToRemove = new CostcoWinForm.CostcoDataSet5();
+            this.gvChange = new System.Windows.Forms.DataGridView();
+            this.ToChangeSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -403,8 +401,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
             this.tpEbayToDelete.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gvToDelete)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToRemoveBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDelete)).BeginInit();
             this.tpSaleTax.SuspendLayout();
             this.panel4.SuspendLayout();
             this.groupBox7.SuspendLayout();
@@ -419,8 +416,7 @@
             this.tpMaintenance.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvDelete)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToRemove)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvChange)).BeginInit();
             this.SuspendLayout();
             // 
             // tpTax
@@ -1338,8 +1334,8 @@
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle7;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1382,16 +1378,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle8;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle9;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -1550,6 +1546,7 @@
             this.llEBayOptions.TabStop = true;
             this.llEBayOptions.Text = "0";
             this.llEBayOptions.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llEBayOptions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llEBayOptions_LinkClicked);
             // 
             // llEBayPriceDown
             // 
@@ -1565,6 +1562,7 @@
             this.llEBayPriceDown.TabStop = true;
             this.llEBayPriceDown.Text = "0";
             this.llEBayPriceDown.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llEBayPriceDown.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llEBayPriceDown_LinkClicked);
             // 
             // llEBayPriceUp
             // 
@@ -1875,9 +1873,11 @@
             this.tpEBayToModify.TabIndex = 8;
             this.tpEBayToModify.Text = "eBay To Modify";
             this.tpEBayToModify.UseVisualStyleBackColor = true;
+            this.tpEBayToModify.Enter += new System.EventHandler(this.tpEBayToModify_Enter);
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.gvChange);
             this.groupBox4.Controls.Add(this.btnToChangeUpdate);
             this.groupBox4.Controls.Add(this.btnToChangeDelete);
             this.groupBox4.Controls.Add(this.btnToChangeUpload);
@@ -1951,9 +1951,9 @@
             this.descriptionImageWidthDataGridViewTextBoxColumn1,
             this.descriptionImageHeightDataGridViewTextBoxColumn1});
             this.gvToChange.DataSource = this.eBayToChangeBindingSource;
-            this.gvToChange.Location = new System.Drawing.Point(6, 38);
+            this.gvToChange.Location = new System.Drawing.Point(6, 344);
             this.gvToChange.Name = "gvToChange";
-            this.gvToChange.Size = new System.Drawing.Size(1226, 584);
+            this.gvToChange.Size = new System.Drawing.Size(1226, 278);
             this.gvToChange.TabIndex = 0;
             // 
             // iDDataGridViewTextBoxColumn4
@@ -2115,7 +2115,6 @@
             // 
             this.groupBox5.Controls.Add(this.gvDelete);
             this.groupBox5.Controls.Add(this.btnToDeleteUpload);
-            this.groupBox5.Controls.Add(this.gvToDelete);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
@@ -2123,6 +2122,27 @@
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "To be Deleted Items";
+            // 
+            // gvDelete
+            // 
+            this.gvDelete.AllowUserToAddRows = false;
+            this.gvDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gvDelete.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvDelete.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ToDeleteSelect});
+            this.gvDelete.Location = new System.Drawing.Point(6, 39);
+            this.gvDelete.Name = "gvDelete";
+            this.gvDelete.Size = new System.Drawing.Size(1226, 583);
+            this.gvDelete.TabIndex = 4;
+            this.gvDelete.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvDelete_CellValueChanged);
+            // 
+            // ToDeleteSelect
+            // 
+            this.ToDeleteSelect.HeaderText = "Select";
+            this.ToDeleteSelect.Name = "ToDeleteSelect";
+            this.ToDeleteSelect.Width = 20;
             // 
             // btnToDeleteUpload
             // 
@@ -2134,23 +2154,6 @@
             this.btnToDeleteUpload.Text = "Upload";
             this.btnToDeleteUpload.UseVisualStyleBackColor = true;
             this.btnToDeleteUpload.Click += new System.EventHandler(this.btnToDeleteUpload_Click);
-            // 
-            // gvToDelete
-            // 
-            this.gvToDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gvToDelete.AutoGenerateColumns = false;
-            this.gvToDelete.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvToDelete.DataSource = this.eBayToRemoveBindingSource;
-            this.gvToDelete.Location = new System.Drawing.Point(6, 294);
-            this.gvToDelete.Name = "gvToDelete";
-            this.gvToDelete.Size = new System.Drawing.Size(1226, 328);
-            this.gvToDelete.TabIndex = 0;
-            // 
-            // eBayToRemoveBindingSource
-            // 
-            this.eBayToRemoveBindingSource.DataMember = "eBay_ToRemove";
             // 
             // tpSaleTax
             // 
@@ -4147,10 +4150,6 @@
             // 
             this.eBay_CurrentListingsTableAdapter.ClearBeforeFill = true;
             // 
-            // eBay_ToRemoveTableAdapter
-            // 
-            this.eBay_ToRemoveTableAdapter.ClearBeforeFill = true;
-            // 
             // eBay_ToChangeTableAdapter
             // 
             this.eBay_ToChangeTableAdapter.ClearBeforeFill = true;
@@ -4168,28 +4167,22 @@
             this.productInfoBindingSource.DataMember = "ProductInfo";
             this.productInfoBindingSource.DataSource = this.costcoDataSet4;
             // 
-            // gvDelete
+            // gvChange
             // 
-            this.gvDelete.AllowUserToAddRows = false;
-            this.gvDelete.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gvDelete.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ToDeleteSelect});
-            this.gvDelete.Location = new System.Drawing.Point(6, 39);
-            this.gvDelete.Name = "gvDelete";
-            this.gvDelete.Size = new System.Drawing.Size(1226, 249);
-            this.gvDelete.TabIndex = 4;
-            this.gvDelete.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvDelete_CellValueChanged);
+            this.gvChange.AllowUserToAddRows = false;
+            this.gvChange.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvChange.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ToChangeSelect});
+            this.gvChange.Location = new System.Drawing.Point(6, 38);
+            this.gvChange.Name = "gvChange";
+            this.gvChange.Size = new System.Drawing.Size(1226, 300);
+            this.gvChange.TabIndex = 7;
             // 
-            // ToDeleteSelect
+            // ToChangeSelect
             // 
-            this.ToDeleteSelect.HeaderText = "Select";
-            this.ToDeleteSelect.Name = "ToDeleteSelect";
-            this.ToDeleteSelect.Width = 20;
-            // 
-            // ds_eBayToRemove
-            // 
-            this.ds_eBayToRemove.DataSetName = "ds_eBayToRemove";
-            this.ds_eBayToRemove.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.ToChangeSelect.HeaderText = "Select";
+            this.ToChangeSelect.Name = "ToChangeSelect";
+            this.ToChangeSelect.Width = 20;
             // 
             // eBayFrontEnd
             // 
@@ -4248,8 +4241,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).EndInit();
             this.tpEbayToDelete.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gvToDelete)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.eBayToRemoveBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvDelete)).EndInit();
             this.tpSaleTax.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -4269,8 +4261,7 @@
             this.tpMaintenance.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.productInfoBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gvDelete)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ds_eBayToRemove)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gvChange)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4280,8 +4271,6 @@
         private dseBayCurrentListings dseBayCurrentListings;
         private System.Windows.Forms.BindingSource eBayCurrentListingsBindingSource;
         private dseBayCurrentListingsTableAdapters.eBay_CurrentListingsTableAdapter eBay_CurrentListingsTableAdapter;
-        private System.Windows.Forms.BindingSource eBayToRemoveBindingSource;
-        private CostcoDataSet5TableAdapters.eBay_ToRemoveTableAdapter eBay_ToRemoveTableAdapter;
         private CostcoDataSet6 costcoDataSet6;
         private System.Windows.Forms.BindingSource eBayToChangeBindingSource;
         private CostcoDataSet6TableAdapters.eBay_ToChangeTableAdapter eBay_ToChangeTableAdapter;
@@ -4550,7 +4539,6 @@
         private System.Windows.Forms.TabPage tpEbayToDelete;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button btnToDeleteUpload;
-        private System.Windows.Forms.DataGridView gvToDelete;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TabPage tpResearch;
         private System.Windows.Forms.Label label66;
@@ -4604,6 +4592,7 @@
         private System.Windows.Forms.Button btnChangeForEBayListings;
         private System.Windows.Forms.DataGridView gvDelete;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ToDeleteSelect;
-        private CostcoDataSet5 ds_eBayToRemove;
+        private System.Windows.Forms.DataGridView gvChange;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ToChangeSelect;
     }
 }
