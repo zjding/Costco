@@ -23,9 +23,12 @@
     [DescriptionImageHeight] INT             NULL,
     [OldOptions]             NVARCHAR (2000) NULL,
     [NewOptions]             NVARCHAR (2000) NULL,
+    [NewImageOptions]        NVARCHAR (4000) NULL,
     [InsertTime]             DATETIME        NULL,
     [DeleteTime]             DATETIME        NULL
 );
+
+
 
 
 

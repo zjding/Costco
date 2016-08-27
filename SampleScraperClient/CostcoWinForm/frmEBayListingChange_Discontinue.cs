@@ -148,9 +148,9 @@ namespace CostcoWinForm
         {
             string st = string.Empty;
 
-            foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.SelectedRows)
+            foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
             {
-                st += row.Cells["UrlNumber"].Value.ToString() + ",";
+                st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
             }
             st = st.Substring(0, st.Length - 1);
 
@@ -179,8 +179,8 @@ namespace CostcoWinForm
             }
             else if (mode == "OptionChange")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldOptions, CostcoNewOptions
+                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions) 
+                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldOptions, CostcoNewOptions, CostcoNewImageOptions
                                  FROM eBayListingChange_OptionChange 
                                  WHERE UrlNumber in (" + st + ")";
             }
@@ -217,6 +217,90 @@ namespace CostcoWinForm
 
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
+
+            this.Close();
+        }
+
+        private void btnDone_Click(object sender, EventArgs e)
+        {
+            string st = string.Empty;
+
+            foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells["Select"].Value) == true)
+                {
+                    st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
+                }
+            }
+            st = st.Substring(0, st.Length - 1);
+
+            string sqlString = string.Empty;
+
+            if (mode == "OptionChange")
+            {
+                sqlString  = @" UPDATE ProductInfo 
+                                SET ProductInfo.Options = eBay_ToChange.NewOptions,   
+                                    ProductInfo.ImageOptions = eBay_ToChange.NewImageOptions
+                                FROM ProductInfo, eBay_ToChange
+                                WHERE ProductInfo.UrlNumber = eBay_ToChange.CostcoUrlNumber
+                                AND ProductInfo.UrlNumber in (" + st + "); ";
+
+                sqlString += @"  UPDATE eBay_ToChange SET DeleteTime = GETDATE()
+                                WHERE CostcoUrlNumber in (" + st + ") AND DeleteTime is NULL; ";
+
+                sqlString += @" DELETE eBayListingChange_OptionChange WHERE UrlNumber in (" + st + "); ";
+            }
+            else if (mode == "PriceUp")
+            {
+                sqlString = @" UPDATE ProductInfo 
+                                SET ProductInfo.Price = eBay_ToChange.CostcoNewPrice
+                                FROM ProductInfo, eBay_ToChange
+                                WHERE ProductInfo.UrlNumber = eBay_ToChange.CostcoUrlNumber
+                                AND ProductInfo.UrlNumber in (" + st + "); ";
+
+                sqlString = @" UPDATE eBay_CurrentListings 
+                                SET eBay_CurrentListings.eBayListingPrice = eBay_ToChange.eBayNewListingPrice
+                                FROM eBay_CurrentListings, eBay_ToChange
+                                WHERE eBay_CurrentListings.CostcoUrlNumber = eBay_ToChange.CostcoUrlNumber
+                                AND eBay_CurrentListings.CostcoUrlNumber in (" + st + "); ";
+
+                sqlString += @"  UPDATE eBay_ToChange SET DeleteTime = GETDATE()
+                                WHERE CostcoUrlNumber in (" + st + ") AND DeleteTime is NULL; ";
+
+                sqlString += @" DELETE eBayListingChange_PriceUp WHERE UrlNumber in (" + st + "); ";
+
+            }
+            else if (mode == "PriceDown")
+            {
+                sqlString = @" UPDATE ProductInfo 
+                                SET ProductInfo.Price = eBay_ToChange.CostcoNewPrice
+                                FROM ProductInfo, eBay_ToChange
+                                WHERE ProductInfo.UrlNumber = eBay_ToChange.CostcoUrlNumber
+                                AND ProductInfo.UrlNumber in (" + st + "); ";
+
+                sqlString = @" UPDATE eBay_CurrentListings 
+                                SET eBay_CurrentListings.eBayListingPrice = eBay_ToChange.eBayNewListingPrice
+                                FROM eBay_CurrentListings, eBay_ToChange
+                                WHERE eBay_CurrentListings.CostcoUrlNumber = eBay_ToChange.CostcoUrlNumber
+                                AND eBay_CurrentListings.CostcoUrlNumber in (" + st + "); ";
+
+                sqlString += @"  UPDATE eBay_ToChange SET DeleteTime = GETDATE()
+                                WHERE CostcoUrlNumber in (" + st + ") AND DeleteTime is NULL; ";
+
+                sqlString += @" DELETE eBayListingChange_PriceDown WHERE UrlNumber in (" + st + "); ";
+
+            }
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
 
             this.Close();
         }
