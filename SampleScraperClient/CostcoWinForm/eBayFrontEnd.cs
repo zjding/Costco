@@ -344,7 +344,13 @@ namespace CostcoWinForm
             }
 
             urlNumbers = urlNumbers.Substring(0, urlNumbers.Length - 1);
+            AddToEBayToAdd(urlNumbers);
 
+            RefreshProductsGrid();
+        }
+
+        public void AddToEBayToAdd(string urlNumbers)
+        {
             List<Product> products = new List<Product>();
 
             SqlConnection cn = new SqlConnection(connectionString);
@@ -407,8 +413,10 @@ namespace CostcoWinForm
                 {
                     p.eBayCategoryID = Convert.ToString(categoryIDAndPrice.Split('|')[0]);
 
-                    sqlString = @"UPDATE Costco_eBay_Categories SET eBay_Category_Number = " + p.eBayCategoryID + " WHERE " +
-                                @"  ISNULL(Category1, '') + IIF(Category2 is NULL, '', '|') + 
+                    if (p.eBayCategoryID != "99")
+                    {
+                        sqlString = @"UPDATE Costco_eBay_Categories SET eBay_Category_Number = " + p.eBayCategoryID + " WHERE " +
+                                    @"  ISNULL(Category1, '') + IIF(Category2 is NULL, '', '|') + 
                                     ISNULL(Category2, '') + IIF(Category3 is NULL, '', '|') +
                                     ISNULL(Category3, '') + IIF(Category4 is NULL, '', '|') +
                                     ISNULL(Category4, '') + IIF(Category5 is NULL, '', '|') +
@@ -416,10 +424,9 @@ namespace CostcoWinForm
                                     ISNULL(Category6, '') + IIF(Category7 is NULL, '', '|') +
                                     ISNULL(Category7, '') + IIF(Category8 is NULL, '', '|') +
                                     ISNULL(Category8, '') = '" + p.Category + "'";
-                    cmd.CommandText = sqlString;
-                    cmd.ExecuteNonQuery();
-
-                    
+                        cmd.CommandText = sqlString;
+                        cmd.ExecuteNonQuery();
+                    }
                 }
 
                 sqlString = @"SELECT Specifics FROM eBay_Categories WHERE CategoryId = '" + p.eBayCategoryID + "'";
@@ -480,11 +487,9 @@ namespace CostcoWinForm
                 }
 
             }
-            
+
             cn.Close();
             driver.Close();
-
-            RefreshProductsGrid();
         }
 
         private string GetEbayCategoryIDAndPrice(string productName, bool bCategoryID = true)
@@ -510,7 +515,26 @@ namespace CostcoWinForm
 
             if (ulNote == null)
             {
-                return "99|0";
+                ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
+
+                ebaySearchUrl += productName.Split('+')[0] + "+" + productName.Split('+')[1] + "+" + productName.Split('+')[2];
+
+                webBrowser1.Navigate(ebaySearchUrl);
+
+                waitTillLoad(this.webBrowser1);
+
+                documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
+
+                sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
+
+                doc.Load(sr);
+
+                ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
+
+                if (ulNote == null)
+                {
+                    return "99|0";
+                }
             }
 
             List<HtmlNode> liNotes = ulNote.SelectNodes("li").ToList();
@@ -4614,7 +4638,7 @@ namespace CostcoWinForm
 
         private void llEBayDiscontinue_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "Discontinue");
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "Discontinue");
 
             frm.ShowDialog();
 
@@ -4656,11 +4680,23 @@ namespace CostcoWinForm
             sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_OptionChange]";
             cmd.CommandText = sqlString;
             llEBayOptions.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select COUNT(1) from [dbo].[eBayListingChange_OptionChange]";
+            cmd.CommandText = sqlString;
+            llEBayOptions.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_PriceDown]";
+            cmd.CommandText = sqlString;
+            llCostcoPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_New]";
+            cmd.CommandText = sqlString;
+            llNewProducts.Text = Convert.ToString(cmd.ExecuteScalar());
         }
 
         private void llEBayPriceUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "PriceUp");
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "PriceUp");
 
             frm.ShowDialog();
 
@@ -4742,7 +4778,7 @@ namespace CostcoWinForm
 
         private void llEBayPriceDown_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "PriceDown");
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "PriceDown");
 
             frm.ShowDialog();
 
@@ -4761,7 +4797,7 @@ namespace CostcoWinForm
 
         private void llEBayOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(connectionString, "OptionChange");
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "OptionChange");
 
             frm.ShowDialog();
 
@@ -4847,6 +4883,44 @@ namespace CostcoWinForm
         private void gvListing_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             daEBayListing.Update(dtEBayListing);
+        }
+
+        private void llCostcoPriceDown_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "CostcoPriceDown");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_PriceDown]";
+            cmd.CommandText = sqlString;
+            llCostcoPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        private void llNewProducts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "CostcoNewProducts");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_New]";
+            cmd.CommandText = sqlString;
+            llNewProducts.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
         }
 
 

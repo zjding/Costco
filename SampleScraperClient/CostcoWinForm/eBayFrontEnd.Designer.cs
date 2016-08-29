@@ -150,10 +150,14 @@
             this.llEBayDiscontinue = new System.Windows.Forms.LinkLabel();
             this.label88 = new System.Windows.Forms.Label();
             this.label91 = new System.Windows.Forms.Label();
-            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.llCostcoPriceDown = new System.Windows.Forms.LinkLabel();
             this.label94 = new System.Windows.Forms.Label();
-            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.llNewProducts = new System.Windows.Forms.LinkLabel();
             this.btnChangeForEBayListings = new System.Windows.Forms.Button();
+            this.label85 = new System.Windows.Forms.Label();
+            this.llCostcoOnSale = new System.Windows.Forms.LinkLabel();
+            this.label97 = new System.Windows.Forms.Label();
+            this.llClearanceProducts = new System.Windows.Forms.LinkLabel();
             this.tpToAdd = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.gvAdd = new System.Windows.Forms.DataGridView();
@@ -1309,8 +1313,8 @@
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.20902F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.79097F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(885, 421);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
@@ -1336,14 +1340,18 @@
             this.tableLayoutPanel5.Controls.Add(this.llEBayDiscontinue, 2, 2);
             this.tableLayoutPanel5.Controls.Add(this.label88, 1, 7);
             this.tableLayoutPanel5.Controls.Add(this.label91, 1, 8);
-            this.tableLayoutPanel5.Controls.Add(this.linkLabel2, 2, 8);
+            this.tableLayoutPanel5.Controls.Add(this.llCostcoPriceDown, 2, 8);
             this.tableLayoutPanel5.Controls.Add(this.label94, 1, 9);
-            this.tableLayoutPanel5.Controls.Add(this.linkLabel3, 2, 9);
+            this.tableLayoutPanel5.Controls.Add(this.llNewProducts, 2, 9);
             this.tableLayoutPanel5.Controls.Add(this.btnChangeForEBayListings, 2, 1);
+            this.tableLayoutPanel5.Controls.Add(this.label85, 1, 10);
+            this.tableLayoutPanel5.Controls.Add(this.llCostcoOnSale, 2, 10);
+            this.tableLayoutPanel5.Controls.Add(this.label97, 1, 11);
+            this.tableLayoutPanel5.Controls.Add(this.llClearanceProducts, 2, 11);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-            this.tableLayoutPanel5.RowCount = 11;
+            this.tableLayoutPanel5.RowCount = 13;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -1355,7 +1363,9 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(436, 204);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(436, 298);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // llEBayOptions
@@ -1564,20 +1574,21 @@
             this.label91.Text = "Price down";
             this.label91.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // linkLabel2
+            // llCostcoPriceDown
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.linkLabel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.linkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel2.Location = new System.Drawing.Point(228, 165);
-            this.linkLabel2.Margin = new System.Windows.Forms.Padding(0);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(208, 20);
-            this.linkLabel2.TabIndex = 23;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "0";
-            this.linkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llCostcoPriceDown.AutoSize = true;
+            this.llCostcoPriceDown.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.llCostcoPriceDown.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.llCostcoPriceDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llCostcoPriceDown.Location = new System.Drawing.Point(228, 165);
+            this.llCostcoPriceDown.Margin = new System.Windows.Forms.Padding(0);
+            this.llCostcoPriceDown.Name = "llCostcoPriceDown";
+            this.llCostcoPriceDown.Size = new System.Drawing.Size(208, 20);
+            this.llCostcoPriceDown.TabIndex = 23;
+            this.llCostcoPriceDown.TabStop = true;
+            this.llCostcoPriceDown.Text = "0";
+            this.llCostcoPriceDown.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llCostcoPriceDown.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llCostcoPriceDown_LinkClicked);
             // 
             // label94
             // 
@@ -1592,19 +1603,20 @@
             this.label94.Text = "New products";
             this.label94.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // linkLabel3
+            // llNewProducts
             // 
-            this.linkLabel3.AutoSize = true;
-            this.linkLabel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.linkLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel3.Location = new System.Drawing.Point(228, 185);
-            this.linkLabel3.Margin = new System.Windows.Forms.Padding(0);
-            this.linkLabel3.Name = "linkLabel3";
-            this.linkLabel3.Size = new System.Drawing.Size(208, 20);
-            this.linkLabel3.TabIndex = 25;
-            this.linkLabel3.TabStop = true;
-            this.linkLabel3.Text = "0";
-            this.linkLabel3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llNewProducts.AutoSize = true;
+            this.llNewProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.llNewProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.llNewProducts.Location = new System.Drawing.Point(228, 185);
+            this.llNewProducts.Margin = new System.Windows.Forms.Padding(0);
+            this.llNewProducts.Name = "llNewProducts";
+            this.llNewProducts.Size = new System.Drawing.Size(208, 20);
+            this.llNewProducts.TabIndex = 25;
+            this.llNewProducts.TabStop = true;
+            this.llNewProducts.Text = "0";
+            this.llNewProducts.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.llNewProducts.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llNewProducts_LinkClicked);
             // 
             // btnChangeForEBayListings
             // 
@@ -1616,6 +1628,58 @@
             this.btnChangeForEBayListings.Text = "Refresh";
             this.btnChangeForEBayListings.UseVisualStyleBackColor = true;
             this.btnChangeForEBayListings.Click += new System.EventHandler(this.btnChangeForEBayListings_Click);
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.label85.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label85.Location = new System.Drawing.Point(20, 205);
+            this.label85.Margin = new System.Windows.Forms.Padding(0);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(208, 20);
+            this.label85.TabIndex = 27;
+            this.label85.Text = "On sale products";
+            this.label85.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // llCostcoOnSale
+            // 
+            this.llCostcoOnSale.AutoSize = true;
+            this.llCostcoOnSale.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.llCostcoOnSale.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.llCostcoOnSale.Location = new System.Drawing.Point(228, 205);
+            this.llCostcoOnSale.Margin = new System.Windows.Forms.Padding(0);
+            this.llCostcoOnSale.Name = "llCostcoOnSale";
+            this.llCostcoOnSale.Size = new System.Drawing.Size(208, 20);
+            this.llCostcoOnSale.TabIndex = 28;
+            this.llCostcoOnSale.TabStop = true;
+            this.llCostcoOnSale.Text = "0";
+            this.llCostcoOnSale.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label97.Location = new System.Drawing.Point(20, 225);
+            this.label97.Margin = new System.Windows.Forms.Padding(0);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(208, 20);
+            this.label97.TabIndex = 29;
+            this.label97.Text = ".97 products";
+            this.label97.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // llClearanceProducts
+            // 
+            this.llClearanceProducts.AutoSize = true;
+            this.llClearanceProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.llClearanceProducts.Location = new System.Drawing.Point(228, 225);
+            this.llClearanceProducts.Margin = new System.Windows.Forms.Padding(0);
+            this.llClearanceProducts.Name = "llClearanceProducts";
+            this.llClearanceProducts.Size = new System.Drawing.Size(208, 20);
+            this.llClearanceProducts.TabIndex = 30;
+            this.llClearanceProducts.TabStop = true;
+            this.llClearanceProducts.Text = "0";
+            this.llClearanceProducts.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tpToAdd
             // 
@@ -4181,9 +4245,9 @@
         private System.Windows.Forms.LinkLabel llEBayDiscontinue;
         private System.Windows.Forms.Label label88;
         private System.Windows.Forms.Label label91;
-        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel llCostcoPriceDown;
         private System.Windows.Forms.Label label94;
-        private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.LinkLabel llNewProducts;
         private System.Windows.Forms.Button btnChangeForEBayListings;
         private System.Windows.Forms.DataGridView gvDelete;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ToDeleteSelect;
@@ -4192,5 +4256,9 @@
         private System.Windows.Forms.DataGridView gvListing;
         private System.Windows.Forms.Button btnReloadCurrentListing;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ListingSelect;
+        private System.Windows.Forms.Label label85;
+        private System.Windows.Forms.LinkLabel llCostcoOnSale;
+        private System.Windows.Forms.Label label97;
+        private System.Windows.Forms.LinkLabel llClearanceProducts;
     }
 }

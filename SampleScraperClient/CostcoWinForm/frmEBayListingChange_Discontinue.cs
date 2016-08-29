@@ -15,6 +15,7 @@ namespace CostcoWinForm
     {
         public string connectionString = string.Empty;
         public string mode = string.Empty;
+        public eBayFrontEnd parent;
 
         SqlCommand cmdEBayListingChange_Discontinue;
         SqlDataAdapter daEBayListingChange_Discontinue;
@@ -27,12 +28,13 @@ namespace CostcoWinForm
             InitializeComponent();
         }
 
-        public frmEBayListingChange_Discontinue(string connectionString, string mode)
+        public frmEBayListingChange_Discontinue(eBayFrontEnd parent, string connectionString, string mode)
         {
             InitializeComponent();
 
             this.connectionString = connectionString;
             this.mode = mode;
+            this.parent = parent;
         }
 
         private void frmEBayListingChange_Discontinue_Load(object sender, EventArgs e)
@@ -60,6 +62,14 @@ namespace CostcoWinForm
             {
                 sqlString = @"SELECT * FROM eBayListingChange_OptionChange ";
             }
+            else if (mode == "CostcoPriceDown")
+            {
+                sqlString = @"SELECT * FROM CostcoInventoryChange_PriceUp ";
+            }
+            else if (mode == "CostcoNewProducts")
+            {
+                sqlString = @"SELECT * FROM CostcoInventoryChange_New";
+            }
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -77,15 +87,15 @@ namespace CostcoWinForm
             gvEBayListingChangeDiscontinue.Columns["ID"].Visible = false;
             gvEBayListingChangeDiscontinue.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvEBayListingChangeDiscontinue.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvEBayListingChangeDiscontinue.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             if (mode == "Discontinue")
             {
-                
+                gvEBayListingChangeDiscontinue.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             }
             else if (mode == "PriceUp" || mode == "PriceDown")
             {
+                gvEBayListingChangeDiscontinue.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 gvEBayListingChangeDiscontinue.Columns["CostcoOldPrice"].Width = 50;
                 gvEBayListingChangeDiscontinue.Columns["CostcoNewPrice"].Width = 50;
                 gvEBayListingChangeDiscontinue.Columns["eBayListingOldPrice"].Width = 50;
@@ -93,8 +103,22 @@ namespace CostcoWinForm
             }
             else if (mode == "OptionChange")
             {
+                gvEBayListingChangeDiscontinue.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                 gvEBayListingChangeDiscontinue.Columns["CostcoOldOptions"].Width = 150;
                 gvEBayListingChangeDiscontinue.Columns["CostcoNewOptions"].Width = 150;
+            }
+            else if (mode == "CostcoPriceUp" || mode == "CostcoPriceDown")
+            {
+                gvEBayListingChangeDiscontinue.Columns["CostcoOldPrice"].Width = 50;
+                gvEBayListingChangeDiscontinue.Columns["CostcoNewPrice"].Width = 50;
+            }
+            else if (mode == "CostcoNewProducts")
+            {
+                gvEBayListingChangeDiscontinue.Columns["Details"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["Specification"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["ImageLink"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["NumberOfImage"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].Width = 150;
             }
 
             gvEBayListingChangeDiscontinue.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -184,6 +208,10 @@ namespace CostcoWinForm
                                  FROM eBayListingChange_OptionChange 
                                  WHERE UrlNumber in (" + st + ")";
             }
+            else if (mode == "CostcoPriceDown")
+            {
+                parent.AddToEBayToAdd(st);
+            }
 
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -191,8 +219,11 @@ namespace CostcoWinForm
 
             cn.Open();
 
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
+            if (!string.IsNullOrEmpty(sqlString))
+            {
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+            }
 
             if (mode == "Discontinue")
             {
@@ -215,8 +246,11 @@ namespace CostcoWinForm
                           WHERE UrlNumber in (" + st + ")";
             }
 
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
+            if (!string.IsNullOrEmpty(sqlString))
+            {
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+            }
 
             this.Close();
         }

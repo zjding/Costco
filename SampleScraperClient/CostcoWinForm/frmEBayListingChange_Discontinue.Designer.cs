@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnDone = new System.Windows.Forms.Button();
             this.gvEBayListingChangeDiscontinue = new System.Windows.Forms.DataGridView();
             this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
-            this.btnDone = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayListingChangeDiscontinue)).BeginInit();
             this.SuspendLayout();
@@ -53,6 +53,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(902, 456);
             this.panel1.TabIndex = 0;
+            // 
+            // btnDone
+            // 
+            this.btnDone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDone.Location = new System.Drawing.Point(653, 421);
+            this.btnDone.Name = "btnDone";
+            this.btnDone.Size = new System.Drawing.Size(75, 23);
+            this.btnDone.TabIndex = 5;
+            this.btnDone.Text = "Done";
+            this.btnDone.UseVisualStyleBackColor = true;
+            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
             // gvEBayListingChangeDiscontinue
             // 
@@ -119,16 +130,6 @@
             this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // btnDone
-            // 
-            this.btnDone.Location = new System.Drawing.Point(653, 421);
-            this.btnDone.Name = "btnDone";
-            this.btnDone.Size = new System.Drawing.Size(75, 23);
-            this.btnDone.TabIndex = 5;
-            this.btnDone.Text = "Done";
-            this.btnDone.UseVisualStyleBackColor = true;
-            this.btnDone.Click += new System.EventHandler(this.btnDone_Click);
             // 
             // frmEBayListingChange_Discontinue
             // 
