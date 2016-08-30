@@ -68,7 +68,21 @@ namespace CostcoWinForm
             }
             else if (mode == "CostcoNewProducts")
             {
-                sqlString = @"SELECT * FROM CostcoInventoryChange_New";
+                sqlString = @"  SELECT * FROM CostcoInventoryChange_New n 
+                                WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
+                                AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd)";
+            }
+            else if (mode == "CostcoDiscountProducts")
+            {
+                sqlString = @"  SELECT * FROM ProductInfo n 
+                                WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
+                                AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd) 
+                                AND LEN(LTRIM(RTRIM(n.Discount))) > 2";
+            }
+            else if (mode == "CostcoClearanceProducts")
+            {
+                sqlString = @"select * from ProductInfo n where n.UrlNumber not in (Select CostcoUrlNumber FROM eBay_CurrentListings)
+                                 and convert(varchar(10), n.Price) like '%.97%' ";
             }
 
             SqlConnection connection = new SqlConnection(connectionString);
@@ -119,6 +133,14 @@ namespace CostcoWinForm
                 gvEBayListingChangeDiscontinue.Columns["ImageLink"].Visible = false;
                 gvEBayListingChangeDiscontinue.Columns["NumberOfImage"].Visible = false;
                 gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].Width = 150;
+            }
+            else if (mode == "CostcoDiscountProducts" || mode == "CostcoClearanceProducts")
+            {
+                gvEBayListingChangeDiscontinue.Columns["Details"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["Specification"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["ImageLink"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["NumberOfImage"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["Url"].Width = 150;
             }
 
             gvEBayListingChangeDiscontinue.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

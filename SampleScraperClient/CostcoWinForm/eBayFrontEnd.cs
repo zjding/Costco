@@ -4689,9 +4689,23 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             llCostcoPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
 
-            sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_New]";
+            sqlString = @"SELECT count(1) FROM CostcoInventoryChange_New n 
+                          WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
+                          AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd) ";
             cmd.CommandText = sqlString;
             llNewProducts.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"SELECT count(1) FROM ProductInfo n 
+                          WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
+                          AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd) 
+                          AND LEN(LTRIM(RTRIM(n.Discount))) > 2 ";
+            cmd.CommandText = sqlString;
+            llCostcoOnSale.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            sqlString = @"select count(1) from ProductInfo n where n.UrlNumber not in (Select CostcoUrlNumber FROM eBay_CurrentListings)
+                                 and convert(varchar(10), n.Price) like '%.97%' ";
+            cmd.CommandText = sqlString;
+            llClearanceProducts.Text = Convert.ToString(cmd.ExecuteScalar());
         }
 
         private void llEBayPriceUp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -4916,9 +4930,49 @@ namespace CostcoWinForm
 
             cn.Open();
 
-            string sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_New]";
+            string sqlString = @"select count(1) from CostcoInventoryChange_New n where n.UrlNumber not in (Select CostcoUrlNumber FROM eBay_CurrentListings)";
             cmd.CommandText = sqlString;
             llNewProducts.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        private void llCostcoOnSale_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "CostcoDiscountProducts");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select count(1) from ProductInfo n where n.UrlNumber not in (Select CostcoUrlNumber FROM eBay_CurrentListings)
+                                 and LEN(LTRIM(RTRIM(n.Discount))) > 2 ";
+            cmd.CommandText = sqlString;
+            llCostcoOnSale.Text = Convert.ToString(cmd.ExecuteScalar());
+
+            cn.Close();
+        }
+
+        private void llClearanceProducts_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEBayListingChange_Discontinue frm = new frmEBayListingChange_Discontinue(this, connectionString, "CostcoClearanceProducts");
+
+            frm.ShowDialog();
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = @"select count(1) from ProductInfo n where n.UrlNumber not in (Select CostcoUrlNumber FROM eBay_CurrentListings)
+                                 and convert(varchar(10), n.Price) like '%.97%' ";
+            cmd.CommandText = sqlString;
+            llClearanceProducts.Text = Convert.ToString(cmd.ExecuteScalar());
 
             cn.Close();
         }
