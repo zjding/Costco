@@ -64,7 +64,9 @@ namespace CostcoWinForm
             }
             else if (mode == "CostcoPriceDown")
             {
-                sqlString = @"SELECT * FROM CostcoInventoryChange_PriceUp ";
+                sqlString = @"  SELECT * FROM CostcoInventoryChange_PriceDown n
+                                WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
+                                AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd)";
             }
             else if (mode == "CostcoNewProducts")
             {
@@ -81,8 +83,11 @@ namespace CostcoWinForm
             }
             else if (mode == "CostcoClearanceProducts")
             {
-                sqlString = @"select * from ProductInfo n where n.UrlNumber not in (Select CostcoUrlNumber FROM eBay_CurrentListings)
-                                 and convert(varchar(10), n.Price) like '%.97%' ";
+                sqlString = @"  SELECT *
+                                FROM ProductInfo n 
+                                WHERE n.UrlNumber NOT IN (Select CostcoUrlNumber FROM eBay_CurrentListings) 
+                                AND n.UrlNumber not in (Select UrlNumber FROM eBay_ToAdd) 
+                                AND convert(varchar(10), n.Price) like '%.97%'  ";
             }
 
             SqlConnection connection = new SqlConnection(connectionString);
@@ -196,7 +201,10 @@ namespace CostcoWinForm
 
             foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
             {
-                st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
+                if (Convert.ToBoolean(row.Cells["Select"].Value) == true)
+                {
+                    st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
+                }
             }
             st = st.Substring(0, st.Length - 1);
 
@@ -230,7 +238,7 @@ namespace CostcoWinForm
                                  FROM eBayListingChange_OptionChange 
                                  WHERE UrlNumber in (" + st + ")";
             }
-            else if (mode == "CostcoPriceDown")
+            else if (mode == "CostcoPriceDown" || mode == "CostcoNewProducts" || mode == "CostcoDiscountProducts" || mode == "CostcoClearanceProducts")
             {
                 parent.AddToEBayToAdd(st);
             }
