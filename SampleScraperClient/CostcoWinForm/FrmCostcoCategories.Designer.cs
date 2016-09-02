@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.gvCostcoCategories = new System.Windows.Forms.DataGridView();
             this.btnImportCategories = new System.Windows.Forms.Button();
@@ -39,7 +38,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Controls.Add(this.gvCostcoCategories);
             this.panel1.Controls.Add(this.btnImportCategories);
@@ -48,17 +46,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(986, 525);
             this.panel1.TabIndex = 0;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Location = new System.Drawing.Point(818, 490);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnClose
             // 
@@ -114,7 +101,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView gvCostcoCategories;
         private System.Windows.Forms.Button btnImportCategories;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;
     }
 }

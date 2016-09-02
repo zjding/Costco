@@ -21,4 +21,6 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Release\log4net.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Release\Crawler.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Release\Crawler.pdb
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Release\CrawlerConsole.csproj.CrawlerConsole.exe.config
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Release\HtmlAgilityPack.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Release\HtmlAgilityPack.pdb
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Release\HtmlAgilityPack.xml

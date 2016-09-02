@@ -12,9 +12,7 @@ namespace CrawlerConsole
 
         static void Main(string[] args)
         {
-            eBayFrontEnd form = new eBayFrontEnd();
-
-            form.runCrawl();
+            
         }
     }
 }

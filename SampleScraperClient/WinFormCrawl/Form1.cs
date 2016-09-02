@@ -20,9 +20,7 @@ namespace WinFormCrawl
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            eBayFrontEnd form = new eBayFrontEnd();
-
-            form.runCrawl();
+            
 
             //Application.Exit();
         }

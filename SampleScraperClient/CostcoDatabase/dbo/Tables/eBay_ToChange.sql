@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[eBay_ToChange] (
     [ID]                     BIGINT          IDENTITY (1, 1) NOT NULL,
-    [Name]                   NVARCHAR (MAX)  NULL,
-    [CostcoUrlNumber]        NVARCHAR (MAX)  NULL,
+    [Name]                   NVARCHAR (200)  NULL,
+    [CostcoUrlNumber]        NVARCHAR (50)   NULL,
     [eBayItemNumber]         NVARCHAR (50)   NULL,
     [eBayOldListingPrice]    MONEY           NULL,
     [eBayNewListingPrice]    MONEY           NULL,
@@ -9,15 +9,15 @@
     [CostcoOldPrice]         MONEY           NULL,
     [CostcoNewPrice]         MONEY           NULL,
     [PriceChange]            NVARCHAR (10)   NULL,
-    [Category]               NVARCHAR (MAX)  NULL,
+    [Category]               NVARCHAR (200)  NULL,
     [Shipping]               SMALLMONEY      NULL,
     [Limit]                  INT             NULL,
-    [Discount]               NVARCHAR (MAX)  NULL,
-    [Details]                NVARCHAR (MAX)  NULL,
-    [Specification]          NVARCHAR (MAX)  NULL,
-    [ImageLink]              NVARCHAR (MAX)  NULL,
+    [Discount]               NVARCHAR (500)  NULL,
+    [Details]                NVARCHAR (4000) NULL,
+    [Specification]          NVARCHAR (4000) NULL,
+    [ImageLink]              NVARCHAR (500)  NULL,
     [NumberOfImage]          INT             NULL,
-    [Url]                    NVARCHAR (MAX)  NULL,
+    [Url]                    NVARCHAR (500)  NULL,
     [eBayCategoryID]         NVARCHAR (50)   NULL,
     [DescriptionImageWidth]  INT             NULL,
     [DescriptionImageHeight] INT             NULL,
@@ -27,6 +27,8 @@
     [InsertTime]             DATETIME        NULL,
     [DeleteTime]             DATETIME        NULL
 );
+
+
 
 
 

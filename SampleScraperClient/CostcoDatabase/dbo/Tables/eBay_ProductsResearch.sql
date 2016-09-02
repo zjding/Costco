@@ -1,12 +1,14 @@
 ﻿CREATE TABLE [dbo].[eBay_ProductsResearch] (
-    [Name]           NVARCHAR (MAX) NULL,
-    [eBayUrl]        NVARCHAR (MAX) NULL,
+    [Name]           NVARCHAR (200) NULL,
+    [eBayUrl]        NVARCHAR (500) NULL,
     [eBayPrice]      NVARCHAR (50)  NULL,
     [eBaySoldNumber] INT            NULL,
-    [productUrl]     NVARCHAR (MAX) NULL,
+    [productUrl]     NVARCHAR (500) NULL,
     [productPrice]   MONEY          NULL,
-    [eBayUserId]     NVARCHAR (MAX) NULL
+    [eBayUserId]     NVARCHAR (200) NULL
 );
+
+
 
 
 
