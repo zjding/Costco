@@ -308,16 +308,21 @@ namespace CostcoWinForm
 
         public static System.Drawing.Image GetImageFromUrl(string url)
         {
-            HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
-            // if you have proxy server, you may need to set proxy details like below 
-            //httpWebRequest.Proxy = new WebProxy("proxyserver",port){ Credentials = new NetworkCredential(){ UserName ="uname", Password = "pw"}};
-
-            using (HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse())
+            try
             {
-                using (Stream stream = httpWebReponse.GetResponseStream())
+                HttpWebRequest httpWebRequest = (HttpWebRequest)HttpWebRequest.Create(url);
+
+                using (HttpWebResponse httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse())
                 {
-                    return System.Drawing.Image.FromStream(stream);
+                    using (Stream stream = httpWebReponse.GetResponseStream())
+                    {
+                        return System.Drawing.Image.FromStream(stream);
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
@@ -368,387 +373,6 @@ namespace CostcoWinForm
 
             gvProducts_Refresh();
         }
-
-
-        // tpToAdd
-
-        SqlCommand cmdToAdd;
-        SqlDataAdapter daToAdd;
-        SqlCommandBuilder cmbToAdd;
-        DataSet dsToAdd;
-        DataTable dtToAdd;
-
-        public void gvAdd_Refresh()
-        {
-            string sqlString = @"SELECT ID, Name, Category, Price, Shipping, Limit, Options, Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, Specifics
-                                 FROM eBay_ToAdd 
-                                 WHERE DeleteTime is NULL
-                                 Order by InsertTime DESC";
-
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            cmdToAdd = new SqlCommand(sqlString, connection);
-            daToAdd = new SqlDataAdapter(cmdToAdd);
-            cmbToAdd = new SqlCommandBuilder(daToAdd);
-            dsToAdd = new DataSet();
-            daToAdd.Fill(dsToAdd, "tbToAdd");
-            dtToAdd = dsToAdd.Tables["tbToAdd"];
-            connection.Close();
-
-            gvAdd.DataSource = dsToAdd.Tables["tbToAdd"];
-            gvAdd.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            gvAdd.Columns["AddSelect"].Width = 20;
-            gvAdd.Columns["ID"].Visible = false;
-        }
-
-        private void chkAddAll_CheckedChanged(object sender, EventArgs e)
-        {
-            foreach (DataGridViewRow row in gvAdd.Rows)
-            {
-                row.Cells["AddSelect"].Value = chkAddAll.Checked;
-            }
-        }
-
-        private void gvAdd_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            daToAdd.Update(dtToAdd);
-        }
-
-        private void tpToAdd_Enter(object sender, EventArgs e)
-        {
-            gvAdd_Refresh();
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            foreach (DataGridViewRow row in gvAdd.Rows)
-            {
-                if (Convert.ToBoolean(row.Cells["AddSelect"].Value) == true)
-                {
-                    gvAdd.Rows.RemoveAt(row.Index);
-                }
-            }
-
-            daToAdd.Update(dtToAdd);
-        }
-
-        private void btnUpload_Click(object sender, EventArgs e)
-        {
-            List<Product> products = new List<Product>();
-
-            Dictionary<string, int> excelColumnsDictionary = new Dictionary<string, int>();
-
-            // get products from DB
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-
-            string sqlString = "  SELECT * FROM eBay_ToAdd"; // WHERE shipping = 0.00 and Price < 100";
-
-            cn.Open();
-            cmd.CommandText = sqlString;
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    Product product = new Product();
-                    product.Name = Convert.ToString(reader["Name"]);
-                    product.UrlNumber = Convert.ToString(reader["UrlNumber"]);
-                    product.ItemNumber = Convert.ToString(reader["ItemNumber"]);
-                    product.Category = Convert.ToString(reader["Category"]);
-                    product.Price = Convert.ToDecimal(reader["Price"]);
-                    product.Shipping = Convert.ToDecimal(reader["Shipping"]);
-                    product.Limit = Convert.ToString(reader["Limit"]);
-                    product.Discount = Convert.ToString(reader["Discount"]);
-                    product.Details = Convert.ToString(reader["Details"]);
-                    product.Specification = Convert.ToString(reader["Specification"]);
-                    product.ImageLink = Convert.ToString(reader["ImageLink"]);
-                    product.NumberOfImage = Convert.ToInt16(reader["NumberOfImage"]);
-                    product.Url = Convert.ToString(reader["Url"]);
-                    product.ImageOptions = Convert.ToString(reader["ImageOptions"]);
-                    product.Options = Convert.ToString(reader["Options"]);
-                    product.eBayCategoryID = Convert.ToString(reader["eBayCategoryID"]);
-                    product.eBayReferencePrice = Convert.ToDecimal(reader["eBayReferencePrice"]);
-                    product.eBayListingPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
-                    product.DescriptionImageHeight = Convert.ToInt16(reader["DescriptionImageHeight"]);
-                    product.DescriptionImageWidth = Convert.ToInt16(reader["DescriptionImageWidth"]);
-                    product.TemplateName = Convert.ToString(reader["TemplateName"]);
-                    product.Specifics = Convert.ToString(reader["Specifics"]);
-
-                    products.Add(product);
-                }
-            }
-
-            reader.Close();
-            cn.Close();
-
-            // add to Excel file
-            string sourceFileName = "FileExchange.csv";
-            string destinFileName = @"C:\eBayApp\Upload\" + sourceFileName.Replace(".csv", "") + "-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
-            File.Copy(@"C:\eBayApp\Files\Templates\FileExchange\" + sourceFileName, destinFileName);
-
-            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Range oRange;
-
-            //oXL.Visible = true;
-            oXL.DisplayAlerts = false;
-
-            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
-                                        destinFileName,               // Filename
-                                        0,
-                                        Type.Missing,
-                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        ",",          // Delimiter
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        //Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing);
-
-            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
-            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
-
-            //bool bColumnCreated = false;
-
-            // general item
-            //if (string.IsNullOrEmpty(products[0].TemplateName))
-            //{
-            int i = 2;
-            int j = 0;
-            foreach (Product product in products)
-            {
-                string relationshipDetails = string.Empty;
-                List<string> relationshipDetailsArray = new List<string>();
-                List<string> imageOptionArray = new List<string>();
-
-                if (!string.IsNullOrEmpty(product.Options))
-                {
-                    GenerateVariations(product.Options, product.ImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
-                }
-
-                if (!string.IsNullOrEmpty(product.Specifics)/* && !bColumnCreated*/)
-                {
-                    foreach (string spec in product.Specifics.Split(','))
-                    {
-                        //if (GetColumnIndex(ref oSheet, "C:" + spec) == -1)
-                        if (!excelColumnsDictionary.ContainsKey("C:" + spec))
-                        {
-                            oSheet.Cells[1, 50 + j] = "C:" + spec;
-                            excelColumnsDictionary.Add("C:" + spec, 50 + j);
-                            j++;
-                        }
-                    }
-
-                    //bColumnCreated = true;
-                }
-
-                //oSheet.Cells[i, 1] = "VerifyAdd";
-                oSheet.Cells[i, 1] = "Add";
-                oSheet.Cells[i, 2] = product.eBayCategoryID;
-                oSheet.Cells[i, 3] = product.Name;
-                oSheet.Cells[i, 5] = product.Details;
-                oSheet.Cells[i, 6] = "1000";
-
-                if (string.IsNullOrEmpty(product.Options))
-                {
-                    string imageLinks = "";
-                    string imageLink = product.ImageLink.Substring(0, product.ImageLink.Length - 5);
-                    for (int n = 1; n <= product.NumberOfImage; n++)
-                    {
-                        imageLinks += imageLink + n.ToString() + ".jpg|";
-                    }
-
-                    imageLinks = imageLinks.Substring(0, imageLinks.Length - 1);
-                    oSheet.Cells[i, 7] = imageLinks;
-                }
-                else
-                {
-                    oSheet.Cells[i, 7] = product.ImageLink;
-                }
-
-                oSheet.Cells[i, 8] = "1";
-                oSheet.Cells[i, 9] = "FixedPrice";
-                oSheet.Cells[i, 10] = product.eBayListingPrice;
-                oSheet.Cells[i, 12] = "30";
-                oSheet.Cells[i, 13] = "1";
-                oSheet.Cells[i, 14] = "AL USA";
-                oSheet.Cells[i, 16] = "1";
-                oSheet.Cells[i, 17] = "zjding@outlook.com";
-                oSheet.Cells[i, 22] = "Flat";
-                oSheet.Cells[i, 23] = "USPSPriority";
-                oSheet.Cells[i, 24] = "0";
-                oSheet.Cells[i, 25] = "1";
-                oSheet.Cells[i, 31] = "1";
-                oSheet.Cells[i, 33] = "ReturnsNotAccepted";
-                oSheet.Cells[i, 43] = relationshipDetails;
-
-                if (!string.IsNullOrEmpty(product.Specifics))
-                {
-                    foreach (string spec in product.Specifics.Split(','))
-                    {
-                        //int k = GetColumnIndex(ref oSheet, "C:" + spec);
-                        int k = excelColumnsDictionary["C:" + spec];
-
-                        if (spec.Contains("Size Type"))
-                            oSheet.Cells[i, k] = "Regular";
-                        else if (spec.Contains("Style"))
-                            oSheet.Cells[i, k] = "Western";
-                        else if (spec.Contains("Brand"))
-                            oSheet.Cells[i, k] = product.Name.Split(' ').First();
-                        else if (spec.Contains("Inseam"))
-                            oSheet.Cells[i, k] = "32";
-                        else if (spec.Contains("Size"))
-                        {
-                            string s = relationshipDetails.Contains('|') ? relationshipDetails.Split('|')[1].Replace("Size=", "") : relationshipDetails.Replace("Size=", "");
-                            oSheet.Cells[i, k] = s.Length >= 65 ? s.Substring(0, 64) : s;
-                        }
-                    }
-                }
-
-                i++;
-
-                foreach (string relationshipDetail in relationshipDetailsArray)
-                {
-                    // Relationship
-                    oSheet.Cells[i, 42] = "Variation";
-                    // RelationshipDetails
-                    oSheet.Cells[i, 43] = relationshipDetail;
-                    // *C:Size (Men's)
-                    string size = relationshipDetail.Contains('|') ? relationshipDetail.Split('|')[1].Replace("Size=", "") : relationshipDetail.Replace("Size=", "");
-                    foreach (string spec in product.Specifics.Split(','))
-                    {
-                        if (!spec.Contains("Size Type") && spec.Contains("Size"))
-                            oSheet.Cells[i, excelColumnsDictionary["C:" + spec]/*GetColumnIndex(ref oSheet, "C:" + spec)*/] = size;
-                    }
-                    //// C:Color
-                    string color = relationshipDetail.Split('|')[0].Replace("Color=", "");
-                    //oSheet.Cells[i, 17] = color;
-                    // PicURL
-                    string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
-                    oSheet.Cells[i, 7] = colorImage;
-                    // *StartPrice
-                    oSheet.Cells[i, 10] = product.eBayListingPrice;
-                    // *Quantity
-                    oSheet.Cells[i, 8] = "1";
-
-                    i++;
-                }
-
-            }
-
-            oWB.Save();
-            oWB.Close(true, Type.Missing, Type.Missing);
-            oXL.Application.Quit();
-            oXL.Quit();
-
-            string command = "c:\\eBayApp\\Curl\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
-
-            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
-        }
-
-        private void GenerateVariations(string inputString, string imageOptionString, out string relationshipDetails, out List<string> relationshipDetailsArray, out List<string> imageOptionArray)
-        {
-            relationshipDetails = string.Empty;
-            relationshipDetailsArray = new List<string>();
-            imageOptionArray = new List<string>();
-
-            string _Color = "Color=";
-            string _Size = "Size=";
-
-            if (inputString.Contains("|"))
-            {
-                List<string> sizeList = new List<string>();
-
-                foreach (var colorString in inputString.Split('|').ToList())
-                {
-                    string color = colorString.Split(':')[0];
-                    string sizes = colorString.Split(':')[1];
-
-                    _Color += color + ";";
-
-                    sizeList = sizeList.Union(sizes.Split(';').ToList()).ToList();
-
-                    foreach (var size in sizes.Split(';').ToList())
-                    {
-                        relationshipDetailsArray.Add("Color=" + color + "|" + "Size=" + size);
-                    }
-                }
-
-                _Color = _Color.Substring(0, _Color.Length - 1);
-
-                sizeList.Sort();
-
-                foreach (var size in sizeList)
-                {
-                    _Size += size + ";";
-                }
-
-                _Size = _Size.Substring(0, _Size.Length - 1);
-
-                relationshipDetails = _Color + "|" + _Size;
-            }
-            else
-            {
-                relationshipDetails = "Size=" + inputString;
-
-                foreach (string size in inputString.Split(';').ToList())
-                {
-                    relationshipDetailsArray.Add("Size=" + size);
-                }
-            }
-
-            if (imageOptionString.Contains("~"))
-            {
-                imageOptionArray = imageOptionString.Split('~').ToList();
-            }
-            else
-            {
-                imageOptionArray.Add(imageOptionString);
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        void timer_Tick(object sender, EventArgs e)
-        {
-            if (this.tpEBayToModify == tabControl1.SelectedTab)
-            {
-                
-            }
-            else if (tpCurrentListing == tabControl1.SelectedTab)
-            {
-                
-            }
-        }
-
-        
-
-        
-
-        
-
-        
-
-        
-
-        
 
         public void AddToEBayToAdd(string urlNumbers)
         {
@@ -808,12 +432,14 @@ namespace CostcoWinForm
 
             foreach (Product p in products)
             {
-                string categoryIDAndPrice = GetEbayCategoryIDAndPrice(p.Name, string.IsNullOrEmpty(p.eBayCategoryID));
+                string eBayReferenceUrl = string.Empty;
+
+                string categoryIDAndPrice = GetEbayCategoryIDAndPrice(p.Name, ref eBayReferenceUrl, string.IsNullOrEmpty(p.eBayCategoryID));
                 if (string.IsNullOrEmpty(p.eBayCategoryID))
                 {
                     p.eBayCategoryID = Convert.ToString(categoryIDAndPrice.Split('|')[0]);
 
-                    if (p.eBayCategoryID != "99")
+                    if (p.eBayCategoryID != "99" && !string.IsNullOrEmpty(p.eBayCategoryID))
                     {
                         sqlString = @"UPDATE Costco_eBay_Categories SET eBay_Category_Number = " + p.eBayCategoryID + " WHERE " +
                                     @"  ISNULL(Category1, '') + IIF(Category2 is NULL, '', '|') + 
@@ -843,7 +469,6 @@ namespace CostcoWinForm
 
                 if (GetProductInfoWithFirefox(ref driver, p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
                 {
-
                     p.DescriptionImageHeight = screenshotHeight;
                     p.DescriptionImageWidth = screenshotWidth;
                     p.NumberOfImage = imageNumber;
@@ -855,9 +480,9 @@ namespace CostcoWinForm
 
                     sqlString = @"INSERT INTO eBay_ToAdd
                                 (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
-                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime)
+                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl)
                                 VALUES (@_Name, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
-                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE())";
+                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl)";
 
                     cmd.CommandText = sqlString;
                     cmd.Parameters.Clear();
@@ -882,6 +507,7 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_DescriptionImageHeight", p.DescriptionImageHeight);
                     cmd.Parameters.AddWithValue("@_TemplateName", p.TemplateName);
                     cmd.Parameters.AddWithValue("@_Specifics", p.Specifics);
+                    cmd.Parameters.AddWithValue("@_eBayReferenceUrl", eBayReferenceUrl);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -892,167 +518,146 @@ namespace CostcoWinForm
             driver.Close();
         }
 
-        private string GetEbayCategoryIDAndPrice(string productName, bool bCategoryID = true)
+        private string GetEbayCategoryIDAndPrice(string productName, ref string eBayReferenceUrl, bool bCategoryID = true)
         {
-            string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
-
-            productName = productName.Replace("  ", " ");
-            productName = productName.Replace(" ", "+");
-            productName = productName.Replace("%", "");
-            ebaySearchUrl += productName;
-
-            webBrowser1.ScriptErrorsSuppressed = true;
-            webBrowser1.Navigate(ebaySearchUrl);
-
-            waitTillLoad(this.webBrowser1);
-
-            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
-            StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
-            doc.Load(sr);
-
-            var ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
-
-            if (ulNote == null)
+            try
             {
-                ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
+                string ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
 
-                ebaySearchUrl += productName.Split('+')[0] + "+" + productName.Split('+')[1] + "+" + productName.Split('+')[2];
+                productName = productName.Replace("  ", " ");
+                productName = productName.Replace(" ", "+");
+                productName = productName.Replace("%", "");
+                ebaySearchUrl += productName;
 
+                webBrowser1.ScriptErrorsSuppressed = true;
                 webBrowser1.Navigate(ebaySearchUrl);
 
                 waitTillLoad(this.webBrowser1);
 
-                documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
-
-                sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
-
+                HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+                var documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
+                StringReader sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
                 doc.Load(sr);
 
-                ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
+                var ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
 
                 if (ulNote == null)
                 {
-                    return "99|0";
-                }
-            }
+                    ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
 
-            List<HtmlNode> liNotes = ulNote.SelectNodes("li").ToList();
+                    ebaySearchUrl += productName.Split('+')[0] + "+" + productName.Split('+')[1] + "+" + productName.Split('+')[2];
 
-            HtmlNode hrefNote = liNotes[0].SelectSingleNode("//h3[@class='lvtitle']");
+                    webBrowser1.Navigate(ebaySearchUrl);
 
-            HtmlNode node = hrefNote.Descendants("a").First();
-            string productUrl = node.Attributes["href"].Value;
+                    waitTillLoad(this.webBrowser1);
 
+                    documentAsIHtmlDocument3 = (mshtml.IHTMLDocument3)webBrowser1.Document.DomDocument;
 
-            WebPage PageResult = Browser.NavigateToPage(new Uri(productUrl));
+                    sr = new StringReader(documentAsIHtmlDocument3.documentElement.outerHTML);
 
-            HtmlNode priceNote = PageResult.Html.SelectSingleNode("//span[@itemprop='price']");
-            if (priceNote == null)
-            {
-                priceNote = PageResult.Html.SelectSingleNode("//span[@id='mm-saleDscPrc']");
-            }
-            string price = priceNote.InnerText;
-            price = price.Substring(4);
+                    doc.Load(sr);
 
-            string categoryID = "";
+                    ulNote = doc.DocumentNode.SelectSingleNode("//ul[@id='ListViewInner']");
 
-            if (bCategoryID)
-            {
-                HtmlNode brumbNote = PageResult.Html.SelectSingleNode("//table[@class='vi-bc-topM']");
-                HtmlNode brumbTDNote = brumbNote.SelectSingleNode("//td[@id='vi-VR-brumb-lnkLst']");
-                List<HtmlNode> brumbList = brumbTDNote.SelectNodes("//li[@itemprop='itemListElement']").ToList();
-
-                List<string> categoryList = new List<string>();
-
-                string categoryTemp;
-                foreach (HtmlNode brumbItem in brumbList)
-                {
-                    categoryTemp = brumbItem.InnerText;
-                    if (categoryTemp.Contains("Other"))
-                        categoryTemp = "Other";
-                    categoryTemp = categoryTemp.Replace("'", "''");
-                    categoryList.Add(categoryTemp);
+                    if (ulNote == null)
+                    {
+                        return "99|0";
+                    }
                 }
 
-                //string subCategory = categoryList.ElementAt(categoryList.Count - 1);
+                List<HtmlNode> liNotes = ulNote.SelectNodes("li").ToList();
 
-                //if (subCategory.Contains("Other"))
-                //{
-                //    subCategory = "Other";
-                //}
+                HtmlNode hrefNote = liNotes[0].SelectSingleNode("//h3[@class='lvtitle']");
 
-                string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
-                                    "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
-                                    "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1) + "'";
+                HtmlNode node = hrefNote.Descendants("a").First();
+                eBayReferenceUrl = node.Attributes["href"].Value;
 
 
 
-                SqlConnection cn = new SqlConnection(connectionString);
-                SqlCommand cmd = new SqlCommand();
-                cmd.Connection = cn;
+                WebPage PageResult = Browser.NavigateToPage(new Uri(eBayReferenceUrl));
 
-                cn.Open();
-                cmd.CommandText = sqlString;
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
+                HtmlNode priceNote = PageResult.Html.SelectSingleNode("//span[@itemprop='price']");
+                if (priceNote == null)
                 {
-                    reader.Read();
-                    categoryID = reader.GetString(0);
+                    priceNote = PageResult.Html.SelectSingleNode("//span[@id='mm-saleDscPrc']");
                 }
-                reader.Close();
+                string price = priceNote.InnerText;
+                price = price.Substring(4);
 
-                if (categoryID == "")
+                string categoryID = "";
+
+                if (bCategoryID)
                 {
-                    sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
-                                    "F" + Convert.ToString(categoryList.Count - 1) + "='" + categoryList.ElementAt(categoryList.Count - 3) + "' AND " +
-                                    "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "'";
+                    HtmlNode brumbNote = PageResult.Html.SelectSingleNode("//table[@class='vi-bc-topM']");
+                    HtmlNode brumbTDNote = brumbNote.SelectSingleNode("//td[@id='vi-VR-brumb-lnkLst']");
+                    List<HtmlNode> brumbList = brumbTDNote.SelectNodes("//li[@itemprop='itemListElement']").ToList();
 
+                    List<string> categoryList = new List<string>();
+
+                    string categoryTemp;
+                    foreach (HtmlNode brumbItem in brumbList)
+                    {
+                        categoryTemp = brumbItem.InnerText;
+                        if (categoryTemp.Contains("Other"))
+                            categoryTemp = "Other";
+                        categoryTemp = categoryTemp.Replace("'", "''");
+                        categoryList.Add(categoryTemp);
+                    }
+
+                    //string subCategory = categoryList.ElementAt(categoryList.Count - 1);
+
+                    //if (subCategory.Contains("Other"))
+                    //{
+                    //    subCategory = "Other";
+                    //}
+
+                    string sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
+                                        "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "' AND " +
+                                        "F" + Convert.ToString(categoryList.Count + 1) + "='" + categoryList.ElementAt(categoryList.Count - 1) + "'";
+
+
+
+                    SqlConnection cn = new SqlConnection(connectionString);
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = cn;
+
+                    cn.Open();
                     cmd.CommandText = sqlString;
-                    reader = cmd.ExecuteReader();
+                    SqlDataReader reader = cmd.ExecuteReader();
                     if (reader.HasRows)
                     {
                         reader.Read();
                         categoryID = reader.GetString(0);
                     }
+                    reader.Close();
+
+                    if (categoryID == "")
+                    {
+                        sqlString = "SELECT CategoryId FROM eBay_Categories WHERE " +
+                                        "F" + Convert.ToString(categoryList.Count - 1) + "='" + categoryList.ElementAt(categoryList.Count - 3) + "' AND " +
+                                        "F" + Convert.ToString(categoryList.Count) + "='" + categoryList.ElementAt(categoryList.Count - 2) + "'";
+
+                        cmd.CommandText = sqlString;
+                        reader = cmd.ExecuteReader();
+                        if (reader.HasRows)
+                        {
+                            reader.Read();
+                            categoryID = reader.GetString(0);
+                        }
+                    }
+
+                    reader.Close();
+                    cn.Close();
                 }
 
-                reader.Close();
-                cn.Close();
+                return categoryID + "|" + price;
             }
-
-            return categoryID + "|" + price;
-        }
-
-        private void waitTillLoad(WebBrowser webBrControl)
-        {
-            WebBrowserReadyState loadStatus;
-            int waittime = 10000;
-            int counter = 0;
-            while (true)
+            catch (Exception e)
             {
-                loadStatus = webBrControl.ReadyState;
-                Application.DoEvents();
-                if ((counter > waittime) ||
-                    (loadStatus == WebBrowserReadyState.Uninitialized) ||
-                    (loadStatus == WebBrowserReadyState.Loading) ||
-                    (loadStatus == WebBrowserReadyState.Interactive))
-                {
-                    break;
-                }
-                counter++;
+                return "99|0";
             }
-
-            counter = 0;
-            while (true)
+            finally
             {
-                loadStatus = webBrControl.ReadyState;
-                Application.DoEvents();
-                if (loadStatus == WebBrowserReadyState.Complete && webBrControl.IsBusy != true)
-                {
-                    break;
-                }
-                counter++;
             }
         }
 
@@ -1257,8 +862,6 @@ namespace CostcoWinForm
             }
         }
 
-        
-
         private double CalculateListingPrice(double productPrice, double eBayReferencePrice)
         {
             double listingPrice = productPrice;
@@ -1281,6 +884,779 @@ namespace CostcoWinForm
 
             return listingPrice;
         }
+
+
+        // tpToAdd
+
+        SqlCommand cmdToAdd;
+        SqlDataAdapter daToAdd;
+        SqlCommandBuilder cmbToAdd;
+        DataSet dsToAdd;
+        DataTable dtToAdd;
+
+        public void gvAdd_Refresh()
+        {
+            string sqlString = @"SELECT ID, ImageLink, Name, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID
+                                 FROM eBay_ToAdd 
+                                 WHERE DeleteTime is NULL
+                                 Order by InsertTime DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            cmdToAdd = new SqlCommand(sqlString, connection);
+            daToAdd = new SqlDataAdapter(cmdToAdd);
+            cmbToAdd = new SqlCommandBuilder(daToAdd);
+            dsToAdd = new DataSet();
+            daToAdd.Fill(dsToAdd, "tbToAdd");
+            dtToAdd = dsToAdd.Tables["tbToAdd"];
+            connection.Close();
+
+            gvAdd.DataSource = dsToAdd.Tables["tbToAdd"];
+            gvAdd.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            gvAdd.Columns["AddSelect"].Width = 20;
+            gvAdd.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["Price"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["Shipping"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["eBayListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["Limit"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvAdd.Columns["eBayReferenceUrl"].Width = 150;
+            gvAdd.Columns["ID"].Visible = false;
+            gvAdd.Columns["ImageLink"].Visible = false;
+        }
+
+        private void chkAddAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in gvAdd.Rows)
+            {
+                row.Cells["AddSelect"].Value = chkAddAll.Checked;
+            }
+        }
+
+        private void gvAdd_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            daToAdd.Update(dtToAdd);
+        }
+
+        private void tpToAdd_Enter(object sender, EventArgs e)
+        {
+            gvAdd_Refresh();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            for (int i = gvAdd.Rows.Count - 1; i >= 0; i--)
+            {
+                if (Convert.ToBoolean(gvAdd.Rows[i].Cells["AddSelect"].Value) == true)
+                {
+                    gvAdd.Rows.RemoveAt(i);
+
+                }
+            }
+
+            daToAdd.Update(dtToAdd);
+        }
+
+        private void btnUpload_Click(object sender, EventArgs e)
+        {
+            List<Product> products = new List<Product>();
+
+            Dictionary<string, int> excelColumnsDictionary = new Dictionary<string, int>();
+
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = "SELECT * FROM eBay_ToAdd WHERE DeleteTime is NULL"; // WHERE shipping = 0.00 and Price < 100";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.Name = Convert.ToString(reader["Name"]);
+                    product.UrlNumber = Convert.ToString(reader["UrlNumber"]);
+                    product.ItemNumber = Convert.ToString(reader["ItemNumber"]);
+                    product.Category = Convert.ToString(reader["Category"]);
+                    product.Price = Convert.ToDecimal(reader["Price"]);
+                    product.Shipping = Convert.ToDecimal(reader["Shipping"]);
+                    product.Limit = Convert.ToString(reader["Limit"]);
+                    product.Discount = Convert.ToString(reader["Discount"]);
+                    product.Details = Convert.ToString(reader["Details"]);
+                    product.Specification = Convert.ToString(reader["Specification"]);
+                    product.ImageLink = Convert.ToString(reader["ImageLink"]);
+                    product.NumberOfImage = Convert.ToInt16(reader["NumberOfImage"]);
+                    product.Url = Convert.ToString(reader["Url"]);
+                    product.ImageOptions = Convert.ToString(reader["ImageOptions"]);
+                    product.Options = Convert.ToString(reader["Options"]);
+                    product.eBayCategoryID = Convert.ToString(reader["eBayCategoryID"]);
+                    product.eBayReferencePrice = Convert.ToDecimal(reader["eBayReferencePrice"]);
+                    product.eBayListingPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+                    product.DescriptionImageHeight = Convert.ToInt16(reader["DescriptionImageHeight"]);
+                    product.DescriptionImageWidth = Convert.ToInt16(reader["DescriptionImageWidth"]);
+                    product.TemplateName = Convert.ToString(reader["TemplateName"]);
+                    product.Specifics = Convert.ToString(reader["Specifics"]);
+
+                    products.Add(product);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            // add to Excel file
+            string sourceFileName = "FileExchange.csv";
+            string destinFileName = @"C:\eBayApp\Upload\" + sourceFileName.Replace(".csv", "") + "-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(@"C:\eBayApp\Files\Templates\FileExchange\" + sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+            int j = 0;
+            foreach (Product product in products)
+            {
+                string relationshipDetails = string.Empty;
+                List<string> relationshipDetailsArray = new List<string>();
+                List<string> imageOptionArray = new List<string>();
+
+                if (!string.IsNullOrEmpty(product.Options))
+                {
+                    GenerateVariations(product.Options, product.ImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
+                }
+
+                if (!string.IsNullOrEmpty(product.Specifics)/* && !bColumnCreated*/)
+                {
+                    foreach (string spec in product.Specifics.Split(','))
+                    {
+                        //if (GetColumnIndex(ref oSheet, "C:" + spec) == -1)
+                        if (!excelColumnsDictionary.ContainsKey("C:" + spec))
+                        {
+                            oSheet.Cells[1, 50 + j] = "C:" + spec;
+                            excelColumnsDictionary.Add("C:" + spec, 50 + j);
+                            j++;
+                        }
+                    }
+
+                    //bColumnCreated = true;
+                }
+
+                //oSheet.Cells[i, 1] = "VerifyAdd";
+                oSheet.Cells[i, 1] = "Add";
+                oSheet.Cells[i, 2] = product.eBayCategoryID;
+                oSheet.Cells[i, 3] = product.Name;
+                oSheet.Cells[i, 5] = product.Details;
+                oSheet.Cells[i, 6] = "1000";
+
+                if (string.IsNullOrEmpty(product.Options))
+                {
+                    string imageLinks = "";
+                    string imageLink = product.ImageLink.Substring(0, product.ImageLink.Length - 5);
+                    for (int n = 1; n <= product.NumberOfImage; n++)
+                    {
+                        imageLinks += imageLink + n.ToString() + ".jpg|";
+                    }
+
+                    imageLinks = imageLinks.Substring(0, imageLinks.Length - 1);
+                    oSheet.Cells[i, 7] = imageLinks;
+                }
+                else
+                {
+                    oSheet.Cells[i, 7] = product.ImageLink;
+                }
+
+                oSheet.Cells[i, 8] = "30";
+                oSheet.Cells[i, 9] = "FixedPrice";
+                oSheet.Cells[i, 10] = product.eBayListingPrice;
+                oSheet.Cells[i, 12] = "GTC";
+                oSheet.Cells[i, 13] = "1";
+                oSheet.Cells[i, 14] = "AL USA";
+                oSheet.Cells[i, 16] = "1";
+                oSheet.Cells[i, 17] = "zjding@outlook.com";
+                oSheet.Cells[i, 22] = "Flat";
+                oSheet.Cells[i, 23] = "USPSPriority";
+                oSheet.Cells[i, 24] = "0";
+                oSheet.Cells[i, 25] = "1";
+                oSheet.Cells[i, 31] = "1";
+                oSheet.Cells[i, 33] = "ReturnsNotAccepted";
+                oSheet.Cells[i, 43] = relationshipDetails;
+
+                if (!string.IsNullOrEmpty(product.Specifics))
+                {
+                    foreach (string spec in product.Specifics.Split(','))
+                    {
+                        //int k = GetColumnIndex(ref oSheet, "C:" + spec);
+                        int k = excelColumnsDictionary["C:" + spec];
+
+                        if (spec.Contains("Size Type"))
+                            oSheet.Cells[i, k] = "Regular";
+                        else if (spec.Contains("Style"))
+                            oSheet.Cells[i, k] = "Western";
+                        else if (spec.Contains("Brand"))
+                            oSheet.Cells[i, k] = product.Name.Split(' ').First();
+                        else if (spec.Contains("Inseam"))
+                            oSheet.Cells[i, k] = "32";
+                        else if (spec.Contains("Size"))
+                        {
+                            string s = relationshipDetails.Contains('|') ? relationshipDetails.Split('|')[1].Replace("Size=", "") : relationshipDetails.Replace("Size=", "");
+                            oSheet.Cells[i, k] = s.Length >= 65 ? s.Substring(0, 64) : s;
+                        }
+                    }
+                }
+
+                i++;
+
+                foreach (string relationshipDetail in relationshipDetailsArray)
+                {
+                    // Relationship
+                    oSheet.Cells[i, 42] = "Variation";
+                    // RelationshipDetails
+                    oSheet.Cells[i, 43] = relationshipDetail;
+                    // *C:Size (Men's)
+                    string size = relationshipDetail.Contains('|') ? relationshipDetail.Split('|')[1].Replace("Size=", "") : relationshipDetail.Replace("Size=", "");
+                    foreach (string spec in product.Specifics.Split(','))
+                    {
+                        if (!spec.Contains("Size Type") && spec.Contains("Size"))
+                            oSheet.Cells[i, excelColumnsDictionary["C:" + spec]/*GetColumnIndex(ref oSheet, "C:" + spec)*/] = size;
+                    }
+                    //// C:Color
+                    string color = relationshipDetail.Split('|')[0].Replace("Color=", "");
+                    //oSheet.Cells[i, 17] = color;
+                    // PicURL
+                    string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
+                    oSheet.Cells[i, 7] = colorImage;
+                    // *StartPrice
+                    oSheet.Cells[i, 10] = product.eBayListingPrice;
+                    // *Quantity
+                    oSheet.Cells[i, 8] = "1";
+
+                    i++;
+                }
+
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+            string command = "c:\\eBayApp\\Curl\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+        }
+
+        private void GenerateVariations(string inputString, string imageOptionString, out string relationshipDetails, out List<string> relationshipDetailsArray, out List<string> imageOptionArray)
+        {
+            relationshipDetails = string.Empty;
+            relationshipDetailsArray = new List<string>();
+            imageOptionArray = new List<string>();
+
+            string _Color = "Color=";
+            string _Size = "Size=";
+
+            if (inputString.Contains("|"))
+            {
+                List<string> sizeList = new List<string>();
+
+                foreach (var colorString in inputString.Split('|').ToList())
+                {
+                    string color = colorString.Split(':')[0];
+                    string sizes = colorString.Split(':')[1];
+
+                    _Color += color + ";";
+
+                    sizeList = sizeList.Union(sizes.Split(';').ToList()).ToList();
+
+                    foreach (var size in sizes.Split(';').ToList())
+                    {
+                        relationshipDetailsArray.Add("Color=" + color + "|" + "Size=" + size);
+                    }
+                }
+
+                _Color = _Color.Substring(0, _Color.Length - 1);
+
+                sizeList.Sort();
+
+                foreach (var size in sizeList)
+                {
+                    _Size += size + ";";
+                }
+
+                _Size = _Size.Substring(0, _Size.Length - 1);
+
+                relationshipDetails = _Color + "|" + _Size;
+            }
+            else
+            {
+                relationshipDetails = "Size=" + inputString;
+
+                foreach (string size in inputString.Split(';').ToList())
+                {
+                    relationshipDetailsArray.Add("Size=" + size);
+                }
+            }
+
+            if (imageOptionString.Contains("~"))
+            {
+                imageOptionArray = imageOptionString.Split('~').ToList();
+            }
+            else
+            {
+                imageOptionArray.Add(imageOptionString);
+            }
+        }
+
+        private void gvAdd_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex == -1)
+                return;
+
+            if (e.ColumnIndex == 7)
+            {
+                string url = gvAdd.Rows[e.RowIndex].Cells[7].FormattedValue.ToString();
+
+                Process.Start(@"chrome", url);
+            }
+            else if (e.ColumnIndex == 10)
+            {
+                string fileName = gvAdd.Rows[e.RowIndex].Cells[10].FormattedValue.ToString();
+
+                Process.Start(@"C:\temp\Screenshots\" + fileName + ".jpg");
+            }
+            else if (e.ColumnIndex == 11)
+            {
+                string url = gvAdd.Rows[e.RowIndex].Cells[11].FormattedValue.ToString();
+
+                Process.Start(@"chrome", url);
+            }
+        }
+
+        private void gvAdd_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (gvAdd.Columns[e.ColumnIndex].Name == "ToAddImage")
+            {
+                string imageUrl = string.Empty;
+
+                imageUrl = (this.gvAdd.Rows[e.RowIndex].Cells[3]).FormattedValue.ToString();
+                
+                if (imageUrl != "")
+                {
+                    e.Value = eBayFrontEnd.GetImageFromUrl(imageUrl);
+                }
+                else
+                {
+                    e.Value = null;
+                }
+            }
+        }
+
+
+        // tpToModify
+
+        private void btnToChangeUpload_Click(object sender, EventArgs e)
+        {
+            UpdatePriceChangeListings();
+            UpdateOptionChangeListings();
+
+            gvChange_Refresh();
+        }
+
+        SqlCommand cmdToChange;
+        SqlDataAdapter daToChange;
+        SqlCommandBuilder cmbToChange;
+        DataSet dsToChange;
+        DataTable dtToChange;
+
+        public void gvChange_Refresh()
+        {
+            string sqlString = @"SELECT ID, Name, eBayReferencePrice, eBayOldListingPrice, eBayNewListingPrice, CostcoOldPrice, CostcoNewPrice, OldOptions, NewOptions, Url, ImageLink
+                                 FROM eBay_ToChange 
+                                 WHERE DeleteTime is NULL
+                                 Order by InsertTime DESC";
+
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            cmdToChange = new SqlCommand(sqlString, connection);
+            daToChange = new SqlDataAdapter(cmdToChange);
+            cmbToChange = new SqlCommandBuilder(daToChange);
+            dsToChange = new DataSet();
+            daToChange.Fill(dsToChange, "tbToChange");
+            dtToChange = dsToChange.Tables["tbToChange"];
+            connection.Close();
+
+            gvChange.DataSource = dsToChange.Tables["tbToChange"];
+            gvChange.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            gvChange.Columns["ID"].Visible = false;
+            gvChange.Columns["ImageLink"].Visible = false;
+            gvChange.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayOldListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayNewListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["CostcoOldPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["CostcoNewPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["OldOptions"].Width = 150;
+            gvChange.Columns["NewOptions"].Width = 150;
+            gvChange.Columns["Url"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
+
+        private void gvChange_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (gvChange.Columns[e.ColumnIndex].Name == "ToModifyImage")
+            {
+                string imageUrl = string.Empty;
+
+                imageUrl = (this.gvChange.Rows[e.RowIndex].Cells[12]).FormattedValue.ToString();
+
+                if (imageUrl != "")
+                {
+                    e.Value = eBayFrontEnd.GetImageFromUrl(imageUrl);
+                }
+                else
+                {
+                    e.Value = null;
+                }
+            }
+        }
+
+        private void chkModifyAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in gvChange.Rows)
+            {
+                row.Cells["AddSelect"].Value = chkModifyAll.Checked;
+            }
+        }
+
+        private void gvChange_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            daToChange.Update(dtToChange);
+        }
+
+        private void btnToChangeDelete_Click(object sender, EventArgs e)
+        {
+            for (int i = gvChange.Rows.Count - 1; i >= 0; i--)
+            {
+                if (Convert.ToBoolean(gvChange.Rows[i].Cells["ToChangeSelect"].Value) == true)
+                {
+                    gvChange.Rows.RemoveAt(i);
+
+                }
+            }
+
+            daToChange.Update(dtToChange);
+        }
+
+        private void UpdateOptionChangeListings()
+        {
+            List<ProductUpdate> products = new List<ProductUpdate>();
+
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = @"SELECT c.eBayItemNumber, c.NewOptions, c.NewImageOptions, l.eBayListingPrice
+                                FROM eBay_ToChange c, eBay_CurrentListings l
+                                where c.eBayItemNumber = l.eBayItemNumber
+                                and c.NewOptions is not null 
+                                and c.DeleteTime is null";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    ProductUpdate p = new ProductUpdate();
+                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+                    p.NewOptions = Convert.ToString(reader["NewOptions"]);
+                    p.NewPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+                    p.NewImageOptions = Convert.ToString(reader["NewImageOptions"]);
+                    products.Add(p);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            if (products.Count == 0)
+                return;
+
+            // add to Excel file
+            string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeOptionsRevise.csv";
+            string destinFileName = @"C:\eBayApp\Upload\" + "FileExchangeOptionsRevise-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+            foreach (ProductUpdate product in products)
+            {
+                string relationshipDetails = string.Empty;
+                List<string> relationshipDetailsArray = new List<string>();
+                List<string> imageOptionArray = new List<string>();
+
+                GenerateVariations(product.NewOptions, product.NewImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
+
+                oSheet.Cells[i, 1].value = "Revise";
+                oSheet.Cells[i, 2].NumberFormat = "#";
+                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
+                oSheet.Cells[i, 4].value = relationshipDetails;
+
+                i++;
+
+                foreach (string relationshipDetail in relationshipDetailsArray)
+                {
+                    // Relationship
+                    oSheet.Cells[i, 3] = "Variation";
+                    // RelationshipDetails
+                    oSheet.Cells[i, 4] = relationshipDetail;
+
+                    //// C:Color
+                    string color = relationshipDetail.Split('|')[0].Replace("Color=", "");
+                    //oSheet.Cells[i, 17] = color;
+                    // PicURL
+                    string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
+                    oSheet.Cells[i, 7] = colorImage;
+
+                    // *StartPrice
+                    oSheet.Cells[i, 6] = product.NewPrice;
+                    // *Quantity
+                    oSheet.Cells[i, 5] = "1";
+
+                    i++;
+                }
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+
+            //sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() where NewOptions is not null and DeleteTime is null";
+
+            //cmd.CommandText = sqlString;
+            //cmd.ExecuteNonQuery();
+            cn.Close();
+        }
+
+        private void UpdatePriceChangeListings()
+        {
+            List<ProductUpdate> products = new List<ProductUpdate>();
+
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = "SELECT eBayItemNumber, eBayNewListingPrice  FROM eBay_ToChange where eBayNewListingPrice is not null and DeleteTime is null"; // WHERE shipping = 0.00 and Price < 100";
+
+            cn.Open();
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    ProductUpdate p = new ProductUpdate();
+                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+                    p.NewPrice = Convert.ToDecimal(reader["eBayNewListingPrice"]);
+                    products.Add(p);
+                }
+            }
+
+            reader.Close();
+            cn.Close();
+
+            if (products.Count == 0)
+                return;
+
+            // add to Excel file
+            string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeRevise.csv";
+            string destinFileName = @"C:\eBayApp\Upload\" + "FileExchangeRevise-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
+            File.Copy(sourceFileName, destinFileName);
+
+            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
+            Microsoft.Office.Interop.Excel.Range oRange;
+
+            //oXL.Visible = true;
+            oXL.DisplayAlerts = false;
+
+            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
+                                        destinFileName,               // Filename
+                                        0,
+                                        Type.Missing,
+                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        ",",          // Delimiter
+                                        Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing,
+                                        //Type.Missing,
+                                        Type.Missing,
+                                        Type.Missing);
+
+            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
+            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            int i = 2;
+            foreach (ProductUpdate product in products)
+            {
+                oSheet.Cells[i, 1].value = "Revise";
+                oSheet.Cells[i, 2].NumberFormat = "#";
+                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
+                oSheet.Cells[i, 3].value = product.NewPrice;
+
+                i++;
+            }
+
+            oWB.Save();
+            oWB.Close(true, Type.Missing, Type.Missing);
+            oXL.Application.Quit();
+            oXL.Quit();
+
+            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
+
+            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+
+            sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() where eBayNewListingPrice is not null and DeleteTime is null";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+            cn.Close();
+        }
+
+
+
+
+
+
+
+
+
+
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            if (this.tpEBayToModify == tabControl1.SelectedTab)
+            {
+                
+            }
+            else if (tpCurrentListing == tabControl1.SelectedTab)
+            {
+                
+            }
+        }
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+
+
+
+        private void waitTillLoad(WebBrowser webBrControl)
+        {
+            WebBrowserReadyState loadStatus;
+            int waittime = 10000;
+            int counter = 0;
+            while (true)
+            {
+                loadStatus = webBrControl.ReadyState;
+                Application.DoEvents();
+                if ((counter > waittime) ||
+                    (loadStatus == WebBrowserReadyState.Uninitialized) ||
+                    (loadStatus == WebBrowserReadyState.Loading) ||
+                    (loadStatus == WebBrowserReadyState.Interactive))
+                {
+                    break;
+                }
+                counter++;
+            }
+
+            counter = 0;
+            while (true)
+            {
+                loadStatus = webBrControl.ReadyState;
+                Application.DoEvents();
+                if (loadStatus == WebBrowserReadyState.Complete && webBrControl.IsBusy != true)
+                {
+                    break;
+                }
+                counter++;
+            }
+        }
+
+        
 
         
         private void btnListingDelete_Click(object sender, EventArgs e)
@@ -2028,225 +2404,9 @@ namespace CostcoWinForm
 
 
 
-        private void btnToChangeUpload_Click(object sender, EventArgs e)
-        {
-            UpdatePriceChangeListings();
-            UpdateOptionChangeListings();
+        
 
-            gvChange_Refresh();
-        }
-
-        private void UpdateOptionChangeListings()
-        {
-            List<ProductUpdate> products = new List<ProductUpdate>();
-
-            // get products from DB
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-
-            string sqlString = @"SELECT c.eBayItemNumber, c.NewOptions, c.NewImageOptions, l.eBayListingPrice
-                                FROM eBay_ToChange c, eBay_CurrentListings l
-                                where c.eBayItemNumber = l.eBayItemNumber
-                                and c.NewOptions is not null 
-                                and c.DeleteTime is null";
-
-            cn.Open();
-            cmd.CommandText = sqlString;
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    ProductUpdate p = new ProductUpdate();
-                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-                    p.NewOptions = Convert.ToString(reader["NewOptions"]);
-                    p.NewPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
-                    p.NewImageOptions = Convert.ToString(reader["NewImageOptions"]);
-                    products.Add(p);
-                }
-            }
-
-            reader.Close();
-            cn.Close();
-
-            if (products.Count == 0)
-                return;
-
-            // add to Excel file
-            string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeOptionsRevise.csv";
-            string destinFileName = @"C:\eBayApp\Upload\" + "FileExchangeOptionsRevise-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
-            File.Copy(sourceFileName, destinFileName);
-
-            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Range oRange;
-
-            //oXL.Visible = true;
-            oXL.DisplayAlerts = false;
-
-            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
-                                        destinFileName,               // Filename
-                                        0,
-                                        Type.Missing,
-                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        ",",          // Delimiter
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        //Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing);
-
-            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
-            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
-
-            int i = 2;
-            foreach (ProductUpdate product in products)
-            {
-                string relationshipDetails = string.Empty;
-                List<string> relationshipDetailsArray = new List<string>();
-                List<string> imageOptionArray = new List<string>();
-
-                GenerateVariations(product.NewOptions, product.NewImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
-
-                oSheet.Cells[i, 1].value = "Revise";
-                oSheet.Cells[i, 2].NumberFormat = "#";
-                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
-                oSheet.Cells[i, 4].value = relationshipDetails;
-
-                i++;
-
-                foreach (string relationshipDetail in relationshipDetailsArray)
-                {
-                    // Relationship
-                    oSheet.Cells[i, 3] = "Variation";
-                    // RelationshipDetails
-                    oSheet.Cells[i, 4] = relationshipDetail;
-
-                    //// C:Color
-                    string color = relationshipDetail.Split('|')[0].Replace("Color=", "");
-                    //oSheet.Cells[i, 17] = color;
-                    // PicURL
-                    string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
-                    oSheet.Cells[i, 7] = colorImage;
-
-                    // *StartPrice
-                    oSheet.Cells[i, 6] = product.NewPrice;
-                    // *Quantity
-                    oSheet.Cells[i, 5] = "1";
-
-                    i++;
-                }
-            }
-
-            oWB.Save();
-            oWB.Close(true, Type.Missing, Type.Missing);
-            oXL.Application.Quit();
-            oXL.Quit();
-
-            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
-
-            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
-
-            //sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() where NewOptions is not null and DeleteTime is null";
-
-            //cmd.CommandText = sqlString;
-            //cmd.ExecuteNonQuery();
-            cn.Close();
-        }
-
-        private void UpdatePriceChangeListings()
-        {
-            List<ProductUpdate> products = new List<ProductUpdate>();
-
-            // get products from DB
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-
-            string sqlString = "SELECT eBayItemNumber, eBayNewListingPrice  FROM eBay_ToChange where eBayNewListingPrice is not null and DeleteTime is null"; // WHERE shipping = 0.00 and Price < 100";
-
-            cn.Open();
-            cmd.CommandText = sqlString;
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                while (reader.Read())
-                {
-                    ProductUpdate p = new ProductUpdate();
-                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-                    p.NewPrice = Convert.ToDecimal(reader["eBayNewListingPrice"]);
-                    products.Add(p);
-                }
-            }
-
-            reader.Close();
-            cn.Close();
-
-            if (products.Count == 0)
-                return;
-
-            // add to Excel file
-            string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeRevise.csv";
-            string destinFileName = @"C:\eBayApp\Upload\" + "FileExchangeRevise-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
-            File.Copy(sourceFileName, destinFileName);
-
-            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Range oRange;
-
-            //oXL.Visible = true;
-            oXL.DisplayAlerts = false;
-
-            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
-                                        destinFileName,               // Filename
-                                        0,
-                                        Type.Missing,
-                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        ",",          // Delimiter
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        //Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing);
-
-            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
-            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
-
-            int i = 2;
-            foreach (ProductUpdate product in products)
-            {
-                oSheet.Cells[i, 1].value = "Revise";
-                oSheet.Cells[i, 2].NumberFormat = "#";
-                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
-                oSheet.Cells[i, 3].value = product.NewPrice;
-
-                i++;
-            }
-
-            oWB.Save();
-            oWB.Close(true, Type.Missing, Type.Missing);
-            oXL.Application.Quit();
-            oXL.Quit();
-
-            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
-
-            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
-
-            sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() where eBayNewListingPrice is not null and DeleteTime is null";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-            cn.Close();
-        }
+        
 
         private void btnToDeleteUpload_Click(object sender, EventArgs e)
         {
@@ -2346,10 +2506,7 @@ namespace CostcoWinForm
             //gvDelete_Refresh();
         }
 
-        private void btnToChangeDelete_Click(object sender, EventArgs e)
-        {
-            
-        }
+        
 
         private void btnToChangeUpdate_Click(object sender, EventArgs e)
         {
@@ -2375,8 +2532,8 @@ namespace CostcoWinForm
             cmd.Connection = cn;
             cn.Open();
 
-            string sqlString = @"INSERT INTO eBay_ToChange(Name, eBayItemNumber, eBayNewListingPrice) 
-                                 SELECT Name, eBayItemNumber, eBayListingPrice
+            string sqlString = @"INSERT INTO eBay_ToChange(Name, eBayItemNumber, eBayNewListingPrice, ImageLink) 
+                                 SELECT Name, eBayItemNumber, eBayListingPrice, ImageLink
                                  FROM eBay_CurrentListings
                                  WHERE CostcoUrlNumber in (" + itemNumbers + ") AND DeleteDT is null";
 
@@ -3359,43 +3516,7 @@ namespace CostcoWinForm
 
         
 
-        SqlCommand cmdToChange;
-        SqlDataAdapter daToChange;
-        SqlCommandBuilder cmbToChange;
-        DataSet dsToChange;
-        DataTable dtToChange;
-
-        public void gvChange_Refresh()
-        {
-            string sqlString = @"SELECT ID, Name, eBayReferencePrice, eBayOldListingPrice, eBayNewListingPrice, CostcoOldPrice, CostcoNewPrice, OldOptions, NewOptions, Url
-                                 FROM eBay_ToChange 
-                                 WHERE DeleteTime is NULL
-                                 Order by InsertTime DESC";
-
-            SqlConnection connection = new SqlConnection(connectionString);
-            connection.Open();
-            cmdToChange = new SqlCommand(sqlString, connection);
-            daToChange = new SqlDataAdapter(cmdToChange);
-            cmbToChange = new SqlCommandBuilder(daToChange);
-            dsToChange = new DataSet();
-            daToChange.Fill(dsToChange, "tbToChange");
-            dtToChange = dsToChange.Tables["tbToChange"];
-            connection.Close();
-
-            gvChange.DataSource = dsToChange.Tables["tbToChange"];
-            gvChange.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-            gvChange.Columns["ID"].Visible = false;
-            gvChange.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvChange.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvChange.Columns["eBayOldListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvChange.Columns["eBayNewListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvChange.Columns["CostcoOldPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvChange.Columns["CostcoNewPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvChange.Columns["OldOptions"].Width = 150;
-            gvChange.Columns["NewOptions"].Width = 150;
-            gvChange.Columns["Url"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        }
+        
 
         private int GetColumnIndex(ref Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet, string columnName)
         {
@@ -3959,6 +4080,18 @@ namespace CostcoWinForm
         }
 
         
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

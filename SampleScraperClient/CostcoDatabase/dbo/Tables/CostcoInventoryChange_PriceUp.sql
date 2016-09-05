@@ -4,8 +4,11 @@
     [CostcoUrl]      NVARCHAR (500) NULL,
     [UrlNumber]      NVARCHAR (200) NULL,
     [CostcoOldPrice] MONEY          NULL,
-    [CostcoNewPrice] MONEY          NULL
+    [CostcoNewPrice] MONEY          NULL,
+    [ImageLink]      NVARCHAR (500) NULL
 );
+
+
 
 
 

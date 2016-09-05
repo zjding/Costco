@@ -7,6 +7,9 @@
     [CostcoOldPrice]      MONEY          NULL,
     [CostcoNewPrice]      MONEY          NULL,
     [eBayListingOldPrice] MONEY          NULL,
-    [eBayListingNewPrice] MONEY          NULL
+    [eBayListingNewPrice] MONEY          NULL,
+    [ImageLink]           NVARCHAR (500) NULL
 );
+
+
 

@@ -18,6 +18,7 @@
     [eBayCategoryID]         NVARCHAR (50)   NULL,
     [eBayReferencePrice]     MONEY           NULL,
     [eBayListingPrice]       MONEY           NULL,
+    [eBayReferenceUrl]       NVARCHAR (500)  NULL,
     [DescriptionImageWidth]  INT             NULL,
     [DescriptionImageHeight] INT             NULL,
     [TemplateName]           NVARCHAR (100)  NULL,
@@ -26,6 +27,8 @@
     [DeleteTime]             DATETIME        NULL,
     CONSTRAINT [PK_eBayToAdd] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

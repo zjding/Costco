@@ -104,7 +104,7 @@ namespace CostcoWinForm
 
             gvEBayListingChangeDiscontinue.Columns["Select"].Width = 20;
             gvEBayListingChangeDiscontinue.Columns["ID"].Visible = false;
-            gvEBayListingChangeDiscontinue.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvEBayListingChangeDiscontinue.Columns["Name"].Width = 250;
             gvEBayListingChangeDiscontinue.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             //gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
@@ -166,23 +166,23 @@ namespace CostcoWinForm
         {
             if (e.RowIndex < 0) return;
 
-            if (e.ColumnIndex == 0)
-            {
-                foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
-                {
-                    if (row.Cells["Select"].Value != null && ((bool)row.Cells["Select"].Value) == true)
-                    {
-                        this.gvEBayListingChangeDiscontinue.Rows[row.Index].Selected = true;
-                        gvEBayListingChangeDiscontinue.Rows[row.Index].DefaultCellStyle.BackColor = Color.Yellow;
-                    }
-                    else
-                    {
-                        this.gvEBayListingChangeDiscontinue.Rows[row.Index].Selected = false;
-                        gvEBayListingChangeDiscontinue.Rows[row.Index].DefaultCellStyle.BackColor = Color.White;
-                    }
+            //if (e.ColumnIndex == 0)
+            //{
+            //    foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
+            //    {
+            //        if (row.Cells["Select"].Value != null && ((bool)row.Cells["Select"].Value) == true)
+            //        {
+            //            this.gvEBayListingChangeDiscontinue.Rows[row.Index].Selected = true;
+            //            gvEBayListingChangeDiscontinue.Rows[row.Index].DefaultCellStyle.BackColor = Color.Yellow;
+            //        }
+            //        else
+            //        {
+            //            this.gvEBayListingChangeDiscontinue.Rows[row.Index].Selected = false;
+            //            gvEBayListingChangeDiscontinue.Rows[row.Index].DefaultCellStyle.BackColor = Color.White;
+            //        }
                     
-                }
-            }
+            //    }
+            //}
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -219,22 +219,22 @@ namespace CostcoWinForm
             }
             else if (mode == "PriceUp")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, CostcoOldPrice, CostcoNewPrice, eBayOldListingPirce, eBayNewListingPrice) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldPrice, CostcoNewPrice, eBayListingOldPrice, eBayListingNewPrice
+                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, CostcoOldPrice, CostcoNewPrice, eBayOldListingPirce, eBayNewListingPrice, ImageLink) 
+                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldPrice, CostcoNewPrice, eBayListingOldPrice, eBayListingNewPrice, ImageLink
                                  FROM eBayListingChange_PriceUp 
                                  WHERE UrlNumber in (" + st + ")";
             }
             else if (mode == "PriceDown")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, CostcoOldPrice, CostcoNewPrice, eBayOldListingPirce, eBayNewListingPrice) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldPrice, CostcoNewPrice, eBayListingOldPrice, eBayListingNewPrice
+                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, CostcoOldPrice, CostcoNewPrice, eBayOldListingPirce, eBayNewListingPrice, ImageLink) 
+                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldPrice, CostcoNewPrice, eBayListingOldPrice, eBayListingNewPrice, ImageLink
                                  FROM eBayListingChange_PriceDown 
                                  WHERE UrlNumber in (" + st + ")";
             }
             else if (mode == "OptionChange")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldOptions, CostcoNewOptions, CostcoNewImageOptions
+                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions, ImageLink) 
+                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldOptions, CostcoNewOptions, CostcoNewImageOptions, ImageLink
                                  FROM eBayListingChange_OptionChange 
                                  WHERE UrlNumber in (" + st + ")";
             }
@@ -367,6 +367,28 @@ namespace CostcoWinForm
             cn.Close();
 
             this.Close();
+        }
+
+        private void gvEBayListingChangeDiscontinue_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (gvEBayListingChangeDiscontinue.Columns[e.ColumnIndex].Name == "Image")
+            {
+                string imageUrl = string.Empty;
+
+                if (mode == "CostcoNewProducts" || mode == "CostcoDiscountProducts" || mode == "CostcoClearanceProducts")
+                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[15]).FormattedValue.ToString();
+                else if (mode == "CostcoPriceDown")
+                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[8]).FormattedValue.ToString();
+
+                if (imageUrl != "")
+                {
+                    e.Value = eBayFrontEnd.GetImageFromUrl(imageUrl);
+                }
+                else
+                {
+                    e.Value = null;
+                }
+            }
         }
     }
 }

@@ -31,11 +31,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnDone = new System.Windows.Forms.Button();
             this.gvEBayListingChangeDiscontinue = new System.Windows.Forms.DataGridView();
-            this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
+            this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayListingChangeDiscontinue)).BeginInit();
             this.SuspendLayout();
@@ -73,19 +74,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gvEBayListingChangeDiscontinue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvEBayListingChangeDiscontinue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Select});
+            this.Select,
+            this.Image});
             this.gvEBayListingChangeDiscontinue.Location = new System.Drawing.Point(12, 12);
             this.gvEBayListingChangeDiscontinue.Name = "gvEBayListingChangeDiscontinue";
+            this.gvEBayListingChangeDiscontinue.RowTemplate.Height = 100;
             this.gvEBayListingChangeDiscontinue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvEBayListingChangeDiscontinue.Size = new System.Drawing.Size(878, 403);
             this.gvEBayListingChangeDiscontinue.TabIndex = 4;
+            this.gvEBayListingChangeDiscontinue.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvEBayListingChangeDiscontinue_CellFormatting);
             this.gvEBayListingChangeDiscontinue.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvEBayListingChangeDiscontinue_CellValueChanged);
-            // 
-            // Select
-            // 
-            this.Select.HeaderText = "Select";
-            this.Select.Name = "Select";
-            this.Select.Width = 20;
             // 
             // btnSave
             // 
@@ -131,6 +129,18 @@
             this.btnSend.UseVisualStyleBackColor = true;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
+            // Select
+            // 
+            this.Select.HeaderText = "Select";
+            this.Select.Name = "Select";
+            this.Select.Width = 20;
+            // 
+            // Image
+            // 
+            this.Image.HeaderText = "Image";
+            this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.Image.Name = "Image";
+            // 
             // frmEBayListingChange_Discontinue
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -154,7 +164,8 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSend;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
         private System.Windows.Forms.Button btnDone;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
+        private System.Windows.Forms.DataGridViewImageColumn Image;
     }
 }

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tpTax = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.gvTaxExempt = new System.Windows.Forms.DataGridView();
@@ -159,12 +159,10 @@
             this.btnUpload = new System.Windows.Forms.Button();
             this.gvAdd = new System.Windows.Forms.DataGridView();
             this.AddSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToAddImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.btnDelete = new System.Windows.Forms.Button();
             this.tpEBayToModify = new System.Windows.Forms.TabPage();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.gvChange = new System.Windows.Forms.DataGridView();
-            this.ToChangeSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.btnToChangeUpdate = new System.Windows.Forms.Button();
             this.btnToChangeDelete = new System.Windows.Forms.Button();
             this.btnToChangeUpload = new System.Windows.Forms.Button();
             this.tpEbayToDelete = new System.Windows.Forms.TabPage();
@@ -315,6 +313,9 @@
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
             this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.chkModifyAll = new System.Windows.Forms.CheckBox();
+            this.ToChangeSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToModifyImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -348,7 +349,6 @@
             this.tpToAdd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvAdd)).BeginInit();
             this.tpEBayToModify.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvChange)).BeginInit();
             this.tpEbayToDelete.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -1114,8 +1114,8 @@
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle10;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1158,16 +1158,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle11;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle12;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -1230,7 +1230,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(970, 526);
+            this.tabControl1.Size = new System.Drawing.Size(963, 526);
             this.tabControl1.TabIndex = 0;
             // 
             // tpDashboard
@@ -1643,7 +1643,7 @@
             this.tpToAdd.Location = new System.Drawing.Point(4, 22);
             this.tpToAdd.Name = "tpToAdd";
             this.tpToAdd.Padding = new System.Windows.Forms.Padding(3);
-            this.tpToAdd.Size = new System.Drawing.Size(962, 500);
+            this.tpToAdd.Size = new System.Drawing.Size(955, 500);
             this.tpToAdd.TabIndex = 7;
             this.tpToAdd.Text = "To Add";
             this.tpToAdd.UseVisualStyleBackColor = true;
@@ -1663,7 +1663,7 @@
             // btnUpload
             // 
             this.btnUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpload.Location = new System.Drawing.Point(881, 6);
+            this.btnUpload.Location = new System.Drawing.Point(874, 6);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(75, 23);
             this.btnUpload.TabIndex = 2;
@@ -1679,12 +1679,16 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gvAdd.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvAdd.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.AddSelect});
+            this.AddSelect,
+            this.ToAddImage});
             this.gvAdd.Location = new System.Drawing.Point(6, 35);
             this.gvAdd.Name = "gvAdd";
-            this.gvAdd.Size = new System.Drawing.Size(950, 459);
+            this.gvAdd.RowTemplate.Height = 100;
+            this.gvAdd.Size = new System.Drawing.Size(943, 459);
             this.gvAdd.TabIndex = 6;
+            this.gvAdd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellClick);
             this.gvAdd.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellEndEdit);
+            this.gvAdd.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvAdd_CellFormatting);
             // 
             // AddSelect
             // 
@@ -1694,10 +1698,16 @@
             this.AddSelect.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.AddSelect.Width = 20;
             // 
+            // ToAddImage
+            // 
+            this.ToAddImage.HeaderText = "Image";
+            this.ToAddImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ToAddImage.Name = "ToAddImage";
+            // 
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(800, 6);
+            this.btnDelete.Location = new System.Drawing.Point(793, 6);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 5;
@@ -1707,29 +1717,18 @@
             // 
             // tpEBayToModify
             // 
-            this.tpEBayToModify.Controls.Add(this.groupBox4);
+            this.tpEBayToModify.Controls.Add(this.chkModifyAll);
+            this.tpEBayToModify.Controls.Add(this.btnToChangeUpload);
+            this.tpEBayToModify.Controls.Add(this.gvChange);
+            this.tpEBayToModify.Controls.Add(this.btnToChangeDelete);
             this.tpEBayToModify.Location = new System.Drawing.Point(4, 22);
             this.tpEBayToModify.Name = "tpEBayToModify";
             this.tpEBayToModify.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEBayToModify.Size = new System.Drawing.Size(962, 500);
+            this.tpEBayToModify.Size = new System.Drawing.Size(955, 500);
             this.tpEBayToModify.TabIndex = 8;
             this.tpEBayToModify.Text = "eBay To Modify";
             this.tpEBayToModify.UseVisualStyleBackColor = true;
             this.tpEBayToModify.Enter += new System.EventHandler(this.tpEBayToModify_Enter);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.gvChange);
-            this.groupBox4.Controls.Add(this.btnToChangeUpdate);
-            this.groupBox4.Controls.Add(this.btnToChangeDelete);
-            this.groupBox4.Controls.Add(this.btnToChangeUpload);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(3, 3);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(956, 494);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "To be Modified Items";
             // 
             // gvChange
             // 
@@ -1739,42 +1738,31 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.gvChange.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvChange.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ToChangeSelect});
-            this.gvChange.Location = new System.Drawing.Point(6, 38);
+            this.ToChangeSelect,
+            this.ToModifyImage});
+            this.gvChange.Location = new System.Drawing.Point(6, 35);
             this.gvChange.Name = "gvChange";
-            this.gvChange.Size = new System.Drawing.Size(944, 450);
+            this.gvChange.RowTemplate.Height = 100;
+            this.gvChange.Size = new System.Drawing.Size(943, 459);
             this.gvChange.TabIndex = 7;
-            // 
-            // ToChangeSelect
-            // 
-            this.ToChangeSelect.HeaderText = "Select";
-            this.ToChangeSelect.Name = "ToChangeSelect";
-            this.ToChangeSelect.Width = 20;
-            // 
-            // btnToChangeUpdate
-            // 
-            this.btnToChangeUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeUpdate.Location = new System.Drawing.Point(794, 9);
-            this.btnToChangeUpdate.Name = "btnToChangeUpdate";
-            this.btnToChangeUpdate.Size = new System.Drawing.Size(75, 23);
-            this.btnToChangeUpdate.TabIndex = 6;
-            this.btnToChangeUpdate.Text = "Update";
-            this.btnToChangeUpdate.UseVisualStyleBackColor = true;
+            this.gvChange.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvChange_CellEndEdit);
+            this.gvChange.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvChange_CellFormatting);
             // 
             // btnToChangeDelete
             // 
             this.btnToChangeDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeDelete.Location = new System.Drawing.Point(713, 9);
+            this.btnToChangeDelete.Location = new System.Drawing.Point(793, 6);
             this.btnToChangeDelete.Name = "btnToChangeDelete";
             this.btnToChangeDelete.Size = new System.Drawing.Size(75, 23);
             this.btnToChangeDelete.TabIndex = 6;
             this.btnToChangeDelete.Text = "Delete";
             this.btnToChangeDelete.UseVisualStyleBackColor = true;
+            this.btnToChangeDelete.Click += new System.EventHandler(this.btnToChangeDelete_Click);
             // 
             // btnToChangeUpload
             // 
             this.btnToChangeUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeUpload.Location = new System.Drawing.Point(875, 9);
+            this.btnToChangeUpload.Location = new System.Drawing.Point(874, 6);
             this.btnToChangeUpload.Name = "btnToChangeUpload";
             this.btnToChangeUpload.Size = new System.Drawing.Size(75, 23);
             this.btnToChangeUpload.TabIndex = 3;
@@ -3847,11 +3835,34 @@
             this.productInfoBindingSource.DataMember = "ProductInfo";
             this.productInfoBindingSource.DataSource = this.costcoDataSet4;
             // 
+            // chkModifyAll
+            // 
+            this.chkModifyAll.AutoSize = true;
+            this.chkModifyAll.Location = new System.Drawing.Point(6, 10);
+            this.chkModifyAll.Name = "chkModifyAll";
+            this.chkModifyAll.Size = new System.Drawing.Size(37, 17);
+            this.chkModifyAll.TabIndex = 8;
+            this.chkModifyAll.Text = "All";
+            this.chkModifyAll.UseVisualStyleBackColor = true;
+            this.chkModifyAll.CheckedChanged += new System.EventHandler(this.chkModifyAll_CheckedChanged);
+            // 
+            // ToChangeSelect
+            // 
+            this.ToChangeSelect.HeaderText = "Select";
+            this.ToChangeSelect.Name = "ToChangeSelect";
+            this.ToChangeSelect.Width = 20;
+            // 
+            // ToModifyImage
+            // 
+            this.ToModifyImage.HeaderText = "Image";
+            this.ToModifyImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ToModifyImage.Name = "ToModifyImage";
+            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(994, 550);
+            this.ClientSize = new System.Drawing.Size(987, 550);
             this.Controls.Add(this.tabControl1);
             this.Name = "eBayFrontEnd";
             this.Text = "eBayFrontEnd";
@@ -3895,7 +3906,7 @@
             this.tpToAdd.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvAdd)).EndInit();
             this.tpEBayToModify.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
+            this.tpEBayToModify.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvChange)).EndInit();
             this.tpEbayToDelete.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
@@ -4138,8 +4149,6 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUpload;
         private System.Windows.Forms.TabPage tpEBayToModify;
-        private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button btnToChangeUpdate;
         private System.Windows.Forms.Button btnToChangeDelete;
         private System.Windows.Forms.Button btnToChangeUpload;
         private System.Windows.Forms.TabPage tpEbayToDelete;
@@ -4185,7 +4194,6 @@
         private System.Windows.Forms.DataGridView gvDelete;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ToDeleteSelect;
         private System.Windows.Forms.DataGridView gvChange;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ToChangeSelect;
         private System.Windows.Forms.DataGridView gvListing;
         private System.Windows.Forms.Button btnReloadCurrentListing;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ListingSelect;
@@ -4209,5 +4217,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn;
         private System.Windows.Forms.CheckBox chkAddAll;
         private System.Windows.Forms.DataGridViewCheckBoxColumn AddSelect;
+        private System.Windows.Forms.DataGridViewImageColumn ToAddImage;
+        private System.Windows.Forms.CheckBox chkModifyAll;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ToChangeSelect;
+        private System.Windows.Forms.DataGridViewImageColumn ToModifyImage;
     }
 }

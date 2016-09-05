@@ -8,6 +8,9 @@
     [CostcoNewPrice]      MONEY          NULL,
     [eBayListingOldPrice] MONEY          NULL,
     [eBayListingNewPrice] MONEY          NULL,
+    [ImageLink]           NVARCHAR (500) NULL,
     CONSTRAINT [PK_eBayListingChange_PriceUp] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
