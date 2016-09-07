@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tpTax = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.gvTaxExempt = new System.Windows.Forms.DataGridView();
@@ -162,9 +162,12 @@
             this.ToAddImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.btnDelete = new System.Windows.Forms.Button();
             this.tpEBayToModify = new System.Windows.Forms.TabPage();
-            this.gvChange = new System.Windows.Forms.DataGridView();
-            this.btnToChangeDelete = new System.Windows.Forms.Button();
+            this.chkModifyAll = new System.Windows.Forms.CheckBox();
             this.btnToChangeUpload = new System.Windows.Forms.Button();
+            this.gvChange = new System.Windows.Forms.DataGridView();
+            this.ToChangeSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToModifyImage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.btnToChangeDelete = new System.Windows.Forms.Button();
             this.tpEbayToDelete = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.gvDelete = new System.Windows.Forms.DataGridView();
@@ -313,9 +316,6 @@
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
             this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.chkModifyAll = new System.Windows.Forms.CheckBox();
-            this.ToChangeSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ToModifyImage = new System.Windows.Forms.DataGridViewImageColumn();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -376,7 +376,7 @@
             this.tpTax.Location = new System.Drawing.Point(4, 22);
             this.tpTax.Name = "tpTax";
             this.tpTax.Padding = new System.Windows.Forms.Padding(3);
-            this.tpTax.Size = new System.Drawing.Size(962, 500);
+            this.tpTax.Size = new System.Drawing.Size(955, 500);
             this.tpTax.TabIndex = 4;
             this.tpTax.Text = "Tax Exempt";
             this.tpTax.UseVisualStyleBackColor = true;
@@ -402,8 +402,8 @@
             this.splitContainer4.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer4.Panel2.Controls.Add(this.label2);
             this.splitContainer4.Panel2.Controls.Add(this.label3);
-            this.splitContainer4.Size = new System.Drawing.Size(956, 494);
-            this.splitContainer4.SplitterDistance = 400;
+            this.splitContainer4.Size = new System.Drawing.Size(949, 494);
+            this.splitContainer4.SplitterDistance = 397;
             this.splitContainer4.TabIndex = 0;
             // 
             // gvTaxExempt
@@ -414,13 +414,13 @@
             this.gvTaxExempt.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvTaxExempt.Location = new System.Drawing.Point(0, 0);
             this.gvTaxExempt.Name = "gvTaxExempt";
-            this.gvTaxExempt.Size = new System.Drawing.Size(400, 494);
+            this.gvTaxExempt.Size = new System.Drawing.Size(397, 494);
             this.gvTaxExempt.TabIndex = 0;
             // 
             // btnSendEmail
             // 
             this.btnSendEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSendEmail.Location = new System.Drawing.Point(431, 464);
+            this.btnSendEmail.Location = new System.Drawing.Point(427, 464);
             this.btnSendEmail.Name = "btnSendEmail";
             this.btnSendEmail.Size = new System.Drawing.Size(112, 23);
             this.btnSendEmail.TabIndex = 5;
@@ -447,7 +447,7 @@
             // btnGenerateFiles
             // 
             this.btnGenerateFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGenerateFiles.Location = new System.Drawing.Point(313, 464);
+            this.btnGenerateFiles.Location = new System.Drawing.Point(309, 464);
             this.btnGenerateFiles.Name = "btnGenerateFiles";
             this.btnGenerateFiles.Size = new System.Drawing.Size(112, 23);
             this.btnGenerateFiles.TabIndex = 2;
@@ -471,7 +471,7 @@
             this.groupBox8.Controls.Add(this.gvSummary);
             this.groupBox8.Location = new System.Drawing.Point(12, 46);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(531, 412);
+            this.groupBox8.Size = new System.Drawing.Size(527, 412);
             this.groupBox8.TabIndex = 1;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Summary";
@@ -497,7 +497,7 @@
             this.gvSummary.Location = new System.Drawing.Point(6, 19);
             this.gvSummary.Name = "gvSummary";
             this.gvSummary.ReadOnly = true;
-            this.gvSummary.Size = new System.Drawing.Size(519, 370);
+            this.gvSummary.Size = new System.Drawing.Size(515, 370);
             this.gvSummary.TabIndex = 0;
             // 
             // label2
@@ -524,7 +524,7 @@
             this.tpSold.Location = new System.Drawing.Point(4, 22);
             this.tpSold.Name = "tpSold";
             this.tpSold.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSold.Size = new System.Drawing.Size(962, 500);
+            this.tpSold.Size = new System.Drawing.Size(955, 500);
             this.tpSold.TabIndex = 3;
             this.tpSold.Text = "eBay Sold";
             this.tpSold.UseVisualStyleBackColor = true;
@@ -536,7 +536,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(956, 494);
+            this.panel1.Size = new System.Drawing.Size(949, 494);
             this.panel1.TabIndex = 0;
             // 
             // gvEBaySold
@@ -579,7 +579,7 @@
             this.gvEBaySold.DataSource = this.eBaySoldTransactionsBindingSource;
             this.gvEBaySold.Location = new System.Drawing.Point(3, 30);
             this.gvEBaySold.Name = "gvEBaySold";
-            this.gvEBaySold.Size = new System.Drawing.Size(950, 461);
+            this.gvEBaySold.Size = new System.Drawing.Size(943, 461);
             this.gvEBaySold.TabIndex = 1;
             // 
             // paypalTransactionIDDataGridViewTextBoxColumn
@@ -779,7 +779,7 @@
             this.tpCurrentListing.Controls.Add(this.panel3);
             this.tpCurrentListing.Location = new System.Drawing.Point(4, 22);
             this.tpCurrentListing.Name = "tpCurrentListing";
-            this.tpCurrentListing.Size = new System.Drawing.Size(962, 500);
+            this.tpCurrentListing.Size = new System.Drawing.Size(955, 500);
             this.tpCurrentListing.TabIndex = 2;
             this.tpCurrentListing.Text = "eBay Current Listing";
             this.tpCurrentListing.UseVisualStyleBackColor = true;
@@ -794,13 +794,13 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(962, 500);
+            this.panel3.Size = new System.Drawing.Size(955, 500);
             this.panel3.TabIndex = 0;
             // 
             // btnReloadCurrentListing
             // 
             this.btnReloadCurrentListing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReloadCurrentListing.Location = new System.Drawing.Point(884, 474);
+            this.btnReloadCurrentListing.Location = new System.Drawing.Point(877, 474);
             this.btnReloadCurrentListing.Name = "btnReloadCurrentListing";
             this.btnReloadCurrentListing.Size = new System.Drawing.Size(75, 23);
             this.btnReloadCurrentListing.TabIndex = 4;
@@ -819,7 +819,7 @@
             this.ListingSelect});
             this.gvListing.Location = new System.Drawing.Point(3, 3);
             this.gvListing.Name = "gvListing";
-            this.gvListing.Size = new System.Drawing.Size(956, 465);
+            this.gvListing.Size = new System.Drawing.Size(949, 465);
             this.gvListing.TabIndex = 5;
             this.gvListing.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvListing_CellEndEdit);
             this.gvListing.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvListing_CellFormatting);
@@ -859,7 +859,7 @@
             this.tpCostco.Location = new System.Drawing.Point(4, 22);
             this.tpCostco.Name = "tpCostco";
             this.tpCostco.Padding = new System.Windows.Forms.Padding(3);
-            this.tpCostco.Size = new System.Drawing.Size(962, 500);
+            this.tpCostco.Size = new System.Drawing.Size(955, 500);
             this.tpCostco.TabIndex = 0;
             this.tpCostco.Text = "Costco Products";
             this.tpCostco.UseVisualStyleBackColor = true;
@@ -871,7 +871,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(956, 494);
+            this.panel2.Size = new System.Drawing.Size(949, 494);
             this.panel2.TabIndex = 2;
             // 
             // splitContainer1
@@ -890,8 +890,8 @@
             this.splitContainer1.Panel2.Controls.Add(this.webBrowser1);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
             this.splitContainer1.Panel2.Controls.Add(this.btnCrawl);
-            this.splitContainer1.Size = new System.Drawing.Size(956, 494);
-            this.splitContainer1.SplitterDistance = 232;
+            this.splitContainer1.Size = new System.Drawing.Size(949, 494);
+            this.splitContainer1.SplitterDistance = 230;
             this.splitContainer1.TabIndex = 1;
             // 
             // groupBox1
@@ -903,7 +903,7 @@
             this.groupBox1.Controls.Add(this.lvCategories);
             this.groupBox1.Location = new System.Drawing.Point(3, 32);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(226, 459);
+            this.groupBox1.Size = new System.Drawing.Size(224, 459);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Categories";
@@ -937,7 +937,7 @@
             this.Category_8});
             this.lvCategories.Location = new System.Drawing.Point(6, 45);
             this.lvCategories.Name = "lvCategories";
-            this.lvCategories.Size = new System.Drawing.Size(214, 408);
+            this.lvCategories.Size = new System.Drawing.Size(212, 408);
             this.lvCategories.TabIndex = 0;
             this.lvCategories.UseCompatibleStateImageBehavior = false;
             this.lvCategories.View = System.Windows.Forms.View.Details;
@@ -991,7 +991,7 @@
             // btnCostcoCategory
             // 
             this.btnCostcoCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCostcoCategory.Location = new System.Drawing.Point(116, 3);
+            this.btnCostcoCategory.Location = new System.Drawing.Point(114, 3);
             this.btnCostcoCategory.Name = "btnCostcoCategory";
             this.btnCostcoCategory.Size = new System.Drawing.Size(113, 23);
             this.btnCostcoCategory.TabIndex = 5;
@@ -1019,7 +1019,7 @@
             this.groupBox2.Controls.Add(this.gvProducts);
             this.groupBox2.Location = new System.Drawing.Point(3, 32);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(714, 459);
+            this.groupBox2.Size = new System.Drawing.Size(709, 459);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Products";
@@ -1030,7 +1030,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFilter.Location = new System.Drawing.Point(43, 19);
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(388, 20);
+            this.txtFilter.Size = new System.Drawing.Size(383, 20);
             this.txtFilter.TabIndex = 6;
             // 
             // label1
@@ -1045,7 +1045,7 @@
             // btnAddPending
             // 
             this.btnAddPending.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddPending.Location = new System.Drawing.Point(612, 17);
+            this.btnAddPending.Location = new System.Drawing.Point(607, 17);
             this.btnAddPending.Name = "btnAddPending";
             this.btnAddPending.Size = new System.Drawing.Size(96, 23);
             this.btnAddPending.TabIndex = 2;
@@ -1056,7 +1056,7 @@
             // btnRefreshProducts
             // 
             this.btnRefreshProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshProducts.Location = new System.Drawing.Point(437, 17);
+            this.btnRefreshProducts.Location = new System.Drawing.Point(432, 17);
             this.btnRefreshProducts.Name = "btnRefreshProducts";
             this.btnRefreshProducts.Size = new System.Drawing.Size(75, 23);
             this.btnRefreshProducts.TabIndex = 1;
@@ -1091,7 +1091,7 @@
             this.gvProducts.Name = "gvProducts";
             this.gvProducts.RowTemplate.Height = 100;
             this.gvProducts.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvProducts.Size = new System.Drawing.Size(702, 408);
+            this.gvProducts.Size = new System.Drawing.Size(697, 408);
             this.gvProducts.TabIndex = 0;
             this.gvProducts.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvProducts_CellClick);
             this.gvProducts.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvProducts_CellFormatting);
@@ -1114,8 +1114,8 @@
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.nameDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
@@ -1158,16 +1158,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle2;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle3;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -1239,7 +1239,7 @@
             this.tpDashboard.Location = new System.Drawing.Point(4, 22);
             this.tpDashboard.Name = "tpDashboard";
             this.tpDashboard.Padding = new System.Windows.Forms.Padding(3);
-            this.tpDashboard.Size = new System.Drawing.Size(962, 500);
+            this.tpDashboard.Size = new System.Drawing.Size(955, 500);
             this.tpDashboard.TabIndex = 12;
             this.tpDashboard.Text = "Dashboard";
             this.tpDashboard.UseVisualStyleBackColor = true;
@@ -1251,7 +1251,7 @@
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(3, 3);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(956, 494);
+            this.panel6.Size = new System.Drawing.Size(949, 494);
             this.panel6.TabIndex = 0;
             // 
             // tableLayoutPanel4
@@ -1266,7 +1266,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 72.20902F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.79097F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(956, 494);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(949, 494);
             this.tableLayoutPanel4.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -1316,7 +1316,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(472, 350);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(468, 350);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // llEBayOptions
@@ -1324,10 +1324,10 @@
             this.llEBayOptions.AutoSize = true;
             this.llEBayOptions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.llEBayOptions.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llEBayOptions.Location = new System.Drawing.Point(246, 105);
+            this.llEBayOptions.Location = new System.Drawing.Point(244, 105);
             this.llEBayOptions.Margin = new System.Windows.Forms.Padding(0);
             this.llEBayOptions.Name = "llEBayOptions";
-            this.llEBayOptions.Size = new System.Drawing.Size(226, 20);
+            this.llEBayOptions.Size = new System.Drawing.Size(224, 20);
             this.llEBayOptions.TabIndex = 20;
             this.llEBayOptions.TabStop = true;
             this.llEBayOptions.Text = "0";
@@ -1340,10 +1340,10 @@
             this.llEBayPriceDown.BackColor = System.Drawing.Color.WhiteSmoke;
             this.llEBayPriceDown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.llEBayPriceDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llEBayPriceDown.Location = new System.Drawing.Point(246, 85);
+            this.llEBayPriceDown.Location = new System.Drawing.Point(244, 85);
             this.llEBayPriceDown.Margin = new System.Windows.Forms.Padding(0);
             this.llEBayPriceDown.Name = "llEBayPriceDown";
-            this.llEBayPriceDown.Size = new System.Drawing.Size(226, 20);
+            this.llEBayPriceDown.Size = new System.Drawing.Size(224, 20);
             this.llEBayPriceDown.TabIndex = 19;
             this.llEBayPriceDown.TabStop = true;
             this.llEBayPriceDown.Text = "0";
@@ -1355,10 +1355,10 @@
             this.llEBayPriceUp.AutoSize = true;
             this.llEBayPriceUp.Dock = System.Windows.Forms.DockStyle.Fill;
             this.llEBayPriceUp.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llEBayPriceUp.Location = new System.Drawing.Point(246, 65);
+            this.llEBayPriceUp.Location = new System.Drawing.Point(244, 65);
             this.llEBayPriceUp.Margin = new System.Windows.Forms.Padding(0);
             this.llEBayPriceUp.Name = "llEBayPriceUp";
-            this.llEBayPriceUp.Size = new System.Drawing.Size(226, 20);
+            this.llEBayPriceUp.Size = new System.Drawing.Size(224, 20);
             this.llEBayPriceUp.TabIndex = 18;
             this.llEBayPriceUp.TabStop = true;
             this.llEBayPriceUp.Text = "0";
@@ -1373,7 +1373,7 @@
             this.label96.Location = new System.Drawing.Point(20, 105);
             this.label96.Margin = new System.Windows.Forms.Padding(0);
             this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(226, 20);
+            this.label96.Size = new System.Drawing.Size(224, 20);
             this.label96.TabIndex = 13;
             this.label96.Text = "Options changed";
             this.label96.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1397,7 +1397,7 @@
             this.label93.Location = new System.Drawing.Point(20, 85);
             this.label93.Margin = new System.Windows.Forms.Padding(0);
             this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(226, 20);
+            this.label93.Size = new System.Drawing.Size(224, 20);
             this.label93.TabIndex = 10;
             this.label93.Text = "Price down";
             this.label93.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1420,7 +1420,7 @@
             this.label90.Location = new System.Drawing.Point(20, 65);
             this.label90.Margin = new System.Windows.Forms.Padding(0);
             this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(226, 20);
+            this.label90.Size = new System.Drawing.Size(224, 20);
             this.label90.TabIndex = 7;
             this.label90.Text = "Price up";
             this.label90.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1444,7 +1444,7 @@
             this.label87.Location = new System.Drawing.Point(20, 45);
             this.label87.Margin = new System.Windows.Forms.Padding(0);
             this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(226, 20);
+            this.label87.Size = new System.Drawing.Size(224, 20);
             this.label87.TabIndex = 4;
             this.label87.Text = "Discoutinue ";
             this.label87.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1477,7 +1477,7 @@
             this.label70.Location = new System.Drawing.Point(20, 20);
             this.label70.Margin = new System.Windows.Forms.Padding(0);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(226, 25);
+            this.label70.Size = new System.Drawing.Size(224, 25);
             this.label70.TabIndex = 0;
             this.label70.Text = "Changes for eBay listings";
             this.label70.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1488,10 +1488,10 @@
             this.llEBayDiscontinue.BackColor = System.Drawing.Color.WhiteSmoke;
             this.llEBayDiscontinue.Dock = System.Windows.Forms.DockStyle.Fill;
             this.llEBayDiscontinue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llEBayDiscontinue.Location = new System.Drawing.Point(246, 45);
+            this.llEBayDiscontinue.Location = new System.Drawing.Point(244, 45);
             this.llEBayDiscontinue.Margin = new System.Windows.Forms.Padding(0);
             this.llEBayDiscontinue.Name = "llEBayDiscontinue";
-            this.llEBayDiscontinue.Size = new System.Drawing.Size(226, 20);
+            this.llEBayDiscontinue.Size = new System.Drawing.Size(224, 20);
             this.llEBayDiscontinue.TabIndex = 14;
             this.llEBayDiscontinue.TabStop = true;
             this.llEBayDiscontinue.Text = "0";
@@ -1506,7 +1506,7 @@
             this.label88.Location = new System.Drawing.Point(20, 145);
             this.label88.Margin = new System.Windows.Forms.Padding(0);
             this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(226, 20);
+            this.label88.Size = new System.Drawing.Size(224, 20);
             this.label88.TabIndex = 21;
             this.label88.Text = "Changes for Costco inventory";
             this.label88.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1520,7 +1520,7 @@
             this.label91.Location = new System.Drawing.Point(20, 165);
             this.label91.Margin = new System.Windows.Forms.Padding(0);
             this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(226, 20);
+            this.label91.Size = new System.Drawing.Size(224, 20);
             this.label91.TabIndex = 22;
             this.label91.Text = "Price down";
             this.label91.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1531,10 +1531,10 @@
             this.llCostcoPriceDown.BackColor = System.Drawing.Color.WhiteSmoke;
             this.llCostcoPriceDown.Dock = System.Windows.Forms.DockStyle.Fill;
             this.llCostcoPriceDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llCostcoPriceDown.Location = new System.Drawing.Point(246, 165);
+            this.llCostcoPriceDown.Location = new System.Drawing.Point(244, 165);
             this.llCostcoPriceDown.Margin = new System.Windows.Forms.Padding(0);
             this.llCostcoPriceDown.Name = "llCostcoPriceDown";
-            this.llCostcoPriceDown.Size = new System.Drawing.Size(226, 20);
+            this.llCostcoPriceDown.Size = new System.Drawing.Size(224, 20);
             this.llCostcoPriceDown.TabIndex = 23;
             this.llCostcoPriceDown.TabStop = true;
             this.llCostcoPriceDown.Text = "0";
@@ -1549,7 +1549,7 @@
             this.label94.Location = new System.Drawing.Point(20, 185);
             this.label94.Margin = new System.Windows.Forms.Padding(0);
             this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(226, 20);
+            this.label94.Size = new System.Drawing.Size(224, 20);
             this.label94.TabIndex = 24;
             this.label94.Text = "New products";
             this.label94.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1559,10 +1559,10 @@
             this.llNewProducts.AutoSize = true;
             this.llNewProducts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.llNewProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.llNewProducts.Location = new System.Drawing.Point(246, 185);
+            this.llNewProducts.Location = new System.Drawing.Point(244, 185);
             this.llNewProducts.Margin = new System.Windows.Forms.Padding(0);
             this.llNewProducts.Name = "llNewProducts";
-            this.llNewProducts.Size = new System.Drawing.Size(226, 20);
+            this.llNewProducts.Size = new System.Drawing.Size(224, 20);
             this.llNewProducts.TabIndex = 25;
             this.llNewProducts.TabStop = true;
             this.llNewProducts.Text = "0";
@@ -1571,7 +1571,7 @@
             // 
             // btnChangeForEBayListings
             // 
-            this.btnChangeForEBayListings.Location = new System.Drawing.Point(246, 20);
+            this.btnChangeForEBayListings.Location = new System.Drawing.Point(244, 20);
             this.btnChangeForEBayListings.Margin = new System.Windows.Forms.Padding(0);
             this.btnChangeForEBayListings.Name = "btnChangeForEBayListings";
             this.btnChangeForEBayListings.Size = new System.Drawing.Size(75, 25);
@@ -1588,7 +1588,7 @@
             this.label85.Location = new System.Drawing.Point(20, 205);
             this.label85.Margin = new System.Windows.Forms.Padding(0);
             this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(226, 20);
+            this.label85.Size = new System.Drawing.Size(224, 20);
             this.label85.TabIndex = 27;
             this.label85.Text = "On sale products";
             this.label85.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1598,10 +1598,10 @@
             this.llCostcoOnSale.AutoSize = true;
             this.llCostcoOnSale.BackColor = System.Drawing.Color.WhiteSmoke;
             this.llCostcoOnSale.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.llCostcoOnSale.Location = new System.Drawing.Point(246, 205);
+            this.llCostcoOnSale.Location = new System.Drawing.Point(244, 205);
             this.llCostcoOnSale.Margin = new System.Windows.Forms.Padding(0);
             this.llCostcoOnSale.Name = "llCostcoOnSale";
-            this.llCostcoOnSale.Size = new System.Drawing.Size(226, 20);
+            this.llCostcoOnSale.Size = new System.Drawing.Size(224, 20);
             this.llCostcoOnSale.TabIndex = 28;
             this.llCostcoOnSale.TabStop = true;
             this.llCostcoOnSale.Text = "0";
@@ -1615,7 +1615,7 @@
             this.label97.Location = new System.Drawing.Point(20, 225);
             this.label97.Margin = new System.Windows.Forms.Padding(0);
             this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(226, 20);
+            this.label97.Size = new System.Drawing.Size(224, 20);
             this.label97.TabIndex = 29;
             this.label97.Text = ".97 products";
             this.label97.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1624,10 +1624,10 @@
             // 
             this.llClearanceProducts.AutoSize = true;
             this.llClearanceProducts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.llClearanceProducts.Location = new System.Drawing.Point(246, 225);
+            this.llClearanceProducts.Location = new System.Drawing.Point(244, 225);
             this.llClearanceProducts.Margin = new System.Windows.Forms.Padding(0);
             this.llClearanceProducts.Name = "llClearanceProducts";
-            this.llClearanceProducts.Size = new System.Drawing.Size(226, 20);
+            this.llClearanceProducts.Size = new System.Drawing.Size(224, 20);
             this.llClearanceProducts.TabIndex = 30;
             this.llClearanceProducts.TabStop = true;
             this.llClearanceProducts.Text = "0";
@@ -1730,6 +1730,28 @@
             this.tpEBayToModify.UseVisualStyleBackColor = true;
             this.tpEBayToModify.Enter += new System.EventHandler(this.tpEBayToModify_Enter);
             // 
+            // chkModifyAll
+            // 
+            this.chkModifyAll.AutoSize = true;
+            this.chkModifyAll.Location = new System.Drawing.Point(6, 10);
+            this.chkModifyAll.Name = "chkModifyAll";
+            this.chkModifyAll.Size = new System.Drawing.Size(37, 17);
+            this.chkModifyAll.TabIndex = 8;
+            this.chkModifyAll.Text = "All";
+            this.chkModifyAll.UseVisualStyleBackColor = true;
+            this.chkModifyAll.CheckedChanged += new System.EventHandler(this.chkModifyAll_CheckedChanged);
+            // 
+            // btnToChangeUpload
+            // 
+            this.btnToChangeUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnToChangeUpload.Location = new System.Drawing.Point(874, 6);
+            this.btnToChangeUpload.Name = "btnToChangeUpload";
+            this.btnToChangeUpload.Size = new System.Drawing.Size(75, 23);
+            this.btnToChangeUpload.TabIndex = 3;
+            this.btnToChangeUpload.Text = "Upload";
+            this.btnToChangeUpload.UseVisualStyleBackColor = true;
+            this.btnToChangeUpload.Click += new System.EventHandler(this.btnToChangeUpload_Click);
+            // 
             // gvChange
             // 
             this.gvChange.AllowUserToAddRows = false;
@@ -1748,6 +1770,18 @@
             this.gvChange.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvChange_CellEndEdit);
             this.gvChange.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvChange_CellFormatting);
             // 
+            // ToChangeSelect
+            // 
+            this.ToChangeSelect.HeaderText = "Select";
+            this.ToChangeSelect.Name = "ToChangeSelect";
+            this.ToChangeSelect.Width = 20;
+            // 
+            // ToModifyImage
+            // 
+            this.ToModifyImage.HeaderText = "Image";
+            this.ToModifyImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ToModifyImage.Name = "ToModifyImage";
+            // 
             // btnToChangeDelete
             // 
             this.btnToChangeDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1759,24 +1793,13 @@
             this.btnToChangeDelete.UseVisualStyleBackColor = true;
             this.btnToChangeDelete.Click += new System.EventHandler(this.btnToChangeDelete_Click);
             // 
-            // btnToChangeUpload
-            // 
-            this.btnToChangeUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToChangeUpload.Location = new System.Drawing.Point(874, 6);
-            this.btnToChangeUpload.Name = "btnToChangeUpload";
-            this.btnToChangeUpload.Size = new System.Drawing.Size(75, 23);
-            this.btnToChangeUpload.TabIndex = 3;
-            this.btnToChangeUpload.Text = "Upload";
-            this.btnToChangeUpload.UseVisualStyleBackColor = true;
-            this.btnToChangeUpload.Click += new System.EventHandler(this.btnToChangeUpload_Click);
-            // 
             // tpEbayToDelete
             // 
             this.tpEbayToDelete.Controls.Add(this.groupBox5);
             this.tpEbayToDelete.Location = new System.Drawing.Point(4, 22);
             this.tpEbayToDelete.Name = "tpEbayToDelete";
             this.tpEbayToDelete.Padding = new System.Windows.Forms.Padding(3);
-            this.tpEbayToDelete.Size = new System.Drawing.Size(962, 500);
+            this.tpEbayToDelete.Size = new System.Drawing.Size(955, 500);
             this.tpEbayToDelete.TabIndex = 9;
             this.tpEbayToDelete.Text = "eBay To Delete";
             this.tpEbayToDelete.UseVisualStyleBackColor = true;
@@ -1789,7 +1812,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(956, 494);
+            this.groupBox5.Size = new System.Drawing.Size(949, 494);
             this.groupBox5.TabIndex = 2;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "To be Deleted Items";
@@ -1805,7 +1828,7 @@
             this.ToDeleteSelect});
             this.gvDelete.Location = new System.Drawing.Point(6, 39);
             this.gvDelete.Name = "gvDelete";
-            this.gvDelete.Size = new System.Drawing.Size(944, 449);
+            this.gvDelete.Size = new System.Drawing.Size(937, 449);
             this.gvDelete.TabIndex = 4;
             this.gvDelete.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvDelete_CellValueChanged);
             // 
@@ -1818,7 +1841,7 @@
             // btnToDeleteUpload
             // 
             this.btnToDeleteUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnToDeleteUpload.Location = new System.Drawing.Point(875, 10);
+            this.btnToDeleteUpload.Location = new System.Drawing.Point(868, 10);
             this.btnToDeleteUpload.Name = "btnToDeleteUpload";
             this.btnToDeleteUpload.Size = new System.Drawing.Size(75, 23);
             this.btnToDeleteUpload.TabIndex = 3;
@@ -1832,7 +1855,7 @@
             this.tpSaleTax.Location = new System.Drawing.Point(4, 22);
             this.tpSaleTax.Name = "tpSaleTax";
             this.tpSaleTax.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSaleTax.Size = new System.Drawing.Size(962, 500);
+            this.tpSaleTax.Size = new System.Drawing.Size(955, 500);
             this.tpSaleTax.TabIndex = 5;
             this.tpSaleTax.Text = "Sale Tax";
             this.tpSaleTax.UseVisualStyleBackColor = true;
@@ -1849,7 +1872,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(3, 3);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(956, 494);
+            this.panel4.Size = new System.Drawing.Size(949, 494);
             this.panel4.TabIndex = 0;
             // 
             // groupBox7
@@ -1861,7 +1884,7 @@
             this.groupBox7.Controls.Add(this.gvSaleTaxHistory);
             this.groupBox7.Location = new System.Drawing.Point(3, 35);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(950, 456);
+            this.groupBox7.Size = new System.Drawing.Size(943, 456);
             this.groupBox7.TabIndex = 15;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Sale Tax History";
@@ -1869,7 +1892,7 @@
             // btnSaleTaxSave
             // 
             this.btnSaleTaxSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaleTaxSave.Location = new System.Drawing.Point(866, 428);
+            this.btnSaleTaxSave.Location = new System.Drawing.Point(859, 428);
             this.btnSaleTaxSave.Name = "btnSaleTaxSave";
             this.btnSaleTaxSave.Size = new System.Drawing.Size(78, 23);
             this.btnSaleTaxSave.TabIndex = 16;
@@ -1886,7 +1909,7 @@
             this.gvSaleTaxHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvSaleTaxHistory.Location = new System.Drawing.Point(6, 19);
             this.gvSaleTaxHistory.Name = "gvSaleTaxHistory";
-            this.gvSaleTaxHistory.Size = new System.Drawing.Size(938, 403);
+            this.gvSaleTaxHistory.Size = new System.Drawing.Size(931, 403);
             this.gvSaleTaxHistory.TabIndex = 0;
             // 
             // btnGenerateSaleTaxReport
@@ -1937,7 +1960,7 @@
             this.tpIncomeTax.Location = new System.Drawing.Point(4, 22);
             this.tpIncomeTax.Name = "tpIncomeTax";
             this.tpIncomeTax.Padding = new System.Windows.Forms.Padding(3);
-            this.tpIncomeTax.Size = new System.Drawing.Size(962, 500);
+            this.tpIncomeTax.Size = new System.Drawing.Size(955, 500);
             this.tpIncomeTax.TabIndex = 6;
             this.tpIncomeTax.Text = "Income Tax";
             this.tpIncomeTax.UseVisualStyleBackColor = true;
@@ -1951,7 +1974,7 @@
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel5.Location = new System.Drawing.Point(3, 3);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(956, 494);
+            this.panel5.Size = new System.Drawing.Size(949, 494);
             this.panel5.TabIndex = 0;
             // 
             // btnIncomeTaxCalculate
@@ -2024,7 +2047,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(950, 432);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(943, 432);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel3
@@ -2115,7 +2138,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label46, 1, 9);
             this.tableLayoutPanel3.Controls.Add(this.ll16b, 2, 9);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(475, 20);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(471, 20);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 28;
@@ -2152,7 +2175,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(475, 568);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(472, 568);
             this.tableLayoutPanel3.TabIndex = 3;
             // 
             // ll31
@@ -2160,10 +2183,10 @@
             this.ll31.AutoSize = true;
             this.ll31.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ll31.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ll31.Location = new System.Drawing.Point(341, 520);
+            this.ll31.Location = new System.Drawing.Point(339, 520);
             this.ll31.Margin = new System.Windows.Forms.Padding(0);
             this.ll31.Name = "ll31";
-            this.ll31.Size = new System.Drawing.Size(134, 20);
+            this.ll31.Size = new System.Drawing.Size(133, 20);
             this.ll31.TabIndex = 89;
             this.ll31.TabStop = true;
             this.ll31.Text = "0.00";
@@ -2177,7 +2200,7 @@
             this.label81.Location = new System.Drawing.Point(30, 520);
             this.label81.Margin = new System.Windows.Forms.Padding(0);
             this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(311, 20);
+            this.label81.Size = new System.Drawing.Size(309, 20);
             this.label81.TabIndex = 88;
             this.label81.Text = "Net profit or (loss). Subtract line 30 from line 29";
             this.label81.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2199,10 +2222,10 @@
             this.ll30.AutoSize = true;
             this.ll30.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll30.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll30.Location = new System.Drawing.Point(341, 500);
+            this.ll30.Location = new System.Drawing.Point(339, 500);
             this.ll30.Margin = new System.Windows.Forms.Padding(0);
             this.ll30.Name = "ll30";
-            this.ll30.Size = new System.Drawing.Size(134, 20);
+            this.ll30.Size = new System.Drawing.Size(133, 20);
             this.ll30.TabIndex = 86;
             this.ll30.TabStop = true;
             this.ll30.Text = "0.00";
@@ -2217,7 +2240,7 @@
             this.label84.Location = new System.Drawing.Point(30, 500);
             this.label84.Margin = new System.Windows.Forms.Padding(0);
             this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(311, 20);
+            this.label84.Size = new System.Drawing.Size(309, 20);
             this.label84.TabIndex = 85;
             this.label84.Text = "Expreses fro business use of your home. Attach Form 8829";
             this.label84.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2239,10 +2262,10 @@
             // 
             this.ll29.AutoSize = true;
             this.ll29.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll29.Location = new System.Drawing.Point(341, 480);
+            this.ll29.Location = new System.Drawing.Point(339, 480);
             this.ll29.Margin = new System.Windows.Forms.Padding(0);
             this.ll29.Name = "ll29";
-            this.ll29.Size = new System.Drawing.Size(134, 20);
+            this.ll29.Size = new System.Drawing.Size(133, 20);
             this.ll29.TabIndex = 80;
             this.ll29.TabStop = true;
             this.ll29.Text = "0.00";
@@ -2256,7 +2279,7 @@
             this.label80.Location = new System.Drawing.Point(30, 480);
             this.label80.Margin = new System.Windows.Forms.Padding(0);
             this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(311, 20);
+            this.label80.Size = new System.Drawing.Size(309, 20);
             this.label80.TabIndex = 79;
             this.label80.Text = "Tentative profile or (loss). Subtract line 28 from line 7";
             this.label80.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2278,10 +2301,10 @@
             this.ll28.AutoSize = true;
             this.ll28.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll28.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll28.Location = new System.Drawing.Point(341, 460);
+            this.ll28.Location = new System.Drawing.Point(339, 460);
             this.ll28.Margin = new System.Windows.Forms.Padding(0);
             this.ll28.Name = "ll28";
-            this.ll28.Size = new System.Drawing.Size(134, 20);
+            this.ll28.Size = new System.Drawing.Size(133, 20);
             this.ll28.TabIndex = 77;
             this.ll28.TabStop = true;
             this.ll28.Text = "0.00";
@@ -2296,7 +2319,7 @@
             this.label78.Location = new System.Drawing.Point(30, 460);
             this.label78.Margin = new System.Windows.Forms.Padding(0);
             this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(311, 20);
+            this.label78.Size = new System.Drawing.Size(309, 20);
             this.label78.TabIndex = 76;
             this.label78.Text = "Total expense before expense for business use of home. Add lines 8 through 27";
             this.label78.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2318,10 +2341,10 @@
             // 
             this.ll27.AutoSize = true;
             this.ll27.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll27.Location = new System.Drawing.Point(341, 440);
+            this.ll27.Location = new System.Drawing.Point(339, 440);
             this.ll27.Margin = new System.Windows.Forms.Padding(0);
             this.ll27.Name = "ll27";
-            this.ll27.Size = new System.Drawing.Size(134, 20);
+            this.ll27.Size = new System.Drawing.Size(133, 20);
             this.ll27.TabIndex = 74;
             this.ll27.TabStop = true;
             this.ll27.Text = "0.00";
@@ -2335,7 +2358,7 @@
             this.label76.Location = new System.Drawing.Point(30, 440);
             this.label76.Margin = new System.Windows.Forms.Padding(0);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(311, 20);
+            this.label76.Size = new System.Drawing.Size(309, 20);
             this.label76.TabIndex = 73;
             this.label76.Text = "Other expenses";
             this.label76.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2357,10 +2380,10 @@
             this.ll26.AutoSize = true;
             this.ll26.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll26.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll26.Location = new System.Drawing.Point(341, 420);
+            this.ll26.Location = new System.Drawing.Point(339, 420);
             this.ll26.Margin = new System.Windows.Forms.Padding(0);
             this.ll26.Name = "ll26";
-            this.ll26.Size = new System.Drawing.Size(134, 20);
+            this.ll26.Size = new System.Drawing.Size(133, 20);
             this.ll26.TabIndex = 71;
             this.ll26.TabStop = true;
             this.ll26.Text = "0.00";
@@ -2375,7 +2398,7 @@
             this.label74.Location = new System.Drawing.Point(30, 420);
             this.label74.Margin = new System.Windows.Forms.Padding(0);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(311, 20);
+            this.label74.Size = new System.Drawing.Size(309, 20);
             this.label74.TabIndex = 70;
             this.label74.Text = "Wage (less employment credits)";
             this.label74.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2397,10 +2420,10 @@
             // 
             this.ll25.AutoSize = true;
             this.ll25.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll25.Location = new System.Drawing.Point(341, 400);
+            this.ll25.Location = new System.Drawing.Point(339, 400);
             this.ll25.Margin = new System.Windows.Forms.Padding(0);
             this.ll25.Name = "ll25";
-            this.ll25.Size = new System.Drawing.Size(134, 20);
+            this.ll25.Size = new System.Drawing.Size(133, 20);
             this.ll25.TabIndex = 68;
             this.ll25.TabStop = true;
             this.ll25.Text = "0.00";
@@ -2414,7 +2437,7 @@
             this.label72.Location = new System.Drawing.Point(30, 400);
             this.label72.Margin = new System.Windows.Forms.Padding(0);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(311, 20);
+            this.label72.Size = new System.Drawing.Size(309, 20);
             this.label72.TabIndex = 67;
             this.label72.Text = "Utilities";
             this.label72.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2436,10 +2459,10 @@
             this.ll24b.AutoSize = true;
             this.ll24b.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll24b.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll24b.Location = new System.Drawing.Point(341, 380);
+            this.ll24b.Location = new System.Drawing.Point(339, 380);
             this.ll24b.Margin = new System.Windows.Forms.Padding(0);
             this.ll24b.Name = "ll24b";
-            this.ll24b.Size = new System.Drawing.Size(134, 20);
+            this.ll24b.Size = new System.Drawing.Size(133, 20);
             this.ll24b.TabIndex = 65;
             this.ll24b.TabStop = true;
             this.ll24b.Text = "0.00";
@@ -2454,7 +2477,7 @@
             this.label69.Location = new System.Drawing.Point(30, 380);
             this.label69.Margin = new System.Windows.Forms.Padding(0);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(311, 20);
+            this.label69.Size = new System.Drawing.Size(309, 20);
             this.label69.TabIndex = 64;
             this.label69.Text = "Travel, meals, and entertainment: Deductible meals and entertainment";
             this.label69.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2476,10 +2499,10 @@
             // 
             this.ll24a.AutoSize = true;
             this.ll24a.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll24a.Location = new System.Drawing.Point(341, 360);
+            this.ll24a.Location = new System.Drawing.Point(339, 360);
             this.ll24a.Margin = new System.Windows.Forms.Padding(0);
             this.ll24a.Name = "ll24a";
-            this.ll24a.Size = new System.Drawing.Size(134, 20);
+            this.ll24a.Size = new System.Drawing.Size(133, 20);
             this.ll24a.TabIndex = 62;
             this.ll24a.TabStop = true;
             this.ll24a.Text = "0.00";
@@ -2493,7 +2516,7 @@
             this.label67.Location = new System.Drawing.Point(30, 360);
             this.label67.Margin = new System.Windows.Forms.Padding(0);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(311, 20);
+            this.label67.Size = new System.Drawing.Size(309, 20);
             this.label67.TabIndex = 61;
             this.label67.Text = "Travel, meals, and entertainment: Travel";
             this.label67.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2515,10 +2538,10 @@
             this.ll23.AutoSize = true;
             this.ll23.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll23.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll23.Location = new System.Drawing.Point(341, 340);
+            this.ll23.Location = new System.Drawing.Point(339, 340);
             this.ll23.Margin = new System.Windows.Forms.Padding(0);
             this.ll23.Name = "ll23";
-            this.ll23.Size = new System.Drawing.Size(134, 20);
+            this.ll23.Size = new System.Drawing.Size(133, 20);
             this.ll23.TabIndex = 59;
             this.ll23.TabStop = true;
             this.ll23.Text = "0.00";
@@ -2533,7 +2556,7 @@
             this.label63.Location = new System.Drawing.Point(30, 340);
             this.label63.Margin = new System.Windows.Forms.Padding(0);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(311, 20);
+            this.label63.Size = new System.Drawing.Size(309, 20);
             this.label63.TabIndex = 58;
             this.label63.Text = "Taxes and licenses";
             this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2555,10 +2578,10 @@
             // 
             this.ll22.AutoSize = true;
             this.ll22.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll22.Location = new System.Drawing.Point(341, 320);
+            this.ll22.Location = new System.Drawing.Point(339, 320);
             this.ll22.Margin = new System.Windows.Forms.Padding(0);
             this.ll22.Name = "ll22";
-            this.ll22.Size = new System.Drawing.Size(134, 20);
+            this.ll22.Size = new System.Drawing.Size(133, 20);
             this.ll22.TabIndex = 55;
             this.ll22.TabStop = true;
             this.ll22.Text = "0.00";
@@ -2572,7 +2595,7 @@
             this.label61.Location = new System.Drawing.Point(30, 320);
             this.label61.Margin = new System.Windows.Forms.Padding(0);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(311, 20);
+            this.label61.Size = new System.Drawing.Size(309, 20);
             this.label61.TabIndex = 54;
             this.label61.Text = "Supplies";
             this.label61.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2594,10 +2617,10 @@
             this.ll21.AutoSize = true;
             this.ll21.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll21.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll21.Location = new System.Drawing.Point(341, 300);
+            this.ll21.Location = new System.Drawing.Point(339, 300);
             this.ll21.Margin = new System.Windows.Forms.Padding(0);
             this.ll21.Name = "ll21";
-            this.ll21.Size = new System.Drawing.Size(134, 20);
+            this.ll21.Size = new System.Drawing.Size(133, 20);
             this.ll21.TabIndex = 52;
             this.ll21.TabStop = true;
             this.ll21.Text = "0.00";
@@ -2612,7 +2635,7 @@
             this.label59.Location = new System.Drawing.Point(30, 300);
             this.label59.Margin = new System.Windows.Forms.Padding(0);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(311, 20);
+            this.label59.Size = new System.Drawing.Size(309, 20);
             this.label59.TabIndex = 51;
             this.label59.Text = "Repairs and maintenance";
             this.label59.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2634,10 +2657,10 @@
             // 
             this.ll20b.AutoSize = true;
             this.ll20b.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll20b.Location = new System.Drawing.Point(341, 280);
+            this.ll20b.Location = new System.Drawing.Point(339, 280);
             this.ll20b.Margin = new System.Windows.Forms.Padding(0);
             this.ll20b.Name = "ll20b";
-            this.ll20b.Size = new System.Drawing.Size(134, 20);
+            this.ll20b.Size = new System.Drawing.Size(133, 20);
             this.ll20b.TabIndex = 49;
             this.ll20b.TabStop = true;
             this.ll20b.Text = "0.00";
@@ -2651,7 +2674,7 @@
             this.label57.Location = new System.Drawing.Point(30, 280);
             this.label57.Margin = new System.Windows.Forms.Padding(0);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(311, 20);
+            this.label57.Size = new System.Drawing.Size(309, 20);
             this.label57.TabIndex = 48;
             this.label57.Text = "Rent or lease: Other business property";
             this.label57.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2673,10 +2696,10 @@
             this.ll20a.AutoSize = true;
             this.ll20a.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll20a.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll20a.Location = new System.Drawing.Point(341, 260);
+            this.ll20a.Location = new System.Drawing.Point(339, 260);
             this.ll20a.Margin = new System.Windows.Forms.Padding(0);
             this.ll20a.Name = "ll20a";
-            this.ll20a.Size = new System.Drawing.Size(134, 20);
+            this.ll20a.Size = new System.Drawing.Size(133, 20);
             this.ll20a.TabIndex = 46;
             this.ll20a.TabStop = true;
             this.ll20a.Text = "0.00";
@@ -2691,7 +2714,7 @@
             this.label55.Location = new System.Drawing.Point(30, 260);
             this.label55.Margin = new System.Windows.Forms.Padding(0);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(311, 20);
+            this.label55.Size = new System.Drawing.Size(309, 20);
             this.label55.TabIndex = 45;
             this.label55.Text = "Rent of lease: Vehicles, machinery, and equipment";
             this.label55.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2713,10 +2736,10 @@
             // 
             this.ll19.AutoSize = true;
             this.ll19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll19.Location = new System.Drawing.Point(341, 240);
+            this.ll19.Location = new System.Drawing.Point(339, 240);
             this.ll19.Margin = new System.Windows.Forms.Padding(0);
             this.ll19.Name = "ll19";
-            this.ll19.Size = new System.Drawing.Size(134, 20);
+            this.ll19.Size = new System.Drawing.Size(133, 20);
             this.ll19.TabIndex = 43;
             this.ll19.TabStop = true;
             this.ll19.Text = "0.00";
@@ -2730,7 +2753,7 @@
             this.label53.Location = new System.Drawing.Point(30, 240);
             this.label53.Margin = new System.Windows.Forms.Padding(0);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(311, 20);
+            this.label53.Size = new System.Drawing.Size(309, 20);
             this.label53.TabIndex = 42;
             this.label53.Text = "Pension and profilt-sharing plans";
             this.label53.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2752,10 +2775,10 @@
             this.ll18.AutoSize = true;
             this.ll18.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll18.Location = new System.Drawing.Point(341, 220);
+            this.ll18.Location = new System.Drawing.Point(339, 220);
             this.ll18.Margin = new System.Windows.Forms.Padding(0);
             this.ll18.Name = "ll18";
-            this.ll18.Size = new System.Drawing.Size(134, 20);
+            this.ll18.Size = new System.Drawing.Size(133, 20);
             this.ll18.TabIndex = 40;
             this.ll18.TabStop = true;
             this.ll18.Text = "0.00";
@@ -2770,7 +2793,7 @@
             this.label51.Location = new System.Drawing.Point(30, 220);
             this.label51.Margin = new System.Windows.Forms.Padding(0);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(311, 20);
+            this.label51.Size = new System.Drawing.Size(309, 20);
             this.label51.TabIndex = 39;
             this.label51.Text = "Office expense";
             this.label51.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2792,10 +2815,10 @@
             // 
             this.ll17.AutoSize = true;
             this.ll17.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll17.Location = new System.Drawing.Point(341, 200);
+            this.ll17.Location = new System.Drawing.Point(339, 200);
             this.ll17.Margin = new System.Windows.Forms.Padding(0);
             this.ll17.Name = "ll17";
-            this.ll17.Size = new System.Drawing.Size(134, 20);
+            this.ll17.Size = new System.Drawing.Size(133, 20);
             this.ll17.TabIndex = 35;
             this.ll17.TabStop = true;
             this.ll17.Text = "0.00";
@@ -2809,7 +2832,7 @@
             this.label48.Location = new System.Drawing.Point(30, 200);
             this.label48.Margin = new System.Windows.Forms.Padding(0);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(311, 20);
+            this.label48.Size = new System.Drawing.Size(309, 20);
             this.label48.TabIndex = 34;
             this.label48.Text = "Legal and professional services";
             this.label48.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2843,10 +2866,10 @@
             // 
             this.ll16a.AutoSize = true;
             this.ll16a.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll16a.Location = new System.Drawing.Point(341, 160);
+            this.ll16a.Location = new System.Drawing.Point(339, 160);
             this.ll16a.Margin = new System.Windows.Forms.Padding(0);
             this.ll16a.Name = "ll16a";
-            this.ll16a.Size = new System.Drawing.Size(134, 20);
+            this.ll16a.Size = new System.Drawing.Size(133, 20);
             this.ll16a.TabIndex = 27;
             this.ll16a.TabStop = true;
             this.ll16a.Text = "0.00";
@@ -2860,7 +2883,7 @@
             this.label27.Location = new System.Drawing.Point(30, 160);
             this.label27.Margin = new System.Windows.Forms.Padding(0);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(311, 20);
+            this.label27.Size = new System.Drawing.Size(309, 20);
             this.label27.TabIndex = 26;
             this.label27.Text = "Interest: Mortgage (paid to banks, etc)";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2882,10 +2905,10 @@
             this.ll15.AutoSize = true;
             this.ll15.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll15.Location = new System.Drawing.Point(341, 140);
+            this.ll15.Location = new System.Drawing.Point(339, 140);
             this.ll15.Margin = new System.Windows.Forms.Padding(0);
             this.ll15.Name = "ll15";
-            this.ll15.Size = new System.Drawing.Size(134, 20);
+            this.ll15.Size = new System.Drawing.Size(133, 20);
             this.ll15.TabIndex = 24;
             this.ll15.TabStop = true;
             this.ll15.Text = "0.00";
@@ -2900,7 +2923,7 @@
             this.label29.Location = new System.Drawing.Point(30, 140);
             this.label29.Margin = new System.Windows.Forms.Padding(0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(311, 20);
+            this.label29.Size = new System.Drawing.Size(309, 20);
             this.label29.TabIndex = 23;
             this.label29.Text = "Insurance (other than health)";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2922,10 +2945,10 @@
             // 
             this.ll14.AutoSize = true;
             this.ll14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll14.Location = new System.Drawing.Point(341, 120);
+            this.ll14.Location = new System.Drawing.Point(339, 120);
             this.ll14.Margin = new System.Windows.Forms.Padding(0);
             this.ll14.Name = "ll14";
-            this.ll14.Size = new System.Drawing.Size(134, 20);
+            this.ll14.Size = new System.Drawing.Size(133, 20);
             this.ll14.TabIndex = 21;
             this.ll14.TabStop = true;
             this.ll14.Text = "0.00";
@@ -2939,7 +2962,7 @@
             this.label31.Location = new System.Drawing.Point(30, 120);
             this.label31.Margin = new System.Windows.Forms.Padding(0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(311, 20);
+            this.label31.Size = new System.Drawing.Size(309, 20);
             this.label31.TabIndex = 20;
             this.label31.Text = "Employee benefit programs";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -2961,10 +2984,10 @@
             this.ll13.AutoSize = true;
             this.ll13.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll13.Location = new System.Drawing.Point(341, 100);
+            this.ll13.Location = new System.Drawing.Point(339, 100);
             this.ll13.Margin = new System.Windows.Forms.Padding(0);
             this.ll13.Name = "ll13";
-            this.ll13.Size = new System.Drawing.Size(134, 20);
+            this.ll13.Size = new System.Drawing.Size(133, 20);
             this.ll13.TabIndex = 18;
             this.ll13.TabStop = true;
             this.ll13.Text = "0.00";
@@ -2979,7 +3002,7 @@
             this.label33.Location = new System.Drawing.Point(30, 100);
             this.label33.Margin = new System.Windows.Forms.Padding(0);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(311, 20);
+            this.label33.Size = new System.Drawing.Size(309, 20);
             this.label33.TabIndex = 17;
             this.label33.Text = "Depreciation and section 179 expense deduction";
             this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3001,10 +3024,10 @@
             // 
             this.ll12.AutoSize = true;
             this.ll12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll12.Location = new System.Drawing.Point(341, 80);
+            this.ll12.Location = new System.Drawing.Point(339, 80);
             this.ll12.Margin = new System.Windows.Forms.Padding(0);
             this.ll12.Name = "ll12";
-            this.ll12.Size = new System.Drawing.Size(134, 20);
+            this.ll12.Size = new System.Drawing.Size(133, 20);
             this.ll12.TabIndex = 15;
             this.ll12.TabStop = true;
             this.ll12.Text = "0.00";
@@ -3018,7 +3041,7 @@
             this.label35.Location = new System.Drawing.Point(30, 80);
             this.label35.Margin = new System.Windows.Forms.Padding(0);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(311, 20);
+            this.label35.Size = new System.Drawing.Size(309, 20);
             this.label35.TabIndex = 14;
             this.label35.Text = "Depletion";
             this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3040,10 +3063,10 @@
             this.ll11.AutoSize = true;
             this.ll11.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll11.Location = new System.Drawing.Point(341, 60);
+            this.ll11.Location = new System.Drawing.Point(339, 60);
             this.ll11.Margin = new System.Windows.Forms.Padding(0);
             this.ll11.Name = "ll11";
-            this.ll11.Size = new System.Drawing.Size(134, 20);
+            this.ll11.Size = new System.Drawing.Size(133, 20);
             this.ll11.TabIndex = 12;
             this.ll11.TabStop = true;
             this.ll11.Text = "0.00";
@@ -3058,7 +3081,7 @@
             this.label37.Location = new System.Drawing.Point(30, 60);
             this.label37.Margin = new System.Windows.Forms.Padding(0);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(311, 20);
+            this.label37.Size = new System.Drawing.Size(309, 20);
             this.label37.TabIndex = 11;
             this.label37.Text = "Contract labor";
             this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3080,10 +3103,10 @@
             // 
             this.ll10.AutoSize = true;
             this.ll10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll10.Location = new System.Drawing.Point(341, 40);
+            this.ll10.Location = new System.Drawing.Point(339, 40);
             this.ll10.Margin = new System.Windows.Forms.Padding(0);
             this.ll10.Name = "ll10";
-            this.ll10.Size = new System.Drawing.Size(134, 20);
+            this.ll10.Size = new System.Drawing.Size(133, 20);
             this.ll10.TabIndex = 9;
             this.ll10.TabStop = true;
             this.ll10.Text = "0.00";
@@ -3097,7 +3120,7 @@
             this.label39.Location = new System.Drawing.Point(30, 40);
             this.label39.Margin = new System.Windows.Forms.Padding(0);
             this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(311, 20);
+            this.label39.Size = new System.Drawing.Size(309, 20);
             this.label39.TabIndex = 8;
             this.label39.Text = "Commissions and fees";
             this.label39.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3132,10 +3155,10 @@
             this.ll9.AutoSize = true;
             this.ll9.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll9.Location = new System.Drawing.Point(341, 20);
+            this.ll9.Location = new System.Drawing.Point(339, 20);
             this.ll9.Margin = new System.Windows.Forms.Padding(0);
             this.ll9.Name = "ll9";
-            this.ll9.Size = new System.Drawing.Size(134, 20);
+            this.ll9.Size = new System.Drawing.Size(133, 20);
             this.ll9.TabIndex = 5;
             this.ll9.TabStop = true;
             this.ll9.Text = "0.00";
@@ -3150,7 +3173,7 @@
             this.label42.Location = new System.Drawing.Point(30, 20);
             this.label42.Margin = new System.Windows.Forms.Padding(0);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(311, 20);
+            this.label42.Size = new System.Drawing.Size(309, 20);
             this.label42.TabIndex = 4;
             this.label42.Text = "Car and truck mileage";
             this.label42.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3159,10 +3182,10 @@
             // 
             this.ll8.AutoSize = true;
             this.ll8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll8.Location = new System.Drawing.Point(341, 0);
+            this.ll8.Location = new System.Drawing.Point(339, 0);
             this.ll8.Margin = new System.Windows.Forms.Padding(0);
             this.ll8.Name = "ll8";
-            this.ll8.Size = new System.Drawing.Size(134, 20);
+            this.ll8.Size = new System.Drawing.Size(133, 20);
             this.ll8.TabIndex = 0;
             this.ll8.TabStop = true;
             this.ll8.Text = "0.00";
@@ -3189,7 +3212,7 @@
             this.label44.Location = new System.Drawing.Point(30, 0);
             this.label44.Margin = new System.Windows.Forms.Padding(0);
             this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(311, 20);
+            this.label44.Size = new System.Drawing.Size(309, 20);
             this.label44.TabIndex = 2;
             this.label44.Text = "Advertising";
             this.label44.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3202,7 +3225,7 @@
             this.label46.Location = new System.Drawing.Point(30, 180);
             this.label46.Margin = new System.Windows.Forms.Padding(0);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(311, 20);
+            this.label46.Size = new System.Drawing.Size(309, 20);
             this.label46.TabIndex = 29;
             this.label46.Text = "Interest: Other";
             this.label46.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3212,10 +3235,10 @@
             this.ll16b.AutoSize = true;
             this.ll16b.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll16b.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll16b.Location = new System.Drawing.Point(341, 180);
+            this.ll16b.Location = new System.Drawing.Point(339, 180);
             this.ll16b.Margin = new System.Windows.Forms.Padding(0);
             this.ll16b.Name = "ll16b";
-            this.ll16b.Size = new System.Drawing.Size(134, 20);
+            this.ll16b.Size = new System.Drawing.Size(133, 20);
             this.ll16b.TabIndex = 31;
             this.ll16b.TabStop = true;
             this.ll16b.Text = "0.00";
@@ -3229,10 +3252,10 @@
             this.label8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label8.Location = new System.Drawing.Point(475, 0);
+            this.label8.Location = new System.Drawing.Point(471, 0);
             this.label8.Margin = new System.Windows.Forms.Padding(0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(475, 20);
+            this.label8.Size = new System.Drawing.Size(472, 20);
             this.label8.TabIndex = 1;
             this.label8.Text = "Expense";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3247,7 +3270,7 @@
             this.label7.Location = new System.Drawing.Point(0, 0);
             this.label7.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(474, 20);
+            this.label7.Size = new System.Drawing.Size(470, 20);
             this.label7.TabIndex = 0;
             this.label7.Text = "Income";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3314,7 +3337,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(475, 568);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(471, 568);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // ll7
@@ -3323,10 +3346,10 @@
             this.ll7.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ll7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ll7.Location = new System.Drawing.Point(341, 180);
+            this.ll7.Location = new System.Drawing.Point(338, 180);
             this.ll7.Margin = new System.Windows.Forms.Padding(0);
             this.ll7.Name = "ll7";
-            this.ll7.Size = new System.Drawing.Size(134, 20);
+            this.ll7.Size = new System.Drawing.Size(133, 20);
             this.ll7.TabIndex = 27;
             this.ll7.TabStop = true;
             this.ll7.Text = "0.00";
@@ -3342,7 +3365,7 @@
             this.label26.Location = new System.Drawing.Point(30, 180);
             this.label26.Margin = new System.Windows.Forms.Padding(0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(311, 20);
+            this.label26.Size = new System.Drawing.Size(308, 20);
             this.label26.TabIndex = 26;
             this.label26.Text = "Gross income. Add line 5 and 6";
             this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3365,10 +3388,10 @@
             this.ll6.AutoSize = true;
             this.ll6.BackColor = System.Drawing.Color.Transparent;
             this.ll6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll6.Location = new System.Drawing.Point(341, 160);
+            this.ll6.Location = new System.Drawing.Point(338, 160);
             this.ll6.Margin = new System.Windows.Forms.Padding(0);
             this.ll6.Name = "ll6";
-            this.ll6.Size = new System.Drawing.Size(134, 20);
+            this.ll6.Size = new System.Drawing.Size(133, 20);
             this.ll6.TabIndex = 24;
             this.ll6.TabStop = true;
             this.ll6.Text = "0.00";
@@ -3383,7 +3406,7 @@
             this.label24.Location = new System.Drawing.Point(30, 160);
             this.label24.Margin = new System.Windows.Forms.Padding(0);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(311, 20);
+            this.label24.Size = new System.Drawing.Size(308, 20);
             this.label24.TabIndex = 23;
             this.label24.Text = "Other income, including federal and state gasoline or fuel tax credit or refund";
             this.label24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3406,10 +3429,10 @@
             this.ll5.AutoSize = true;
             this.ll5.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll5.Location = new System.Drawing.Point(341, 140);
+            this.ll5.Location = new System.Drawing.Point(338, 140);
             this.ll5.Margin = new System.Windows.Forms.Padding(0);
             this.ll5.Name = "ll5";
-            this.ll5.Size = new System.Drawing.Size(134, 20);
+            this.ll5.Size = new System.Drawing.Size(133, 20);
             this.ll5.TabIndex = 21;
             this.ll5.TabStop = true;
             this.ll5.Text = "0.00";
@@ -3424,7 +3447,7 @@
             this.label22.Location = new System.Drawing.Point(30, 140);
             this.label22.Margin = new System.Windows.Forms.Padding(0);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(311, 20);
+            this.label22.Size = new System.Drawing.Size(308, 20);
             this.label22.TabIndex = 20;
             this.label22.Text = "Gross Profit (Subtract line 4 from line 3)";
             this.label22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3447,10 +3470,10 @@
             this.ll4.AutoSize = true;
             this.ll4.BackColor = System.Drawing.Color.Transparent;
             this.ll4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll4.Location = new System.Drawing.Point(341, 120);
+            this.ll4.Location = new System.Drawing.Point(338, 120);
             this.ll4.Margin = new System.Windows.Forms.Padding(0);
             this.ll4.Name = "ll4";
-            this.ll4.Size = new System.Drawing.Size(134, 20);
+            this.ll4.Size = new System.Drawing.Size(133, 20);
             this.ll4.TabIndex = 18;
             this.ll4.TabStop = true;
             this.ll4.Text = "0.00";
@@ -3465,7 +3488,7 @@
             this.label20.Location = new System.Drawing.Point(30, 120);
             this.label20.Margin = new System.Windows.Forms.Padding(0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(311, 20);
+            this.label20.Size = new System.Drawing.Size(308, 20);
             this.label20.TabIndex = 17;
             this.label20.Text = "Cost of goods sold";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3488,10 +3511,10 @@
             this.ll3.AutoSize = true;
             this.ll3.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll3.Location = new System.Drawing.Point(341, 100);
+            this.ll3.Location = new System.Drawing.Point(338, 100);
             this.ll3.Margin = new System.Windows.Forms.Padding(0);
             this.ll3.Name = "ll3";
-            this.ll3.Size = new System.Drawing.Size(134, 20);
+            this.ll3.Size = new System.Drawing.Size(133, 20);
             this.ll3.TabIndex = 15;
             this.ll3.TabStop = true;
             this.ll3.Text = "0.00";
@@ -3506,7 +3529,7 @@
             this.label18.Location = new System.Drawing.Point(30, 100);
             this.label18.Margin = new System.Windows.Forms.Padding(0);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(311, 20);
+            this.label18.Size = new System.Drawing.Size(308, 20);
             this.label18.TabIndex = 14;
             this.label18.Text = "Subtract line 2 from line 1";
             this.label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3529,10 +3552,10 @@
             this.ll2.AutoSize = true;
             this.ll2.BackColor = System.Drawing.Color.Transparent;
             this.ll2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll2.Location = new System.Drawing.Point(341, 80);
+            this.ll2.Location = new System.Drawing.Point(338, 80);
             this.ll2.Margin = new System.Windows.Forms.Padding(0);
             this.ll2.Name = "ll2";
-            this.ll2.Size = new System.Drawing.Size(134, 20);
+            this.ll2.Size = new System.Drawing.Size(133, 20);
             this.ll2.TabIndex = 12;
             this.ll2.TabStop = true;
             this.ll2.Text = "0.00";
@@ -3547,7 +3570,7 @@
             this.label16.Location = new System.Drawing.Point(30, 80);
             this.label16.Margin = new System.Windows.Forms.Padding(0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(311, 20);
+            this.label16.Size = new System.Drawing.Size(308, 20);
             this.label16.TabIndex = 11;
             this.label16.Text = "Returns and allowances";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3570,10 +3593,10 @@
             this.ll1c.AutoSize = true;
             this.ll1c.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll1c.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll1c.Location = new System.Drawing.Point(341, 60);
+            this.ll1c.Location = new System.Drawing.Point(338, 60);
             this.ll1c.Margin = new System.Windows.Forms.Padding(0);
             this.ll1c.Name = "ll1c";
-            this.ll1c.Size = new System.Drawing.Size(134, 20);
+            this.ll1c.Size = new System.Drawing.Size(133, 20);
             this.ll1c.TabIndex = 9;
             this.ll1c.TabStop = true;
             this.ll1c.Text = "0.00";
@@ -3588,7 +3611,7 @@
             this.label14.Location = new System.Drawing.Point(30, 60);
             this.label14.Margin = new System.Windows.Forms.Padding(0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(311, 20);
+            this.label14.Size = new System.Drawing.Size(308, 20);
             this.label14.TabIndex = 8;
             this.label14.Text = "    Tip Income";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3622,10 +3645,10 @@
             this.ll1b.AutoSize = true;
             this.ll1b.BackColor = System.Drawing.Color.Transparent;
             this.ll1b.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll1b.Location = new System.Drawing.Point(341, 40);
+            this.ll1b.Location = new System.Drawing.Point(338, 40);
             this.ll1b.Margin = new System.Windows.Forms.Padding(0);
             this.ll1b.Name = "ll1b";
-            this.ll1b.Size = new System.Drawing.Size(134, 20);
+            this.ll1b.Size = new System.Drawing.Size(133, 20);
             this.ll1b.TabIndex = 5;
             this.ll1b.TabStop = true;
             this.ll1b.Text = "0.00";
@@ -3640,7 +3663,7 @@
             this.label12.Location = new System.Drawing.Point(30, 40);
             this.label12.Margin = new System.Windows.Forms.Padding(0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(311, 20);
+            this.label12.Size = new System.Drawing.Size(308, 20);
             this.label12.TabIndex = 4;
             this.label12.Text = "    Sales Tax Collected";
             this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3650,10 +3673,10 @@
             this.ll1a.AutoSize = true;
             this.ll1a.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ll1a.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll1a.Location = new System.Drawing.Point(341, 20);
+            this.ll1a.Location = new System.Drawing.Point(338, 20);
             this.ll1a.Margin = new System.Windows.Forms.Padding(0);
             this.ll1a.Name = "ll1a";
-            this.ll1a.Size = new System.Drawing.Size(134, 20);
+            this.ll1a.Size = new System.Drawing.Size(133, 20);
             this.ll1a.TabIndex = 0;
             this.ll1a.TabStop = true;
             this.ll1a.Text = "0.00";
@@ -3680,7 +3703,7 @@
             this.label10.Location = new System.Drawing.Point(30, 20);
             this.label10.Margin = new System.Windows.Forms.Padding(0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(311, 20);
+            this.label10.Size = new System.Drawing.Size(308, 20);
             this.label10.TabIndex = 2;
             this.label10.Text = "    Sales";
             this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3704,7 +3727,7 @@
             this.ll66d.Location = new System.Drawing.Point(30, 0);
             this.ll66d.Margin = new System.Windows.Forms.Padding(0);
             this.ll66d.Name = "ll66d";
-            this.ll66d.Size = new System.Drawing.Size(311, 20);
+            this.ll66d.Size = new System.Drawing.Size(308, 20);
             this.ll66d.TabIndex = 29;
             this.ll66d.Text = "Gross receipts or sales";
             this.ll66d.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -3713,10 +3736,10 @@
             // 
             this.ll1.AutoSize = true;
             this.ll1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ll1.Location = new System.Drawing.Point(341, 0);
+            this.ll1.Location = new System.Drawing.Point(338, 0);
             this.ll1.Margin = new System.Windows.Forms.Padding(0);
             this.ll1.Name = "ll1";
-            this.ll1.Size = new System.Drawing.Size(134, 20);
+            this.ll1.Size = new System.Drawing.Size(133, 20);
             this.ll1.TabIndex = 30;
             this.ll1.TabStop = true;
             this.ll1.Text = "0.00";
@@ -3733,7 +3756,7 @@
             this.tpResearch.Location = new System.Drawing.Point(4, 22);
             this.tpResearch.Name = "tpResearch";
             this.tpResearch.Padding = new System.Windows.Forms.Padding(3);
-            this.tpResearch.Size = new System.Drawing.Size(962, 500);
+            this.tpResearch.Size = new System.Drawing.Size(955, 500);
             this.tpResearch.TabIndex = 10;
             this.tpResearch.Text = "Research";
             this.tpResearch.UseVisualStyleBackColor = true;
@@ -3787,7 +3810,7 @@
             this.tpMaintenance.Location = new System.Drawing.Point(4, 22);
             this.tpMaintenance.Name = "tpMaintenance";
             this.tpMaintenance.Padding = new System.Windows.Forms.Padding(3);
-            this.tpMaintenance.Size = new System.Drawing.Size(962, 500);
+            this.tpMaintenance.Size = new System.Drawing.Size(955, 500);
             this.tpMaintenance.TabIndex = 11;
             this.tpMaintenance.Text = "Maintenance";
             this.tpMaintenance.UseVisualStyleBackColor = true;
@@ -3834,29 +3857,6 @@
             // 
             this.productInfoBindingSource.DataMember = "ProductInfo";
             this.productInfoBindingSource.DataSource = this.costcoDataSet4;
-            // 
-            // chkModifyAll
-            // 
-            this.chkModifyAll.AutoSize = true;
-            this.chkModifyAll.Location = new System.Drawing.Point(6, 10);
-            this.chkModifyAll.Name = "chkModifyAll";
-            this.chkModifyAll.Size = new System.Drawing.Size(37, 17);
-            this.chkModifyAll.TabIndex = 8;
-            this.chkModifyAll.Text = "All";
-            this.chkModifyAll.UseVisualStyleBackColor = true;
-            this.chkModifyAll.CheckedChanged += new System.EventHandler(this.chkModifyAll_CheckedChanged);
-            // 
-            // ToChangeSelect
-            // 
-            this.ToChangeSelect.HeaderText = "Select";
-            this.ToChangeSelect.Name = "ToChangeSelect";
-            this.ToChangeSelect.Width = 20;
-            // 
-            // ToModifyImage
-            // 
-            this.ToModifyImage.HeaderText = "Image";
-            this.ToModifyImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.ToModifyImage.Name = "ToModifyImage";
             // 
             // eBayFrontEnd
             // 

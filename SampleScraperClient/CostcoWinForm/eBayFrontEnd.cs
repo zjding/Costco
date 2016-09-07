@@ -1174,6 +1174,85 @@ namespace CostcoWinForm
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
         }
 
+        private void GenerateVariationChange(string oldOptions, string newOptions, string imageOptionsString,
+                                             out string relationshipDetails,
+                                             out List<string> imageOptionArray,
+                                             out List<string> newlyaddedRelationshipDetailsArray,
+                                             out List<string> discontinuedRelationshipDetailsArray
+                                             )
+        {
+            string oldRelationshipDetails = string.Empty;
+            string newRelationshipDetails = string.Empty;
+            List<string> oldRelationshipDetailsArray = new List<string>();
+            List<string> newRelationshipDetailsArray = new List<string>();
+            List<string> oldImageOptionArray = new List<string>();
+            List<string> newImageOptionArray = new List<string>();
+
+            newlyaddedRelationshipDetailsArray = new List<string>();
+            discontinuedRelationshipDetailsArray = new List<string>();
+            imageOptionArray = new List<string>();
+            relationshipDetails = string.Empty;
+
+            GenerateVariations(oldOptions, imageOptionsString, out oldRelationshipDetails, out oldRelationshipDetailsArray, out oldImageOptionArray);
+            GenerateVariations(newOptions, imageOptionsString, out newRelationshipDetails, out newRelationshipDetailsArray, out newImageOptionArray);
+
+            discontinuedRelationshipDetailsArray = oldRelationshipDetailsArray.Except(newRelationshipDetailsArray).ToList();
+            newlyaddedRelationshipDetailsArray = newRelationshipDetailsArray.Except(oldRelationshipDetailsArray).ToList();
+
+            imageOptionArray = oldImageOptionArray;
+            relationshipDetails = oldRelationshipDetails;
+
+            if (oldRelationshipDetails != newRelationshipDetails)
+            {
+                List<string> _newlyaddedRelationshipDetailsArray = new List<string>();
+
+                foreach (string newItem in newlyaddedRelationshipDetailsArray)
+                {
+                    if (newItem.Contains("|"))
+                    {
+                        string _color = newItem.Split('|')[0].Replace("Color=", "");
+                        string _size = newItem.Split('|')[1].Replace("Size=", "");
+
+                        if (oldRelationshipDetails.Contains(_color) && oldRelationshipDetails.Contains(_size))
+                            _newlyaddedRelationshipDetailsArray.Add(newItem);
+                    }
+                    else
+                    {
+                        string _size = newItem.Replace("Size=", "");
+
+                        if (oldRelationshipDetails.Contains(_size))
+                            _newlyaddedRelationshipDetailsArray.Add(newItem);
+                    }
+                }
+
+                newlyaddedRelationshipDetailsArray = _newlyaddedRelationshipDetailsArray;
+
+                List<string> _discontinuedRelationshipDetailsArray = new List<string>();
+
+                foreach (string discontinuedItem in discontinuedRelationshipDetailsArray)
+                {
+                    if (discontinuedItem.Contains("|"))
+                    {
+                        string _color = discontinuedItem.Split('|')[0].Replace("Color=", "");
+                        string _size = discontinuedItem.Split('|')[1].Replace("Size=", "");
+
+                        if (oldRelationshipDetails.Contains(_color) && oldRelationshipDetails.Contains(_size))
+                            _discontinuedRelationshipDetailsArray.Add(discontinuedItem);
+                    }
+                    else
+                    {
+                        string _size = discontinuedItem.Replace("Size=", "");
+
+                        if (oldRelationshipDetails.Contains(_size))
+                            _discontinuedRelationshipDetailsArray.Add(discontinuedItem);
+                    }
+                }
+
+                newlyaddedRelationshipDetailsArray = _newlyaddedRelationshipDetailsArray;
+                discontinuedRelationshipDetailsArray = _discontinuedRelationshipDetailsArray;
+            }
+        }
+
         private void GenerateVariations(string inputString, string imageOptionString, out string relationshipDetails, out List<string> relationshipDetailsArray, out List<string> imageOptionArray)
         {
             relationshipDetails = string.Empty;
@@ -1298,7 +1377,7 @@ namespace CostcoWinForm
 
         public void gvChange_Refresh()
         {
-            string sqlString = @"SELECT ID, Name, eBayReferencePrice, eBayOldListingPrice, eBayNewListingPrice, CostcoOldPrice, CostcoNewPrice, OldOptions, NewOptions, Url, ImageLink
+            string sqlString = @"SELECT ID, Name, eBayItemNumber, eBayNewListingPrice, NewImageOptions, NewOptions, eBayReferencePrice, eBayOldListingPrice,  CostcoOldPrice, CostcoNewPrice, OldOptions,  Url, ImageLink
                                  FROM eBay_ToChange 
                                  WHERE DeleteTime is NULL
                                  Order by InsertTime DESC";
@@ -1319,6 +1398,7 @@ namespace CostcoWinForm
             gvChange.Columns["ID"].Visible = false;
             gvChange.Columns["ImageLink"].Visible = false;
             gvChange.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvChange.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvChange.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvChange.Columns["eBayOldListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvChange.Columns["eBayNewListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -1379,38 +1459,57 @@ namespace CostcoWinForm
         {
             List<ProductUpdate> products = new List<ProductUpdate>();
 
-            // get products from DB
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
+            //// get products from DB
+            //SqlConnection cn = new SqlConnection(connectionString);
+            //SqlCommand cmd = new SqlCommand();
+            //cmd.Connection = cn;
 
-            string sqlString = @"SELECT c.eBayItemNumber, c.NewOptions, c.NewImageOptions, l.eBayListingPrice
-                                FROM eBay_ToChange c, eBay_CurrentListings l
-                                where c.eBayItemNumber = l.eBayItemNumber
-                                and c.NewOptions is not null 
-                                and c.DeleteTime is null";
+            //string sqlString = @"SELECT c.eBayItemNumber, c.NewOptions, c.NewImageOptions, l.eBayListingPrice
+            //                    FROM eBay_ToChange c, eBay_CurrentListings l
+            //                    where c.eBayItemNumber = l.eBayItemNumber
+            //                    and c.NewOptions is not null 
+            //                    and c.DeleteTime is null";
 
-            cn.Open();
-            cmd.CommandText = sqlString;
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
+            //cn.Open();
+            //cmd.CommandText = sqlString;
+            //SqlDataReader reader = cmd.ExecuteReader();
+            //if (reader.HasRows)
+            //{
+            //    while (reader.Read())
+            //    {
+            //        ProductUpdate p = new ProductUpdate();
+            //        p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+            //        p.NewOptions = Convert.ToString(reader["NewOptions"]);
+            //        p.NewPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+            //        p.NewImageOptions = Convert.ToString(reader["NewImageOptions"]);
+            //        products.Add(p);
+            //    }
+            //}
+
+            //reader.Close();
+            //cn.Close();
+
+            string eBayItemNumbers = string.Empty;
+
+            foreach (DataGridViewRow row in gvChange.Rows)
             {
-                while (reader.Read())
+                if (Convert.ToBoolean(row.Cells["ToChangeSelect"].Value) == true && row.Cells["NewOptions"].Value.ToString().Trim() != "")
                 {
                     ProductUpdate p = new ProductUpdate();
-                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-                    p.NewOptions = Convert.ToString(reader["NewOptions"]);
-                    p.NewPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
-                    p.NewImageOptions = Convert.ToString(reader["NewImageOptions"]);
+                    p.eBayItemNumbr = Convert.ToString(row.Cells["eBayItemNumber"].Value);
+                    p.NewOptions = Convert.ToString(row.Cells["NewOptions"].Value);
+                    p.OldOptions = Convert.ToString(row.Cells["OldOptions"].Value);
+                    p.NewImageOptions = Convert.ToString(row.Cells["NewImageOptions"].Value);
                     products.Add(p);
+
+                    eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
                 }
             }
 
-            reader.Close();
-            cn.Close();
-
             if (products.Count == 0)
                 return;
+
+            eBayItemNumbers = eBayItemNumbers.Substring(0, eBayItemNumbers.Length - 1);
 
             // add to Excel file
             string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeOptionsRevise.csv";
@@ -1447,10 +1546,20 @@ namespace CostcoWinForm
             foreach (ProductUpdate product in products)
             {
                 string relationshipDetails = string.Empty;
-                List<string> relationshipDetailsArray = new List<string>();
+                //List<string> relationshipDetailsArray = new List<string>();
                 List<string> imageOptionArray = new List<string>();
 
-                GenerateVariations(product.NewOptions, product.NewImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
+                List<string> newlyaddedRelationshipDetailsArray = new List<string>();
+                List<string> discontinuedRelationshipDetailsArray = new List<string>();
+
+                GenerateVariationChange(product.OldOptions, product.NewOptions, product.NewImageOptions,
+                                        out relationshipDetails,
+                                        out imageOptionArray,
+                                        out newlyaddedRelationshipDetailsArray,
+                                        out discontinuedRelationshipDetailsArray
+                                        );
+
+                //GenerateVariations(product.NewOptions, product.NewImageOptions, out relationshipDetails, out relationshipDetailsArray, out imageOptionArray);
 
                 oSheet.Cells[i, 1].value = "Revise";
                 oSheet.Cells[i, 2].NumberFormat = "#";
@@ -1459,15 +1568,15 @@ namespace CostcoWinForm
 
                 i++;
 
-                foreach (string relationshipDetail in relationshipDetailsArray)
+                foreach (string newlyaddedRelationshipDetail in newlyaddedRelationshipDetailsArray)
                 {
                     // Relationship
                     oSheet.Cells[i, 3] = "Variation";
                     // RelationshipDetails
-                    oSheet.Cells[i, 4] = relationshipDetail;
+                    oSheet.Cells[i, 4] = newlyaddedRelationshipDetail;
 
                     //// C:Color
-                    string color = relationshipDetail.Split('|')[0].Replace("Color=", "");
+                    string color = newlyaddedRelationshipDetail.Split('|')[0].Replace("Color=", "");
                     //oSheet.Cells[i, 17] = color;
                     // PicURL
                     string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
@@ -1476,7 +1585,30 @@ namespace CostcoWinForm
                     // *StartPrice
                     oSheet.Cells[i, 6] = product.NewPrice;
                     // *Quantity
-                    oSheet.Cells[i, 5] = "1";
+                    oSheet.Cells[i, 5] = "30";
+
+                    i++;
+                }
+
+
+                foreach (string discontinuedRelationshipDetail in discontinuedRelationshipDetailsArray)
+                {
+                    // Relationship
+                    oSheet.Cells[i, 3] = "Variation";
+                    // RelationshipDetails
+                    oSheet.Cells[i, 4] = discontinuedRelationshipDetail;
+
+                    //// C:Color
+                    string color = discontinuedRelationshipDetail.Split('|')[0].Replace("Color=", "");
+                    //oSheet.Cells[i, 17] = color;
+                    // PicURL
+                    string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
+                    oSheet.Cells[i, 7] = colorImage;
+
+                    // *StartPrice
+                    oSheet.Cells[i, 6] = product.NewPrice;
+                    // *Quantity
+                    oSheet.Cells[i, 5] = "0";
 
                     i++;
                 }
@@ -1491,10 +1623,16 @@ namespace CostcoWinForm
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
 
-            //sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() where NewOptions is not null and DeleteTime is null";
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
 
-            //cmd.CommandText = sqlString;
-            //cmd.ExecuteNonQuery();
+            cn.Open();
+
+            string sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() WHERE DeleteTime is null AND eBayItemNumber in (" + eBayItemNumbers + ")";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
             cn.Close();
         }
 
@@ -1502,32 +1640,48 @@ namespace CostcoWinForm
         {
             List<ProductUpdate> products = new List<ProductUpdate>();
 
-            // get products from DB
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
+            string eBayItemNumbers = string.Empty;
 
-            string sqlString = "SELECT eBayItemNumber, eBayNewListingPrice  FROM eBay_ToChange where eBayNewListingPrice is not null and DeleteTime is null"; // WHERE shipping = 0.00 and Price < 100";
-
-            cn.Open();
-            cmd.CommandText = sqlString;
-            SqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
+            foreach (DataGridViewRow row in gvChange.Rows)
             {
-                while (reader.Read())
+                if (Convert.ToBoolean(row.Cells["ToChangeSelect"].Value) == true && row.Cells["eBayNewListingPrice"].Value.ToString().Trim() != "")
                 {
                     ProductUpdate p = new ProductUpdate();
-                    p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-                    p.NewPrice = Convert.ToDecimal(reader["eBayNewListingPrice"]);
+                    p.eBayItemNumbr = Convert.ToString(row.Cells["eBayItemNumber"].Value);
+                    p.NewPrice = Convert.ToDecimal(row.Cells["eBayNewListingPrice"].Value);
                     products.Add(p);
+
+                    eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
                 }
             }
 
-            reader.Close();
-            cn.Close();
+            //// get products from DB
+            //SqlConnection cn = new SqlConnection(connectionString);
+            //SqlCommand cmd = new SqlCommand();
+            //cmd.Connection = cn;
+
+            //string sqlString = "SELECT eBayItemNumber, eBayNewListingPrice  FROM eBay_ToChange where eBayNewListingPrice is not null and DeleteTime is null"; // WHERE shipping = 0.00 and Price < 100";
+
+            //cn.Open();
+            //cmd.CommandText = sqlString;
+            //SqlDataReader reader = cmd.ExecuteReader();
+            //if (reader.HasRows)
+            //{
+            //    while (reader.Read())
+            //    {
+            //        ProductUpdate p = new ProductUpdate();
+            //        p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+            //        p.NewPrice = Convert.ToDecimal(reader["eBayNewListingPrice"]);
+            //        products.Add(p);
+            //    }
+            //}
+
+            //reader.Close();
 
             if (products.Count == 0)
                 return;
+
+            eBayItemNumbers = eBayItemNumbers.Substring(0, eBayItemNumbers.Length - 1);
 
             // add to Excel file
             string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeRevise.csv";
@@ -1580,7 +1734,11 @@ namespace CostcoWinForm
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
 
-            sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() where eBayNewListingPrice is not null and DeleteTime is null";
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            string sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() WHERE DeleteTime is null AND eBayItemNumber in (" + eBayItemNumbers + ")";
 
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();

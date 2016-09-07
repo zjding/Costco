@@ -43,6 +43,7 @@ namespace CostcoWinForm
         public string eBayItemNumbr { get; set; }
         public decimal NewPrice { get; set; }
         public string NewOptions { get; set; }
+        public string OldOptions { get; set; }
         public string NewImageOptions { get; set; }
     }
 
