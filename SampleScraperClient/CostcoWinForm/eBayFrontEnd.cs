@@ -1177,18 +1177,17 @@ namespace CostcoWinForm
         private void GenerateVariationChange(string oldOptions, string newOptions, string imageOptionsString,
                                              out string relationshipDetails,
                                              out List<string> imageOptionArray,
-                                             out List<string> newlyaddedRelationshipDetailsArray,
+                                             out List<string> newRelationshipDetailsArray,
                                              out List<string> discontinuedRelationshipDetailsArray
                                              )
         {
             string oldRelationshipDetails = string.Empty;
             string newRelationshipDetails = string.Empty;
             List<string> oldRelationshipDetailsArray = new List<string>();
-            List<string> newRelationshipDetailsArray = new List<string>();
+            newRelationshipDetailsArray = new List<string>();
             List<string> oldImageOptionArray = new List<string>();
             List<string> newImageOptionArray = new List<string>();
 
-            newlyaddedRelationshipDetailsArray = new List<string>();
             discontinuedRelationshipDetailsArray = new List<string>();
             imageOptionArray = new List<string>();
             relationshipDetails = string.Empty;
@@ -1197,16 +1196,15 @@ namespace CostcoWinForm
             GenerateVariations(newOptions, imageOptionsString, out newRelationshipDetails, out newRelationshipDetailsArray, out newImageOptionArray);
 
             discontinuedRelationshipDetailsArray = oldRelationshipDetailsArray.Except(newRelationshipDetailsArray).ToList();
-            newlyaddedRelationshipDetailsArray = newRelationshipDetailsArray.Except(oldRelationshipDetailsArray).ToList();
 
             imageOptionArray = oldImageOptionArray;
             relationshipDetails = oldRelationshipDetails;
 
             if (oldRelationshipDetails != newRelationshipDetails)
             {
-                List<string> _newlyaddedRelationshipDetailsArray = new List<string>();
+                List<string> _newRelationshipDetailsArray = new List<string>();
 
-                foreach (string newItem in newlyaddedRelationshipDetailsArray)
+                foreach (string newItem in newRelationshipDetailsArray)
                 {
                     if (newItem.Contains("|"))
                     {
@@ -1214,18 +1212,18 @@ namespace CostcoWinForm
                         string _size = newItem.Split('|')[1].Replace("Size=", "");
 
                         if (oldRelationshipDetails.Contains(_color) && oldRelationshipDetails.Contains(_size))
-                            _newlyaddedRelationshipDetailsArray.Add(newItem);
+                            _newRelationshipDetailsArray.Add(newItem);
                     }
                     else
                     {
                         string _size = newItem.Replace("Size=", "");
 
                         if (oldRelationshipDetails.Contains(_size))
-                            _newlyaddedRelationshipDetailsArray.Add(newItem);
+                            _newRelationshipDetailsArray.Add(newItem);
                     }
                 }
 
-                newlyaddedRelationshipDetailsArray = _newlyaddedRelationshipDetailsArray;
+                newRelationshipDetailsArray = _newRelationshipDetailsArray;
 
                 List<string> _discontinuedRelationshipDetailsArray = new List<string>();
 
@@ -1248,7 +1246,6 @@ namespace CostcoWinForm
                     }
                 }
 
-                newlyaddedRelationshipDetailsArray = _newlyaddedRelationshipDetailsArray;
                 discontinuedRelationshipDetailsArray = _discontinuedRelationshipDetailsArray;
             }
         }
@@ -1415,7 +1412,7 @@ namespace CostcoWinForm
             {
                 string imageUrl = string.Empty;
 
-                imageUrl = (this.gvChange.Rows[e.RowIndex].Cells[12]).FormattedValue.ToString();
+                imageUrl = (this.gvChange.Rows[e.RowIndex].Cells[14]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {
@@ -1500,6 +1497,7 @@ namespace CostcoWinForm
                     p.NewOptions = Convert.ToString(row.Cells["NewOptions"].Value);
                     p.OldOptions = Convert.ToString(row.Cells["OldOptions"].Value);
                     p.NewImageOptions = Convert.ToString(row.Cells["NewImageOptions"].Value);
+                    p.OldPrice = Convert.ToDecimal(row.Cells["eBayOldListingPrice"].Value);
                     products.Add(p);
 
                     eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
@@ -1546,16 +1544,14 @@ namespace CostcoWinForm
             foreach (ProductUpdate product in products)
             {
                 string relationshipDetails = string.Empty;
-                //List<string> relationshipDetailsArray = new List<string>();
+                List<string> newRelationshipDetailsArray = new List<string>();
                 List<string> imageOptionArray = new List<string>();
-
-                List<string> newlyaddedRelationshipDetailsArray = new List<string>();
                 List<string> discontinuedRelationshipDetailsArray = new List<string>();
 
                 GenerateVariationChange(product.OldOptions, product.NewOptions, product.NewImageOptions,
                                         out relationshipDetails,
                                         out imageOptionArray,
-                                        out newlyaddedRelationshipDetailsArray,
+                                        out newRelationshipDetailsArray,
                                         out discontinuedRelationshipDetailsArray
                                         );
 
@@ -1568,22 +1564,22 @@ namespace CostcoWinForm
 
                 i++;
 
-                foreach (string newlyaddedRelationshipDetail in newlyaddedRelationshipDetailsArray)
+                foreach (string newRelationshipDetail in newRelationshipDetailsArray)
                 {
                     // Relationship
                     oSheet.Cells[i, 3] = "Variation";
                     // RelationshipDetails
-                    oSheet.Cells[i, 4] = newlyaddedRelationshipDetail;
+                    oSheet.Cells[i, 4] = newRelationshipDetail;
 
                     //// C:Color
-                    string color = newlyaddedRelationshipDetail.Split('|')[0].Replace("Color=", "");
+                    string color = newRelationshipDetail.Split('|')[0].Replace("Color=", "");
                     //oSheet.Cells[i, 17] = color;
                     // PicURL
                     string colorImage = imageOptionArray.FirstOrDefault(s => s.Contains(color + "="));
                     oSheet.Cells[i, 7] = colorImage;
 
                     // *StartPrice
-                    oSheet.Cells[i, 6] = product.NewPrice;
+                    oSheet.Cells[i, 6] = product.OldPrice;
                     // *Quantity
                     oSheet.Cells[i, 5] = "30";
 

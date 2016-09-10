@@ -233,10 +233,11 @@ namespace CostcoWinForm
             }
             else if (mode == "OptionChange")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions, ImageLink) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldOptions, CostcoNewOptions, CostcoNewImageOptions, ImageLink
-                                 FROM eBayListingChange_OptionChange 
-                                 WHERE UrlNumber in (" + st + ")";
+                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions, ImageLink, eBayOldListingPrice) 
+                                 SELECT o.Name, o.UrlNumber, o.eBayItemNumber, o.CostcoUrl, o.CostcoOldOptions, o.CostcoNewOptions, o.CostcoNewImageOptions, o.ImageLink, c.eBayListingPrice
+                                 FROM eBayListingChange_OptionChange o, eBay_CurrentListings c
+                                 WHERE o.eBayItemNumber = c.eBayItemNumber
+                                 AND UrlNumber in (" + st + ")";
             }
             else if (mode == "CostcoPriceDown" || mode == "CostcoNewProducts" || mode == "CostcoDiscountProducts" || mode == "CostcoClearanceProducts")
             {
