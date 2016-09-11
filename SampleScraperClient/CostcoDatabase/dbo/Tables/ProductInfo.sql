@@ -12,13 +12,16 @@
     [Specification]  NVARCHAR (4000) NULL,
     [Url]            NVARCHAR (500)  NULL,
     [Options]        NVARCHAR (2000) NULL,
-    [ImageLink]      NVARCHAR (500)  NULL,
+    [Thumb]          NVARCHAR (200)  NULL,
+    [ImageLink]      NVARCHAR (2000) NULL,
     [ImageOptions]   NVARCHAR (4000) NULL,
     [NumberOfImage]  INT             NULL,
     [ImportedDT]     DATETIME        NULL,
     [eBayCategoryID] NVARCHAR (50)   NULL,
     CONSTRAINT [PK_ProductInfo] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

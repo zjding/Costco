@@ -11,10 +11,13 @@
     [Specification] NVARCHAR (4000) NULL,
     [Url]           NVARCHAR (500)  NULL,
     [Options]       NVARCHAR (2000) NULL,
-    [ImageLink]     NVARCHAR (500)  NULL,
+    [Thumb]         NVARCHAR (200)  NULL,
+    [ImageLink]     NVARCHAR (2000) NULL,
     [ImageOptions]  NVARCHAR (4000) NULL,
     [NumberOfImage] INT             NULL
 );
+
+
 
 
 

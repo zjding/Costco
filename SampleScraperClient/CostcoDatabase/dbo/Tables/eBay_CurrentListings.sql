@@ -13,6 +13,7 @@
     [CostcoUrl]          NVARCHAR (500)  NULL,
     [CostcoPrice]        MONEY           NULL,
     [CostcoOptions]      NVARCHAR (2000) NULL,
+    [Thumb]              NVARCHAR (200)  NULL,
     [ImageLink]          NVARCHAR (2000) NULL,
     [eBayReferencePrice] MONEY           NULL,
     [DeleteDT]           DATETIME        NULL,
@@ -20,6 +21,8 @@
     [PendingChange]      INT             NULL,
     CONSTRAINT [PK_eBay_CurrentListings] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

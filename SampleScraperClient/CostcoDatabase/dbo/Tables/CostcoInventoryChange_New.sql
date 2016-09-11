@@ -12,12 +12,15 @@
     [Specification] NVARCHAR (4000) NULL,
     [CostcoUrl]     NVARCHAR (500)  NULL,
     [Options]       NVARCHAR (2000) NULL,
-    [ImageLink]     NVARCHAR (500)  NULL,
+    [Thumb]         NVARCHAR (200)  NULL,
+    [ImageLink]     NVARCHAR (2000) NULL,
     [ImageOptions]  NVARCHAR (4000) NULL,
     [NumberOfImage] INT             NULL,
     [InsertTime]    DATETIME        NULL,
     CONSTRAINT [PK_CostcoInventoryChange_New] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

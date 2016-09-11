@@ -12,7 +12,8 @@
     [Options]                NVARCHAR (2000) NULL,
     [Specification]          NVARCHAR (4000) NULL,
     [Url]                    NVARCHAR (500)  NULL,
-    [ImageLink]              NVARCHAR (500)  NULL,
+    [Thumb]                  NVARCHAR (200)  NULL,
+    [ImageLink]              NVARCHAR (2000) NULL,
     [NumberOfImage]          INT             NULL,
     [ImageOptions]           NVARCHAR (4000) NULL,
     [eBayCategoryID]         NVARCHAR (50)   NULL,
@@ -27,6 +28,8 @@
     [DeleteTime]             DATETIME        NULL,
     CONSTRAINT [PK_eBayToAdd] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

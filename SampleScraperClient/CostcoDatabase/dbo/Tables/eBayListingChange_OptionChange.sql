@@ -7,8 +7,11 @@
     [CostcoOldOptions]      NVARCHAR (2000) NULL,
     [CostcoNewOptions]      NVARCHAR (2000) NULL,
     [CostcoNewImageOptions] NVARCHAR (4000) NULL,
-    [ImageLink]             NVARCHAR (500)  NULL
+    [ImageLink]             NVARCHAR (2000) NULL,
+    [Thumb]                 NVARCHAR (200)  NULL
 );
+
+
 
 
 

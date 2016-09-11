@@ -12,10 +12,13 @@
     [CostcoItemNumber] NVARCHAR (50)   NULL,
     [CostcoUrl]        NVARCHAR (500)  NULL,
     [CostcoPrice]      MONEY           NULL,
+    [Thumb]            NVARCHAR (200)  NULL,
     [ImageLink]        NVARCHAR (2000) NULL,
     [InsertTime]       DATETIME        NULL,
     [DeleteTime]       DATETIME        NULL
 );
+
+
 
 
 

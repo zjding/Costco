@@ -15,7 +15,8 @@
     [Discount]               NVARCHAR (500)  NULL,
     [Details]                NVARCHAR (4000) NULL,
     [Specification]          NVARCHAR (4000) NULL,
-    [ImageLink]              NVARCHAR (500)  NULL,
+    [Thumb]                  NVARCHAR (200)  NULL,
+    [ImageLink]              NVARCHAR (2000) NULL,
     [NumberOfImage]          INT             NULL,
     [Url]                    NVARCHAR (500)  NULL,
     [eBayCategoryID]         NVARCHAR (50)   NULL,
@@ -25,8 +26,11 @@
     [NewOptions]             NVARCHAR (2000) NULL,
     [NewImageOptions]        NVARCHAR (4000) NULL,
     [InsertTime]             DATETIME        NULL,
-    [DeleteTime]             DATETIME        NULL
+    [DeleteTime]             DATETIME        NULL,
+    CONSTRAINT [PK_eBay_ToChange] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

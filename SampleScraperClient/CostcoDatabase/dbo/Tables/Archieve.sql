@@ -12,12 +12,15 @@
     [Specification] NVARCHAR (4000) NULL,
     [Url]           NVARCHAR (500)  NULL,
     [Options]       NVARCHAR (2000) NULL,
-    [ImageLink]     NVARCHAR (500)  NULL,
+    [ImageLink]     NVARCHAR (2000) NULL,
     [ImageOptions]  NVARCHAR (4000) NULL,
     [NumberOfImage] INT             NULL,
     [ImportedDT]    DATETIME        NULL,
+    [Thumb]         NVARCHAR (200)  NULL,
     CONSTRAINT [PK_History] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 
