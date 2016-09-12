@@ -240,7 +240,7 @@ namespace CostcoWinForm
                 selectCategoriesString = "''";
 
             string sqlCommand = @"SELECT ID, Name, UrlNumber, ItemNumber, Category, Price, Shipping,
-                                Limit, Discount, Details, Specification, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
+                                Limit, Discount, Details, Specification, Thumb, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
                                 FROM ProductInfo
                                 WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text +
                                 @" AND UrlNumber not in (SELECT UrlNumber FROM eBay_ToAdd) AND UrlNumber not in (SELECT CostcoUrlNumber FROM eBay_CurrentListings)";
@@ -333,7 +333,7 @@ namespace CostcoWinForm
 
             if (e.ColumnIndex == 3)
             {
-                string url = gvProducts.Rows[e.RowIndex].Cells[14].FormattedValue.ToString();
+                string url = gvProducts.Rows[e.RowIndex].Cells[15].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             } else if (e.ColumnIndex == 0)
@@ -896,7 +896,7 @@ namespace CostcoWinForm
 
         public void gvAdd_Refresh()
         {
-            string sqlString = @"SELECT ID, ImageLink, Name, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID
+            string sqlString = @"SELECT ID, Thumb, ImageLink, Name, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
                                  Order by InsertTime DESC";
@@ -925,6 +925,7 @@ namespace CostcoWinForm
             gvAdd.Columns["eBayReferenceUrl"].Width = 150;
             gvAdd.Columns["ID"].Visible = false;
             gvAdd.Columns["ImageLink"].Visible = false;
+            gvAdd.Columns["Thumb"].Visible = false;
         }
 
         private void chkAddAll_CheckedChanged(object sender, EventArgs e)

@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.Collections.Generic;
@@ -63,19 +64,20 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             cmd.ExecuteNonQuery();
 
-            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            //driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            driver = new ChromeDriver();
 
             driver.Navigate().GoToUrl("http://www.costco.com/view-more.html");
 
-            var viewMoreColumns = driver.FindElements(By.ClassName("viewmore-column"));
+            var viewMoreColumns = driver.FindElements(By.ClassName("col-lg-3"));
 
             foreach (var v in viewMoreColumns)
             {
-                var viewMoreHeader = v.FindElement(By.ClassName("viewmore-column-header"));
+                var viewMoreHeader = v.FindElement(By.TagName("h3"));
 
                 string department = viewMoreHeader.Text;
 
-                var lis = v.FindElements(By.TagName("li"));
+                var lis = v.FindElement(By.ClassName("viewmore-list")).FindElements(By.TagName("li"));
 
                 foreach (var l in lis)
                 {
@@ -92,6 +94,7 @@ namespace CostcoWinForm
 
             cn.Close();
             driver.Close();
+            driver.Dispose();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
