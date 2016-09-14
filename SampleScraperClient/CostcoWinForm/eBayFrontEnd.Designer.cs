@@ -1673,7 +1673,6 @@
             // 
             // gvAdd
             // 
-            this.gvAdd.AllowUserToAddRows = false;
             this.gvAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -1689,6 +1688,8 @@
             this.gvAdd.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellClick);
             this.gvAdd.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellEndEdit);
             this.gvAdd.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvAdd_CellFormatting);
+            this.gvAdd.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellValueChanged);
+            this.gvAdd.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gvAdd_DataBindingComplete);
             // 
             // AddSelect
             // 

@@ -23,6 +23,7 @@ namespace CostcoWinForm
         public int NumberOfImage { get; set; }
         public string ImageOptions { get; set; } = "";
         public string Options { get; set; } = "";
+        public string Thumb { get; set; } = "";
 
         public int DescriptionImageWidth { get; set; }
         public int DescriptionImageHeight { get; set; }

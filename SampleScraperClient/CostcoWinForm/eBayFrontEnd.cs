@@ -30,6 +30,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Collections.ObjectModel;
 using System.Threading;
+using OpenQA.Selenium.Chrome;
 
 namespace CostcoWinForm
 {
@@ -59,6 +60,8 @@ namespace CostcoWinForm
         List<String> eBayListingPriceDownProductArray = new List<string>();
 
         List<Product> priceChangedProductArray = new List<Product>();
+
+        bool bToAddRefreshing = false;
 
         int nScanProducts = 0;
         int nImportProducts = 0;
@@ -99,7 +102,9 @@ namespace CostcoWinForm
 
         public eBayFrontEnd()
         {
+            bToAddRefreshing = true;
             InitializeComponent();
+            bToAddRefreshing = false;
 
             //connectionString = ConfigurationManager.ConnectionStrings["connection"].ConnectionString;
         }
@@ -383,7 +388,7 @@ namespace CostcoWinForm
             cmd.Connection = cn;
             cn.Open();
 
-            string sqlString = @"SELECT  i.Name, i.UrlNumber, i.ItemNumber, i.Category, i.Price, i.Shipping, i.Limit, i.Discount, i.ImageLink, i.Url, i.ImageOptions, i.Options,
+            string sqlString = @"SELECT  i.Name, i.UrlNumber, i.ItemNumber, i.Category, i.Price, i.Shipping, i.Limit, i.Discount, i.ImageLink, i.Url, i.ImageOptions, i.Options, i.Thumb,
                                          c.eBay_Category_Number
                                 FROM ProductInfo i, Costco_eBay_Categories c
                                 WHERE i.Category = 
@@ -417,6 +422,7 @@ namespace CostcoWinForm
                     product.ImageOptions = Convert.ToString(reader["ImageOptions"]);
                     product.Options = Convert.ToString(reader["Options"]);
                     product.eBayCategoryID = Convert.ToString(reader["eBay_Category_Number"]);
+                    product.Thumb = Convert.ToString(reader["Thumb"]);
 
                     products.Add(product);
                 }
@@ -426,6 +432,7 @@ namespace CostcoWinForm
             cn.Close();
 
             IWebDriver driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            //IWebDriver driver = new ChromeDriver();
             int screenshotWidth, screenshotHeight, imageNumber;
 
             cn.Open();
@@ -480,9 +487,9 @@ namespace CostcoWinForm
 
                     sqlString = @"INSERT INTO eBay_ToAdd
                                 (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
-                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl)
+                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl, Thumb)
                                 VALUES (@_Name, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
-                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl)";
+                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl, @_Thumb)";
 
                     cmd.CommandText = sqlString;
                     cmd.Parameters.Clear();
@@ -508,6 +515,7 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_TemplateName", p.TemplateName);
                     cmd.Parameters.AddWithValue("@_Specifics", p.Specifics);
                     cmd.Parameters.AddWithValue("@_eBayReferenceUrl", eBayReferenceUrl);
+                    cmd.Parameters.AddWithValue("@_Thumb", p.Thumb);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -672,11 +680,15 @@ namespace CostcoWinForm
 
             try
             {
-                IJavaScriptExecutor js = driver as IJavaScriptExecutor;
+                //IJavaScriptExecutor js = driver as IJavaScriptExecutor;
 
                 driver.Navigate().GoToUrl(productUrl);
+                // view more
+                IWebElement eViewMore = driver.FindElement(By.ClassName("view-more"));
+                IWebElement eViewMoreLink = eViewMore.FindElement(By.TagName("a"));
+                eViewMoreLink.Click();
 
-                IWebElement element = driver.FindElement(By.Id("product-tab1"));
+                //IWebElement element = driver.FindElement(By.Id("product-tab1"));
 
                 //var val = js.ExecuteScript("return products");
 
@@ -732,6 +744,11 @@ namespace CostcoWinForm
 
                 System.Drawing.Rectangle cropArea;
 
+                
+
+                IWebElement element = driver.FindElement(By.ClassName("product-info-description"));
+                
+
                 if (element.FindElements(By.Id("wc-power-page")).Count > 0)
                 {
                     IWebElement e = element.FindElement(By.Id("wc-power-page"));
@@ -764,14 +781,14 @@ namespace CostcoWinForm
                 }
                 else
                 {
-                    IWebElement e = element.FindElement(By.Id("product-tab1"));
+                    //IWebElement e = element.FindElement(By.Id("product-tab1"));
 
-                    Size s = e.Size;
-                    Point p = e.Location;
+                    Size s = element.Size;
+                    Point p = element.Location;
 
-                    if (hasElement(e, By.XPath("//span[contains(text(),'local warehouse')]")))
+                    if (hasElement(element, By.XPath("//span[contains(text(),'local warehouse')]")))
                     {
-                        IWebElement w = e.FindElement(By.XPath("//span[contains(text(),'local warehouse')]"));
+                        IWebElement w = element.FindElement(By.XPath("//span[contains(text(),'local warehouse')]"));
 
                         s.Height = s.Height - w.Size.Height;
                         p.Y = p.Y + w.Size.Height * 2;
@@ -791,17 +808,17 @@ namespace CostcoWinForm
                     client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
                 }
 
-                // thumb
-                if (driver.FindElements(By.ClassName("product-option")).Count == 0)
-                {
-                    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
+                //// thumb
+                //if (driver.FindElements(By.ClassName("product-option")).Count == 0)
+                //{
+                //    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
 
-                    if (imageElement.FindElements(By.TagName("li")) != null)
-                        imageNumber = imageElement.FindElements(By.TagName("li")).ToList().Count;
+                //    if (imageElement.FindElements(By.TagName("li")) != null)
+                //        imageNumber = imageElement.FindElements(By.TagName("li")).ToList().Count;
 
-                    if (imageNumber == 0)
-                        imageNumber = 1;
-                }
+                //    if (imageNumber == 0)
+                //        imageNumber = 1;
+                //}
 
                 return true;
             }
@@ -896,6 +913,8 @@ namespace CostcoWinForm
 
         public void gvAdd_Refresh()
         {
+            bToAddRefreshing = true;
+
             string sqlString = @"SELECT ID, Thumb, ImageLink, Name, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
@@ -926,13 +945,16 @@ namespace CostcoWinForm
             gvAdd.Columns["ID"].Visible = false;
             gvAdd.Columns["ImageLink"].Visible = false;
             gvAdd.Columns["Thumb"].Visible = false;
+
+            bToAddRefreshing = false;
         }
 
         private void chkAddAll_CheckedChanged(object sender, EventArgs e)
         {
             foreach (DataGridViewRow row in gvAdd.Rows)
             {
-                row.Cells["AddSelect"].Value = chkAddAll.Checked;
+                if (row.Index < gvAdd.Rows.Count - 1)
+                    row.Cells["AddSelect"].Value = chkAddAll.Checked;
             }
         }
 
@@ -941,9 +963,22 @@ namespace CostcoWinForm
             daToAdd.Update(dtToAdd);
         }
 
+        private void gvAdd_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (bToAddRefreshing)
+                return;
+
+            daToAdd.Update(dtToAdd);
+        }
+
         private void tpToAdd_Enter(object sender, EventArgs e)
         {
             gvAdd_Refresh();
+        }
+
+        private void gvAdd_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -1260,7 +1295,7 @@ namespace CostcoWinForm
             string _Color = "Color=";
             string _Size = "Size=";
 
-            if (inputString.Contains("|"))
+            if (inputString.Contains(":"))
             {
                 List<string> sizeList = new List<string>();
 
@@ -1317,21 +1352,21 @@ namespace CostcoWinForm
             if (e.RowIndex == -1)
                 return;
 
-            if (e.ColumnIndex == 7)
+            if (e.ColumnIndex == 8)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[7].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[8].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
-            else if (e.ColumnIndex == 10)
+            else if (e.ColumnIndex == 11)
             {
-                string fileName = gvAdd.Rows[e.RowIndex].Cells[10].FormattedValue.ToString();
+                string fileName = gvAdd.Rows[e.RowIndex].Cells[11].FormattedValue.ToString();
 
                 Process.Start(@"C:\temp\Screenshots\" + fileName + ".jpg");
             }
-            else if (e.ColumnIndex == 11)
+            else if (e.ColumnIndex == 12)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[11].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
@@ -4235,6 +4270,10 @@ namespace CostcoWinForm
         }
 
         
+
+
+
+
 
 
 

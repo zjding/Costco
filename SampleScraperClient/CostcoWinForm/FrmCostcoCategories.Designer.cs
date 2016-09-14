@@ -32,12 +32,14 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.gvCostcoCategories = new System.Windows.Forms.DataGridView();
             this.btnImportCategories = new System.Windows.Forms.Button();
+            this.chkAll = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvCostcoCategories)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chkAll);
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Controls.Add(this.gvCostcoCategories);
             this.panel1.Controls.Add(this.btnImportCategories);
@@ -81,6 +83,18 @@
             this.btnImportCategories.UseVisualStyleBackColor = true;
             this.btnImportCategories.Click += new System.EventHandler(this.btnImportCategories_Click);
             // 
+            // chkAll
+            // 
+            this.chkAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkAll.AutoSize = true;
+            this.chkAll.Location = new System.Drawing.Point(844, 16);
+            this.chkAll.Name = "chkAll";
+            this.chkAll.Size = new System.Drawing.Size(37, 17);
+            this.chkAll.TabIndex = 3;
+            this.chkAll.Text = "All";
+            this.chkAll.UseVisualStyleBackColor = true;
+            this.chkAll.CheckedChanged += new System.EventHandler(this.chkAll_CheckedChanged);
+            // 
             // FrmCostcoCategories
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -91,6 +105,7 @@
             this.Text = "FrmCostcoCategories";
             this.Load += new System.EventHandler(this.FrmCostcoCategories_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvCostcoCategories)).EndInit();
             this.ResumeLayout(false);
 
@@ -102,5 +117,6 @@
         private System.Windows.Forms.DataGridView gvCostcoCategories;
         private System.Windows.Forms.Button btnImportCategories;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.CheckBox chkAll;
     }
 }

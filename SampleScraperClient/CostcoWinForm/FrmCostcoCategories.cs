@@ -21,6 +21,9 @@ namespace CostcoWinForm
         SqlCommandBuilder cmbCostcoCategories;
         DataSet dsCostcoCategories;
         DataTable dtCostcoCategories;
+
+        bool bChanging = false;
+
         //string connectionString = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         public string connectionString; // = "Server=tcp:zjding.database.windows.net,1433;Initial Catalog=Costco;Persist Security Info=False;User ID=zjding;Password=G4indigo;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
@@ -104,6 +107,23 @@ namespace CostcoWinForm
 
         private void gvCostcoCategories_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            if (bChanging)
+                return;
+
+            daCostcoCategories.Update(dtCostcoCategories);
+        }
+
+        private void chkAll_CheckedChanged(object sender, EventArgs e)
+        {
+            bChanging = true;
+
+            foreach(DataGridViewRow row in this.gvCostcoCategories.Rows)
+            {
+                row.Cells["bInclude"].Value = chkAll.Checked;
+            }
+
+            bChanging = false;
+
             daCostcoCategories.Update(dtCostcoCategories);
         }
     }

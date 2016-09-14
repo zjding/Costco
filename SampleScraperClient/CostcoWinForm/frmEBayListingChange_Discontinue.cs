@@ -379,7 +379,7 @@ namespace CostcoWinForm
                 if (mode == "CostcoNewProducts" || mode == "CostcoDiscountProducts" || mode == "CostcoClearanceProducts")
                     imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[15]).FormattedValue.ToString();
                 else if (mode == "CostcoPriceDown")
-                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[8]).FormattedValue.ToString();
+                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[9]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {
