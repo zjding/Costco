@@ -233,8 +233,8 @@ namespace CostcoWinForm
             }
             else if (mode == "OptionChange")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions, ImageLink, eBayOldListingPrice) 
-                                 SELECT o.Name, o.UrlNumber, o.eBayItemNumber, o.CostcoUrl, o.CostcoOldOptions, o.CostcoNewOptions, o.CostcoNewImageOptions, o.ImageLink, c.eBayListingPrice
+                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, OldOptions, NewOptions, NewImageOptions, ImageLink, eBayOldListingPrice, Thumb) 
+                                 SELECT o.Name, o.UrlNumber, o.eBayItemNumber, o.CostcoUrl, o.CostcoOldOptions, o.CostcoNewOptions, o.CostcoNewImageOptions, o.ImageLink, c.eBayListingPrice, o.Thumb
                                  FROM eBayListingChange_OptionChange o, eBay_CurrentListings c
                                  WHERE o.eBayItemNumber = c.eBayItemNumber
                                  AND UrlNumber in (" + st + ")";
@@ -380,6 +380,8 @@ namespace CostcoWinForm
                     imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[15]).FormattedValue.ToString();
                 else if (mode == "CostcoPriceDown")
                     imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[9]).FormattedValue.ToString();
+                else if (mode == "OptionChange")
+                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[11]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {

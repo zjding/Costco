@@ -15,8 +15,11 @@
     [Thumb]            NVARCHAR (200)  NULL,
     [ImageLink]        NVARCHAR (2000) NULL,
     [InsertTime]       DATETIME        NULL,
-    [DeleteTime]       DATETIME        NULL
+    [DeleteTime]       DATETIME        NULL,
+    CONSTRAINT [PK_eBay_ToRemove] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 
