@@ -1005,12 +1005,23 @@ namespace CostcoWinForm
 
             Dictionary<string, int> excelColumnsDictionary = new Dictionary<string, int>();
 
+            string st = string.Empty;
+
+            foreach (DataGridViewRow row in gvAdd.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells["AddSelect"].Value) == true)
+                {
+                    st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
+                }
+            }
+            st = st.Substring(0, st.Length - 1);
+
             // get products from DB
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
 
-            string sqlString = "SELECT * FROM eBay_ToAdd WHERE DeleteTime is NULL"; // WHERE shipping = 0.00 and Price < 100";
+            string sqlString = "SELECT * FROM eBay_ToAdd WHERE DeleteTime is NULL AND UrlNumber in (" + st + ")"; // WHERE shipping = 0.00 and Price < 100";
 
             cn.Open();
             cmd.CommandText = sqlString;
@@ -1621,7 +1632,7 @@ namespace CostcoWinForm
                     // *StartPrice
                     oSheet.Cells[i, 6] = product.OldPrice;
                     // *Quantity
-                    oSheet.Cells[i, 5] = "30";
+                    oSheet.Cells[i, 5] = "1";
 
                     i++;
                 }
@@ -1978,7 +1989,8 @@ namespace CostcoWinForm
 
         public void gvListing_Refresh()
         {
-            string sqlString = @"SELECT ID, Name, PendingChange, CostcoUrlNumber, eBayItemNumber, CostcoPrice, eBayReferencePrice, eBayListingPrice, eBayEndTime, CostcoUrl, Thumb
+            string sqlString = @"SELECT Name as ProductName, eBayItemNumber, eBayListingPrice, eBayReferencePrice, CostcoPrice, 
+                                    CostcoOptions, ImageLink, ID, eBayEndTime, CostcoUrl, Thumb, eBayUrl, PendingChange, eBayReferenceUrl
                                  FROM eBay_CurrentListings 
                                  WHERE DeleteDT is NULL
                                  Order by PendingChange desc";
@@ -1996,17 +2008,28 @@ namespace CostcoWinForm
             gvListing.DataSource = dsEBayListing.Tables["tbEBayListing"];
             gvListing.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            gvListing.Columns["ID"].Visible = false;
-            gvListing.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvListing.Columns["eBayItemNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvListing.Columns["ProductName"].Width = 400;
             gvListing.Columns["CostcoPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvListing.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvListing.Columns["eBayListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvListing.Columns["eBayEndTime"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvListing.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            gvListing.Columns["CostcoOptions"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            gvListing.Columns["eBayItemNumber"].Visible = false;
+            gvListing.Columns["ImageLink"].Visible = false;
+            gvListing.Columns["ID"].Visible = false;
+            gvListing.Columns["eBayEndTime"].Visible = false;
+            gvListing.Columns["CostcoUrl"].Visible = false;
+            gvListing.Columns["Thumb"].Visible = false;
+            gvListing.Columns["eBayUrl"].Visible = false;
+            gvListing.Columns["PendingChange"].Visible = false;
+            gvListing.Columns["eBayReferenceUrl"].Visible = false;
 
             gvListing.ClearSelection();
-            gvListing.CurrentCell = null;
+            gvListing.CurrentCell = gvListing.Rows[gvListing.Rows.Count-1].Cells[0];
+
+            gvListing.Rows[gvListing.Rows.Count - 1].Selected = true;
+
+
         }
 
         private void tpCurrentListing_Enter(object sender, EventArgs e)
@@ -2020,20 +2043,32 @@ namespace CostcoWinForm
 
         private void gvListing_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.RowIndex >= gvListing.Rows.Count - 1)
+                return;
+
             if (e.ColumnIndex == 0)
             {
                 if (gvListing.Rows[e.RowIndex].Cells["PendingChange"].Value.ToString() == "2")
+                {
                     gvListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 224);
+                }
                 else if (gvListing.Rows[e.RowIndex].Cells["PendingChange"].Value.ToString() == "1")
                     gvListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 224);
                 else
                     gvListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
             }
+            else if (gvListing.Columns[e.ColumnIndex].Name == "Status")
+            {
+                if (gvListing.Rows[e.RowIndex].Cells["PendingChange"].Value.ToString() == "2")
+                    e.Value = "PendingDelete";
+                else if (gvListing.Rows[e.RowIndex].Cells["PendingChange"].Value.ToString() == "1")
+                    e.Value = "PendingModify";
+            }
             else if (gvListing.Columns[e.ColumnIndex].Name == "ListingImage")
             {
                 string imageUrl = string.Empty;
 
-                imageUrl = (this.gvListing.Rows[e.RowIndex].Cells[12]).FormattedValue.ToString();
+                imageUrl = (this.gvListing.Rows[e.RowIndex].Cells[13]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {
@@ -2148,26 +2183,30 @@ namespace CostcoWinForm
             */
         }
 
-        private void gvCurrentListing_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void gvListing_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            //if (e.ColumnIndex == 0)
+            if (e.RowIndex == -1)
+                return;
+
+            if (e.ColumnIndex == 7)
+            {
+                string url = gvListing.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
+
+                Process.Start(@"chrome", url);
+            }
+            //else if (e.ColumnIndex == 5)
             //{
-            //    this.gvCurrentListing.Rows[e.RowIndex].Cells[0].Value = !Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value);
-            //    if (Convert.ToBoolean(gvCurrentListing.Rows[e.RowIndex].Cells[0].Value))
-            //    {
-            //        gvCurrentListing.Rows[e.RowIndex].Selected = true;
-            //        gvCurrentListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = SystemColors.Highlight;
+            //    string url = @"www.ebay.com/itm/" + gvListing.Rows[e.RowIndex].Cells[4].FormattedValue.ToString();
 
-            //        selectedListingItems.Add(gvCurrentListing.Rows[e.RowIndex].Cells[5].Value.ToString());
-            //    }
-            //    else
-            //    {
-            //        gvCurrentListing.Rows[e.RowIndex].Selected = false;
-            //        gvCurrentListing.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
-
-            //        selectedListingItems.Remove(gvCurrentListing.Rows[e.RowIndex].Cells[5].Value.ToString());
-            //    }
+            //    Process.Start(@"chrome", url);
             //}
+            else if (e.ColumnIndex == 6)
+            {
+                string url = gvListing.Rows[e.RowIndex].Cells[16].FormattedValue.ToString();
+
+                Process.Start(@"chrome", url);
+            }
+
         }
 
         private void btnReloadCurrentListing_Click(object sender, EventArgs e)
@@ -2175,7 +2214,34 @@ namespace CostcoWinForm
 
         }
 
+        private void btnComplete_Click(object sender, EventArgs e)
+        {
+            string itemNumbers = "";
 
+            foreach (DataGridViewRow row in gvListing.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells["ListingSelect"].Value) == true)
+                {
+                    itemNumbers += "'" + row.Cells["eBayItemNumber"].Value.ToString() + "',";
+                }
+            }
+
+            itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '' WHERE eBayItemNumber in (" + itemNumbers + ") AND DeleteDT is null";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+
+            gvListing_Refresh();
+        }
 
 
 
@@ -4309,7 +4375,16 @@ namespace CostcoWinForm
             cn.Close();
         }
 
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
         
+
+
+
+
 
 
 

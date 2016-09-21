@@ -8,5 +8,5 @@
 													
 							//--></script><script language="javascript" src="http://include.ebaystatic.com/js/e951/us/legacy/globals_e9512us.js"> </script><script src="http://include.ebaystatic.com/js/e983/us/legacy/common_functions_e9831us.js"> </script></head>
 <body>
-				File upload successful. Your ref # is 754628297.<br><a href="javascript:void(0);" onclick="self.close();return false;">Close</a></body>
+				File upload successful. Your ref # is 755432617.<br><a href="javascript:void(0);" onclick="self.close();return false;">Close</a></body>
 </html>

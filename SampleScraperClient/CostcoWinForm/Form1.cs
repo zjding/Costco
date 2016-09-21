@@ -2923,9 +2923,266 @@ Standard shipping is via UPS Ground. <strong>The estimated delivery time will be
 
         private void btnListEmailExtract_Click(object sender, EventArgs e)
         {
-            string body = @"<html><head></head><body><div id='Header'><div><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='100%' style='word-wrap:break-word'><table cellpadding='2' cellspacing='3' border='0' width='100%'><tr><td width='1%' nowrap='nowrap'><img src='http://q.ebaystatic.com/aw/pics/logos/ebay_95x39.gif' height='39' width='95' alt='eBay'></td><td align='left' valign='bottom'><span style='font-weight:bold; font-size:xx-small; font-family:verdana, sans-serif; color:#666'><b>eBay sent this message to Zhijun Ding (zjding2016).</b><br></span><span style='font-size:xx-small; font-family:verdana, sans-serif; color:#666'>Your registered name is included to show this message originated from eBay. <a href='http://pages.ebay.com/help/confidence/name-userid-emails.html'>Learn more</a>.</span></td></tr></table></td></tr></table></div></div><div id='Title'><div><table style='background-color:#ffe680' border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='8' valign='top'><img src='http://q.ebaystatic.com/aw/pics/globalAssets/ltCurve.gif' height='8' width='8' alt=''></td><td valign='bottom' width='100%'><span style='font-weight:bold; font-size:14pt; font-family:arial, sans-serif; color:#000; margin:2px 0 2px 0'>Your item has been listed. Sell another item now!</span></td><td width='8' valign='top' align='right'><img src='http://p.ebaystatic.com/aw/pics/globalAssets/rtCurve.gif' height='8' width='8' alt=''></td></tr><tr><td style='background-color:#fc0' colspan='3' height='4'></td></tr></table></div></div><div id='SingleItemCTA'><div><table border='0' cellpadding='2' cellspacing='3' width='100%'><tr><td><font style='font-size:10pt; font-family:arial, sans-serif; color:#000'>Hi zjding2016,<table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='10' alt=' '></td></tr></table>Your item has been successfully listed on eBay. It may take some time for the item to appear on eBay search results. Here are the listing details:<table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='10' alt=' '></td></tr></table><div></div></font><div><table width='100%' cellpadding='0' cellspacing='3' border='0'><tr><td valign='top' align='center' width='100' nowrap='nowrap'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1123/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D152102133759%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1123'><img src='http://pics.ebaystatic.com/aw/pics/icon/iconPic_20x20.gif' alt='Swingline Optima Grip Full Strip Stapler, 25-Sheet Capacity, Graphite SWI 87810' border='0'></a></td><td colspan='2' valign='top'><table width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' colspan='2'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1123/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D152102133759%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1123'>Swingline Optima Grip Full Strip Stapler, 25-Sheet Capacity, Graphite SWI 87810</a></td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>Item Id:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>152102133759</td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>Price:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>$25.40</td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>End time:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>Jun-23-16 09:18:06 PDT</td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' width='15%' nowrap='nowrap' valign='top'>Listing fees:</td><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' valign='top'>0</td></tr><tr><td colspan='2'><font style='font-size:10pt; font-family:arial, sans-serif; color:#000'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1125/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws2%2FeBayISAPI.dll%3FUserItemVerification%26%26item%3D152102133759%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1125'>Revise item</a>   |    <a href='http://rover.ebay.com/rover/0/e12000.m43.l1121/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fmy.ebay.com%2Fws%2FeBayISAPI.dll%3FMyeBay%26%26CurrentPage%3DMyeBaySelling%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1121'>Go to My eBay</a></font></td></tr></table></td></tr></table></div><td valign='top' width='185'><div><span style='font-weight:bold; font-size:10pt; font-family:arial, sans-serif; color:#000'>Ready to List Your Next Item?</span><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='4' alt=' '></td></tr></table><a href='http://rover.ebay.com/rover/0/e12000.m44.l1127/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1127' title='http://rover.ebay.com/rover/0/e12000.m44.l1127/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1127'><img src='http://p.ebaystatic.com/aw/pics/buttons/btnSellMore.gif' border='0' height='32' width='120'></img></a><br><span style='font-style:italic; font-size:8pt; font-family:arial, sans-serif; color:#000'>Click to list another item</span></div></td></td></tr></table><br></div></div><div id='OneClickUnsubscribe'><div><style>.cub-cwrp {display:block; border:1px solid #dedfde; font-family:arial, sans-serif; font-size:10pt; margin-bottom:20px}h3.cub-chd {margin:0px; padding:5px; display:block; background:#e7e7e7; font-size:14px}.cub-ccnt {padding:0px 10px 10px 5px; display:block}ul.cub-ulst {margin:0px 0px 0px 10px; padding:0px 0px 0px 10px}ul.cub-ulst li, ul.cub-ulst li.cub-licn {list-style:square outside none; margin:0px; padding:10px 0px 0px 0px; line-height:16px}.cub-ltxt {color:#333; display:block}</style><div class='cub-cwrp'><h3 class='cub-chd'>Select your email preferences</h3><div class='cub-ccnt'><ul class='cub-ulst'><li><span class='cub-ltxt'><span>Want to reduce your inbox email volume? <a href='http://my.ebay.com/ws/eBayISAPI.dll?DigestEmail&amp;emailType=12000'>Receive this email as a daily digest</a>.</span><br><span>For other email digest options, go to <a href='http://my.ebay.com/ws/eBayISAPI.dll?MyEbayBeta&amp;CurrentPage=MyeBayNextNotificationPreferences'>Notification Preferences</a> in My eBay.</span><br></span></li><li><span class='cub-ltxt'><span>Don't want to receive this email? <a href='http://my.ebay.com/ws/eBayISAPI.dll?EmailUnsubscribe&amp;emailType=12000'>Unsubscribe from this email</a>.</span><br></span></li></ul></div></div></div></div><div id='Tips'></div><div id='RTMEducational'></div><div id='MST'><div><table style='border:1px solid #6b7b91' border='0' cellpadding='0' cellspacing='0' width='100%'><tr style='background-color:#c9d2dc' height='1'><td><img src='http://p.ebaystatic.com/aw/pics/securityCenter/imgShield_25x25.gif' height='25' width='25' alt='Marketplace Safety Tip' align='absmiddle'></td><td style='font-weight:bold; font-size:10pt; font-family:arial, sans-serif; color:#000' nowrap='nowrap' width='20%'>Marketplace Safety Tip</td><td><img src='http://p.ebaystatic.com/aw/pics/securityCenter/imgTabCorner_25x25.gif' height='25' width='25' alt='' align='absmiddle'></td><td background='http://q.ebaystatic.com/aw/pics/securityCenter/imgFlex_1x25.gif' height='1' width='80%'></td></tr><tr><td style='font-size:10pt; font-family:arial, sans-serif; color:#000' colspan='4'><ul style='margin-top: 5px; margin-bottom: 5px;'><li style='padding-bottom: 3px; line-height: 120%; padding-top: 3px; list-style-type: square;'>If you are contacted about buying a similar item outside of eBay, please do not respond. Outside-of-eBay transactions are against eBay policy, and they are not covered by eBay services such as feedback and eBay purchase protection programs.</li></ul></td></tr><tr><td style='background-color:#c9d2dc' colspan='4'><img src='http://q.ebaystatic.com/aw/pics/s.gif' height='1' width='1'></td></tr></table><br></div></div><div id='Footer'><div><hr style='HEIGHT: 1px'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='100%'><font style='font-size:8pt; font-family:arial, sans-serif; color:#000000'>Email reference id: [#d7aa3b6062934f4d99682042ae7471a4#]</font></td></tr></table><br></div><hr style='HEIGHT: 1px'><table border='0' cellpadding='0' cellspacing='0' width='100%'><tr><td width='100%'><font style='font-size:xx-small; font-family:verdana; color:#666'><a href='http://pages.ebay.com/education/spooftutorial/index.html'>Learn More</a> to protect yourself from spoof (fake) emails.<br><br>eBay sent this email to you at zjding@outlook.com about your account registered on <a href='http://www.ebay.com'>www.ebay.com</a>.<br><br>eBay sends these emails based on the preferences you set for your account. To unsubscribe from this email, change your <a href='http://my.ebay.com/ws/eBayISAPI.dll?MyEbayBeta&amp;CurrentPage=MyeBayNextNotificationPreferences'>communication preferences</a>. Please note that it may take up to 10 days to process your request. Visit our <a href='http://pages.ebay.com/help/policies/privacy-policy.html'>Privacy Notice</a> and <a href='http://pages.ebay.com/help/policies/user-agreement.html'>User Agreement</a> if you have any questions.<br><br>Copyright © 2016 eBay Inc. All Rights Reserved. Designated trademarks and brands are the property of their respective owners. eBay and the eBay logo are trademarks of eBay Inc. eBay Inc. is located at 2145 Hamilton Avenue, San Jose, CA 95125.  </font></td></tr></table><img src='http://rover.ebay.com/roveropen/0/e12000/7?euid=d7aa3b6062934f4d99682042ae7471a4&amp;' height='1' width='1'></div></body></html>";
+            string body = @"<div dir='ltr'><div class='gmail_quote'><div lang='EN-US' link='blue' vlink='purple'><div><br>
+<div>
+<div>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td width='100%' style='width:100.0%;padding:0in 0in 0in 0in'>
+<table border='0' cellspacing='3' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td width='1%' nowrap='' style='width:1.0%;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+<p class='MsoNormal'><img width='95' height='39' style='width:.9895in;min-height:.4062in' src='http://q.ebaystatic.com/aw/pics/logos/ebay_95x39.gif' alt='eBay'><u></u><u></u></p>
+</td>
+<td valign='bottom' style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+<p class='MsoNormal'><b><span style='font-size:7.5pt;font-family:&quot;Verdana&quot;,sans-serif;color:#666666'>eBay sent this message to Zhijun Ding (zjding2016).<br>
+</span></b><span style='font-size:7.5pt;font-family:&quot;Verdana&quot;,sans-serif;color:#666666'>Your registered name is included to show this message originated from eBay.
+<a href='http://pages.ebay.com/help/confidence/name-userid-emails.html' target='_blank'>Learn more</a>.</span><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%;background:#ffe680'>
+<tbody>
+<tr>
+<td width='8' valign='top' style='width:6.0pt;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><img border='0' width='8' height='8' style='width:.0833in;min-height:.0833in' src='http://q.ebaystatic.com/aw/pics/globalAssets/ltCurve.gif'><u></u><u></u></p>
+</td>
+<td width='100%' valign='bottom' style='width:100.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><b><span style='font-size:14.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Your item has been listed. Sell another item now!</span></b><u></u><u></u></p>
+</td>
+<td width='8' valign='top' style='width:6.0pt;padding:0in 0in 0in 0in'>
+<p class='MsoNormal' align='right' style='text-align:right'><img border='0' width='8' height='8' style='width:.0833in;min-height:.0833in' src='http://p.ebaystatic.com/aw/pics/globalAssets/rtCurve.gif'><u></u><u></u></p>
+</td>
+</tr>
+<tr style='height:3.0pt'>
+<td colspan='3' style='background:#ffcc00;padding:0in 0in 0in 0in;height:3.0pt'></td>
+</tr>
+</tbody>
+</table>
+<div>
+<div>
+<p class='MsoNormal'><span style='display:none'><u></u>&nbsp;<u></u></span></p>
+<table border='0' cellspacing='3' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td style='padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Hi zjding2016,<u></u><u></u></span></p>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><img border='0' height='10' style='min-height:.1041in' src='http://q.ebaystatic.com/aw/pics/s.gif' alt=' '><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Your item has been successfully listed on eBay. It may take some time for the item to appear on eBay search results. Here are the listing details:<u></u><u></u></span></p>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><img border='0' height='10' style='min-height:.1041in' src='http://q.ebaystatic.com/aw/pics/s.gif' alt=' '><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div>
+<p class='MsoNormal'><span style='display:none'><u></u>&nbsp;<u></u></span></p>
+<table border='0' cellspacing='3' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td width='100' nowrap='' valign='top' style='width:75.0pt;padding:0in 0in 0in 0in'>
+<p class='MsoNormal' align='center' style='text-align:center'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1123/7?euid=b9e583070de44bf39542d75adb833dd3&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D152241585807%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1123' target='_blank'><span style='text-decoration:none'><img border='0' src='http://pics.ebaystatic.com/aw/pics/icon/iconPic_20x20.gif' alt='Adidas Men's Ultimate Core Short'></span></a><u></u><u></u></p>
+</td>
+<td valign='top' style='padding:0in 0in 0in 0in'>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td colspan='2' style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1123/7?euid=b9e583070de44bf39542d75adb833dd3&amp;loc=http%3A%2F%2Fcgi.ebay.com%2Fws%2FeBayISAPI.dll%3FViewItem%26item%3D152241585807%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1123' target='_blank'>Adidas
+ Men's Ultimate Core Short</a><u></u><u></u></span></p>
+</td>
+</tr>
+<tr>
+<td width='15%' nowrap='' valign='top' style='width:15.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Item Id:<u></u><u></u></span></p>
+</td>
+<td valign='top' style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>152241585807<u></u><u></u></span></p>
+</td>
+</tr>
+<tr>
+<td width='15%' nowrap='' valign='top' style='width:15.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Price:<u></u><u></u></span></p>
+</td>
+<td valign='top' style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>$30.00<u></u><u></u></span></p>
+</td>
+</tr>
+<tr>
+<td width='15%' nowrap='' valign='top' style='width:15.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>End time:<u></u><u></u></span></p>
+</td>
+<td valign='top' style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Oct-14-16 07:25:20 PDT<u></u><u></u></span></p>
+</td>
+</tr>
+<tr>
+<td width='15%' nowrap='' valign='top' style='width:15.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Listing fees:<u></u><u></u></span></p>
+</td>
+<td valign='top' style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>0<u></u><u></u></span></p>
+</td>
+</tr>
+<tr>
+<td colspan='2' style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'><a href='http://rover.ebay.com/rover/0/e12000.m43.l1125/7?euid=b9e583070de44bf39542d75adb833dd3&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws2%2FeBayISAPI.dll%3FUserItemVerification%26%26item%3D152241585807%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1125' target='_blank'>Revise
+ item</a> | <a href='http://rover.ebay.com/rover/0/e12000.m43.l1121/7?euid=b9e583070de44bf39542d75adb833dd3&amp;loc=http%3A%2F%2Fmy.ebay.com%2Fws%2FeBayISAPI.dll%3FMyeBay%26%26CurrentPage%3DMyeBaySelling%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1121' target='_blank'>
+Go to My eBay</a></span><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+<td width='185' valign='top' style='width:138.75pt;padding:1.5pt 1.5pt 1.5pt 1.5pt'>
+<div>
+<p class='MsoNormal'><b><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Ready to List Your Next Item?</span></b><u></u><u></u></p>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td style='padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><img border='0' height='4' style='min-height:.0416in' src='http://q.ebaystatic.com/aw/pics/s.gif' alt=' '><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class='MsoNormal'><a href='http://rover.ebay.com/rover/0/e12000.m44.l1127/7?euid=b9e583070de44bf39542d75adb833dd3&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1127' title='http://rover.ebay.com/rover/0/e12000.m44.l1127/7?euid=b9e583070de44bf39542d75adb833dd3&amp;loc=http%3A%2F%2Fcgi5.ebay.com%2Fws%2FeBayISAPI.dll%3FSellHub3%26ssPageName%3DADME%3AL%3ALCA%3AUS%3A1127' target='_blank'><span style='text-decoration:none'><img border='0' width='120' height='32' style='width:1.25in;min-height:.3333in' src='http://p.ebaystatic.com/aw/pics/buttons/btnSellMore.gif'></span></a><br>
+<i><span style='font-size:8.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Click to list another item</span></i><u></u><u></u></p>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p class='MsoNormal'><u></u>&nbsp;<u></u></p>
+</div>
+</div>
+<div>
+<div>
+<div style='border:solid #dedfde 1.0pt;padding:0in 0in 0in 0in;margin-bottom:15.0pt'>
+<h3 style='margin:0in;margin-bottom:.0001pt;background:#e7e7e7'><span style='font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif'>Select your email preferences<u></u><u></u></span></h3>
+<div>
+<p class='MsoNormal' style='margin-left:7.5pt;line-height:12.0pt'>
+<u></u><span style='font-size:10.0pt;font-family:Wingdings'><span>§<span style='font:7.0pt &quot;Times New Roman&quot;'>&nbsp;
+</span></span></span><u></u><span><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif'>Want to reduce your inbox email volume?
+<a href='http://my.ebay.com/ws/eBayISAPI.dll?DigestEmail&amp;emailType=12000' target='_blank'>Receive this email as a daily digest</a>.</span></span><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:#333333'><br>
+<span>For other email digest options, go to <a href='http://my.ebay.com/ws/eBayISAPI.dll?MyEbayBeta&amp;CurrentPage=MyeBayNextNotificationPreferences' target='_blank'>
+Notification Preferences</a> in My eBay.</span></span><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif'><u></u><u></u></span></p>
+<p class='MsoNormal' style='margin-left:7.5pt;line-height:12.0pt'>
+<u></u><span style='font-size:10.0pt;font-family:Wingdings'><span>§<span style='font:7.0pt &quot;Times New Roman&quot;'>&nbsp;
+</span></span></span><u></u><span><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif'>Don't want to receive this email?
+<a href='http://my.ebay.com/ws/eBayISAPI.dll?EmailUnsubscribe&amp;emailType=12000' target='_blank'>Unsubscribe from this email</a>.</span></span><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif'><u></u><u></u></span></p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<table border='1' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%;border:solid #6b7b91 1.0pt'>
+<tbody>
+<tr style='height:.75pt'>
+<td style='border:none;background:#c9d2dc;padding:0in 0in 0in 0in;height:.75pt'>
+<p class='MsoNormal'><img border='0' width='25' height='25' style='width:.2604in;min-height:.2604in' src='http://p.ebaystatic.com/aw/pics/securityCenter/imgShield_25x25.gif' alt='Marketplace Safety Tip'><u></u><u></u></p>
+</td>
+<td width='20%' nowrap='' style='width:20.0%;border:none;background:#c9d2dc;padding:0in 0in 0in 0in;height:.75pt'>
+<p class='MsoNormal'><b><span style='font-size:10.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Marketplace Safety Tip<u></u><u></u></span></b></p>
+</td>
+<td style='border:none;background:#c9d2dc;padding:0in 0in 0in 0in;height:.75pt'>
+<p class='MsoNormal'><img border='0' width='25' height='25' style='width:.2604in;min-height:.2604in' src='http://p.ebaystatic.com/aw/pics/securityCenter/imgTabCorner_25x25.gif'><u></u><u></u></p>
+</td>
+<td width='80%' style='width:80.0%;border:none;background:#c9d2dc;padding:0in 0in 0in 0in;height:.75pt'>
+</td>
+</tr>
+<tr>
+<td colspan='4' style='border:none;padding:0in 0in 0in 0in'>
+<ul type='square'>
+<li class='MsoNormal' style='color:black;line-height:120%'>
+<span style='font-size:10.0pt;line-height:120%;font-family:&quot;Arial&quot;,sans-serif'>If you are contacted about buying a similar item outside of eBay, please do not respond. Outside-of-eBay transactions are against eBay policy, and they are not covered by eBay services
+ such as feedback and eBay purchase protection programs.<u></u><u></u></span></li></ul>
+</td>
+</tr>
+<tr>
+<td colspan='4' style='border:none;background:#c9d2dc;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><img border='0' width='1' height='1' style='width:.0104in;min-height:.0104in' src='http://q.ebaystatic.com/aw/pics/s.gif'><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class='MsoNormal'><u></u>&nbsp;<u></u></p>
+</div>
+</div>
+<div>
+<div>
+<div class='MsoNormal' align='center' style='text-align:center'>
+<hr size='1' width='100%' align='center'>
+</div>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td width='100%' style='width:100.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:8.0pt;font-family:&quot;Arial&quot;,sans-serif;color:black'>Email reference id: [#<wbr>b9e583070de44bf39542d75adb833d<wbr>d3#]</span><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class='MsoNormal'><u></u>&nbsp;<u></u></p>
+</div>
+<div class='MsoNormal' align='center' style='text-align:center'>
+<hr size='1' width='100%' align='center'>
+</div>
+<table border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100.0%'>
+<tbody>
+<tr>
+<td width='100%' style='width:100.0%;padding:0in 0in 0in 0in'>
+<p class='MsoNormal'><span style='font-size:7.5pt;font-family:&quot;Verdana&quot;,sans-serif;color:#666666'><a href='http://pages.ebay.com/education/spooftutorial/index.html' target='_blank'>Learn More</a> to protect yourself from spoof (fake) emails.<br>
+<br>
+eBay sent this email to you at <a href='mailto:zjding@outlook.com' target='_blank'>zjding@outlook.com</a> about your account registered on
+<a href='http://www.ebay.com' target='_blank'>www.ebay.com</a>.<br>
+<br>
+eBay sends these emails based on the preferences you set for your account. To unsubscribe from this email, change your
+<a href='http://my.ebay.com/ws/eBayISAPI.dll?MyEbayBeta&amp;CurrentPage=MyeBayNextNotificationPreferences' target='_blank'>
+communication preferences</a>. Please note that it may take up to 10 days to process your request. Visit our
+<a href='http://pages.ebay.com/help/policies/privacy-policy.html' target='_blank'>Privacy Notice</a> and
+<a href='http://pages.ebay.com/help/policies/user-agreement.html' target='_blank'>User Agreement</a> if you have any questions.<br>
+<br>
+Copyright © 2016 eBay Inc. All Rights Reserved. Designated trademarks and brands are the property of their respective owners. eBay and the eBay logo are trademarks of eBay Inc. eBay Inc. is located at 2145 Hamilton Avenue, San Jose, CA 95125.
+</span><u></u><u></u></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class='MsoNormal'><img border='0' width='1' height='1' style='width:.0104in;min-height:.0104in' src='http://rover.ebay.com/roveropen/0/e12000/7?euid=b9e583070de44bf39542d75adb833dd3&amp;'><u></u><u></u></p>
+</div>
+</div>
+</div>
 
-            string subject = @"Your eBay listing is confirmed: Swingline Optima Grip Full Strip Stapler, 25-Sheet Capacity, Graphite SWI 87810";
+</div><br></div>";
+
+            string subject = @"Your eBay listing is confirmed: Adidas Men's Ultimate Core Short";
 
             ProcessListingConfirmEmail(body, subject);
         }
@@ -2939,7 +3196,7 @@ Standard shipping is via UPS Ground. <strong>The estimated delivery time will be
 
             string productName = subject.Substring(32, subject.Length - 32);
 
-            string sqlString = "SELECT * FROM eBay_ToAdd WHERE name = '" + productName + "'";
+            string sqlString = "SELECT * FROM eBay_ToAdd WHERE name = '" + productName.Replace("'", "''") + "'";
 
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
@@ -2982,6 +3239,8 @@ Standard shipping is via UPS Ground. <strong>The estimated delivery time will be
             body = body.Replace("\r", "");
             body = body.Replace("\t", "");
             body = body.Replace("\n", "");
+
+            string eBayUrl = SubstringEndBack(body, "' target='_blank'>" + productName, "<a href='", false, false);
 
             string stItemId = SubstringInBetween(body, "Item Id:</td>", "</td>", false, true);
             stItemId = SubstringEndBack(stItemId, "</td>", ">", false, false);
