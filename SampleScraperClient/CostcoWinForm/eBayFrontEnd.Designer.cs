@@ -82,9 +82,14 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tpCurrentListing = new System.Windows.Forms.TabPage();
             this.btnComplete = new System.Windows.Forms.Button();
-            this.btnReloadCurrentListing = new System.Windows.Forms.Button();
             this.btnListingModify = new System.Windows.Forms.Button();
             this.gvListing = new System.Windows.Forms.DataGridView();
+            this.ListingSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ListingImage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ProductName = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.eBayReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
             this.btnListingDelete = new System.Windows.Forms.Button();
             this.tpCostco = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -316,12 +321,6 @@
             this.eBay_SoldTransactionsTableAdapter = new CostcoWinForm.dsEBaySoldTableAdapters.eBay_SoldTransactionsTableAdapter();
             this.productInfoTableAdapter1 = new CostcoWinForm.CostcoDataSet4TableAdapters.ProductInfoTableAdapter();
             this.productInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.ListingSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ListingImage = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ProductName = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.CostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.eBayReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
             this.tpTax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
@@ -781,7 +780,6 @@
             // tpCurrentListing
             // 
             this.tpCurrentListing.Controls.Add(this.btnComplete);
-            this.tpCurrentListing.Controls.Add(this.btnReloadCurrentListing);
             this.tpCurrentListing.Controls.Add(this.btnListingModify);
             this.tpCurrentListing.Controls.Add(this.gvListing);
             this.tpCurrentListing.Controls.Add(this.btnListingDelete);
@@ -803,21 +801,10 @@
             this.btnComplete.UseVisualStyleBackColor = true;
             this.btnComplete.Click += new System.EventHandler(this.btnComplete_Click);
             // 
-            // btnReloadCurrentListing
-            // 
-            this.btnReloadCurrentListing.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReloadCurrentListing.Location = new System.Drawing.Point(828, 6);
-            this.btnReloadCurrentListing.Name = "btnReloadCurrentListing";
-            this.btnReloadCurrentListing.Size = new System.Drawing.Size(75, 23);
-            this.btnReloadCurrentListing.TabIndex = 4;
-            this.btnReloadCurrentListing.Text = "Reload";
-            this.btnReloadCurrentListing.UseVisualStyleBackColor = true;
-            this.btnReloadCurrentListing.Click += new System.EventHandler(this.btnReloadCurrentListing_Click);
-            // 
             // btnListingModify
             // 
             this.btnListingModify.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnListingModify.Location = new System.Drawing.Point(666, 6);
+            this.btnListingModify.Location = new System.Drawing.Point(747, 6);
             this.btnListingModify.Name = "btnListingModify";
             this.btnListingModify.Size = new System.Drawing.Size(75, 23);
             this.btnListingModify.TabIndex = 1;
@@ -848,10 +835,51 @@
             this.gvListing.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvListing_CellFormatting);
             this.gvListing.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.gvListing_RowsAdded);
             // 
+            // ListingSelect
+            // 
+            this.ListingSelect.HeaderText = "Select";
+            this.ListingSelect.Name = "ListingSelect";
+            this.ListingSelect.Width = 20;
+            // 
+            // ListingImage
+            // 
+            this.ListingImage.HeaderText = "Image";
+            this.ListingImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ListingImage.Name = "ListingImage";
+            this.ListingImage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ListingImage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ListingImage.Width = 50;
+            // 
+            // ProductName
+            // 
+            this.ProductName.DataPropertyName = "ProductName";
+            this.ProductName.HeaderText = "Name";
+            this.ProductName.Name = "ProductName";
+            this.ProductName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ProductName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ProductName.Width = 50;
+            // 
+            // Status
+            // 
+            this.Status.HeaderText = "Status";
+            this.Status.Name = "Status";
+            // 
+            // CostcoPrice
+            // 
+            this.CostcoPrice.DataPropertyName = "CostcoPrice";
+            this.CostcoPrice.HeaderText = "Costco Price";
+            this.CostcoPrice.Name = "CostcoPrice";
+            // 
+            // eBayReferencePrice
+            // 
+            this.eBayReferencePrice.DataPropertyName = "eBayReferencePrice";
+            this.eBayReferencePrice.HeaderText = "Reference Price";
+            this.eBayReferencePrice.Name = "eBayReferencePrice";
+            // 
             // btnListingDelete
             // 
             this.btnListingDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnListingDelete.Location = new System.Drawing.Point(747, 6);
+            this.btnListingDelete.Location = new System.Drawing.Point(828, 6);
             this.btnListingDelete.Name = "btnListingDelete";
             this.btnListingDelete.Size = new System.Drawing.Size(75, 23);
             this.btnListingDelete.TabIndex = 0;
@@ -3879,47 +3907,6 @@
             this.productInfoBindingSource.DataMember = "ProductInfo";
             this.productInfoBindingSource.DataSource = this.costcoDataSet4;
             // 
-            // ListingSelect
-            // 
-            this.ListingSelect.HeaderText = "Select";
-            this.ListingSelect.Name = "ListingSelect";
-            this.ListingSelect.Width = 20;
-            // 
-            // ListingImage
-            // 
-            this.ListingImage.HeaderText = "Image";
-            this.ListingImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.ListingImage.Name = "ListingImage";
-            this.ListingImage.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ListingImage.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ListingImage.Width = 50;
-            // 
-            // ProductName
-            // 
-            this.ProductName.DataPropertyName = "ProductName";
-            this.ProductName.HeaderText = "Name";
-            this.ProductName.Name = "ProductName";
-            this.ProductName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ProductName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ProductName.Width = 50;
-            // 
-            // Status
-            // 
-            this.Status.HeaderText = "Status";
-            this.Status.Name = "Status";
-            // 
-            // CostcoPrice
-            // 
-            this.CostcoPrice.DataPropertyName = "CostcoPrice";
-            this.CostcoPrice.HeaderText = "Costco Price";
-            this.CostcoPrice.Name = "CostcoPrice";
-            // 
-            // eBayReferencePrice
-            // 
-            this.eBayReferencePrice.DataPropertyName = "eBayReferencePrice";
-            this.eBayReferencePrice.HeaderText = "Reference Price";
-            this.eBayReferencePrice.Name = "eBayReferencePrice";
-            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4253,7 +4240,6 @@
         private System.Windows.Forms.DataGridView gvDelete;
         private System.Windows.Forms.DataGridView gvChange;
         private System.Windows.Forms.DataGridView gvListing;
-        private System.Windows.Forms.Button btnReloadCurrentListing;
         private System.Windows.Forms.Label label85;
         private System.Windows.Forms.LinkLabel llCostcoOnSale;
         private System.Windows.Forms.Label label97;

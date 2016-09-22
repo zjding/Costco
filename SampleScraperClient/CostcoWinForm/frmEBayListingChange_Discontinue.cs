@@ -212,24 +212,28 @@ namespace CostcoWinForm
 
             if (mode == "Discontinue")
             {
-                sqlString = @"INSERT INTO eBay_ToRemove (Name, CostcoUrlNumber, eBayItemNumber, CostcoUrl, InsertTime) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, GETDATE()
-                                 FROM eBayListingChange_Discontinue 
-                                 WHERE UrlNumber in (" + st + ")";
+                eBayFrontEnd.UploadDelete(st);
             }
-            else if (mode == "PriceUp")
+            else if (mode == "PriceUp" || mode == "PriceDown")
             {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, CostcoOldPrice, CostcoNewPrice, eBayOldListingPirce, eBayNewListingPrice, ImageLink) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldPrice, CostcoNewPrice, eBayListingOldPrice, eBayListingNewPrice, ImageLink
-                                 FROM eBayListingChange_PriceUp 
-                                 WHERE UrlNumber in (" + st + ")";
-            }
-            else if (mode == "PriceDown")
-            {
-                sqlString = @"INSERT INTO eBay_ToChange (Name, CostcoUrlNumber, eBayItemNumber, Url, CostcoOldPrice, CostcoNewPrice, eBayOldListingPirce, eBayNewListingPrice, ImageLink) 
-                                 SELECT Name, UrlNumber, eBayItemNumber, CostcoUrl, CostcoOldPrice, CostcoNewPrice, eBayListingOldPrice, eBayListingNewPrice, ImageLink
-                                 FROM eBayListingChange_PriceDown 
-                                 WHERE UrlNumber in (" + st + ")";
+                List<ProductUpdate> products = new List<ProductUpdate>();
+
+                string eBayItemNumbers = string.Empty;
+
+                foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells["Select"].Value) == true && row.Cells["eBayListingNewPrice"].Value.ToString().Trim() != "")
+                    {
+                        ProductUpdate p = new ProductUpdate();
+                        p.eBayItemNumbr = Convert.ToString(row.Cells["eBayItemNumber"].Value);
+                        p.NewPrice = Convert.ToDecimal(row.Cells["eBayListingNewPrice"].Value);
+                        products.Add(p);
+
+                        eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
+                    }
+                }
+
+                eBayFrontEnd.UploadPriceChange(products);
             }
             else if (mode == "OptionChange")
             {
@@ -382,6 +386,8 @@ namespace CostcoWinForm
                     imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[9]).FormattedValue.ToString();
                 else if (mode == "OptionChange")
                     imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[11]).FormattedValue.ToString();
+                else if (mode == "PriceUp" || mode == "PriceDown")
+                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[12]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {
@@ -391,6 +397,14 @@ namespace CostcoWinForm
                 {
                     e.Value = null;
                 }
+            }
+        }
+
+        private void chkAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in gvEBayListingChangeDiscontinue.Rows)
+            {
+                row.Cells["Select"].Value = chkAll.Checked;
             }
         }
     }

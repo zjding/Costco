@@ -9,6 +9,7 @@ namespace CostcoWinForm
     class Product
     {
         public string Name { get; set; } = "";
+        public string eBayName { get; set; } = "";
         public string UrlNumber { get; set; } = "";
         public string ItemNumber { get; set; } = "";
         public string Category { get; set; } = "";
@@ -39,7 +40,7 @@ namespace CostcoWinForm
         public string Specifics { get; set; } = "";
     }
 
-    class ProductUpdate
+    public class ProductUpdate
     {
         public string eBayItemNumbr { get; set; }
         public decimal NewPrice { get; set; }

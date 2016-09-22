@@ -91,7 +91,7 @@ namespace CostcoWinForm
 
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
 
-        string connectionString; // = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        static string connectionString; // = "Data Source=DESKTOP-ABEPKAT;Initial Catalog=Costco;Integrated Security=False;User ID=sa;Password=G4indigo;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         bool bInit = false;
 
@@ -271,7 +271,7 @@ namespace CostcoWinForm
         private void btnCostcoCategory_Click(object sender, EventArgs e)
         {
             FrmCostcoCategories frmCategories = new FrmCostcoCategories();
-            frmCategories.connectionString = this.connectionString;
+            frmCategories.connectionString = connectionString;
             frmCategories.ShowDialog();
         }
 
@@ -490,14 +490,19 @@ namespace CostcoWinForm
                     p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.eBayReferencePrice)));
 
                     sqlString = @"INSERT INTO eBay_ToAdd
-                                (Name, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
+                                (Name, eBayName, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
                                 Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl, Thumb)
-                                VALUES (@_Name, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
+                                VALUES (@_Name, @_eBayName, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
                                 @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl, @_Thumb)";
+
+                    string eBayName = RemoveSpecialCharacters(p.Name);
+                    if (eBayName.Length > 80)
+                        eBayName = eBayName.Substring(0, 79);
 
                     cmd.CommandText = sqlString;
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@_Name", p.Name);
+                    cmd.Parameters.AddWithValue("@_eBayName", eBayName);
                     cmd.Parameters.AddWithValue("@_UrlNumber", p.UrlNumber);
                     cmd.Parameters.AddWithValue("@_ItemNumber", p.ItemNumber);
                     cmd.Parameters.AddWithValue("@_Category", p.Category);
@@ -919,7 +924,7 @@ namespace CostcoWinForm
         {
             bToAddRefreshing = true;
 
-            string sqlString = @"SELECT ID, Thumb, ImageLink, Name, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID
+            string sqlString = @"SELECT ID, Thumb, ImageLink, Name, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
                                  Order by InsertTime DESC";
@@ -949,6 +954,7 @@ namespace CostcoWinForm
             gvAdd.Columns["ID"].Visible = false;
             gvAdd.Columns["ImageLink"].Visible = false;
             gvAdd.Columns["Thumb"].Visible = false;
+            gvAdd.Columns["eBayName"].Visible = false;
 
             bToAddRefreshing = false;
         }
@@ -999,6 +1005,11 @@ namespace CostcoWinForm
             daToAdd.Update(dtToAdd);
         }
 
+        private string RemoveSpecialCharacters(string inputString)
+        {
+            return inputString.Replace("®", "").Replace("™", "");
+        }
+
         private void btnUpload_Click(object sender, EventArgs e)
         {
             List<Product> products = new List<Product>();
@@ -1032,6 +1043,7 @@ namespace CostcoWinForm
                 {
                     Product product = new Product();
                     product.Name = Convert.ToString(reader["Name"]);
+                    product.eBayName = Convert.ToString(reader["eBayName"]);
                     product.UrlNumber = Convert.ToString(reader["UrlNumber"]);
                     product.ItemNumber = Convert.ToString(reader["ItemNumber"]);
                     product.Category = Convert.ToString(reader["Category"]);
@@ -1124,28 +1136,28 @@ namespace CostcoWinForm
                 //oSheet.Cells[i, 1] = "VerifyAdd";
                 oSheet.Cells[i, 1] = "Add";
                 oSheet.Cells[i, 2] = product.eBayCategoryID;
-                oSheet.Cells[i, 3] = product.Name;
+                oSheet.Cells[i, 3] = product.eBayName;
                 oSheet.Cells[i, 5] = product.Details;
                 oSheet.Cells[i, 6] = "1000";
 
-                if (string.IsNullOrEmpty(product.Options))
-                {
-                    string imageLinks = "";
-                    string imageLink = product.ImageLink.Substring(0, product.ImageLink.Length - 5);
-                    for (int n = 1; n <= product.NumberOfImage; n++)
-                    {
-                        imageLinks += imageLink + n.ToString() + ".jpg|";
-                    }
+                //if (string.IsNullOrEmpty(product.Options))
+                //{
+                //    //string imageLinks = "";
+                //    //string imageLink = product.ImageLink;
+                //    //for (int n = 1; n <= product.NumberOfImage; n++)
+                //    //{
+                //    //    imageLinks += imageLink + n.ToString() + ".jpg|";
+                //    //}
 
-                    imageLinks = imageLinks.Substring(0, imageLinks.Length - 1);
-                    oSheet.Cells[i, 7] = imageLinks;
-                }
-                else
-                {
-                    oSheet.Cells[i, 7] = product.ImageLink;
-                }
-
-                oSheet.Cells[i, 8] = "30";
+                //    //imageLinks = imageLinks.Substring(0, imageLinks.Length - 1);
+                //    oSheet.Cells[i, 7] = product.ImageLink;
+                //}
+                //else
+                //{
+                    
+                //}
+                oSheet.Cells[i, 7] = product.ImageLink;
+                oSheet.Cells[i, 8] = "1";
                 oSheet.Cells[i, 9] = "FixedPrice";
                 oSheet.Cells[i, 10] = product.eBayListingPrice;
                 oSheet.Cells[i, 12] = "GTC";
@@ -1548,7 +1560,7 @@ namespace CostcoWinForm
                     p.NewOptions = Convert.ToString(row.Cells["NewOptions"].Value);
                     p.OldOptions = Convert.ToString(row.Cells["OldOptions"].Value);
                     p.NewImageOptions = Convert.ToString(row.Cells["NewImageOptions"].Value);
-                    p.OldPrice = Convert.ToDecimal(row.Cells["eBayOldListingPrice"].Value);
+                    p.NewPrice = Convert.ToDecimal(row.Cells["eBayOldListingPrice"].Value);
                     products.Add(p);
 
                     eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
@@ -1559,6 +1571,26 @@ namespace CostcoWinForm
                 return;
 
             eBayItemNumbers = eBayItemNumbers.Substring(0, eBayItemNumbers.Length - 1);
+
+            UploadOptionChanges(products);
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+
+            cn.Open();
+
+            string sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() WHERE DeleteTime is null AND eBayItemNumber in (" + eBayItemNumbers + ")";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+            cn.Close();
+        }
+
+        private void UploadOptionChanges(List<ProductUpdate> products)
+        {
+            if (products.Count == 0)
+                return;
 
             // add to Excel file
             string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeOptionsRevise.csv";
@@ -1630,7 +1662,7 @@ namespace CostcoWinForm
                     oSheet.Cells[i, 7] = colorImage;
 
                     // *StartPrice
-                    oSheet.Cells[i, 6] = product.OldPrice;
+                    oSheet.Cells[i, 6] = product.NewPrice;
                     // *Quantity
                     oSheet.Cells[i, 5] = "1";
 
@@ -1669,25 +1701,13 @@ namespace CostcoWinForm
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
-
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-
-            cn.Open();
-
-            string sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() WHERE DeleteTime is null AND eBayItemNumber in (" + eBayItemNumbers + ")";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-            cn.Close();
         }
 
         private void UpdatePriceChangeListings()
         {
             List<ProductUpdate> products = new List<ProductUpdate>();
 
-            string eBayItemNumbers = string.Empty;
+            //string eBayItemNumbers = string.Empty;
 
             foreach (DataGridViewRow row in gvChange.Rows)
             {
@@ -1698,37 +1718,32 @@ namespace CostcoWinForm
                     p.NewPrice = Convert.ToDecimal(row.Cells["eBayNewListingPrice"].Value);
                     products.Add(p);
 
-                    eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
+                    //eBayItemNumbers += "'" + p.eBayItemNumbr + "',";
                 }
             }
-
-            //// get products from DB
-            //SqlConnection cn = new SqlConnection(connectionString);
-            //SqlCommand cmd = new SqlCommand();
-            //cmd.Connection = cn;
-
-            //string sqlString = "SELECT eBayItemNumber, eBayNewListingPrice  FROM eBay_ToChange where eBayNewListingPrice is not null and DeleteTime is null"; // WHERE shipping = 0.00 and Price < 100";
-
-            //cn.Open();
-            //cmd.CommandText = sqlString;
-            //SqlDataReader reader = cmd.ExecuteReader();
-            //if (reader.HasRows)
-            //{
-            //    while (reader.Read())
-            //    {
-            //        ProductUpdate p = new ProductUpdate();
-            //        p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-            //        p.NewPrice = Convert.ToDecimal(reader["eBayNewListingPrice"]);
-            //        products.Add(p);
-            //    }
-            //}
-
-            //reader.Close();
 
             if (products.Count == 0)
                 return;
 
-            eBayItemNumbers = eBayItemNumbers.Substring(0, eBayItemNumbers.Length - 1);
+            //eBayItemNumbers = eBayItemNumbers.Substring(0, eBayItemNumbers.Length - 1);
+
+            UploadPriceChange(products);
+
+            //SqlConnection cn = new SqlConnection(connectionString);
+            //SqlCommand cmd = new SqlCommand();
+            //cmd.Connection = cn;
+
+            //string sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() WHERE DeleteTime is null AND eBayItemNumber in (" + eBayItemNumbers + ")";
+
+            //cmd.CommandText = sqlString;
+            //cmd.ExecuteNonQuery();
+            //cn.Close();
+        }
+
+        public static void UploadPriceChange(List<ProductUpdate> products)
+        {
+            if (products.Count == 0)
+                return;
 
             // add to Excel file
             string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeRevise.csv";
@@ -1780,16 +1795,6 @@ namespace CostcoWinForm
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
-
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-
-            string sqlString = "UPDATE eBay_ToChange SET DeleteTime = GETDATE() WHERE DeleteTime is null AND eBayItemNumber in (" + eBayItemNumbers + ")";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-            cn.Close();
         }
 
 
@@ -1895,30 +1900,28 @@ namespace CostcoWinForm
                 }
             }
 
-            //// get products from DB
-            //SqlConnection cn = new SqlConnection(connectionString);
-            //SqlCommand cmd = new SqlCommand();
-            //cmd.Connection = cn;
-
-            //string sqlString = "SELECT * FROM eBay_ToRemove where DeleteTime is null"; // WHERE shipping = 0.00 and Price < 100";
-
-            //cn.Open();
-            //cmd.CommandText = sqlString;
-            //SqlDataReader reader = cmd.ExecuteReader();
-            //if (reader.HasRows)
-            //{
-            //    while (reader.Read())
-            //    {
-            //        ProductUpdate p = new ProductUpdate();
-            //        p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
-
-            //        products.Add(p);
-            //    }
-            //}
-
-            //reader.Close();
-
             // add to Excel file
+            //UploadDelete(products);
+
+            //gvDelete_Refresh();
+        }
+
+        public static void UploadDelete(string eBayItemNumbers)
+        {
+            // update db
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '2' WHERE eBayItemNumber in (" + eBayItemNumbers + ") AND DeleteDT is null";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+
+            // upload file
             string sourceFileName = @"C:\eBayApp\Files\Templates\FileExchange\" + "FileExchangeRemove.csv";
             string destinFileName = @"C:\eBayApp\Upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
             File.Copy(sourceFileName, destinFileName);
@@ -1950,11 +1953,11 @@ namespace CostcoWinForm
             Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
 
             int i = 2;
-            foreach (ProductUpdate product in products)
+            foreach (string itemNumber in eBayItemNumbers.Split(','))
             {
                 oSheet.Cells[i, 1].value = "End";
                 oSheet.Cells[i, 2].NumberFormat = "#";
-                oSheet.Cells[i, 2].value = product.eBayItemNumbr;
+                oSheet.Cells[i, 2].value = itemNumber.Replace("'", "");
                 oSheet.Cells[i, 3].value = "NotAvailable";
 
                 i++;
@@ -1974,8 +1977,6 @@ namespace CostcoWinForm
             //cmd.CommandText = sqlString;
             //cmd.ExecuteNonQuery();
             //cn.Close();
-
-            //gvDelete_Refresh();
         }
 
 
@@ -1990,7 +1991,7 @@ namespace CostcoWinForm
         public void gvListing_Refresh()
         {
             string sqlString = @"SELECT Name as ProductName, eBayItemNumber, eBayListingPrice, eBayReferencePrice, CostcoPrice, 
-                                    CostcoOptions, ImageLink, ID, eBayEndTime, CostcoUrl, Thumb, eBayUrl, PendingChange, eBayReferenceUrl
+                                    CostcoOptions, ImageLink, ID, eBayEndTime, CostcoUrl, Thumb, eBayUrl, PendingChange, eBayReferenceUrl, CostcoUrlNumber
                                  FROM eBay_CurrentListings 
                                  WHERE DeleteDT is NULL
                                  Order by PendingChange desc";
@@ -2023,6 +2024,7 @@ namespace CostcoWinForm
             gvListing.Columns["eBayUrl"].Visible = false;
             gvListing.Columns["PendingChange"].Visible = false;
             gvListing.Columns["eBayReferenceUrl"].Visible = false;
+            gvListing.Columns["CostcoUrlNumber"].Visible = false;
 
             gvListing.ClearSelection();
             gvListing.CurrentCell = gvListing.Rows[gvListing.Rows.Count-1].Cells[0];
@@ -2088,99 +2090,28 @@ namespace CostcoWinForm
 
         private void btnListingDelete_Click(object sender, EventArgs e)
         {
+            List<ProductUpdate> products = new List<ProductUpdate>();
             string itemNumbers = "";
 
             foreach (DataGridViewRow row in gvListing.Rows)
             {
                 if (Convert.ToBoolean(row.Cells["ListingSelect"].Value) == true)
                 {
+                    ProductUpdate p = new ProductUpdate();
+                    p.eBayItemNumbr = row.Cells["eBayItemNumber"].Value.ToString();
+                    products.Add(p);
+
                     itemNumbers += "'" + row.Cells["eBayItemNumber"].Value.ToString() + "',";
                 }
             }
 
             itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
 
-            //foreach (string n in this.selectedListingItems)
-            //{
-            //    itemNumbers += "'" + n + "',";
-            //}
+            
 
-            //itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
-
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cn.Open();
-
-            string sqlString = @"INSERT INTO eBay_ToRemove(Name, eBayItemNumber) 
-                                 SELECT Name, eBayItemNumber 
-                                 FROM eBay_CurrentListings
-                                 WHERE eBayItemNumber in (" + itemNumbers + ") AND DeleteDT is null";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-
-            sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '2' WHERE eBayItemNumber in (" + itemNumbers + ") AND DeleteDT is null";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-
-            cn.Close();
+            UploadDelete(itemNumbers);
 
             gvListing_Refresh();
-
-            // add to Excel file
-            /*
-            string sourceFileName = @"c:\ebay\documents\" + "FileExchangeRemove.csv";
-            string destinFileName = @"c:\ebay\upload\" + "FileExchangeRemove-" + DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".csv";
-            File.Copy(sourceFileName, destinFileName);
-
-            Microsoft.Office.Interop.Excel.Application oXL = new Microsoft.Office.Interop.Excel.Application();
-            Microsoft.Office.Interop.Excel.Range oRange;
-
-            //oXL.Visible = true;
-            oXL.DisplayAlerts = false;
-
-            Microsoft.Office.Interop.Excel.Workbook oWB = oXL.Workbooks.Open(
-                                        destinFileName,               // Filename
-                                        0,
-                                        Type.Missing,
-                                        Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV,   // Format
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        ",",          // Delimiter
-                                        Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing,
-                                        //Type.Missing,
-                                        Type.Missing,
-                                        Type.Missing);
-
-            Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
-            Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
-
-            int i = 2;
-            foreach (string n in this.selectedListingItems)
-            {
-                    oSheet.Cells[i, 1].value = "End";
-                    oSheet.Cells[i, 2].NumberFormat = "#";
-                    oSheet.Cells[i, 2].value = n;
-                    oSheet.Cells[i, 3].value = "NotAvailable";
-
-                    i++;
-            }
-
-            oWB.Save();
-            oWB.Close(true, Type.Missing, Type.Missing);
-            oXL.Application.Quit();
-            oXL.Quit();
-
-            string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
-
-            System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
-            */
         }
 
         private void gvListing_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -2194,12 +2125,12 @@ namespace CostcoWinForm
 
                 Process.Start(@"chrome", url);
             }
-            //else if (e.ColumnIndex == 5)
-            //{
-            //    string url = @"www.ebay.com/itm/" + gvListing.Rows[e.RowIndex].Cells[4].FormattedValue.ToString();
+            else if (e.ColumnIndex == 3)
+            {
+                string url = @"www.ebay.com/itm/" + gvListing.Rows[e.RowIndex].Cells[4].FormattedValue.ToString();
 
-            //    Process.Start(@"chrome", url);
-            //}
+                Process.Start(@"chrome", url);
+            }
             else if (e.ColumnIndex == 6)
             {
                 string url = gvListing.Rows[e.RowIndex].Cells[16].FormattedValue.ToString();
@@ -2209,9 +2140,73 @@ namespace CostcoWinForm
 
         }
 
-        private void btnReloadCurrentListing_Click(object sender, EventArgs e)
+        private void btnListingModify_Click(object sender, EventArgs e)
         {
+            string itemNumbers = "";
 
+            foreach (DataGridViewRow row in gvListing.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells["ListingSelect"].Value) == true)
+                {
+                    itemNumbers += "'" + row.Cells["CostcoUrlNumber"].Value.ToString() + "',";
+                }
+            }
+
+            itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @"select l.eBayItemNumber, p.Options as oldOptions, l.CostcoOptions as newOptions, p.ImageOptions as newImageOptions, l.eBayListingPrice
+                                from eBay_CurrentListings l, ProductInfo p
+                                where l.CostcoUrlNumber = p.UrlNumber
+                                and l.DeleteDT is NULL
+                                and l.CostcoUrlNumber in (" + itemNumbers + ")";
+
+            List<ProductUpdate> OptionsChangeProducts = new List<ProductUpdate>();
+            List<ProductUpdate> PriceChangeProducts = new List<ProductUpdate>();
+
+            cmd.CommandText = sqlString;
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    if (reader["newOptions"].ToString().Trim() != "")
+                    {
+                        ProductUpdate p = new ProductUpdate();
+                        p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+                        p.OldOptions = Convert.ToString(reader["oldOptions"]);
+                        p.NewOptions = Convert.ToString(reader["newOptions"]);
+                        p.NewPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+                        p.NewImageOptions = Convert.ToString(reader["newImageOptions"]);
+                        OptionsChangeProducts.Add(p);
+                    }
+                    else
+                    {
+                        ProductUpdate p = new ProductUpdate();
+                        p.eBayItemNumbr = Convert.ToString(reader["eBayItemNumber"]);
+                        p.NewPrice = Convert.ToDecimal(reader["eBayListingPrice"]);
+                        PriceChangeProducts.Add(p);
+                    }
+                }
+            }
+
+            reader.Close();
+
+            UploadOptionChanges(OptionsChangeProducts);
+            UploadPriceChange(PriceChangeProducts);
+
+            sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '1' WHERE CostcoUrlNumber in (" + itemNumbers + ") AND DeleteDT is null";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+
+            gvListing_Refresh();
         }
 
         private void btnComplete_Click(object sender, EventArgs e)
@@ -2934,42 +2929,7 @@ namespace CostcoWinForm
            
         }
 
-        private void btnListingModify_Click(object sender, EventArgs e)
-        {
-            string itemNumbers = "";
-
-            foreach (DataGridViewRow row in gvListing.Rows)
-            {
-                if (Convert.ToBoolean(row.Cells["ListingSelect"].Value) == true)
-                {
-                    itemNumbers += "'" + row.Cells["CostcoUrlNumber"].Value.ToString() + "',";
-                }
-            }
-
-            itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
-
-            SqlConnection cn = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cn.Open();
-
-            string sqlString = @"INSERT INTO eBay_ToChange(Name, eBayItemNumber, eBayNewListingPrice, ImageLink) 
-                                 SELECT Name, eBayItemNumber, eBayListingPrice, ImageLink
-                                 FROM eBay_CurrentListings
-                                 WHERE CostcoUrlNumber in (" + itemNumbers + ") AND DeleteDT is null";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-
-            sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '1' WHERE CostcoUrlNumber in (" + itemNumbers + ") AND DeleteDT is null";
-
-            cmd.CommandText = sqlString;
-            cmd.ExecuteNonQuery();
-
-            cn.Close();
-
-            gvListing_Refresh();
-        }
+        
 
         private void gvToChange_SelectionChanged(object sender, EventArgs e)
         {

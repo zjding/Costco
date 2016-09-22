@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[eBay_ToAdd] (
     [ID]                     BIGINT          IDENTITY (1, 1) NOT NULL,
     [Name]                   NVARCHAR (200)  NULL,
+    [eBayName]               NVARCHAR (80)   NULL,
     [UrlNumber]              NVARCHAR (200)  NULL,
     [ItemNumber]             NVARCHAR (50)   NULL,
     [Category]               NVARCHAR (200)  NULL,
@@ -28,6 +29,8 @@
     [DeleteTime]             DATETIME        NULL,
     CONSTRAINT [PK_eBayToAdd] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 
