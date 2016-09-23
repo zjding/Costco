@@ -32,12 +32,12 @@
             this.chkAll = new System.Windows.Forms.CheckBox();
             this.btnDone = new System.Windows.Forms.Button();
             this.gvEBayListingChangeDiscontinue = new System.Windows.Forms.DataGridView();
-            this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSend = new System.Windows.Forms.Button();
+            this.Select = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Image = new System.Windows.Forms.DataGridViewImageColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvEBayListingChangeDiscontinue)).BeginInit();
             this.SuspendLayout();
@@ -60,7 +60,7 @@
             // chkAll
             // 
             this.chkAll.AutoSize = true;
-            this.chkAll.Location = new System.Drawing.Point(3, 7);
+            this.chkAll.Location = new System.Drawing.Point(12, 11);
             this.chkAll.Name = "chkAll";
             this.chkAll.Size = new System.Drawing.Size(37, 17);
             this.chkAll.TabIndex = 6;
@@ -70,7 +70,7 @@
             // 
             // btnDone
             // 
-            this.btnDone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDone.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btnDone.Location = new System.Drawing.Point(449, 7);
             this.btnDone.Name = "btnDone";
             this.btnDone.Size = new System.Drawing.Size(75, 23);
@@ -89,14 +89,58 @@
             this.gvEBayListingChangeDiscontinue.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Select,
             this.Image});
-            this.gvEBayListingChangeDiscontinue.Location = new System.Drawing.Point(3, 30);
+            this.gvEBayListingChangeDiscontinue.Location = new System.Drawing.Point(12, 36);
             this.gvEBayListingChangeDiscontinue.Name = "gvEBayListingChangeDiscontinue";
-            this.gvEBayListingChangeDiscontinue.RowTemplate.Height = 100;
+            this.gvEBayListingChangeDiscontinue.RowTemplate.Height = 50;
             this.gvEBayListingChangeDiscontinue.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvEBayListingChangeDiscontinue.Size = new System.Drawing.Size(896, 423);
+            this.gvEBayListingChangeDiscontinue.Size = new System.Drawing.Size(878, 410);
             this.gvEBayListingChangeDiscontinue.TabIndex = 4;
             this.gvEBayListingChangeDiscontinue.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvEBayListingChangeDiscontinue_CellFormatting);
             this.gvEBayListingChangeDiscontinue.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvEBayListingChangeDiscontinue_CellValueChanged);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnSave.Location = new System.Drawing.Point(287, 7);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 3;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnDelete.Location = new System.Drawing.Point(368, 7);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.TabIndex = 2;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.btnClose.Location = new System.Drawing.Point(530, 7);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnSend
+            // 
+            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSend.Location = new System.Drawing.Point(815, 7);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(75, 23);
+            this.btnSend.TabIndex = 0;
+            this.btnSend.Text = "Send";
+            this.btnSend.UseVisualStyleBackColor = true;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
             // Select
             // 
@@ -109,50 +153,7 @@
             this.Image.HeaderText = "Image";
             this.Image.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
             this.Image.Name = "Image";
-            // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSave.Location = new System.Drawing.Point(287, 7);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 3;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDelete.Location = new System.Drawing.Point(368, 7);
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
-            this.btnDelete.TabIndex = 2;
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.UseVisualStyleBackColor = true;
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
-            // btnClose
-            // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Location = new System.Drawing.Point(530, 7);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnSend
-            // 
-            this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSend.Location = new System.Drawing.Point(824, 3);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(75, 23);
-            this.btnSend.TabIndex = 0;
-            this.btnSend.Text = "Send";
-            this.btnSend.UseVisualStyleBackColor = true;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            this.Image.Width = 50;
             // 
             // frmEBayListingChange_Discontinue
             // 
@@ -179,8 +180,8 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSend;
         private System.Windows.Forms.Button btnDone;
+        private System.Windows.Forms.CheckBox chkAll;
         private System.Windows.Forms.DataGridViewCheckBoxColumn Select;
         private System.Windows.Forms.DataGridViewImageColumn Image;
-        private System.Windows.Forms.CheckBox chkAll;
     }
 }

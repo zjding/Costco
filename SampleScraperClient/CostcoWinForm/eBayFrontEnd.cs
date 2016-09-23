@@ -3977,7 +3977,7 @@ namespace CostcoWinForm
                 int i = 2;
                 foreach (string categoryNode in categoryHierarchy.Split('>'))
                 {
-                    string node = categoryNode.Substring(0, categoryNode.IndexOf('(')-1);
+                    string node = categoryNode.Substring(0, categoryNode.LastIndexOf('(')-1).Trim();
 
                     columnsString += "F" + i.ToString() + ",";
                     valuesString += "'" + node + "',";

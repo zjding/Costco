@@ -105,7 +105,7 @@ namespace CostcoWinForm
             gvEBayListingChangeDiscontinue.Columns["Select"].Width = 20;
             gvEBayListingChangeDiscontinue.Columns["ID"].Visible = false;
             gvEBayListingChangeDiscontinue.Columns["Name"].Width = 250;
-            gvEBayListingChangeDiscontinue.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvEBayListingChangeDiscontinue.Columns["UrlNumber"].Visible = false;
             //gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             if (mode == "Discontinue")
@@ -130,6 +130,10 @@ namespace CostcoWinForm
             {
                 gvEBayListingChangeDiscontinue.Columns["CostcoOldPrice"].Width = 50;
                 gvEBayListingChangeDiscontinue.Columns["CostcoNewPrice"].Width = 50;
+                gvEBayListingChangeDiscontinue.Columns["CostcoUrl"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["UrlNumber"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["ImageLink"].Visible = false;
+                gvEBayListingChangeDiscontinue.Columns["Thumb"].Visible = false;
             }
             else if (mode == "CostcoNewProducts")
             {
@@ -387,7 +391,7 @@ namespace CostcoWinForm
                 else if (mode == "OptionChange")
                     imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[11]).FormattedValue.ToString();
                 else if (mode == "PriceUp" || mode == "PriceDown")
-                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[12]).FormattedValue.ToString();
+                    imageUrl = (this.gvEBayListingChangeDiscontinue.Rows[e.RowIndex].Cells[9]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {
