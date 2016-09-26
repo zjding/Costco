@@ -943,18 +943,20 @@ namespace CostcoWinForm
             gvAdd.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             gvAdd.Columns["AddSelect"].Width = 20;
-            gvAdd.Columns["Name"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvAdd.Columns["Price"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvAdd.Columns["Shipping"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvAdd.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvAdd.Columns["eBayListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            gvAdd.Columns["UrlNumber"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["ToAddName"].Width = 350;
+            //gvAdd.Columns["ToAddCostcoPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            //gvAdd.Columns["ToAddReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            //gvAdd.Columns["Shipping"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            //gvAdd.Columns["eBayListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            gvAdd.Columns["UrlNumber"].Visible = false;
             gvAdd.Columns["Limit"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvAdd.Columns["eBayReferenceUrl"].Width = 150;
+            gvAdd.Columns["eBayReferenceUrl"].Visible = false;
             gvAdd.Columns["ID"].Visible = false;
             gvAdd.Columns["ImageLink"].Visible = false;
             gvAdd.Columns["Thumb"].Visible = false;
             gvAdd.Columns["eBayName"].Visible = false;
+            gvAdd.Columns["Url"].Visible = false;
+            gvAdd.Columns["Category"].Visible = false;
 
             bToAddRefreshing = false;
         }
@@ -1237,7 +1239,7 @@ namespace CostcoWinForm
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
         }
 
-        private void GenerateVariationChange(string oldOptions, string newOptions, string imageOptionsString,
+        private static void GenerateVariationChange(string oldOptions, string newOptions, string imageOptionsString,
                                              out string relationshipDetails,
                                              out List<string> imageOptionArray,
                                              out List<string> newRelationshipDetailsArray,
@@ -1313,7 +1315,7 @@ namespace CostcoWinForm
             }
         }
 
-        private void GenerateVariations(string inputString, string imageOptionString, out string relationshipDetails, out List<string> relationshipDetailsArray, out List<string> imageOptionArray)
+        private static void GenerateVariations(string inputString, string imageOptionString, out string relationshipDetails, out List<string> relationshipDetailsArray, out List<string> imageOptionArray)
         {
             relationshipDetails = string.Empty;
             relationshipDetailsArray = new List<string>();
@@ -1376,22 +1378,22 @@ namespace CostcoWinForm
 
         private void gvAdd_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex == -1)
+            if (e.RowIndex == -1 || e.RowIndex == gvAdd.Rows.Count - 1)
                 return;
 
-            if (e.ColumnIndex == 8)
+            if (e.ColumnIndex == 6)
             {
                 string url = gvAdd.Rows[e.RowIndex].Cells[8].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
-            else if (e.ColumnIndex == 11)
+            else if (e.ColumnIndex == 5)
             {
                 string fileName = gvAdd.Rows[e.RowIndex].Cells[11].FormattedValue.ToString();
 
                 Process.Start(@"C:\temp\Screenshots\" + fileName + ".jpg");
             }
-            else if (e.ColumnIndex == 12)
+            else if (e.ColumnIndex == 9)
             {
                 string url = gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
 
@@ -1587,7 +1589,7 @@ namespace CostcoWinForm
             cn.Close();
         }
 
-        private void UploadOptionChanges(List<ProductUpdate> products)
+        public static void UploadOptionChanges(List<ProductUpdate> products)
         {
             if (products.Count == 0)
                 return;
@@ -1622,6 +1624,13 @@ namespace CostcoWinForm
 
             Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
             Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
+
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString;
 
             int i = 2;
             foreach (ProductUpdate product in products)
@@ -1691,7 +1700,16 @@ namespace CostcoWinForm
 
                     i++;
                 }
+
+                sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '1', CostcoOptions = '" + product.NewOptions +
+                            "', ImageOptions = '"  + product.NewImageOptions + "'" +
+                            ", eBayListingPrice = " + product.NewPrice.ToString() + 
+                            " WHERE eBayItemNumber = '" + product.eBayItemNumbr + "' AND DeleteDT is null";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
             }
+
+            cn.Close();
 
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
@@ -1776,6 +1794,13 @@ namespace CostcoWinForm
             Microsoft.Office.Interop.Excel.Sheets oSheets = oWB.Worksheets;
             Microsoft.Office.Interop.Excel.Worksheet oSheet = oWB.ActiveSheet;
 
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString;
+
             int i = 2;
             foreach (ProductUpdate product in products)
             {
@@ -1784,8 +1809,14 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 2].value = product.eBayItemNumbr;
                 oSheet.Cells[i, 3].value = product.NewPrice;
 
+                sqlString = @" UPDATE eBay_CurrentListings SET PendingChange = '1', eBayListingPrice = " + product.NewPrice.ToString() + " WHERE eBayItemNumber = '" + product.eBayItemNumbr + "' AND DeleteDT is null";
+                cmd.CommandText = sqlString;
+                cmd.ExecuteNonQuery();
+
                 i++;
             }
+
+            cn.Close();
 
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
@@ -1795,6 +1826,8 @@ namespace CostcoWinForm
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+
+            
         }
 
 
@@ -2116,7 +2149,7 @@ namespace CostcoWinForm
 
         private void gvListing_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex == -1)
+            if (e.RowIndex == -1 || e.RowIndex == gvListing.Rows.Count - 1)
                 return;
 
             if (e.ColumnIndex == 7)
@@ -4157,7 +4190,9 @@ namespace CostcoWinForm
             cmd.CommandText = sqlString;
             llEBayOptions.Text = Convert.ToString(cmd.ExecuteScalar());
 
-            sqlString = @"select COUNT(1) from [dbo].[CostcoInventoryChange_PriceDown]";
+            sqlString = @"select COUNT(1) FROM CostcoInventoryChange_PriceDown n
+                                WHERE n.UrlNumber NOT IN(SELECT CostcoUrlNumber FROM eBay_CurrentListings)
+                                AND n.UrlNumber NOT IN(SELECT UrlNumber FROM eBay_ToAdd)";
             cmd.CommandText = sqlString;
             llCostcoPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
 
