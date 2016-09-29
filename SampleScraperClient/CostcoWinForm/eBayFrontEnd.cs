@@ -31,6 +31,7 @@ using iTextSharp.text.pdf;
 using System.Collections.ObjectModel;
 using System.Threading;
 using OpenQA.Selenium.Chrome;
+using Microsoft.Win32.TaskScheduler;
 
 namespace CostcoWinForm
 {
@@ -1632,6 +1633,8 @@ namespace CostcoWinForm
 
             string sqlString;
 
+            string ebayUrlNumbers = string.Empty;
+
             int i = 2;
             foreach (ProductUpdate product in products)
             {
@@ -1707,9 +1710,14 @@ namespace CostcoWinForm
                             " WHERE eBayItemNumber = '" + product.eBayItemNumbr + "' AND DeleteDT is null";
                 cmd.CommandText = sqlString;
                 cmd.ExecuteNonQuery();
+
+                ebayUrlNumbers += product.eBayItemNumbr + "~";
             }
 
-            cn.Close();
+            ebayUrlNumbers = ebayUrlNumbers.Substring(0, ebayUrlNumbers.Length - 1);
+            DateTime dt = System.DateTime.Now.AddMinutes(15);
+
+            
 
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
@@ -1719,6 +1727,22 @@ namespace CostcoWinForm
             string command = "c:\\ebay\\Upload\\curl -k -o results.txt -F \"token=AgAAAA**AQAAAA**aAAAAA**wsb+Vg**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AAloWmAZSCqQudj6x9nY+seQ**GDsDAA**AAMAAA**+d5Az1uG7de9cl6CsLoWYmujVawlxpNTk3Z7fQAMcA+zNQARScFIFVa8AzViTabPRPPq0x5huX5ktlxIAB6kDU3BO4iyuhXEMnTb6DmAHtnORkOlKxD5hZc0pMRCkFjfiyuzc3z+r2XS6tpdFXiRJVx1LmhNp01RUOHjHBj/wVWw6W64u821lyaBn6tcnvHw8lJo8Hfp1f3AtoXdASN+AgB800zCeGNQ+zxD9kVN1cY5ykpeJ70UK0RbAAE3OEXffFurI7BbpO2zv0PHFM3Md5hqnAC4BE54Tr0och/Vm98GPeeivQ4zIsxEL+JwvvpxigszMbeGG0E/ulKvnHT1NkVtUhh7QXhUkEqi9sq3XI/55IjLzOk61iIUiF8vgV1HmoGqbkhIpafJhqotV5HyxVW38PKplihl7mq37aGyx1bRF8XqnJomwLCPOazSf57iTKz7EQlLL9PJ8cRfnJ/TCJUT3EX9Xcu2EIzRFQXapkAU2rY6+KOr3jXwk5Q+VvbFXKF5C9xJmJnXWa+oXSUH4bFor64fB7hdR/k49528rO+/vSZah1Nte+Bbmsai3O2EDZfXQLFGZtinp5JDVXvbmP0vSr+yxX8WBf/T0RHIv6zzEmSo/ZevkJJD4wTRlfh4FIva3P42JU0P4OTUkeff6mXclzWH9/Bedbq9trenh3hZg9Ah4f6NAT99m48YqVvSjBeEotF5kLRoBdz2V3v8RELskReSPDCYJol4g6X89uNwS/iRGZCRkx31K37FQGSR\" -F file=@" + destinFileName + " https://bulksell.ebay.com/ws/eBayISAPI.dll?FileExchangeUpload";
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
+
+            // task
+            string taskName = ebayUrlNumbers + "-" + dt.ToString("yyyyMMddHHmmss");
+
+            TaskService ts = new TaskService();
+            TaskDefinition td = ts.NewTask();
+            td.Triggers.Add(new TimeTrigger() { StartBoundary = dt });
+            td.Actions.Add(new ExecAction(@"C:\Users\Jason Ding\Documents\visual studio 2015\Projects\TaskHandler\TaskHandler\bin\Debug\TaskHandler.exe", taskName, null));
+            ts.RootFolder.RegisterTaskDefinition(taskName, td);
+            ts.Dispose();
+
+            sqlString = @" INSERT INTO Tasks (TaskName) VALUES ('" + taskName + "')";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
         }
 
         private void UpdatePriceChangeListings()
