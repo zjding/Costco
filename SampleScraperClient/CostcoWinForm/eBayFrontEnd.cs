@@ -1715,7 +1715,7 @@ namespace CostcoWinForm
             }
 
             ebayUrlNumbers = ebayUrlNumbers.Substring(0, ebayUrlNumbers.Length - 1);
-            DateTime dt = System.DateTime.Now.AddMinutes(15);
+            DateTime dt = System.DateTime.Now.AddMinutes(10);
 
             
 
@@ -1825,6 +1825,8 @@ namespace CostcoWinForm
 
             string sqlString;
 
+            string ebayUrlNumbers = string.Empty;
+
             int i = 2;
             foreach (ProductUpdate product in products)
             {
@@ -1838,9 +1840,14 @@ namespace CostcoWinForm
                 cmd.ExecuteNonQuery();
 
                 i++;
+
+                ebayUrlNumbers += product.eBayItemNumbr + "~";
             }
 
-            cn.Close();
+            ebayUrlNumbers = ebayUrlNumbers.Substring(0, ebayUrlNumbers.Length - 1);
+            DateTime dt = System.DateTime.Now.AddMinutes(10);
+
+            
 
             oWB.Save();
             oWB.Close(true, Type.Missing, Type.Missing);
@@ -1851,7 +1858,21 @@ namespace CostcoWinForm
 
             System.Diagnostics.Process.Start("CMD.exe", "/c" + command);
 
-            
+            // task
+            string taskName = ebayUrlNumbers + "-" + dt.ToString("yyyyMMddHHmmss");
+
+            TaskService ts = new TaskService();
+            TaskDefinition td = ts.NewTask();
+            td.Triggers.Add(new TimeTrigger() { StartBoundary = dt });
+            td.Actions.Add(new ExecAction(@"C:\Users\Jason Ding\Documents\visual studio 2015\Projects\TaskHandler\TaskHandler\bin\Debug\TaskHandler.exe", taskName, null));
+            ts.RootFolder.RegisterTaskDefinition(taskName, td);
+            ts.Dispose();
+
+            sqlString = @" INSERT INTO Tasks (TaskName) VALUES ('" + taskName + "')";
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
         }
 
 

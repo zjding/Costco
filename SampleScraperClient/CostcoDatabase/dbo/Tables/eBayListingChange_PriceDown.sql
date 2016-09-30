@@ -9,8 +9,11 @@
     [eBayListingOldPrice] MONEY           NULL,
     [eBayListingNewPrice] MONEY           NULL,
     [ImageLink]           NVARCHAR (2000) NULL,
-    [Thumb]               NVARCHAR (200)  NULL
+    [Thumb]               NVARCHAR (200)  NULL,
+    CONSTRAINT [PK_eBayListingChange_PriceDown] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 
