@@ -7,6 +7,7 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\WebDriver.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\Crawler.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\Microsoft.Win32.TaskScheduler.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\itextsharp.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\ScrapySharp.Core.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\FSharp.Core.dll
@@ -17,10 +18,16 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerC
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\Crawler.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\Microsoft.Win32.TaskScheduler.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\itextsharp.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\ScrapySharp.Core.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\ScrapySharp.Core.xml
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\FSharp.Core.xml
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\de\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\es\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\fr\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\it\Microsoft.Win32.TaskScheduler.resources.dll
+C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\bin\Debug\zh-CN\Microsoft.Win32.TaskScheduler.resources.dll
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Debug\CrawlerConsole.csprojResolveAssemblyReference.cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Debug\CrawlerConsole.exe
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\CrawlerConsole\obj\Debug\CrawlerConsole.pdb

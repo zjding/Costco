@@ -11,7 +11,6 @@ C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleSc
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\bin\Debug\ScrapySharp.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\bin\Debug\ScrapySharp.Core.pdb
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\bin\Debug\ScrapySharp.Core.xml
-C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.csprojResolveAssemblyReference.cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.ProductInfoForm.resources
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.csproj.GenerateResource.Cache
 C:\Users\Jason Ding\Documents\Projects\SampleClient\SampleScraperClient\SampleScraperClient\obj\Debug\SampleScraperClient.exe
