@@ -64,6 +64,9 @@ namespace CostcoWinForm
 
         bool bToAddRefreshing = false;
 
+        bool bCostcoTabEntering = false;
+        bool bCostcoTabEnteringGridRefreshed = false;
+
         int nScanProducts = 0;
         int nImportProducts = 0;
         int nSkipProducts = 0;
@@ -428,7 +431,10 @@ namespace CostcoWinForm
 
         private void tpCostco_Enter(object sender, EventArgs e)
         {
+            bCostcoTabEntering = true;
             gvProducts_Refresh();
+            bCostcoTabEnteringGridRefreshed = true;
+            //bCostcoTabEntering = false;
         }
 
         private void lvCategories_Refresh()
@@ -1191,9 +1197,26 @@ namespace CostcoWinForm
             if (!bInit)
                 return;
 
+            if (bCostcoTabEnteringGridRefreshed)
+                return;
+
             gvProducts_Refresh();
         }
 
+        private void lvCategories_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            
+        }
+
+        private void lvCategories_Click(object sender, EventArgs e)
+        {
+            bCostcoTabEnteringGridRefreshed = false;
+        }
+
+        private void tpCostco_Leave(object sender, EventArgs e)
+        {
+            bCostcoTabEnteringGridRefreshed = false;
+        }
 
         // tpToAdd
 
@@ -1477,7 +1500,7 @@ namespace CostcoWinForm
                     
                 //}
                 oSheet.Cells[i, 7] = product.ImageLink;
-                oSheet.Cells[i, 8] = "1";
+                oSheet.Cells[i, 8] = "30";
                 oSheet.Cells[i, 9] = "FixedPrice";
                 oSheet.Cells[i, 10] = product.eBayListingPrice;
                 oSheet.Cells[i, 12] = "GTC";
@@ -4379,48 +4402,6 @@ namespace CostcoWinForm
 
             cn.Close();
         }
-
-
-
-
-
-
-
-        
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         
     }
