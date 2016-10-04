@@ -63,6 +63,7 @@ namespace CostcoWinForm
         public int eBayRemainingQuality { get; set; }
         public decimal eBaySoldPrice { get; set; }
         public string eBayUrl { get; set; }
+        public string eBaySoldVariation { get; set; }
         public string eBaySoldEmailPdf { get; set; }
         public string BuyerName { get; set; }
         public string BuyerID { get; set; }
@@ -78,13 +79,14 @@ namespace CostcoWinForm
         public decimal CostcoPrice { get; set; }
         public decimal CostcoTax { get; set; }
         public string CostcoOrderNumber { get; set; }
-        public string CostcoOrderDate { get; set; }
         public string CostcoItemName { get; set; }
         public string CostcoItemNumber { get; set; }
         public string CostcoTrackingNumber { get; set; }
+        public string CostcoOrderDate { get; set; }
         public string CostcoShipDate { get; set; }
         public string CostcoTaxExemptPdf { get; set; }
         public string CostcoOrderEmailPdf { get; set; }
         public string CostcoShipEmailPdf { get; set; }
+
     }
 }

@@ -18,6 +18,7 @@ CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [eBayListingQuality]   INT            NULL,
     [eBaySoldQuality]      INT            NULL,
     [eBayRemainingQuality] INT            NULL,
+    [eBaySoldVariation]    NVARCHAR (50)  NULL,
     [eBaySoldPrice]        MONEY          NULL,
     [eBaySaleTax]          MONEY          NULL,
     [eBayUrl]              NVARCHAR (500) NULL,
@@ -45,6 +46,8 @@ CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [CostcoShipEmailPdf]   NVARCHAR (200) NULL,
     [CostcoTaxExemptPdf]   NVARCHAR (200) NULL
 );
+
+
 
 
 

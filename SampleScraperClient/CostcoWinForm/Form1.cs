@@ -2250,14 +2250,14 @@ font-size:11px;
 
                 string destinationFileName = dtTime.ToString("yyyyMMddHHmmss") + "_" + stTransactionID + ".pdf";
 
-                File.Delete(@"C:\temp\PaypalPaidEmails\" + destinationFileName);
+                File.Delete(@"C:\eBayApp\Files\Emails\PaypalPaidEmails\" + destinationFileName);
 
                 File.Move(sourceFileFullName, @"C:\eBayApp\Files\Emails\PaypalPaidEmails\" + destinationFileName);
 
                 sourceFileFullName = destinationFileName;
                 destinationFileName = dtTime.ToString("yyyyMMdd") + "-" + stTotal + "-" + "Paypal" + stTransactionID + ".pdf";
                 File.Delete(@"C:\Users\Jason Ding\Dropbox\Bookkeeping\Income\" + destinationFileName);
-                File.Copy(@"C:\temp\PaypalPaidEmails\" + sourceFileFullName, @"C:\Users\Jason Ding\Dropbox\Bookkeeping\Income\" + destinationFileName);
+                File.Copy(@"C:\eBayApp\Files\Emails\PaypalPaidEmails\" + sourceFileFullName, @"C:\Users\Jason Ding\Dropbox\Bookkeeping\Income\" + destinationFileName);
 
                 // db stuff
                 SqlConnection cn = new SqlConnection(connectionString);
@@ -2267,24 +2267,29 @@ font-size:11px;
 
                 string sqlString = @"UPDATE eBay_SoldTransactions SET PaypalTransactionID = @_paypalTransactionID, 
                                 PaypalPaidDateTime = @_paypalPaidDateTime, PaypalPaidEmailPdf = @_paypalPaidEmailPdf,
+                                BuyerEmail = @_buyerEmail,
+                                BuyerName = @_buyerName,
                                 BuyerAddress1 = @_buyerAddress1, 
-                                BuyerAddress2 = @_buyAddress2, BuyerCity = @_buyerCity, 
+                                BuyerCity = @_buyerCity, 
                                 BuyerState = @_buyerState, BuyerZip = @_buyerZip, BuyerNote = @_buyerNote,
-                                eBaySoldQuality = @_eBaySoldQuality
+                                eBaySoldQuality = @_eBaySoldQuality, eBaySaleTax = @_eBaySaleTax
                                 WHERE eBayItemNumber = @_eBayItemNumber AND BuyerID = @_buyerID";
 
                 cmd.CommandText = sqlString;
                 cmd.Parameters.AddWithValue("@_paypalTransactionID", stTransactionID);
                 cmd.Parameters.AddWithValue("@_paypalPaidDateTime", dtTime);
                 cmd.Parameters.AddWithValue("@_paypalPaidEmailPdf", destinationFileName);
+                cmd.Parameters.AddWithValue("@_buyerEmail", stUserEmail);
+                cmd.Parameters.AddWithValue("@_buyerName", stFullName);
                 cmd.Parameters.AddWithValue("@_buyerAddress1", stShippingAddress1);
-                cmd.Parameters.AddWithValue("@_buyAddress2", stShippingAddress2);
+                //cmd.Parameters.AddWithValue("@_buyAddress2", stShippingAddress2);
                 cmd.Parameters.AddWithValue("@_buyerCity", stShippingCity);
                 cmd.Parameters.AddWithValue("@_buyerState", stShippingState);
                 cmd.Parameters.AddWithValue("@_buyerZip", stShippingZip);
                 cmd.Parameters.AddWithValue("@_buyerNote", stBuyerNote);
                 cmd.Parameters.AddWithValue("@_eBaySoldQuality", stQuatity);
                 cmd.Parameters.AddWithValue("@_eBayItemNumber", stItemNum);
+                cmd.Parameters.AddWithValue("@_eBaySaleTax", stTax);
                 cmd.Parameters.AddWithValue("@_buyerID", stUserID);
 
                 cmd.ExecuteNonQuery();
@@ -2309,7 +2314,7 @@ font-size:11px;
                     soldProduct.eBayItemNumber = Convert.ToString(reader["eBayItemNumber"]);
                     soldProduct.eBaySoldDateTime = Convert.ToDateTime(reader["eBaySoldDateTime"]);
                     soldProduct.eBayItemName = Convert.ToString(reader["eBayItemName"]);
-                    soldProduct.eBayListingQuality = Convert.ToInt16(reader["eBayListingQuality"]);
+                    //soldProduct.eBayListingQuality = Convert.ToInt16(reader["eBayListingQuality"]);
                     soldProduct.eBaySoldQuality = Convert.ToInt16(reader["eBaySoldQuality"]);
                     soldProduct.eBaySoldEmailPdf = Convert.ToString(reader["eBaySoldEmailPdf"]);
                     soldProduct.BuyerName = Convert.ToString(reader["BuyerName"]);
@@ -2553,10 +2558,10 @@ font-size:11px;
                 if (!bExist)
                 {
                     sqlString = @"INSERT INTO eBay_SoldTransactions 
-                              (eBayItemNumber, eBaySoldDateTime, eBayItemName, eBayUrl, eBaySoldPrice, eBaySoldQuality, eBaySoldEmailPdf,
-                               BuyerName, CostcoUrlNumber, CostcoItemNumber, CostcoUrl, CostcoPrice)
-                              VALUES (@_eBayItemNumber, @_eBaySoldDateTime, @_eBayItemName, @_eBayUrl, @_eBayPrice, @_eBaySoldQuality,  @_eBaySoldEmailPdf,
-                               @_BuyerName, @_CostcoUrlNumber, @_CostcoItemNumber, @_CostcoUrl, @_CostcoPrice)";
+                              (eBayItemNumber, eBaySoldDateTime, eBayItemName, eBayUrl, eBaySoldVariation, eBaySoldPrice, eBaySoldQuality, eBaySoldEmailPdf,
+                               BuyerID, CostcoUrlNumber, CostcoItemNumber, CostcoUrl, CostcoPrice)
+                              VALUES (@_eBayItemNumber, @_eBaySoldDateTime, @_eBayItemName, @_eBayUrl, @_eBaySoldVariation, @_eBayPrice, @_eBaySoldQuality,  @_eBaySoldEmailPdf,
+                               @_BuyerID, @_CostcoUrlNumber, @_CostcoItemNumber, @_CostcoUrl, @_CostcoPrice)";
 
                     cmd.CommandText = sqlString;
 
@@ -2565,12 +2570,13 @@ font-size:11px;
                     cmd.Parameters.AddWithValue("@_eBaySoldDateTime", Convert.ToDateTime(stDateSold));
                     cmd.Parameters.AddWithValue("@_eBayItemName", stItemName);
                     cmd.Parameters.AddWithValue("@_eBayUrl", stUrl);
+                    cmd.Parameters.AddWithValue("@_eBaySoldVariation", stSize);
                     cmd.Parameters.AddWithValue("@_eBayPrice", Convert.ToDecimal(eBayProduct.eBayListingPrice));
                    // cmd.Parameters.AddWithValue("@_eBayListingQuality", Convert.ToInt16(stQuantity));
                     cmd.Parameters.AddWithValue("@_eBaySoldQuality", Convert.ToInt16(stQuantitySold));
                    // cmd.Parameters.AddWithValue("@_eBayRemainingQuality", Convert.ToInt16(stQuantityRemaining));
                     cmd.Parameters.AddWithValue("@_eBaySoldEmailPdf", destinationFileName);
-                    cmd.Parameters.AddWithValue("@_BuyerName", stBuyer);
+                    cmd.Parameters.AddWithValue("@_BuyerID", stBuyer);
                     //cmd.Parameters.AddWithValue("@_BuyerID", stBuyerId);
                     //cmd.Parameters.AddWithValue("@_BuyerEmail", stBuyerEmail);
                     cmd.Parameters.AddWithValue("@_CostcoUrlNumber", eBayProduct.CostcoUrlNumber);
@@ -4808,7 +4814,385 @@ Costco.com products can be returned to any of our more than 600 Costco warehouse
 
             }
         }
-    
+
+        private void btnCostcoOrder_Click(object sender, EventArgs e)
+        {
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cn.Open();
+
+            string sqlString = @"SELECT * FROM eBay_SoldTransactions WHERE eBayItemNumber = @_eBayItemNumber AND BuyerID = @_buyerID";
+
+            cmd.CommandText = sqlString;
+            cmd.Parameters.Clear();
+            cmd.Parameters.AddWithValue("@_eBayItemNumber", "152262952392");
+            cmd.Parameters.AddWithValue("@_buyerID", "coffeebean217");
+
+            eBaySoldProduct soldProduct = new eBaySoldProduct();
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                reader.Read();
+
+                soldProduct.PaypalTransactionID = Convert.ToString(reader["PaypalTransactionID"]);
+                soldProduct.PaypalPaidDateTime = Convert.ToDateTime(reader["PaypalPaidDateTime"]);
+                soldProduct.PaypalPaidEmailPdf = Convert.ToString(reader["PaypalPaidEmailPdf"]);
+                soldProduct.eBayItemNumber = Convert.ToString(reader["eBayItemNumber"]);
+                soldProduct.eBaySoldDateTime = Convert.ToDateTime(reader["eBaySoldDateTime"]);
+                soldProduct.eBayItemName = Convert.ToString(reader["eBayItemName"]);
+                soldProduct.eBaySoldVariation = Convert.ToString(reader["eBaySoldVariation"]);
+                soldProduct.eBaySoldQuality = Convert.ToInt16(reader["eBaySoldQuality"]);
+                soldProduct.eBaySoldEmailPdf = Convert.ToString(reader["eBaySoldEmailPdf"]);
+                soldProduct.BuyerName = Convert.ToString(reader["BuyerName"]);
+                soldProduct.BuyerID = Convert.ToString(reader["BuyerID"]);
+                soldProduct.BuyerAddress1 = Convert.ToString(reader["BuyerAddress1"]);
+                soldProduct.BuyerAddress2 = Convert.ToString(reader["BuyerAddress2"]);
+                soldProduct.BuyerCity = Convert.ToString(reader["BuyerCity"]);
+                soldProduct.BuyerState = Convert.ToString(reader["BuyerState"]);
+                soldProduct.BuyerZip = Convert.ToString(reader["BuyerZip"]);
+                soldProduct.BuyerEmail = Convert.ToString(reader["BuyerEmail"]);
+                soldProduct.BuyerNote = Convert.ToString(reader["BuyerNote"]);
+                soldProduct.CostcoUrlNumber = Convert.ToString(reader["CostcoUrlNumber"]);
+                soldProduct.CostcoUrl = Convert.ToString(reader["CostcoUrl"]);
+                soldProduct.CostcoPrice = Convert.ToDecimal(reader["CostcoPrice"]);
+            }
+            reader.Close();
+
+            cn.Close();
+
+            OrderCostcoProduct(soldProduct);
+        }
+
+        private bool hasElement(IWebElement webElement, By by)
+        {
+            try
+            {
+                webElement.FindElement(by);
+                return true;
+            }
+            catch (NoSuchElementException e)
+            {
+                return false;
+            }
+        }
+
+        private void OrderCostcoProduct(eBaySoldProduct soldProduct)
+        {
+            IWebDriver driver = new ChromeDriver();
+
+            try
+            {
+                driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+                driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+                driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
+                driver.FindElements(By.ClassName("submit"))[0].Click();
+
+                driver.Navigate().GoToUrl("http://www.costco.com/");
+                driver.FindElement(By.Id("cart-d")).Click();
+
+                while (driver.FindElements(By.LinkText("Remove from cart")).Count > 0)
+                {
+                    driver.FindElements(By.LinkText("Remove from cart"))[0].Click();
+                    System.Threading.Thread.Sleep(3000);
+                }
+
+                driver.Navigate().GoToUrl(soldProduct.CostcoUrl);
+
+                IWebElement eProductDetails = driver.FindElement(By.Id("product-details"));
+                if (hasElement(eProductDetails, By.Id("variants")))
+                {
+                    var eVariants = eProductDetails.FindElement(By.Id("variants"));
+
+                    var productOptions = eVariants.FindElements(By.ClassName("swatchDropdown"));
+
+                    List<string> selectList = new List<string>();
+
+                    foreach (var productOption in productOptions)
+                    {
+                        selectList.Add(productOption.FindElement(By.TagName("select")).GetAttribute("id").ToString());
+                    }
+
+                    if (selectList.Count == 1)
+                    {
+                        IWebElement selectElement0 = eProductDetails.FindElement(By.Id(selectList[0]));
+                        var options0 = selectElement0.FindElements(By.TagName("option"));
+                        foreach (IWebElement option0 in options0)
+                        {
+                            if (options0.IndexOf(option0) > 0)
+                            {
+                                if (option0.Text.Contains("$"))
+                                {
+                                    int index = option0.Text.LastIndexOf("- $");
+                                    if (option0.Text.Substring(0, index - 1).Trim() == soldProduct.eBaySoldVariation)
+                                    {
+                                        option0.Click();
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    if (option0.Text.Trim() == soldProduct.eBaySoldVariation)
+                                    {
+                                        option0.Click();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                driver.FindElement(By.Id("minQtyText")).Clear();
+                driver.FindElement(By.Id("minQtyText")).SendKeys("1");
+                driver.FindElement(By.Name("add-to-cart")).Click();
+
+                //if (isAlertPresents(ref driver))
+                //    driver.SwitchTo().Alert().Accept();
+
+                driver.Navigate().GoToUrl("https://www.costco.com/CheckoutCartView");
+
+                //driver.FindElement(By.Id("cart-d")).Click();
+
+                if (isAlertPresents(ref driver))
+                    driver.SwitchTo().Alert().Accept();
+
+                string buyerFirstName = soldProduct.BuyerName.Split(' ')[0];
+                string buyerMiddleInitial = soldProduct.BuyerName.Split(' ').Count() == 3 ? soldProduct.BuyerName.Split(' ')[1] : "";
+                string buyerLastName = soldProduct.BuyerName.Split(' ')[soldProduct.BuyerName.Split(' ').Count() - 1];
+
+
+                driver.FindElement(By.Id("shopCartCheckoutSubmitButton")).Click();
+
+                driver.FindElement(By.Id("addressFormInlineFirstName")).SendKeys(buyerFirstName);
+                driver.FindElement(By.Id("addressFormInlineMiddleInitial")).SendKeys(buyerMiddleInitial);
+                driver.FindElement(By.Id("addressFormInlineLastName")).SendKeys(buyerLastName);
+                driver.FindElement(By.Id("addressFormInlineAddressLine1")).SendKeys(soldProduct.BuyerAddress1);
+                driver.FindElement(By.Id("addressFormInlineCity")).SendKeys(soldProduct.BuyerCity);
+
+                string state = GetState(soldProduct.BuyerState);
+
+                driver.FindElement(By.XPath("//select[@id='" + "addressFormInlineState" + "']/option[contains(.,'" + state + "')]")).Click();
+                driver.FindElement(By.Id("addressFormInlineZip")).SendKeys(soldProduct.BuyerZip);
+                driver.FindElement(By.Id("addressFormInlinePhoneNumber")).SendKeys("2056175063");
+                driver.FindElement(By.Id("addressFormInlineAddressNickName")).SendKeys(DateTime.Now.ToString());
+
+                if (driver.FindElement(By.Id("saveAddressCheckboxInline")).Selected)
+                {
+                    driver.FindElement(By.Id("saveAddressCheckboxInline")).Click();
+                }
+
+                driver.FindElement(By.Id("addressFormInlineButton")).Click();
+
+                System.Threading.Thread.Sleep(3000);
+
+                if (driver.FindElements(By.XPath("//span[contains(text(), 'Continue')]")).Count > 0)
+                {
+                    driver.FindElement(By.XPath("//span[contains(text(), 'Continue')]")).Click();
+                }
+
+                System.Threading.Thread.Sleep(3000);
+
+                driver.FindElement(By.Id("deliverySubmitButton")).Click();
+
+                driver.FindElement(By.Id("cc_cvc")).SendKeys("819");
+
+                driver.FindElement(By.Id("paymentSubButtonBot")).Click();
+
+                //if (isAlertPresents(ref driver))
+                //    driver.SwitchTo().Alert().Accept();
+
+                //driver.FindElement(By.Id("orderButton")).Click();
+            }
+            catch (Exception e)
+            {
+
+            }
+            finally
+            {
+                driver.Dispose();
+            }
+        }
+
+        public string GetState(string state)
+        {
+            switch (state.ToUpper())
+            {
+                case "AL":
+                    return "Alabama";
+
+                case "AK":
+                    return "Alaska";
+
+                case "AS":
+                    return "American Samoa";
+
+                case "AZ":
+                    return "Arizona";
+
+                case "AR":
+                    return "Arkansas";
+
+                case "CA":
+                    return "California";
+
+                case "CO":
+                    return "Colorado";
+
+                case "CT":
+                    return "Connecticut";
+
+                case "DE":
+                    return "Delaware";
+
+                case "DC":
+                    return "District of Columbia";
+
+                case "FL":
+                    return "Florida";
+
+                case "GA":
+                    return "Georgia";
+
+                case "GU":
+                    return "Guam";
+
+                case "HI":
+                    return "Hawaii";
+
+                case "ID":
+                    return "Idaho";
+
+                case "IL":
+                    return "Illinois";
+
+                case "IN":
+                    return "Indiana";
+
+                case "IA":
+                    return "Iowa";
+
+                case "KS":
+                    return "Kansas";
+
+                case "KY":
+                    return "Kentucky";
+
+                case "LA":
+                    return "Louisiana";
+
+                case "ME":
+                    return "Maine";
+
+                case "MH":
+                    return "Narshall Islands";
+
+                case "MD":
+                    return "Maryland";
+
+                case "MA":
+                    return "Massachusetts";
+
+                case "MI":
+                    return "Michigan";
+
+                case "MN":
+                    return "Minnesota";
+
+                case "MS":
+                    return "Mississippi";
+
+                case "MO":
+                    return "Missouri";
+
+                case "MT":
+                    return "Montana";
+
+                case "NE":
+                    return "Nebraska";
+
+                case "NV":
+                    return "Nevada";
+
+                case "NH":
+                    return "New Hampshire";
+
+                case "NJ":
+                    return "New Jersey";
+
+                case "NM":
+                    return "New Mexico";
+
+                case "NY":
+                    return "New York";
+
+                case "NC":
+                    return "North Carolina";
+
+                case "ND":
+                    return "North Dakota";
+
+                case "OH":
+                    return "Ohio";
+
+                case "OK":
+                    return "Oklahoma";
+
+                case "OR":
+                    return "Oregon";
+
+                case "PW":
+                    return "Palau";
+
+                case "PA":
+                    return "Pennsylvania";
+
+                case "PR":
+                    return "Puerto Rico";
+
+                case "RI":
+                    return "Rhode Island";
+
+                case "SC":
+                    return "South Carolina";
+
+                case "SD":
+                    return "South Dakota";
+
+                case "TN":
+                    return "Tennessee";
+
+                case "TX":
+                    return "Texas";
+
+                case "UT":
+                    return "Utah";
+
+                case "VT":
+                    return "Vermont";
+
+                case "VI":
+                    return "Virgin Islands";
+
+                case "VA":
+                    return "Virginia";
+
+                case "WA":
+                    return "Washington";
+
+                case "WV":
+                    return "West Virginia";
+
+                case "WI":
+                    return "Wisconsin";
+
+                case "WY":
+                    return "Wyoming";
+            }
+
+            throw new Exception("Not Available");
+        }
     }
 
 }
