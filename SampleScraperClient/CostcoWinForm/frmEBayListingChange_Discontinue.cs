@@ -230,9 +230,19 @@ namespace CostcoWinForm
                 if (Convert.ToBoolean(row.Cells["Select"].Value) == true)
                 {
                     if (mode != "Discontinue")
-                        st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
+                    {
+                        if (row.Cells["UrlNumber"].Value != null)
+                        {
+                            st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
+                        }
+                    }
                     else
-                        st += "'" + row.Cells["eBayItemNumber"].Value.ToString() + "',";
+                    {
+                        if (row.Cells["eBayItemNumber"].Value != null)
+                        {
+                            st += "'" + row.Cells["eBayItemNumber"].Value.ToString() + "',";
+                        }
+                    }
                 }
             }
             st = st.Substring(0, st.Length - 1);

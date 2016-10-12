@@ -142,13 +142,13 @@ namespace CostcoWinForm
 
             // TODO: This line of code loads data into the 'dsEBaySold.eBay_SoldTransactions' table. You can move, or remove it, as needed.
             this.eBay_SoldTransactionsTableAdapter.Fill(this.dsEBaySold.eBay_SoldTransactions);
-            
+
             bInit = false;
 
-            
-            
+
+
             // TODO: This line of code loads data into the 'ds_eBayToAdd.eBay_ToAdd' table. You can move, or remove it, as needed.
-            
+
             // TODO: This line of code loads data into the 'costcoDataSet4.ProductInfo' table. You can move, or remove it, as needed.
             //this.productInfoTableAdapter1.Fill(this.costcoDataSet4.ProductInfo);
             //this.TopMost = true;
@@ -463,7 +463,7 @@ namespace CostcoWinForm
 
                 this.lvCategories.Items.Add(item);
             }
-            
+
             chkAll.Checked = true;
         }
 
@@ -604,7 +604,8 @@ namespace CostcoWinForm
                 string url = gvProducts.Rows[e.RowIndex].Cells[15].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
-            } else if (e.ColumnIndex == 0)
+            }
+            else if (e.ColumnIndex == 0)
             {
                 gvProducts.Rows[e.RowIndex].Cells[0].Value = !Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value);
                 if (Convert.ToBoolean(gvProducts.Rows[e.RowIndex].Cells[0].Value))
@@ -694,7 +695,7 @@ namespace CostcoWinForm
             reader.Close();
             cn.Close();
 
-            
+
             //IWebDriver driver = new ChromeDriver();
             int screenshotWidth, screenshotHeight, imageNumber;
 
@@ -737,6 +738,8 @@ namespace CostcoWinForm
 
                 p.eBayReferencePrice = Convert.ToDecimal(categoryIDAndPrice.Split('|')[1]);
 
+                p.eBaySoldNumber = categoryIDAndPrice.Split('|')[2] == "" ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
+
                 if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
                 {
                     p.DescriptionImageHeight = screenshotHeight;
@@ -746,13 +749,13 @@ namespace CostcoWinForm
                     p.Details = "<p><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + ".jpg' width='" +
                                 p.DescriptionImageWidth.ToString() + "' height='" + p.DescriptionImageHeight.ToString() + "'/></p>";
 
-                    p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.eBayReferencePrice)));
+                    p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.eBayReferencePrice), Convert.ToDouble(p.Shipping)));
 
                     sqlString = @"INSERT INTO eBay_ToAdd
                                 (Name, eBayName, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
-                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl, Thumb)
+                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl, Thumb, ebaySoldNumber)
                                 VALUES (@_Name, @_eBayName, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
-                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl, @_Thumb)";
+                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl, @_Thumb, @_eBaySoldNumber)";
 
                     string eBayName = RemoveSpecialCharacters(p.Name);
                     if (eBayName.Length > 80)
@@ -784,6 +787,7 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_Specifics", p.Specifics);
                     cmd.Parameters.AddWithValue("@_eBayReferenceUrl", eBayReferenceUrl);
                     cmd.Parameters.AddWithValue("@_Thumb", p.Thumb);
+                    cmd.Parameters.AddWithValue("@_eBaySoldNumber", p.eBaySoldNumber == -1 ? (object)DBNull.Value : p.eBaySoldNumber);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -862,6 +866,20 @@ namespace CostcoWinForm
                 string price = priceNote.InnerText;
                 price = price.Substring(4);
 
+                HtmlNode soldNumberNote = PageResult.Html.SelectSingleNode("//span[@class='w2b-sgl']");
+                string soldNumber = string.Empty;
+                if (soldNumberNote != null && soldNumberNote.InnerText.Contains("sold"))
+                {
+                    soldNumber = soldNumberNote.InnerText;
+                    soldNumber = soldNumber.Replace("sold", "");
+                    soldNumber = soldNumber.Trim();
+                    soldNumber = soldNumber.Replace(",", "");
+
+                    int value;
+                    if (!int.TryParse(soldNumber, out value))
+                        soldNumber = string.Empty;
+                }
+
                 string categoryID = "";
 
                 if (bCategoryID)
@@ -928,7 +946,7 @@ namespace CostcoWinForm
                     cn.Close();
                 }
 
-                return categoryID + "|" + price;
+                return categoryID + "|" + price + "|" + soldNumber;
             }
             catch (Exception e)
             {
@@ -1018,10 +1036,10 @@ namespace CostcoWinForm
 
                 System.Drawing.Rectangle cropArea;
 
-                
+
 
                 IWebElement element = driver.FindElement(By.ClassName("product-info-description"));
-                
+
 
                 if (element.FindElements(By.Id("wc-power-page")).Count > 0)
                 {
@@ -1157,25 +1175,28 @@ namespace CostcoWinForm
             }
         }
 
-        private double CalculateListingPrice(double productPrice, double eBayReferencePrice)
+        private double CalculateListingPrice(double productPrice, double eBayReferencePrice, double shipping)
         {
-            double listingPrice = productPrice;
+            double profit = productPrice * 0.1;
+            double listingPrice = (0.3 + shipping + 1.09 * productPrice + profit) / 0.871;
 
-            if (eBayReferencePrice < productPrice)
-            {
-                listingPrice += listingPrice * 0.05;
-            }
-            else
-            {
-                if ((eBayReferencePrice - productPrice) / eBayReferencePrice < 0.05)
-                {
-                    listingPrice += listingPrice * 0.05;
-                }
-                else
-                {
-                    listingPrice = eBayReferencePrice - 0.01;
-                }
-            }
+            //if (eBayReferencePrice < productPrice)
+            //{
+            //    listingPrice += listingPrice * 0.05;
+            //}
+            //else
+            //{
+            //    if ((eBayReferencePrice - productPrice) / eBayReferencePrice < 0.05)
+            //    {
+            //        listingPrice += listingPrice * 0.05;
+            //    }
+            //    else
+            //    {
+            //        listingPrice = eBayReferencePrice - 0.01;
+            //    }
+            //}
+
+            listingPrice = Math.Round(listingPrice, 2);
 
             return listingPrice;
         }
@@ -1205,7 +1226,7 @@ namespace CostcoWinForm
 
         private void lvCategories_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            
+
         }
 
         private void lvCategories_Click(object sender, EventArgs e)
@@ -1230,7 +1251,7 @@ namespace CostcoWinForm
         {
             bToAddRefreshing = true;
 
-            string sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, 
+            string sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, eBaySoldNumber, 
                                         UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
@@ -1253,7 +1274,7 @@ namespace CostcoWinForm
             gvAdd.Columns["ToAddName"].Width = 250;
             gvAdd.Columns["Resize"].Width = 50;
             gvAdd.Columns["ToAddShipping"].Width = 50;
-            
+
             gvAdd.Columns["UrlNumber"].Visible = false;
             gvAdd.Columns["Limit"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             gvAdd.Columns["eBayReferenceUrl"].Visible = false;
@@ -1296,7 +1317,7 @@ namespace CostcoWinForm
 
         private void gvAdd_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -1337,7 +1358,7 @@ namespace CostcoWinForm
                     string urlNumber = row.Cells["UrlNumber"].Value.ToString();
                     System.Drawing.Image image = System.Drawing.Image.FromFile(@"C:\temp\Screenshots\" + urlNumber + ".jpg");
 
-                    string detail = "<p><img src='http://www.jasondingphotography.com/eBay/" + urlNumber + ".jpg' width='" +
+                    string detail = "<p>For expiration date: Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.) </p></br><p><img src='http://www.jasondingphotography.com/eBay/" + urlNumber + ".jpg' width='" +
                                 image.Width.ToString() + "' height='" + image.Height.ToString() + "'/></p>";
 
                     //sqlString = @"UPDATE eBay_ToAdd SET DescriptionImageWidth = " + image.Width.ToString() +
@@ -1345,6 +1366,7 @@ namespace CostcoWinForm
 
                     sqlString = "UPDATE eBay_ToAdd SET DescriptionImageWidth = @_width, DescriptionImageHeight = @_height, Details = @_details WHERE UrlNumber = @_urlNumber AND DeleteTime is NULL";
                     cmd.CommandText = sqlString;
+                    cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@_width", image.Width.ToString());
                     cmd.Parameters.AddWithValue("@_height", image.Height.ToString());
                     cmd.Parameters.AddWithValue("@_details", detail);
@@ -1497,10 +1519,10 @@ namespace CostcoWinForm
                 //}
                 //else
                 //{
-                    
+
                 //}
                 oSheet.Cells[i, 7] = product.ImageLink;
-                oSheet.Cells[i, 8] = "30";
+                oSheet.Cells[i, 8] = "10";
                 oSheet.Cells[i, 9] = "FixedPrice";
                 oSheet.Cells[i, 10] = product.eBayListingPrice;
                 oSheet.Cells[i, 12] = "GTC";
@@ -1722,21 +1744,21 @@ namespace CostcoWinForm
             if (e.RowIndex == -1 || e.RowIndex == gvAdd.Rows.Count - 1)
                 return;
 
-            if (e.ColumnIndex == 7)
+            if (e.ColumnIndex == 8)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[9].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[10].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
-            else if (e.ColumnIndex == 6)
+            else if (e.ColumnIndex == 7)
             {
-                string fileName = gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
+                string fileName = gvAdd.Rows[e.RowIndex].Cells[14].FormattedValue.ToString();
 
                 Process.Start(@"C:\temp\Screenshots\" + fileName + ".jpg");
             }
-            else if (e.ColumnIndex == 10)
+            else if (e.ColumnIndex == 11)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[13].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[15].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
@@ -1744,12 +1766,15 @@ namespace CostcoWinForm
 
         private void gvAdd_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            if (e.RowIndex + 1 == this.gvAdd.Rows.Count)
+                return;
+
             if (gvAdd.Columns[e.ColumnIndex].Name == "ToAddImage")
             {
                 string imageUrl = string.Empty;
 
-                imageUrl = (this.gvAdd.Rows[e.RowIndex].Cells[4]).FormattedValue.ToString();
-                
+                imageUrl = (this.gvAdd.Rows[e.RowIndex].Cells[5]).FormattedValue.ToString();
+
                 if (imageUrl != "")
                 {
                     e.Value = eBayFrontEnd.GetImageFromUrl(imageUrl);
@@ -1758,6 +1783,20 @@ namespace CostcoWinForm
                 {
                     e.Value = null;
                 }
+            }
+            else if (gvAdd.Columns[e.ColumnIndex].Name == "Profit")
+            {
+                double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].FormattedValue);
+                double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue);
+                double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].FormattedValue);
+
+                double eBayFee = eBayListingPrice * 0.1;
+                double payPalFee = eBayListingPrice * 0.029 + 0.3;
+                double costcoCost = costcoPrice * 1.09 + shipping;
+
+                double profit = eBayListingPrice - eBayFee - payPalFee - costcoCost;
+
+                e.Value = profit.ToString();
             }
         }
 
@@ -2445,7 +2484,7 @@ namespace CostcoWinForm
             gvListing.Columns["CostcoUrlNumber"].Visible = false;
 
             gvListing.ClearSelection();
-            gvListing.CurrentCell = gvListing.Rows[gvListing.Rows.Count-1].Cells[0];
+            gvListing.CurrentCell = gvListing.Rows[gvListing.Rows.Count - 1].Cells[0];
 
             gvListing.Rows[gvListing.Rows.Count - 1].Selected = true;
 
@@ -2525,7 +2564,7 @@ namespace CostcoWinForm
 
             itemNumbers = itemNumbers.Substring(0, itemNumbers.Length - 1);
 
-            
+
 
             UploadDelete(itemNumbers);
 
@@ -2893,9 +2932,9 @@ namespace CostcoWinForm
 
         void timer_Tick(object sender, EventArgs e)
         {
-             if (tpCurrentListing == tabControl1.SelectedTab)
+            if (tpCurrentListing == tabControl1.SelectedTab)
             {
-                
+
             }
         }
 
@@ -3015,14 +3054,14 @@ namespace CostcoWinForm
 
 
 
-        
-
-        
 
 
- 
 
-        
+
+
+
+
+
 
 
 
@@ -3130,7 +3169,7 @@ namespace CostcoWinForm
 
 
 
-        
+
 
 
 
@@ -3321,20 +3360,20 @@ namespace CostcoWinForm
 
 
 
-        
-
-        
 
 
 
-        
+
+
+
+
 
         private void btnToChangeUpdate_Click(object sender, EventArgs e)
         {
-           
+
         }
 
-        
+
 
         private void gvToChange_SelectionChanged(object sender, EventArgs e)
         {
@@ -3743,7 +3782,7 @@ namespace CostcoWinForm
             dtSaleTax = dsSaleTax.Tables["tbSaleTax"];
             connection.Close();
 
-           
+
             gvSaleTaxHistory.DataSource = dsSaleTax.Tables["tbSaleTax"];
             gvSaleTaxHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             gvSaleTaxHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -3793,7 +3832,7 @@ namespace CostcoWinForm
 
         private void ll1_TextChanged(object sender, EventArgs e)
         {
-            ll3.Text = (Convert.ToDecimal(ll1.Text) - Convert.ToDecimal(ll2.Text) ).ToString();
+            ll3.Text = (Convert.ToDecimal(ll1.Text) - Convert.ToDecimal(ll2.Text)).ToString();
         }
 
         private void ll2_TextChanged(object sender, EventArgs e)
@@ -3823,7 +3862,7 @@ namespace CostcoWinForm
 
         private void ll8_TextChanged(object sender, EventArgs e)
         {
-            ll28.Text = Convert.ToString(   Convert.ToDecimal(ll8.Text) +
+            ll28.Text = Convert.ToString(Convert.ToDecimal(ll8.Text) +
                                             Convert.ToDecimal(ll9.Text) +
                                             Convert.ToDecimal(ll10.Text) +
                                             Convert.ToDecimal(ll11.Text) +
@@ -4039,10 +4078,10 @@ namespace CostcoWinForm
             cn.Close();
         }
 
-        
+
         private void ll1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            
+
         }
 
         private void ll_LinkClicked(string categoryCode, string year)
@@ -4081,7 +4120,8 @@ namespace CostcoWinForm
 
             List<string> storeLinkList = new List<string>();
 
-            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            //driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            driver = new ChromeDriver();
 
             driver.Navigate().GoToUrl(storeUrl);
 
@@ -4118,7 +4158,7 @@ namespace CostcoWinForm
                         if (hasElement(li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")), By.ClassName("medprc")))
                             trending = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).FindElement(By.ClassName("medprc")).Text;
                         if (!string.IsNullOrEmpty(trending))
-                            itemPrice = itemPrice.Replace(trending, "").Replace("$","").Replace("\r","").Replace("\n", "");
+                            itemPrice = itemPrice.Replace(trending, "").Replace("$", "").Replace("\r", "").Replace("\n", "");
                         else
                             itemPrice = itemPrice.Replace("$", "").Replace("\r", "").Replace("\n", "");
 
@@ -4134,7 +4174,7 @@ namespace CostcoWinForm
 
                             extra = lvextras.Text;
                         }
-                        
+
                         string numberSold = string.Empty;
                         if (extra.Contains("sold"))
                         {
@@ -4158,7 +4198,7 @@ namespace CostcoWinForm
 
         private void tpResearch_Enter(object sender, EventArgs e)
         {
-            string sqlString = @"select distinct eBayUserId from [Costco].[dbo].[eBay_ProductsResearch]" ;
+            string sqlString = @"select distinct eBayUserId from [Costco].[dbo].[eBay_ProductsResearch]";
             SqlConnection cn = new SqlConnection(connectionString);
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
@@ -4191,7 +4231,7 @@ namespace CostcoWinForm
 
             if (cmbStore.Text != "All")
                 sqlString += "WHERE eBayUserId = '" + cmbStore.Text + "'";
-                                
+
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
@@ -4283,7 +4323,7 @@ namespace CostcoWinForm
                 iLastLeftBracket = category.LastIndexOf('(');
                 iLastRightBracket = category.LastIndexOf(')');
 
-                categoryId = category.Substring(iLastLeftBracket+1, iLastRightBracket - iLastLeftBracket -1);
+                categoryId = category.Substring(iLastLeftBracket + 1, iLastRightBracket - iLastLeftBracket - 1);
                 categoryId = categoryId.Replace("#", "");
 
                 if (specifics != "No Specifics Required")
@@ -4298,11 +4338,11 @@ namespace CostcoWinForm
 
         }
 
-        
 
-        
 
-        
+
+
+
 
         private int GetColumnIndex(ref Microsoft.Office.Interop.Excel.Worksheet xlWorkSheet, string columnName)
         {
@@ -4374,7 +4414,7 @@ namespace CostcoWinForm
                 categoryId = xlWorkSheet.Cells[rCnt, 1].Value.ToString();
                 categoryName = xlWorkSheet.Cells[rCnt, 2].Value.ToString().Replace("'", "''");
                 categoryHierarchy = xlWorkSheet.Cells[rCnt, 3].Value.ToString().Replace("'", "''");
-                
+
 
                 columnsString = "CategoryId,Category,";
                 valuesString = "'" + categoryId + "','" + categoryName + "',";
@@ -4382,11 +4422,11 @@ namespace CostcoWinForm
                 int i = 2;
                 foreach (string categoryNode in categoryHierarchy.Split('>'))
                 {
-                    string node = categoryNode.Substring(0, categoryNode.LastIndexOf('(')-1).Trim();
+                    string node = categoryNode.Substring(0, categoryNode.LastIndexOf('(') - 1).Trim();
 
                     columnsString += "F" + i.ToString() + ",";
                     valuesString += "'" + node + "',";
- 
+
                     i++;
                 }
 
@@ -4397,12 +4437,35 @@ namespace CostcoWinForm
                 sqlString = @"INSERT INTO eBay_Categories (" + columnsString + ") VALUES (" + valuesString + ")";
                 cmd.CommandText = sqlString;
                 cmd.ExecuteNonQuery();
-                
+
             }
 
             cn.Close();
         }
 
-        
+        private void label99_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtSell_TextChanged(object sender, EventArgs e)
+        {
+            if (txtCost.Text != "")
+            {
+                txt9Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.09)).ToString();
+                txt6Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.06)).ToString();
+                txt0Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.00)).ToString();
+            }
+        }
+
+        private void txtCost_TextChanged(object sender, EventArgs e)
+        {
+            if (txtSell.Text != "")
+            {
+                txt9Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.09)).ToString();
+                txt6Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.06)).ToString();
+                txt0Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.00)).ToString();
+            }
+        }
     }
 }

@@ -244,6 +244,7 @@
             this.ToAddCostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
             this.ToAddShipping = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ToAddReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Profit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnDelete = new System.Windows.Forms.Button();
             this.tpCostco = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -315,6 +316,16 @@
             this.label97 = new System.Windows.Forms.Label();
             this.llClearanceProducts = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.txtCost = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
+            this.label100 = new System.Windows.Forms.Label();
+            this.txtSell = new System.Windows.Forms.TextBox();
+            this.txt1 = new System.Windows.Forms.Label();
+            this.txt9Profit = new System.Windows.Forms.TextBox();
+            this.txt6Profit = new System.Windows.Forms.TextBox();
+            this.label102 = new System.Windows.Forms.Label();
+            this.txt0Profit = new System.Windows.Forms.TextBox();
+            this.label101 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
@@ -430,6 +441,16 @@
             // 
             // tpResearch
             // 
+            this.tpResearch.Controls.Add(this.txt0Profit);
+            this.tpResearch.Controls.Add(this.label101);
+            this.tpResearch.Controls.Add(this.txt6Profit);
+            this.tpResearch.Controls.Add(this.label102);
+            this.tpResearch.Controls.Add(this.txt9Profit);
+            this.tpResearch.Controls.Add(this.txt1);
+            this.tpResearch.Controls.Add(this.txtSell);
+            this.tpResearch.Controls.Add(this.label100);
+            this.tpResearch.Controls.Add(this.label99);
+            this.tpResearch.Controls.Add(this.txtCost);
             this.tpResearch.Controls.Add(this.gvEBayResearch);
             this.tpResearch.Controls.Add(this.cmbStore);
             this.tpResearch.Controls.Add(this.label66);
@@ -459,9 +480,9 @@
             // cmbStore
             // 
             this.cmbStore.FormattingEnabled = true;
-            this.cmbStore.Location = new System.Drawing.Point(78, 8);
+            this.cmbStore.Location = new System.Drawing.Point(9, 8);
             this.cmbStore.Name = "cmbStore";
-            this.cmbStore.Size = new System.Drawing.Size(267, 21);
+            this.cmbStore.Size = new System.Drawing.Size(115, 21);
             this.cmbStore.TabIndex = 3;
             this.cmbStore.SelectedIndexChanged += new System.EventHandler(this.cmbStore_SelectedIndexChanged);
             // 
@@ -470,13 +491,12 @@
             this.label66.AutoSize = true;
             this.label66.Location = new System.Drawing.Point(3, 11);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(66, 13);
+            this.label66.Size = new System.Drawing.Size(0, 13);
             this.label66.TabIndex = 2;
-            this.label66.Text = "Store Name:";
             // 
             // btnResearch
             // 
-            this.btnResearch.Location = new System.Drawing.Point(351, 6);
+            this.btnResearch.Location = new System.Drawing.Point(130, 6);
             this.btnResearch.Name = "btnResearch";
             this.btnResearch.Size = new System.Drawing.Size(75, 23);
             this.btnResearch.TabIndex = 0;
@@ -2936,7 +2956,8 @@
             this.Resize,
             this.ToAddCostcoPrice,
             this.ToAddShipping,
-            this.ToAddReferencePrice});
+            this.ToAddReferencePrice,
+            this.Profit});
             this.gvAdd.Location = new System.Drawing.Point(6, 35);
             this.gvAdd.Name = "gvAdd";
             this.gvAdd.RowTemplate.Height = 50;
@@ -2994,6 +3015,11 @@
             this.ToAddReferencePrice.DataPropertyName = "eBayReferencePrice";
             this.ToAddReferencePrice.HeaderText = "Reference Price";
             this.ToAddReferencePrice.Name = "ToAddReferencePrice";
+            // 
+            // Profit
+            // 
+            this.Profit.HeaderText = "Profit";
+            this.Profit.Name = "Profit";
             // 
             // btnDelete
             // 
@@ -3818,6 +3844,89 @@
             this.tabControl1.Size = new System.Drawing.Size(917, 441);
             this.tabControl1.TabIndex = 0;
             // 
+            // txtCost
+            // 
+            this.txtCost.Location = new System.Drawing.Point(258, 8);
+            this.txtCost.Name = "txtCost";
+            this.txtCost.Size = new System.Drawing.Size(78, 20);
+            this.txtCost.TabIndex = 5;
+            this.txtCost.TextChanged += new System.EventHandler(this.txtCost_TextChanged);
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(221, 11);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(31, 13);
+            this.label99.TabIndex = 6;
+            this.label99.Text = "Cost:";
+            this.label99.Click += new System.EventHandler(this.label99_Click);
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(342, 11);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(27, 13);
+            this.label100.TabIndex = 7;
+            this.label100.Text = "Sell:";
+            // 
+            // txtSell
+            // 
+            this.txtSell.Location = new System.Drawing.Point(375, 8);
+            this.txtSell.Name = "txtSell";
+            this.txtSell.Size = new System.Drawing.Size(78, 20);
+            this.txtSell.TabIndex = 8;
+            this.txtSell.TextChanged += new System.EventHandler(this.txtSell_TextChanged);
+            // 
+            // txt1
+            // 
+            this.txt1.AutoSize = true;
+            this.txt1.Location = new System.Drawing.Point(459, 11);
+            this.txt1.Name = "txt1";
+            this.txt1.Size = new System.Drawing.Size(51, 13);
+            this.txt1.TabIndex = 9;
+            this.txt1.Text = "9% Profit:";
+            // 
+            // txt9Profit
+            // 
+            this.txt9Profit.Location = new System.Drawing.Point(516, 8);
+            this.txt9Profit.Name = "txt9Profit";
+            this.txt9Profit.Size = new System.Drawing.Size(78, 20);
+            this.txt9Profit.TabIndex = 10;
+            // 
+            // txt6Profit
+            // 
+            this.txt6Profit.Location = new System.Drawing.Point(657, 8);
+            this.txt6Profit.Name = "txt6Profit";
+            this.txt6Profit.Size = new System.Drawing.Size(78, 20);
+            this.txt6Profit.TabIndex = 12;
+            // 
+            // label102
+            // 
+            this.label102.AutoSize = true;
+            this.label102.Location = new System.Drawing.Point(600, 11);
+            this.label102.Name = "label102";
+            this.label102.Size = new System.Drawing.Size(51, 13);
+            this.label102.TabIndex = 11;
+            this.label102.Text = "6% Profit:";
+            // 
+            // txt0Profit
+            // 
+            this.txt0Profit.Location = new System.Drawing.Point(798, 9);
+            this.txt0Profit.Name = "txt0Profit";
+            this.txt0Profit.Size = new System.Drawing.Size(78, 20);
+            this.txt0Profit.TabIndex = 14;
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Location = new System.Drawing.Point(741, 11);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(51, 13);
+            this.label101.TabIndex = 13;
+            this.label101.Text = "0% Profit:";
+            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4176,5 +4285,16 @@
         private System.Windows.Forms.DataGridViewLinkColumn ToAddCostcoPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToAddShipping;
         private System.Windows.Forms.DataGridViewLinkColumn ToAddReferencePrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Profit;
+        private System.Windows.Forms.Label label99;
+        private System.Windows.Forms.TextBox txtCost;
+        private System.Windows.Forms.TextBox txt6Profit;
+        private System.Windows.Forms.Label label102;
+        private System.Windows.Forms.TextBox txt9Profit;
+        private System.Windows.Forms.Label txt1;
+        private System.Windows.Forms.TextBox txtSell;
+        private System.Windows.Forms.Label label100;
+        private System.Windows.Forms.TextBox txt0Profit;
+        private System.Windows.Forms.Label label101;
     }
 }

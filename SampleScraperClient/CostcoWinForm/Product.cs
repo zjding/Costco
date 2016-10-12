@@ -38,6 +38,8 @@ namespace CostcoWinForm
 
         public string TemplateName { get; set; } = "";
         public string Specifics { get; set; } = "";
+
+        public int eBaySoldNumber { get; set; }
     }
 
     public class ProductUpdate

@@ -1407,7 +1407,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 8] = "1";
                 oSheet.Cells[i, 9] = "FixedPrice";
                 oSheet.Cells[i, 10] = GeneratePrice(Convert.ToDouble(product.Price), Convert.ToDouble(eBayPrice)).ToString();
-                oSheet.Cells[i, 12] = "30";
+                oSheet.Cells[i, 12] = "10";
                 oSheet.Cells[i, 13] = "1";
                 oSheet.Cells[i, 14] = "AL USA";
                 oSheet.Cells[i, 16] = "1";
@@ -1732,7 +1732,7 @@ namespace CostcoWinForm
             IWebDriver driver = new FirefoxDriver();
             driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
             IWebElement logonForm = driver.FindElement(By.Id("LogonForm"));
-            logonForm.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+            logonForm.FindElement(By.Id("logonId")).SendKeys("zjding@outlook.com");
             logonForm.FindElement(By.Id("logonPassword")).SendKeys("721123");
             logonForm.FindElement(By.ClassName("submit")).Click();
             driver.Navigate().GoToUrl("http://www.costco.com/Adidas%C2%AE-Men%E2%80%99s-Adissage-SUPERCLOUD%E2%84%A2-Slide-Sandal-Black-%2526-Lime.product.100234752.html");
@@ -1948,7 +1948,7 @@ namespace CostcoWinForm
 
         private void btnEmailExtract_Click(object sender, EventArgs e)
         {
-            string body = File.ReadAllText(@"C:\eBayApp\TestFiles\152262952392_paid.txt");
+            string body = File.ReadAllText(@"C:\eBayApp\TestFiles\152262620662_paid.txt");
 
             body = body.Replace("\n", "");
             body = body.Replace("\t", "");
@@ -2050,33 +2050,64 @@ namespace CostcoWinForm
                 string body = html;
 
                 // TransactionID
-                string stTime = SubstringEndBack(body, "Transaction ID:", "<td ", true, false);
-                stTime = TrimTags(stTime);
-                stTime = stTime.Replace("<br>", "");
+                string stTransactionID = SubstringInBetween(body, "Transaction ID:", "Transaction Time", false, false);
+                stTransactionID = TrimTags(stTransactionID);
+                stTransactionID = stTransactionID.Substring(0, stTransactionID.IndexOf("<"));
 
+                // Transaction Time
+                string stTransactionTime = SubstringInBetween(body, "Transaction Time:", "You received a payment from your buyer", false, false);
+                stTransactionTime = stTransactionTime.TrimStart();
+                stTransactionTime = stTransactionTime.Substring(0, stTransactionTime.IndexOf("<"));
 
-                string stTimeZone = stTime.Substring(stTime.LastIndexOf(' ') + 1, stTime.Length - stTime.LastIndexOf(' ') - 1);
-
-                DateTime dtTime = Convert.ToDateTime(stTime.Replace(stTimeZone, timeZones[stTimeZone]));
-
-                string stTransactionID = SubstringInBetween(body, "Transaction ID:", "</a>", true, true);
-
-                stTransactionID = SubstringEndBack(stTransactionID, "</a>", ">", false, false);
+                string stTimeZone = stTransactionTime.Substring(stTransactionTime.LastIndexOf(' ') + 1, stTransactionTime.Length - stTransactionTime.LastIndexOf(' ') - 1);
+                DateTime dtTime = Convert.ToDateTime(stTransactionTime.Replace(stTimeZone, timeZones[stTimeZone]));
 
                 // Buyer Name
-                string stBuyer = SubstringInBetween(body, "Buyer", @"</a>", false, true);
-
-                string stFullName = SubstringInBetween(stBuyer, "<br>", "<br>", false, false);
-
-                stBuyer = stBuyer.Replace("<br>" + stFullName + "<br>", "");
-
-                string stUserID = SubstringInBetween(stBuyer, @"</span>", "<br>", false, false);
-
-                stBuyer = stBuyer.Replace(stUserID, "");
+                string stBuyer = SubstringEndBack(body, "Shipping address", "Buyer", false, false);
                 stBuyer = TrimTags(stBuyer);
 
-                string stUserEmail = stBuyer.Substring(0, stBuyer.IndexOf('<'));
-                
+                string stBuyerEmail = stBuyer;
+                stBuyer = stBuyer.Substring(0, stBuyer.IndexOf("<"));
+
+                stBuyerEmail = stBuyerEmail.Replace(stBuyer, "");
+                stBuyerEmail = TrimTags(stBuyerEmail);
+                stBuyerEmail = stBuyerEmail.Substring(0, stBuyerEmail.IndexOf("<"));
+
+                string stBuyerId = SubstringEndBack(body, "for your recent eBay sale", "from", false, false);
+                stBuyerId = stBuyerId.Substring(0, stBuyerId.IndexOf("("));
+                stBuyerId = stBuyerId.Trim();
+
+                //string stShippingAddress = SubstringInBetween(body, "Shipping address", "Note to seller", false, false);
+
+
+                //// TransactionID
+                //string stTime = SubstringEndBack(body, "Transaction ID:", "<td ", true, false);
+                //stTime = TrimTags(stTime);
+                //stTime = stTime.Replace("<br>", "");
+
+
+                //stTimeZone = stTime.Substring(stTime.LastIndexOf(' ') + 1, stTime.Length - stTime.LastIndexOf(' ') - 1);
+
+                //dtTime = Convert.ToDateTime(stTime.Replace(stTimeZone, timeZones[stTimeZone]));
+
+                //stTransactionID = SubstringInBetween(body, "Transaction ID:", "</a>", true, true);
+
+                //stTransactionID = SubstringEndBack(stTransactionID, "</a>", ">", false, false);
+
+                //// Buyer Name
+                //stBuyer = SubstringInBetween(body, "Buyer", @"</a>", false, true);
+
+                //string stFullName = SubstringInBetween(stBuyer, "<br>", "<br>", false, false);
+
+                //stBuyer = stBuyer.Replace("<br>" + stFullName + "<br>", "");
+
+                //string stUserID = SubstringInBetween(stBuyer, @"</span>", "<br>", false, false);
+
+                //stBuyer = stBuyer.Replace(stUserID, "");
+                //stBuyer = TrimTags(stBuyer);
+
+                //string stUserEmail = stBuyer.Substring(0, stBuyer.IndexOf('<'));
+
 
                 // Shipping Address
                 string stShippingAddress = SubstringInBetween(body, "Shipping address", "</td>", true, false);
@@ -2204,8 +2235,8 @@ namespace CostcoWinForm
                 cmd.Parameters.AddWithValue("@_paypalTransactionID", stTransactionID);
                 cmd.Parameters.AddWithValue("@_paypalPaidDateTime", dtTime);
                 cmd.Parameters.AddWithValue("@_paypalPaidEmailPdf", destinationFileName);
-                cmd.Parameters.AddWithValue("@_buyerEmail", stUserEmail);
-                cmd.Parameters.AddWithValue("@_buyerName", stFullName);
+                cmd.Parameters.AddWithValue("@_buyerEmail", stBuyerEmail);
+                cmd.Parameters.AddWithValue("@_buyerName", stBuyer);
                 cmd.Parameters.AddWithValue("@_buyerAddress1", stShippingAddress1);
                 //cmd.Parameters.AddWithValue("@_buyAddress2", stShippingAddress2);
                 cmd.Parameters.AddWithValue("@_buyerCity", stShippingCity);
@@ -2215,7 +2246,7 @@ namespace CostcoWinForm
                 cmd.Parameters.AddWithValue("@_eBaySoldQuality", stQuatity);
                 cmd.Parameters.AddWithValue("@_eBayItemNumber", stItemNum);
                 cmd.Parameters.AddWithValue("@_eBaySaleTax", stTax);
-                cmd.Parameters.AddWithValue("@_buyerID", stUserID);
+                cmd.Parameters.AddWithValue("@_buyerID", stBuyerId);
 
                 cmd.ExecuteNonQuery();
 
@@ -2224,7 +2255,7 @@ namespace CostcoWinForm
                 cmd.CommandText = sqlString;
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("@_eBayItemNumber", stItemNum);
-                cmd.Parameters.AddWithValue("@_buyerID", stUserID);
+                cmd.Parameters.AddWithValue("@_buyerID", stBuyerId);
 
                 eBaySoldProduct soldProduct = new eBaySoldProduct();
 
@@ -3651,7 +3682,7 @@ Costco.com products can be returned to any of our more than 600 Costco warehouse
             try
             {
                 driver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
-                driver.FindElement(By.Id("logonId")).SendKeys("zjding@gmail.com");
+                driver.FindElement(By.Id("logonId")).SendKeys("zjding@outlook.com");
                 driver.FindElement(By.Id("logonPassword")).SendKeys("721123");
                 driver.FindElements(By.ClassName("submit"))[0].Click();
 
