@@ -63,6 +63,7 @@ namespace CostcoWinForm
         List<Product> priceChangedProductArray = new List<Product>();
 
         bool bToAddRefreshing = false;
+        bool bValueUpdateing = false;
 
         bool bCostcoTabEntering = false;
         bool bCostcoTabEnteringGridRefreshed = false;
@@ -1177,8 +1178,8 @@ namespace CostcoWinForm
 
         private double CalculateListingPrice(double productPrice, double eBayReferencePrice, double shipping)
         {
-            double profit = productPrice * 0.1;
-            double listingPrice = (0.3 + shipping + 1.09 * productPrice + profit) / 0.871;
+            double profit = 1.5;
+            double listingPrice = (0.3 + (shipping + productPrice) * 1.09 + profit) / (1.09 - 0.129);
 
             //if (eBayReferencePrice < productPrice)
             //{
@@ -1251,7 +1252,7 @@ namespace CostcoWinForm
         {
             bToAddRefreshing = true;
 
-            string sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, Price, Shipping, Url, eBayReferencePrice, eBayListingPrice, eBaySoldNumber, 
+            string sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
                                         UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
@@ -1269,6 +1270,23 @@ namespace CostcoWinForm
 
             gvAdd.DataSource = dsToAdd.Tables["tbToAdd"];
             gvAdd.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            gvAdd.Columns["ToAddCostcoPrice"].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns["ToAddCostcoPrice"].Width = 50;
+            gvAdd.Columns["ToAddShipping"].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns["ToAddShipping"].Width = 50;
+            gvAdd.Columns["ToAddReferencePrice"].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns["ToAddReferencePrice"].Width = 50;
+            gvAdd.Columns[13].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns[13].Width = 50;
+            gvAdd.Columns[8].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns[8].Width = 50;
+            gvAdd.Columns[9].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns[9].Width = 50;
+            gvAdd.Columns[7].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns[7].Width = 50;
+            gvAdd.Columns[10].DefaultCellStyle.Format = "0.00##";
+            gvAdd.Columns[10].Width = 50;
 
             gvAdd.Columns["AddSelect"].Width = 50;
             gvAdd.Columns["ToAddName"].Width = 250;
@@ -1306,6 +1324,38 @@ namespace CostcoWinForm
         {
             if (bToAddRefreshing)
                 return;
+
+            if (bValueUpdateing)
+                return;
+
+            if (e.ColumnIndex == 9)
+            {
+                bValueUpdateing = true;
+                double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].FormattedValue);
+                double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].FormattedValue);
+                double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[11].FormattedValue);
+
+                double eBayFee = eBayListingPrice * 0.1;
+                double payPalFee = eBayListingPrice * 0.029 + 0.3;
+                double costcoCost = costcoPrice * 1.09 + shipping;
+
+                double profit = eBayListingPrice * 1.09 - eBayFee - payPalFee - costcoCost;
+
+                gvAdd.Rows[e.RowIndex].Cells[10].Value = Math.Round(profit, 2);
+                bValueUpdateing = false;
+            }
+            //else if (e.ColumnIndex == 10)
+            //{
+            //    bValueUpdateing = true;
+            //    double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].FormattedValue);
+            //    double profit = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[10].Value);
+            //    double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[11].FormattedValue);
+
+            //    double listingPrice = profit + 0.3 + costcoPrice * 1.09 / (1.09 - 0.129);
+
+            //    gvAdd.Rows[e.RowIndex].Cells[9].Value = Math.Round(listingPrice, 2);
+            //    bValueUpdateing = false;
+            //}
 
             daToAdd.Update(dtToAdd);
         }
@@ -1746,19 +1796,19 @@ namespace CostcoWinForm
 
             if (e.ColumnIndex == 8)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[10].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
-            else if (e.ColumnIndex == 7)
+            else if (e.ColumnIndex == 6)
             {
-                string fileName = gvAdd.Rows[e.RowIndex].Cells[14].FormattedValue.ToString();
+                string fileName = gvAdd.Rows[e.RowIndex].Cells[15].FormattedValue.ToString();
 
                 Process.Start(@"C:\temp\Screenshots\" + fileName + ".jpg");
             }
-            else if (e.ColumnIndex == 11)
+            else if (e.ColumnIndex == 13)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[15].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[16].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
@@ -1769,7 +1819,16 @@ namespace CostcoWinForm
             if (e.RowIndex + 1 == this.gvAdd.Rows.Count)
                 return;
 
-            if (gvAdd.Columns[e.ColumnIndex].Name == "ToAddImage")
+            if (e.ColumnIndex == 0)
+            {
+                double eBayReferencePrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[13].Value);
+                double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].Value);
+                if (eBayListingPrice < eBayReferencePrice)
+                {
+                    gvAdd.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 224);
+                }
+            }
+            else if (gvAdd.Columns[e.ColumnIndex].Name == "ToAddImage")
             {
                 string imageUrl = string.Empty;
 
@@ -1786,17 +1845,31 @@ namespace CostcoWinForm
             }
             else if (gvAdd.Columns[e.ColumnIndex].Name == "Profit")
             {
-                double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].FormattedValue);
-                double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue);
-                double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].FormattedValue);
+                double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].Value);
+                double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].Value);
+                double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[11].Value);
 
                 double eBayFee = eBayListingPrice * 0.1;
                 double payPalFee = eBayListingPrice * 0.029 + 0.3;
                 double costcoCost = costcoPrice * 1.09 + shipping;
 
-                double profit = eBayListingPrice - eBayFee - payPalFee - costcoCost;
+                double profit = eBayListingPrice * 1.09 - eBayFee - payPalFee - costcoCost;
 
-                e.Value = profit.ToString();
+                e.Value = Math.Round(profit, 2);
+            }
+            else if (gvAdd.Columns[e.ColumnIndex].Name == "eBayReferencePriceProfit")
+            {
+                double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].Value);
+                double eBayReferencePrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[13].Value);
+                double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[11].Value);
+
+                double eBayFee = eBayReferencePrice * 0.1;
+                double payPalFee = eBayReferencePrice * 0.029 + 0.3;
+                double costcoCost = costcoPrice * 1.09 + shipping;
+
+                double profit = eBayReferencePrice * 1.09 - eBayFee - payPalFee - costcoCost;
+
+                e.Value = Math.Round(profit, 2);
             }
         }
 
@@ -2447,7 +2520,7 @@ namespace CostcoWinForm
 
         public void gvListing_Refresh()
         {
-            string sqlString = @"SELECT Name as ProductName, eBayItemNumber, eBayListingPrice, eBayReferencePrice, CostcoPrice, 
+            string sqlString = @"SELECT Name as ProductName, eBayItemNumber, CostcoPrice, eBayReferencePrice, '' as ReferencePriceProfit, eBayListingPrice, '' as Profit,   
                                     CostcoOptions, ImageLink, ID, eBayEndTime, CostcoUrl, Thumb, eBayUrl, PendingChange, eBayReferenceUrl, CostcoUrlNumber
                                  FROM eBay_CurrentListings 
                                  WHERE DeleteDT is NULL
@@ -2466,10 +2539,12 @@ namespace CostcoWinForm
             gvListing.DataSource = dsEBayListing.Tables["tbEBayListing"];
             gvListing.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            gvListing.Columns["ProductName"].Width = 400;
-            gvListing.Columns["CostcoPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvListing.Columns["eBayReferencePrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            gvListing.Columns["eBayListingPrice"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+            gvListing.Columns["ProductName"].Width = 300;
+            gvListing.Columns["CostcoPrice"].Width = 80;
+            gvListing.Columns["eBayReferencePrice"].Width = 80;
+            gvListing.Columns["eBayListingPrice"].Width = 80;
+            gvListing.Columns["ReferencePriceProfit"].Width = 80;
+            gvListing.Columns["Profit"].Width = 80;
             gvListing.Columns["CostcoOptions"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             gvListing.Columns["eBayItemNumber"].Visible = false;
@@ -2523,11 +2598,23 @@ namespace CostcoWinForm
                 else if (gvListing.Rows[e.RowIndex].Cells["PendingChange"].Value.ToString() == "1")
                     e.Value = "PendingModify";
             }
+            else if (gvListing.Columns[e.ColumnIndex].Name == "ReferencePriceProfit")
+            {
+                double costcoPrice = Convert.ToDouble(gvListing.Rows[e.RowIndex].Cells[5].FormattedValue);
+                double eBayReferencePrice = Convert.ToDouble(gvListing.Rows[e.RowIndex].Cells[6].FormattedValue);
+                e.Value = (eBayReferencePrice * 1.09 - eBayReferencePrice * 0.119 - 0.3 - costcoPrice * 1.09).ToString();
+            }
+            else if (gvListing.Columns[e.ColumnIndex].Name == "Profit")
+            {
+                double costcoPrice = Convert.ToDouble(gvListing.Rows[e.RowIndex].Cells[5].FormattedValue);
+                double listingPrice = Convert.ToDouble(gvListing.Rows[e.RowIndex].Cells[8].FormattedValue);
+                e.Value = (listingPrice * 1.09 - listingPrice * 0.119 - 0.3 - costcoPrice * 1.09).ToString();
+            }
             else if (gvListing.Columns[e.ColumnIndex].Name == "ListingImage")
             {
                 string imageUrl = string.Empty;
 
-                imageUrl = (this.gvListing.Rows[e.RowIndex].Cells[13]).FormattedValue.ToString();
+                imageUrl = (this.gvListing.Rows[e.RowIndex].Cells[15]).FormattedValue.ToString();
 
                 if (imageUrl != "")
                 {
@@ -2576,9 +2663,9 @@ namespace CostcoWinForm
             if (e.RowIndex == -1 || e.RowIndex == gvListing.Rows.Count - 1)
                 return;
 
-            if (e.ColumnIndex == 7)
+            if (e.ColumnIndex == 5)
             {
-                string url = gvListing.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
+                string url = gvListing.Rows[e.RowIndex].Cells[14].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
@@ -2590,7 +2677,7 @@ namespace CostcoWinForm
             }
             else if (e.ColumnIndex == 6)
             {
-                string url = gvListing.Rows[e.RowIndex].Cells[16].FormattedValue.ToString();
+                string url = gvListing.Rows[e.RowIndex].Cells[18].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }

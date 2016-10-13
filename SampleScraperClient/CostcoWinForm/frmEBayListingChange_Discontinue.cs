@@ -261,7 +261,7 @@ namespace CostcoWinForm
                 {
                     if (Convert.ToBoolean(row.Cells["Select"].Value) == true)
                     {
-                        eBayNumbers += "'" + Convert.ToString(row.Cells["eBayItemNumber"].Value) + "';";
+                        eBayNumbers += "'" + Convert.ToString(row.Cells["eBayItemNumber"].Value) + "',";
                     }
                 }
 
@@ -353,7 +353,7 @@ namespace CostcoWinForm
             if (mode == "Discontinue")
             {
                 sqlString = @"DELETE FROM eBayListingChange_Discontinue
-                          WHERE UrlNumber in (" + st + ")";
+                          WHERE eBayItemNumber in (" + st + ")";
             }
             else if (mode == "PriceUp")
             {

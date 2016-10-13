@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.eBaySoldTransactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dsEBaySold = new CostcoWinForm.dsEBaySold();
             this.costcoDataSet6 = new CostcoWinForm.CostcoDataSet6();
@@ -42,6 +42,16 @@
             this.btnImportEBayCatetories = new System.Windows.Forms.Button();
             this.btnEBayItemSpecifics = new System.Windows.Forms.Button();
             this.tpResearch = new System.Windows.Forms.TabPage();
+            this.txt0Profit = new System.Windows.Forms.TextBox();
+            this.label101 = new System.Windows.Forms.Label();
+            this.txt6Profit = new System.Windows.Forms.TextBox();
+            this.label102 = new System.Windows.Forms.Label();
+            this.txt9Profit = new System.Windows.Forms.TextBox();
+            this.txt1 = new System.Windows.Forms.Label();
+            this.txtSell = new System.Windows.Forms.TextBox();
+            this.label100 = new System.Windows.Forms.Label();
+            this.label99 = new System.Windows.Forms.Label();
+            this.txtCost = new System.Windows.Forms.TextBox();
             this.gvEBayResearch = new System.Windows.Forms.DataGridView();
             this.cmbStore = new System.Windows.Forms.ComboBox();
             this.label66 = new System.Windows.Forms.Label();
@@ -237,14 +247,6 @@
             this.chkAddAll = new System.Windows.Forms.CheckBox();
             this.btnUpload = new System.Windows.Forms.Button();
             this.gvAdd = new System.Windows.Forms.DataGridView();
-            this.AddSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ToAddImage = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ToAddName = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Resize = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ToAddCostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.ToAddShipping = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToAddReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Profit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnDelete = new System.Windows.Forms.Button();
             this.tpCostco = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -316,16 +318,13 @@
             this.label97 = new System.Windows.Forms.Label();
             this.llClearanceProducts = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.txtCost = new System.Windows.Forms.TextBox();
-            this.label99 = new System.Windows.Forms.Label();
-            this.label100 = new System.Windows.Forms.Label();
-            this.txtSell = new System.Windows.Forms.TextBox();
-            this.txt1 = new System.Windows.Forms.Label();
-            this.txt9Profit = new System.Windows.Forms.TextBox();
-            this.txt6Profit = new System.Windows.Forms.TextBox();
-            this.label102 = new System.Windows.Forms.Label();
-            this.txt0Profit = new System.Windows.Forms.TextBox();
-            this.label101 = new System.Windows.Forms.Label();
+            this.AddSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToAddImage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ToAddName = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Resize = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToAddCostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.ToAddShipping = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToAddReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
             ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
@@ -463,6 +462,89 @@
             this.tpResearch.Text = "Research";
             this.tpResearch.UseVisualStyleBackColor = true;
             this.tpResearch.Enter += new System.EventHandler(this.tpResearch_Enter);
+            // 
+            // txt0Profit
+            // 
+            this.txt0Profit.Location = new System.Drawing.Point(798, 9);
+            this.txt0Profit.Name = "txt0Profit";
+            this.txt0Profit.Size = new System.Drawing.Size(78, 20);
+            this.txt0Profit.TabIndex = 14;
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Location = new System.Drawing.Point(741, 11);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(51, 13);
+            this.label101.TabIndex = 13;
+            this.label101.Text = "0% Profit:";
+            // 
+            // txt6Profit
+            // 
+            this.txt6Profit.Location = new System.Drawing.Point(657, 8);
+            this.txt6Profit.Name = "txt6Profit";
+            this.txt6Profit.Size = new System.Drawing.Size(78, 20);
+            this.txt6Profit.TabIndex = 12;
+            // 
+            // label102
+            // 
+            this.label102.AutoSize = true;
+            this.label102.Location = new System.Drawing.Point(600, 11);
+            this.label102.Name = "label102";
+            this.label102.Size = new System.Drawing.Size(51, 13);
+            this.label102.TabIndex = 11;
+            this.label102.Text = "6% Profit:";
+            // 
+            // txt9Profit
+            // 
+            this.txt9Profit.Location = new System.Drawing.Point(516, 8);
+            this.txt9Profit.Name = "txt9Profit";
+            this.txt9Profit.Size = new System.Drawing.Size(78, 20);
+            this.txt9Profit.TabIndex = 10;
+            // 
+            // txt1
+            // 
+            this.txt1.AutoSize = true;
+            this.txt1.Location = new System.Drawing.Point(459, 11);
+            this.txt1.Name = "txt1";
+            this.txt1.Size = new System.Drawing.Size(51, 13);
+            this.txt1.TabIndex = 9;
+            this.txt1.Text = "9% Profit:";
+            // 
+            // txtSell
+            // 
+            this.txtSell.Location = new System.Drawing.Point(375, 8);
+            this.txtSell.Name = "txtSell";
+            this.txtSell.Size = new System.Drawing.Size(78, 20);
+            this.txtSell.TabIndex = 8;
+            this.txtSell.TextChanged += new System.EventHandler(this.txtSell_TextChanged);
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(342, 11);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(27, 13);
+            this.label100.TabIndex = 7;
+            this.label100.Text = "Sell:";
+            // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(221, 11);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(31, 13);
+            this.label99.TabIndex = 6;
+            this.label99.Text = "Cost:";
+            this.label99.Click += new System.EventHandler(this.label99_Click);
+            // 
+            // txtCost
+            // 
+            this.txtCost.Location = new System.Drawing.Point(258, 8);
+            this.txtCost.Name = "txtCost";
+            this.txtCost.Size = new System.Drawing.Size(78, 20);
+            this.txtCost.TabIndex = 5;
+            this.txtCost.TextChanged += new System.EventHandler(this.txtCost_TextChanged);
             // 
             // gvEBayResearch
             // 
@@ -2956,8 +3038,7 @@
             this.Resize,
             this.ToAddCostcoPrice,
             this.ToAddShipping,
-            this.ToAddReferencePrice,
-            this.Profit});
+            this.ToAddReferencePrice});
             this.gvAdd.Location = new System.Drawing.Point(6, 35);
             this.gvAdd.Name = "gvAdd";
             this.gvAdd.RowTemplate.Height = 50;
@@ -2968,58 +3049,6 @@
             this.gvAdd.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.gvAdd_CellFormatting);
             this.gvAdd.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellValueChanged);
             this.gvAdd.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gvAdd_DataBindingComplete);
-            // 
-            // AddSelect
-            // 
-            this.AddSelect.HeaderText = "Select";
-            this.AddSelect.Name = "AddSelect";
-            this.AddSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.AddSelect.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.AddSelect.Width = 30;
-            // 
-            // ToAddImage
-            // 
-            this.ToAddImage.HeaderText = "Image";
-            this.ToAddImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.ToAddImage.Name = "ToAddImage";
-            this.ToAddImage.Width = 50;
-            // 
-            // ToAddName
-            // 
-            this.ToAddName.DataPropertyName = "ProductName";
-            this.ToAddName.HeaderText = "ProductName";
-            this.ToAddName.Name = "ToAddName";
-            this.ToAddName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ToAddName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Resize
-            // 
-            this.Resize.HeaderText = "Resize";
-            this.Resize.Name = "Resize";
-            this.Resize.Width = 30;
-            // 
-            // ToAddCostcoPrice
-            // 
-            this.ToAddCostcoPrice.DataPropertyName = "Price";
-            this.ToAddCostcoPrice.HeaderText = "Costco Price";
-            this.ToAddCostcoPrice.Name = "ToAddCostcoPrice";
-            // 
-            // ToAddShipping
-            // 
-            this.ToAddShipping.DataPropertyName = "Shipping";
-            this.ToAddShipping.HeaderText = "Shipping";
-            this.ToAddShipping.Name = "ToAddShipping";
-            // 
-            // ToAddReferencePrice
-            // 
-            this.ToAddReferencePrice.DataPropertyName = "eBayReferencePrice";
-            this.ToAddReferencePrice.HeaderText = "Reference Price";
-            this.ToAddReferencePrice.Name = "ToAddReferencePrice";
-            // 
-            // Profit
-            // 
-            this.Profit.HeaderText = "Profit";
-            this.Profit.Name = "Profit";
             // 
             // btnDelete
             // 
@@ -3359,16 +3388,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle3;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle4;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -3844,88 +3873,52 @@
             this.tabControl1.Size = new System.Drawing.Size(917, 441);
             this.tabControl1.TabIndex = 0;
             // 
-            // txtCost
+            // AddSelect
             // 
-            this.txtCost.Location = new System.Drawing.Point(258, 8);
-            this.txtCost.Name = "txtCost";
-            this.txtCost.Size = new System.Drawing.Size(78, 20);
-            this.txtCost.TabIndex = 5;
-            this.txtCost.TextChanged += new System.EventHandler(this.txtCost_TextChanged);
+            this.AddSelect.HeaderText = "Select";
+            this.AddSelect.Name = "AddSelect";
+            this.AddSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.AddSelect.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.AddSelect.Width = 30;
             // 
-            // label99
+            // ToAddImage
             // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(221, 11);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(31, 13);
-            this.label99.TabIndex = 6;
-            this.label99.Text = "Cost:";
-            this.label99.Click += new System.EventHandler(this.label99_Click);
+            this.ToAddImage.HeaderText = "Image";
+            this.ToAddImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ToAddImage.Name = "ToAddImage";
+            this.ToAddImage.Width = 50;
             // 
-            // label100
+            // ToAddName
             // 
-            this.label100.AutoSize = true;
-            this.label100.Location = new System.Drawing.Point(342, 11);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(27, 13);
-            this.label100.TabIndex = 7;
-            this.label100.Text = "Sell:";
+            this.ToAddName.DataPropertyName = "ProductName";
+            this.ToAddName.HeaderText = "ProductName";
+            this.ToAddName.Name = "ToAddName";
+            this.ToAddName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ToAddName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // txtSell
+            // Resize
             // 
-            this.txtSell.Location = new System.Drawing.Point(375, 8);
-            this.txtSell.Name = "txtSell";
-            this.txtSell.Size = new System.Drawing.Size(78, 20);
-            this.txtSell.TabIndex = 8;
-            this.txtSell.TextChanged += new System.EventHandler(this.txtSell_TextChanged);
+            this.Resize.HeaderText = "Resize";
+            this.Resize.Name = "Resize";
+            this.Resize.Width = 30;
             // 
-            // txt1
+            // ToAddCostcoPrice
             // 
-            this.txt1.AutoSize = true;
-            this.txt1.Location = new System.Drawing.Point(459, 11);
-            this.txt1.Name = "txt1";
-            this.txt1.Size = new System.Drawing.Size(51, 13);
-            this.txt1.TabIndex = 9;
-            this.txt1.Text = "9% Profit:";
+            this.ToAddCostcoPrice.DataPropertyName = "Price";
+            this.ToAddCostcoPrice.HeaderText = "Costco Price";
+            this.ToAddCostcoPrice.Name = "ToAddCostcoPrice";
             // 
-            // txt9Profit
+            // ToAddShipping
             // 
-            this.txt9Profit.Location = new System.Drawing.Point(516, 8);
-            this.txt9Profit.Name = "txt9Profit";
-            this.txt9Profit.Size = new System.Drawing.Size(78, 20);
-            this.txt9Profit.TabIndex = 10;
+            this.ToAddShipping.DataPropertyName = "Shipping";
+            this.ToAddShipping.HeaderText = "Shipping";
+            this.ToAddShipping.Name = "ToAddShipping";
             // 
-            // txt6Profit
+            // ToAddReferencePrice
             // 
-            this.txt6Profit.Location = new System.Drawing.Point(657, 8);
-            this.txt6Profit.Name = "txt6Profit";
-            this.txt6Profit.Size = new System.Drawing.Size(78, 20);
-            this.txt6Profit.TabIndex = 12;
-            // 
-            // label102
-            // 
-            this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(600, 11);
-            this.label102.Name = "label102";
-            this.label102.Size = new System.Drawing.Size(51, 13);
-            this.label102.TabIndex = 11;
-            this.label102.Text = "6% Profit:";
-            // 
-            // txt0Profit
-            // 
-            this.txt0Profit.Location = new System.Drawing.Point(798, 9);
-            this.txt0Profit.Name = "txt0Profit";
-            this.txt0Profit.Size = new System.Drawing.Size(78, 20);
-            this.txt0Profit.TabIndex = 14;
-            // 
-            // label101
-            // 
-            this.label101.AutoSize = true;
-            this.label101.Location = new System.Drawing.Point(741, 11);
-            this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(51, 13);
-            this.label101.TabIndex = 13;
-            this.label101.Text = "0% Profit:";
+            this.ToAddReferencePrice.DataPropertyName = "eBayReferencePrice";
+            this.ToAddReferencePrice.HeaderText = "Reference Price";
+            this.ToAddReferencePrice.Name = "ToAddReferencePrice";
             // 
             // eBayFrontEnd
             // 
@@ -4196,12 +4189,6 @@
         private System.Windows.Forms.Button btnComplete;
         private System.Windows.Forms.Button btnListingModify;
         private System.Windows.Forms.DataGridView gvListing;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ListingSelect;
-        private System.Windows.Forms.DataGridViewImageColumn ListingImage;
-        private System.Windows.Forms.DataGridViewLinkColumn ProductName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
-        private System.Windows.Forms.DataGridViewLinkColumn CostcoPrice;
-        private System.Windows.Forms.DataGridViewLinkColumn eBayReferencePrice;
         private System.Windows.Forms.Button btnListingDelete;
         private System.Windows.Forms.TabPage tpToAdd;
         private System.Windows.Forms.CheckBox chkAddAll;
@@ -4278,14 +4265,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn specificationDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn urlDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn itemNumberDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn AddSelect;
-        private System.Windows.Forms.DataGridViewImageColumn ToAddImage;
-        private System.Windows.Forms.DataGridViewLinkColumn ToAddName;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Resize;
-        private System.Windows.Forms.DataGridViewLinkColumn ToAddCostcoPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ToAddShipping;
-        private System.Windows.Forms.DataGridViewLinkColumn ToAddReferencePrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Profit;
         private System.Windows.Forms.Label label99;
         private System.Windows.Forms.TextBox txtCost;
         private System.Windows.Forms.TextBox txt6Profit;
@@ -4296,5 +4275,18 @@
         private System.Windows.Forms.Label label100;
         private System.Windows.Forms.TextBox txt0Profit;
         private System.Windows.Forms.Label label101;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ListingSelect;
+        private System.Windows.Forms.DataGridViewImageColumn ListingImage;
+        private System.Windows.Forms.DataGridViewLinkColumn ProductName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Status;
+        private System.Windows.Forms.DataGridViewLinkColumn CostcoPrice;
+        private System.Windows.Forms.DataGridViewLinkColumn eBayReferencePrice;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn AddSelect;
+        private System.Windows.Forms.DataGridViewImageColumn ToAddImage;
+        private System.Windows.Forms.DataGridViewLinkColumn ToAddName;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Resize;
+        private System.Windows.Forms.DataGridViewLinkColumn ToAddCostcoPrice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ToAddShipping;
+        private System.Windows.Forms.DataGridViewLinkColumn ToAddReferencePrice;
     }
 }
