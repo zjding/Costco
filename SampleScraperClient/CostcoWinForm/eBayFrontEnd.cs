@@ -749,6 +749,9 @@ namespace CostcoWinForm
 
                     p.Details = "<p><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + ".jpg' width='" +
                                 p.DescriptionImageWidth.ToString() + "' height='" + p.DescriptionImageHeight.ToString() + "'/></p>";
+                    string attach = @"<div style='font-family:Arial; font-size:12px; color:#5D5D5D'><p><strong>Payments</strong></p><p>We accept all major credit cards and instant transfers through PayPal. Payments must be received within 7 days after the end of sale.<br></p><p><strong>Shipping</strong></p><p>We are not able to deliver to P.O. Boxes, Freight Forwarders, or APO boxes. Shipping is available to the contiguous 48 United States only. We are required to ship purchased item to the address listed with Ebay. Merchandise will be shipped within 2 business days (NOT including weekend and holidays)<br></p><p><strong>Stock</strong></p><P>Items are shipped directly from the warehouse, (No Local Pick Ups!). Items are in stock at time of listing but are offered to other retailers &amp; occasionally go on back order or sell out. Please don't hesitate to ask us prior to ordering whether or not your item is in stock.<br>If for whatever reason your item is either sold out or on back order a full refund will be issued immediately. Please don't leave unfair feedback as I am upfront about the possibility of this happening.</P><P> <strong>Descriptions &amp; Errors:</strong></P><p>We attempt to describe products as accurately as possible. However, we do not warrant that product descriptions are accurate, complete, reliable, current, or error-free. In the event a product is listed at an incorrect price or with incorrect information due to a typographical error or an error in pricing or product information received from our suppliers, we shall have the right to refuse or cancel any orders placed for products listed at the incorrect price.</p><p> <strong>Return Policy</strong><br></p><p>We have a 14 day return policy on most items (excluding Non-Prescription Remedies, Food, Vitamins, Herbals &amp; Dietary Supplements,  Family Planning Items).Item must be returned in condition received (Tags & Packaging). Buyer is responsible for all return shipping cost.</p><p><strong>Expiration Date</strong><br></p><p>Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.)</p><p><strong>Sales Tax</strong><br></p><p>If the item is shipped to the following states, applicable sales tax will be applied: AL,AK,AS,AZ,AR,CA,CO,CT,DE,DC,FM,FL,GA,GU,HI,ID,IL,IN,IA,KS,KY,LA,ME,MH,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,MP,OH,OK,OR,PW,PA,PR,RI,SC,SD,TN, TX,UT,VT,VI,VA,WA,WV,WI,WY</p><p><strong>About Us</strong></p><p>We are dedicated to providing you the best customer service and a wonderful shopping experience on eBay. Please feel free to email us with any questions you might have. Your satisfaction is extremely important to us and is our highest priority. Please leave your positive feedback and help us build our business. We leave positive feedback for our customers upon shipment of the order.</p></div>";
+
+                    p.Details = p.Details + attach;
 
                     p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.eBayReferencePrice), Convert.ToDouble(p.Shipping)));
 
@@ -1240,6 +1243,14 @@ namespace CostcoWinForm
             bCostcoTabEnteringGridRefreshed = false;
         }
 
+        private void chkProductAll_CheckedChanged(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in gvProducts.Rows)
+            {
+                row.Cells["Check"].Value = chkProductAll.Checked;
+            }
+        }
+
         // tpToAdd
 
         SqlCommand cmdToAdd;
@@ -1408,9 +1419,12 @@ namespace CostcoWinForm
                     string urlNumber = row.Cells["UrlNumber"].Value.ToString();
                     System.Drawing.Image image = System.Drawing.Image.FromFile(@"C:\temp\Screenshots\" + urlNumber + ".jpg");
 
-                    string detail = "<p>For expiration date: Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.) </p></br><p><img src='http://www.jasondingphotography.com/eBay/" + urlNumber + ".jpg' width='" +
+                    string detail = "<p><img src='http://www.jasondingphotography.com/eBay/" + urlNumber + ".jpg' width='" +
                                 image.Width.ToString() + "' height='" + image.Height.ToString() + "'/></p>";
 
+                    string attach = @"<div style='font-family:Arial; font-size:12px; color:#5D5D5D'><p><strong>Payments</strong></p><p>We accept all major credit cards and instant transfers through PayPal. Payments must be received within 7 days after the end of sale.<br></p><p><strong>Shipping</strong></p><p>We are not able to deliver to P.O. Boxes, Freight Forwarders, or APO boxes. Shipping is available to the contiguous 48 United States only. We are required to ship purchased item to the address listed with Ebay. Merchandise will be shipped within 2 business days (NOT including weekend and holidays)<br></p><p><strong>Stock</strong></p><P>Items are shipped directly from the warehouse, (No Local Pick Ups!). Items are in stock at time of listing but are offered to other retailers &amp; occasionally go on back order or sell out. Please don't hesitate to ask us prior to ordering whether or not your item is in stock.<br>If for whatever reason your item is either sold out or on back order a full refund will be issued immediately. Please don't leave unfair feedback as I am upfront about the possibility of this happening.</P><P> <strong>Descriptions &amp; Errors:</strong></P><p>We attempt to describe products as accurately as possible. However, we do not warrant that product descriptions are accurate, complete, reliable, current, or error-free. In the event a product is listed at an incorrect price or with incorrect information due to a typographical error or an error in pricing or product information received from our suppliers, we shall have the right to refuse or cancel any orders placed for products listed at the incorrect price.</p><p> <strong>Return Policy</strong><br></p><p>We have a 14 day return policy on most items (excluding Non-Prescription Remedies, Food, Vitamins, Herbals &amp; Dietary Supplements,  Family Planning Items).Item must be returned in condition received (Tags & Packaging). Buyer is responsible for all return shipping cost.</p><p><strong>Expiration Date</strong><br></p><p>Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.)</p><p><strong>Sales Tax</strong><br></p><p>If the item is shipped to the following states, applicable sales tax will be applied: AL,AK,AS,AZ,AR,CA,CO,CT,DE,DC,FM,FL,GA,GU,HI,ID,IL,IN,IA,KS,KY,LA,ME,MH,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,MP,OH,OK,OR,PW,PA,PR,RI,SC,SD,TN, TX,UT,VT,VI,VA,WA,WV,WI,WY</p><p><strong>About Us</strong></p><p>We are dedicated to providing you the best customer service and a wonderful shopping experience on eBay. Please feel free to email us with any questions you might have. Your satisfaction is extremely important to us and is our highest priority. Please leave your positive feedback and help us build our business. We leave positive feedback for our customers upon shipment of the order.</p></div>";
+
+                    detail = detail + attach;
                     //sqlString = @"UPDATE eBay_ToAdd SET DescriptionImageWidth = " + image.Width.ToString() +
                     //            ", DescriptionImageHeight = " + image.Height.ToString() + ", Details = '" + detail + "' WHERE UrlNumber = " + urlNumber + " AND DeleteTime is null";
 
@@ -1577,7 +1591,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 10] = product.eBayListingPrice;
                 oSheet.Cells[i, 12] = "GTC";
                 oSheet.Cells[i, 13] = "1";
-                oSheet.Cells[i, 14] = "AL USA";
+                oSheet.Cells[i, 14] = "Multiple locations";
                 oSheet.Cells[i, 16] = "1";
                 oSheet.Cells[i, 17] = "zjding@outlook.com";
                 oSheet.Cells[i, 22] = "Flat";
@@ -4554,5 +4568,7 @@ namespace CostcoWinForm
                 txt0Profit.Text = (Convert.ToDouble(txtSell.Text) * 1.09 - (Convert.ToDouble(txtSell.Text) * 0.119 + 0.3 + Convert.ToDouble(txtCost.Text) * 1.00)).ToString();
             }
         }
+
+        
     }
 }

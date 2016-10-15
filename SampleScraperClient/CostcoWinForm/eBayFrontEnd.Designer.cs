@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.eBaySoldTransactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dsEBaySold = new CostcoWinForm.dsEBaySold();
             this.costcoDataSet6 = new CostcoWinForm.CostcoDataSet6();
@@ -247,6 +247,13 @@
             this.chkAddAll = new System.Windows.Forms.CheckBox();
             this.btnUpload = new System.Windows.Forms.Button();
             this.gvAdd = new System.Windows.Forms.DataGridView();
+            this.AddSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToAddImage = new System.Windows.Forms.DataGridViewImageColumn();
+            this.ToAddName = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.Resize = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ToAddCostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.ToAddShipping = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ToAddReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
             this.btnDelete = new System.Windows.Forms.Button();
             this.tpCostco = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -318,13 +325,7 @@
             this.label97 = new System.Windows.Forms.Label();
             this.llClearanceProducts = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.AddSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ToAddImage = new System.Windows.Forms.DataGridViewImageColumn();
-            this.ToAddName = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.Resize = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ToAddCostcoPrice = new System.Windows.Forms.DataGridViewLinkColumn();
-            this.ToAddShipping = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ToAddReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
+            this.chkProductAll = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
@@ -3050,6 +3051,53 @@
             this.gvAdd.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAdd_CellValueChanged);
             this.gvAdd.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.gvAdd_DataBindingComplete);
             // 
+            // AddSelect
+            // 
+            this.AddSelect.HeaderText = "Select";
+            this.AddSelect.Name = "AddSelect";
+            this.AddSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.AddSelect.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.AddSelect.Width = 30;
+            // 
+            // ToAddImage
+            // 
+            this.ToAddImage.HeaderText = "Image";
+            this.ToAddImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
+            this.ToAddImage.Name = "ToAddImage";
+            this.ToAddImage.Width = 50;
+            // 
+            // ToAddName
+            // 
+            this.ToAddName.DataPropertyName = "ProductName";
+            this.ToAddName.HeaderText = "ProductName";
+            this.ToAddName.Name = "ToAddName";
+            this.ToAddName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ToAddName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Resize
+            // 
+            this.Resize.HeaderText = "Resize";
+            this.Resize.Name = "Resize";
+            this.Resize.Width = 30;
+            // 
+            // ToAddCostcoPrice
+            // 
+            this.ToAddCostcoPrice.DataPropertyName = "Price";
+            this.ToAddCostcoPrice.HeaderText = "Costco Price";
+            this.ToAddCostcoPrice.Name = "ToAddCostcoPrice";
+            // 
+            // ToAddShipping
+            // 
+            this.ToAddShipping.DataPropertyName = "Shipping";
+            this.ToAddShipping.HeaderText = "Shipping";
+            this.ToAddShipping.Name = "ToAddShipping";
+            // 
+            // ToAddReferencePrice
+            // 
+            this.ToAddReferencePrice.DataPropertyName = "eBayReferencePrice";
+            this.ToAddReferencePrice.HeaderText = "Reference Price";
+            this.ToAddReferencePrice.Name = "ToAddReferencePrice";
+            // 
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -3243,6 +3291,7 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.chkProductAll);
             this.groupBox2.Controls.Add(this.txtFilter);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.btnAddPending);
@@ -3260,7 +3309,7 @@
             // 
             this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(43, 19);
+            this.txtFilter.Location = new System.Drawing.Point(99, 19);
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(349, 20);
             this.txtFilter.TabIndex = 6;
@@ -3268,7 +3317,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 23);
+            this.label1.Location = new System.Drawing.Point(64, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 5;
@@ -3288,7 +3337,7 @@
             // btnRefreshProducts
             // 
             this.btnRefreshProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshProducts.Location = new System.Drawing.Point(398, 17);
+            this.btnRefreshProducts.Location = new System.Drawing.Point(454, 16);
             this.btnRefreshProducts.Name = "btnRefreshProducts";
             this.btnRefreshProducts.Size = new System.Drawing.Size(96, 23);
             this.btnRefreshProducts.TabIndex = 1;
@@ -3388,16 +3437,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle1;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle2;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -3873,52 +3922,16 @@
             this.tabControl1.Size = new System.Drawing.Size(917, 441);
             this.tabControl1.TabIndex = 0;
             // 
-            // AddSelect
+            // chkProductAll
             // 
-            this.AddSelect.HeaderText = "Select";
-            this.AddSelect.Name = "AddSelect";
-            this.AddSelect.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.AddSelect.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.AddSelect.Width = 30;
-            // 
-            // ToAddImage
-            // 
-            this.ToAddImage.HeaderText = "Image";
-            this.ToAddImage.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Stretch;
-            this.ToAddImage.Name = "ToAddImage";
-            this.ToAddImage.Width = 50;
-            // 
-            // ToAddName
-            // 
-            this.ToAddName.DataPropertyName = "ProductName";
-            this.ToAddName.HeaderText = "ProductName";
-            this.ToAddName.Name = "ToAddName";
-            this.ToAddName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ToAddName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Resize
-            // 
-            this.Resize.HeaderText = "Resize";
-            this.Resize.Name = "Resize";
-            this.Resize.Width = 30;
-            // 
-            // ToAddCostcoPrice
-            // 
-            this.ToAddCostcoPrice.DataPropertyName = "Price";
-            this.ToAddCostcoPrice.HeaderText = "Costco Price";
-            this.ToAddCostcoPrice.Name = "ToAddCostcoPrice";
-            // 
-            // ToAddShipping
-            // 
-            this.ToAddShipping.DataPropertyName = "Shipping";
-            this.ToAddShipping.HeaderText = "Shipping";
-            this.ToAddShipping.Name = "ToAddShipping";
-            // 
-            // ToAddReferencePrice
-            // 
-            this.ToAddReferencePrice.DataPropertyName = "eBayReferencePrice";
-            this.ToAddReferencePrice.HeaderText = "Reference Price";
-            this.ToAddReferencePrice.Name = "ToAddReferencePrice";
+            this.chkProductAll.AutoSize = true;
+            this.chkProductAll.Location = new System.Drawing.Point(11, 23);
+            this.chkProductAll.Name = "chkProductAll";
+            this.chkProductAll.Size = new System.Drawing.Size(37, 17);
+            this.chkProductAll.TabIndex = 8;
+            this.chkProductAll.Text = "All";
+            this.chkProductAll.UseVisualStyleBackColor = true;
+            this.chkProductAll.CheckedChanged += new System.EventHandler(this.chkProductAll_CheckedChanged);
             // 
             // eBayFrontEnd
             // 
@@ -4288,5 +4301,6 @@
         private System.Windows.Forms.DataGridViewLinkColumn ToAddCostcoPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn ToAddShipping;
         private System.Windows.Forms.DataGridViewLinkColumn ToAddReferencePrice;
+        private System.Windows.Forms.CheckBox chkProductAll;
     }
 }

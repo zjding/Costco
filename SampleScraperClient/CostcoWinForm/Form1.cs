@@ -1409,7 +1409,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 10] = GeneratePrice(Convert.ToDouble(product.Price), Convert.ToDouble(eBayPrice)).ToString();
                 oSheet.Cells[i, 12] = "10";
                 oSheet.Cells[i, 13] = "1";
-                oSheet.Cells[i, 14] = "AL USA";
+                oSheet.Cells[i, 14] = "Multiple locations";
                 oSheet.Cells[i, 16] = "1";
                 oSheet.Cells[i, 17] = "zjding@outlook.com";
                 oSheet.Cells[i, 22] = "Flat";
