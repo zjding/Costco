@@ -1104,22 +1104,10 @@ namespace CostcoWinForm
 
                 bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\Screenshots\" + UrlNum + ".jpg", jpgEncoder, myEncoderParameters);
 
-                using (WebClient client = new WebClient())
-                {
-                    client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
-                    client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
-                }
-
-                //// thumb
-                //if (driver.FindElements(By.ClassName("product-option")).Count == 0)
+                //using (WebClient client = new WebClient())
                 //{
-                //    IWebElement imageElement = driver.FindElement(By.Id("thumb_holder"));
-
-                //    if (imageElement.FindElements(By.TagName("li")) != null)
-                //        imageNumber = imageElement.FindElements(By.TagName("li")).ToList().Count;
-
-                //    if (imageNumber == 0)
-                //        imageNumber = 1;
+                //    client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                //    client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
                 //}
 
                 return true;
