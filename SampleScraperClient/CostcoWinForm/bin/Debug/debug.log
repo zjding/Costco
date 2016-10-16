@@ -1,3 +1,9 @@
 [1004/160801:ERROR:process_reader_win.cc(114)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
 [1004/160801:ERROR:exception_snapshot_win.cc(87)] thread ID 13956 not found in process
 [1004/160801:WARNING:crash_report_exception_handler.cc(56)] ProcessSnapshotWin::Initialize failed
+[1015/084008:ERROR:process_reader_win.cc(114)] NtOpenThread: {Access Denied} A process has requested access to an object, but has not been granted those access rights.  (0xc0000022)
+[1015/084008:ERROR:exception_snapshot_win.cc(87)] thread ID 3884 not found in process
+[1015/084008:WARNING:crash_report_exception_handler.cc(56)] ProcessSnapshotWin::Initialize failed
+[1015/131334:ERROR:process_reader_win.cc(233)] ReadMemory at 0xf87a997 of 512 bytes failed: Only part of a ReadProcessMemory or WriteProcessMemory request was completed. (0x12B)
+[1015/131334:ERROR:crash_report_exception_handler.cc(98)] WriteEverything failed
+[1015/131334:ERROR:scoped_process_suspend.cc(38)] NtResumeProcess: An attempt was made to access an exiting process.  (0xc000010a)

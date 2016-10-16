@@ -142,7 +142,7 @@ namespace CostcoWinForm
             SetConnectionString();
 
             // TODO: This line of code loads data into the 'dsEBaySold.eBay_SoldTransactions' table. You can move, or remove it, as needed.
-            this.eBay_SoldTransactionsTableAdapter.Fill(this.dsEBaySold.eBay_SoldTransactions);
+            //this.eBay_SoldTransactionsTableAdapter.Fill(this.dsEBaySold.eBay_SoldTransactions);
 
             bInit = false;
 
@@ -739,7 +739,7 @@ namespace CostcoWinForm
 
                 p.eBayReferencePrice = Convert.ToDecimal(categoryIDAndPrice.Split('|')[1]);
 
-                p.eBaySoldNumber = categoryIDAndPrice.Split('|')[2] == "" ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
+                p.eBaySoldNumber = (categoryIDAndPrice.Split('|').Length == 2 || categoryIDAndPrice.Split('|')[2] == "") ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
 
                 if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
                 {
@@ -831,7 +831,10 @@ namespace CostcoWinForm
                 {
                     ebaySearchUrl = "http://www.ebay.com/sch/i.html?LH_Sold=1&LH_ItemCondition=11&_sop=12&rt=nc&LH_BIN=1&_nkw=";
 
-                    ebaySearchUrl += productName.Split('+')[0] + "+" + productName.Split('+')[1] + "+" + productName.Split('+')[2];
+                    if (productName.Split('+').Length > 2)
+                        ebaySearchUrl += productName.Split('+')[0] + "+" + productName.Split('+')[1] + "+" + productName.Split('+')[2];
+                    else
+                        ebaySearchUrl += productName.Split('+')[0] + "+" + productName.Split('+')[1];
 
                     webBrowser1.Navigate(ebaySearchUrl);
 
@@ -4293,6 +4296,7 @@ namespace CostcoWinForm
 
             cn.Close();
             driver.Close();
+            driver.Dispose();
 
             gvEBayResearch_Refresh();
         }
