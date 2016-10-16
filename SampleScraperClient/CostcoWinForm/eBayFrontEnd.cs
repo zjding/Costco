@@ -702,6 +702,8 @@ namespace CostcoWinForm
 
             cn.Open();
 
+            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+
             foreach (Product p in products)
             {
                 string eBayReferenceUrl = string.Empty;
@@ -799,7 +801,8 @@ namespace CostcoWinForm
             }
 
             cn.Close();
-            //driver.Close();
+            driver.Close();
+            driver.Dispose();
         }
 
         private string GetEbayCategoryIDAndPrice(string productName, ref string eBayReferenceUrl, bool bCategoryID = true)
@@ -966,7 +969,7 @@ namespace CostcoWinForm
 
         private bool GetProductInfoWithFirefox(string productUrl, string UrlNum, out int screenshotWidth, out int screenshotHeight, out int imageNumber)
         {
-            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            
 
             imageNumber = 0;
             screenshotWidth = 0;
@@ -1127,7 +1130,7 @@ namespace CostcoWinForm
             }
             finally
             {
-                driver.Close();
+                
             }
         }
 
