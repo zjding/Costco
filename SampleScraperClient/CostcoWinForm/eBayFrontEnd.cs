@@ -698,11 +698,11 @@ namespace CostcoWinForm
 
 
             //IWebDriver driver = new ChromeDriver();
-            int screenshotWidth, screenshotHeight, imageNumber;
+            int screenshotWidth = 0, screenshotHeight = 0, imageNumber = 0;
 
             cn.Open();
 
-            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            //driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
             foreach (Product p in products)
             {
@@ -743,8 +743,8 @@ namespace CostcoWinForm
 
                 p.eBaySoldNumber = (categoryIDAndPrice.Split('|').Length == 2 || categoryIDAndPrice.Split('|')[2] == "") ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
 
-                if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
-                {
+                //if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
+                //{
                     p.DescriptionImageHeight = screenshotHeight;
                     p.DescriptionImageWidth = screenshotWidth;
                     p.NumberOfImage = imageNumber;
@@ -796,13 +796,13 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_eBaySoldNumber", p.eBaySoldNumber == -1 ? (object)DBNull.Value : p.eBaySoldNumber);
 
                     cmd.ExecuteNonQuery();
-                }
+                //}
 
             }
 
             cn.Close();
-            driver.Close();
-            driver.Dispose();
+            //driver.Close();
+            //driver.Dispose();
         }
 
         private string GetEbayCategoryIDAndPrice(string productName, ref string eBayReferenceUrl, bool bCategoryID = true)
@@ -1104,11 +1104,11 @@ namespace CostcoWinForm
 
                 bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\Screenshots\" + UrlNum + ".jpg", jpgEncoder, myEncoderParameters);
 
-                //using (WebClient client = new WebClient())
-                //{
-                //    client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
-                //    client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
-                //}
+                using (WebClient client = new WebClient())
+                {
+                    client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                    client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
+                }
 
                 return true;
             }
@@ -1367,7 +1367,38 @@ namespace CostcoWinForm
 
         private void tpToAdd_Enter(object sender, EventArgs e)
         {
+            lvCategory_Refresh();
             gvAdd_Refresh();
+        }
+
+        public void lvCategory_Refresh()
+        {
+            lvToAddCategory.Items.Clear();
+
+            dl.connectionString = connectionString;
+            List<Category> categories = dl.GetCategoryArray();
+
+            List<string> category2s = new List<string>();
+
+            foreach (Category catetory in categories)
+            {
+                if (catetory.Category1 + catetory.Category2 + catetory.Category3 + catetory.Category4 +
+                    catetory.Category5 + catetory.Category6 + catetory.Category7 + catetory.Category8 == "")
+                    continue;
+
+                if (category2s.Contains(catetory.Category2))
+                    continue;
+
+                ListViewItem item = new ListViewItem();
+                item.Checked = true;
+                item.SubItems.Add(catetory.Category2);
+
+                category2s.Add(catetory.Category2);
+
+                this.lvToAddCategory.Items.Add(item);
+            }
+
+            //chkAll.Checked = true;
         }
 
         private void gvAdd_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
