@@ -249,28 +249,29 @@ namespace CostcoWinForm
             llEBayOptions.Text = Convert.ToString(cmd.ExecuteScalar());
 
             sqlString = @"select COUNT(1) FROM CostcoInventoryChange_PriceDown n
-                                WHERE n.UrlNumber NOT IN(SELECT CostcoUrlNumber FROM eBay_CurrentListings)
-                                AND n.UrlNumber NOT IN(SELECT UrlNumber FROM eBay_ToAdd)";
+                                WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                                AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)";
             cmd.CommandText = sqlString;
             llCostcoPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
 
             sqlString = @"SELECT count(1) FROM CostcoInventoryChange_New n 
-                          WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
-                          AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd) ";
+                          WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                          AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)";
             cmd.CommandText = sqlString;
+            cmd.CommandTimeout = 0;
             llNewProducts.Text = Convert.ToString(cmd.ExecuteScalar());
 
             sqlString = @"SELECT count(1) FROM ProductInfo n 
-                          WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
-                          AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd) 
+                          WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                          AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)
                           AND LEN(LTRIM(RTRIM(n.Discount))) > 2 ";
             cmd.CommandText = sqlString;
             llCostcoOnSale.Text = Convert.ToString(cmd.ExecuteScalar());
 
             sqlString = @"  SELECT count(1) 
                             FROM ProductInfo n 
-                            WHERE n.UrlNumber NOT IN (Select CostcoUrlNumber FROM eBay_CurrentListings) 
-                            AND n.UrlNumber not in (Select UrlNumber FROM eBay_ToAdd) 
+                            WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                            AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)
                             AND convert(varchar(10), n.Price) like '%.97%' ";
             cmd.CommandText = sqlString;
             llClearanceProducts.Text = Convert.ToString(cmd.ExecuteScalar());
@@ -355,8 +356,8 @@ namespace CostcoWinForm
             cn.Open();
 
             string sqlString = @"select COUNT(1) FROM CostcoInventoryChange_PriceDown n
-                                WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
-                                AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd)";
+                                WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                                AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)";
             cmd.CommandText = sqlString;
             llCostcoPriceDown.Text = Convert.ToString(cmd.ExecuteScalar());
 
@@ -376,8 +377,8 @@ namespace CostcoWinForm
             cn.Open();
 
             string sqlString = @"select count(1) FROM CostcoInventoryChange_New n 
-                                WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
-                                AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd)";
+                                WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                                AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)";
             cmd.CommandText = sqlString;
             llNewProducts.Text = Convert.ToString(cmd.ExecuteScalar());
 
@@ -397,8 +398,8 @@ namespace CostcoWinForm
             cn.Open();
 
             string sqlString = @"select count(1) FROM ProductInfo n 
-                                WHERE n.UrlNumber NOT IN (SELECT CostcoUrlNumber FROM eBay_CurrentListings) 
-                                AND n.UrlNumber NOT IN (SELECT UrlNumber FROM eBay_ToAdd) 
+                                WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                                AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)
                                 AND LEN(LTRIM(RTRIM(n.Discount))) > 2 ";
             cmd.CommandText = sqlString;
             llCostcoOnSale.Text = Convert.ToString(cmd.ExecuteScalar());
@@ -419,8 +420,8 @@ namespace CostcoWinForm
             cn.Open();
 
             string sqlString = @"select count(1) FROM ProductInfo n 
-                                WHERE n.UrlNumber NOT IN (Select CostcoUrlNumber FROM eBay_CurrentListings) 
-                                AND n.UrlNumber not in (Select UrlNumber FROM eBay_ToAdd) 
+                                WHERE not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = n.UrlNumber)
+                                AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = n.UrlNumber)
                                 AND convert(varchar(10), n.Price) like '%.97%'  ";
             cmd.CommandText = sqlString;
             llClearanceProducts.Text = Convert.ToString(cmd.ExecuteScalar());
@@ -508,13 +509,15 @@ namespace CostcoWinForm
                                 Limit, Discount, Details, Specification, Thumb, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
                                 FROM ProductInfo i
                                 WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text +
-                                @" AND UrlNumber not in (SELECT UrlNumber FROM eBay_ToAdd WHERE DeleteTime is null) AND UrlNumber not in (SELECT CostcoUrlNumber FROM eBay_CurrentListings WHERE DeleteDT is null)";
+                                @" AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = i.UrlNumber and a.DeleteTime is null) 
+                                AND not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = i.UrlNumber and c.DeleteDT is null)";
 
             SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
             DataSet products = new DataSet();
+            dataAdapter.SelectCommand.CommandTimeout = 0;
             dataAdapter.Fill(products);
             DataTable productTable = products.Tables[0];
-
+            
             gvProducts.DataSource = productTable;
             gvProducts.Refresh();
 
@@ -815,6 +818,7 @@ namespace CostcoWinForm
                 productName = productName.Replace("  ", " ");
                 productName = productName.Replace(" ", "+");
                 productName = productName.Replace("%", "");
+                productName = productName.Replace("&", "");
                 ebaySearchUrl += productName;
 
                 webBrowser1.ScriptErrorsSuppressed = true;
@@ -1864,7 +1868,7 @@ namespace CostcoWinForm
                 double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].Value);
                 if (eBayListingPrice < eBayReferencePrice)
                 {
-                    gvAdd.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.FromArgb(255, 255, 224);
+                    gvAdd.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
                 }
             }
             else if (gvAdd.Columns[e.ColumnIndex].Name == "ToAddImage")
