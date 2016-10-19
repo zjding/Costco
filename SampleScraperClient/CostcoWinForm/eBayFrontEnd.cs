@@ -705,7 +705,7 @@ namespace CostcoWinForm
 
             cn.Open();
 
-            //driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+            driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
 
             foreach (Product p in products)
             {
@@ -746,8 +746,8 @@ namespace CostcoWinForm
 
                 p.eBaySoldNumber = (categoryIDAndPrice.Split('|').Length == 2 || categoryIDAndPrice.Split('|')[2] == "") ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
 
-                //if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
-                //{
+                if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
+                {
                     p.DescriptionImageHeight = screenshotHeight;
                     p.DescriptionImageWidth = screenshotWidth;
                     p.NumberOfImage = imageNumber;
@@ -799,13 +799,13 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_eBaySoldNumber", p.eBaySoldNumber == -1 ? (object)DBNull.Value : p.eBaySoldNumber);
 
                     cmd.ExecuteNonQuery();
-                //}
+                }
 
             }
 
             cn.Close();
-            //driver.Close();
-            //driver.Dispose();
+            driver.Close();
+            driver.Dispose();
         }
 
         private string GetEbayCategoryIDAndPrice(string productName, ref string eBayReferenceUrl, bool bCategoryID = true)
