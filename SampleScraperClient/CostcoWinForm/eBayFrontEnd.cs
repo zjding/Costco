@@ -448,22 +448,29 @@ namespace CostcoWinForm
             dl.connectionString = connectionString;
             List<Category> categories = dl.GetCategoryArray();
 
+            List<string> category2s = new List<string>();
+
             foreach (Category catetory in categories)
             {
                 if (catetory.Category1 + catetory.Category2 + catetory.Category3 + catetory.Category4 +
                     catetory.Category5 + catetory.Category6 + catetory.Category7 + catetory.Category8 == "")
                     continue;
 
+                if (category2s.Contains(catetory.Category2))
+                    continue;
+
                 ListViewItem item = new ListViewItem();
                 item.Checked = true;
-                item.SubItems.Add(catetory.Category1);
+                //item.SubItems.Add(catetory.Category1);
                 item.SubItems.Add(catetory.Category2);
-                item.SubItems.Add(catetory.Category3);
-                item.SubItems.Add(catetory.Category4);
-                item.SubItems.Add(catetory.Category5);
-                item.SubItems.Add(catetory.Category6);
-                item.SubItems.Add(catetory.Category7);
-                item.SubItems.Add(catetory.Category8);
+                //item.SubItems.Add(catetory.Category3);
+                //item.SubItems.Add(catetory.Category4);
+                //item.SubItems.Add(catetory.Category5);
+                //item.SubItems.Add(catetory.Category6);
+                //item.SubItems.Add(catetory.Category7);
+                //item.SubItems.Add(catetory.Category8);
+
+                category2s.Add(catetory.Category2);
 
                 this.lvCategories.Items.Add(item);
             }
@@ -479,40 +486,58 @@ namespace CostcoWinForm
             {
                 if (item.Checked)
                 {
-                    string category = "";
+                    //string category = "";
 
-                    for (int i = 0; i < 8; i++)
-                    {
-                        if (item.SubItems[i].Text.Length > 0)
-                        {
-                            category += item.SubItems[i].Text + "|";
-                        }
-                    }
+                    //for (int i = 0; i < 8; i++)
+                    //{
+                    //    if (item.SubItems[i].Text.Length > 0)
+                    //    {
+                    //        category += item.SubItems[i].Text + "|";
+                    //    }
+                    //}
 
-                    category = category.Substring(0, category.Length - 1);
+                    //category = category.Substring(0, category.Length - 1);
 
-                    selectedCategories.Add(category);
+                    //selectedCategories.Add(category);
+
+                    selectedCategories.Add("Home|" + item.SubItems[1].Text);
                 }
             }
 
             string selectCategoriesString = "";
 
-            foreach (string s in selectedCategories)
+            //foreach (string s in selectedCategories)
+            //{
+            //    selectCategoriesString += "'" + s + "',";
+            //}
+
+            //if (selectCategoriesString.Length > 0)
+            //    selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
+            //else
+            //    selectCategoriesString = "''";
+
+            foreach (string category in selectedCategories)
+                selectCategoriesString += "Category like '" + category + "%' OR ";
+
+            string sqlCommand = "";
+
+            if (selectCategoriesString.Length == 0)
             {
-                selectCategoriesString += "'" + s + "',";
+                sqlCommand = @"SELECT i.ID, i.Name as CostcoProductName, UrlNumber, ItemNumber, Category, Price, Shipping,
+                                Limit, Discount, Details, Specification, Thumb, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
+                                FROM ProductInfo i where 1=2";
             }
-
-            if (selectCategoriesString.Length > 0)
-                selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 1);
             else
-                selectCategoriesString = "''";
+            {
+                selectCategoriesString = selectCategoriesString.Substring(0, selectCategoriesString.Length - 3);
 
-            string sqlCommand = @"SELECT i.ID, i.Name as CostcoProductName, UrlNumber, ItemNumber, Category, Price, Shipping,
+                sqlCommand = @"SELECT i.ID, i.Name as CostcoProductName, UrlNumber, ItemNumber, Category, Price, Shipping,
                                 Limit, Discount, Details, Specification, Thumb, ImageLink, Url, ImportedDT, eBayCategoryID, NumberofImage
                                 FROM ProductInfo i
-                                WHERE Category in (" + selectCategoriesString + ")" + txtFilter.Text +
-                                @" AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = i.UrlNumber and a.DeleteTime is null) 
+                                WHERE (" + selectCategoriesString + ") " +
+                                    @" AND not exists (SELECT UrlNumber FROM eBay_ToAdd a WHERE a.UrlNumber = i.UrlNumber and a.DeleteTime is null) 
                                 AND not exists (SELECT CostcoUrlNumber FROM eBay_CurrentListings c WHERE c.CostcoUrlNumber = i.UrlNumber and c.DeleteDT is null)";
+            }
 
             SqlDataAdapter dataAdapter = new SqlDataAdapter(sqlCommand, connectionString);
             DataSet products = new DataSet();
@@ -1444,16 +1469,34 @@ namespace CostcoWinForm
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            for (int i = gvAdd.Rows.Count - 1; i >= 0; i--)
-            {
-                if (Convert.ToBoolean(gvAdd.Rows[i].Cells["AddSelect"].Value) == true)
-                {
-                    gvAdd.Rows.RemoveAt(i);
+            // get products from DB
+            SqlConnection cn = new SqlConnection(connectionString);
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
 
+            string sqlString = string.Empty;
+
+            cn.Open();
+
+            string st = string.Empty;
+
+            foreach (DataGridViewRow row in gvAdd.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells["AddSelect"].Value) == true)
+                {
+                    st += "'" + row.Cells["UrlNumber"].Value.ToString() + "',";
                 }
             }
 
-            daToAdd.Update(dtToAdd);
+
+            st = st.Substring(0, st.Length - 1);
+
+            sqlString = @"UPDATE eBay_ToAdd SET DeleteTime = GETDate() WHERE DeleteTime is NULL AND UrlNumber in (" + st + ")";
+
+            cmd.CommandText = sqlString;
+            cmd.ExecuteNonQuery();
+
+            gvAdd_Refresh();
         }
 
         private string RemoveSpecialCharacters(string inputString)
