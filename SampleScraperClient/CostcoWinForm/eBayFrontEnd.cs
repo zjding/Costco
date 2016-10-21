@@ -67,6 +67,7 @@ namespace CostcoWinForm
 
         bool bCostcoTabEntering = false;
         bool bCostcoTabEnteringGridRefreshed = false;
+        bool bToAddTabEnteringGridRefreshed = false;
 
         int nScanProducts = 0;
         int nImportProducts = 0;
@@ -101,6 +102,7 @@ namespace CostcoWinForm
         bool bInit = false;
 
         bool bCheckingAll = false;
+        bool bToAddCategoryCheckingAll = false;
 
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -1261,15 +1263,44 @@ namespace CostcoWinForm
         {
             bToAddRefreshing = true;
 
-            string sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
+            List<string> selectedCategories = new List<string>();
+
+
+            foreach (ListViewItem item in lvToAddCategory.Items)
+            {
+                if (item.Checked)
+                {
+                    selectedCategories.Add("Home|" + item.SubItems[1].Text);
+                }
+            }
+
+
+            string sqlString =  string.Empty;
+
+            foreach (string category in selectedCategories)
+            {
+                sqlString += @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
                                         UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
-                                 Order by InsertTime DESC";
+                                 AND Category like '" + category + "%' UNION ";               
+            }
+
+            if (sqlString.Length == 0)
+                sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
+                                        UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
+                                 FROM eBay_ToAdd
+                                 WHERE 1 = 2";
+            else
+            {
+                sqlString = sqlString.Substring(0, sqlString.Length - 7);
+                sqlString += " ORDER BY eBaySoldNumber desc";
+            }
 
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
             cmdToAdd = new SqlCommand(sqlString, connection);
+            cmdToAdd.CommandTimeout = 0;
             daToAdd = new SqlDataAdapter(cmdToAdd);
             cmbToAdd = new SqlCommandBuilder(daToAdd);
             dsToAdd = new DataSet();
@@ -1373,6 +1404,7 @@ namespace CostcoWinForm
         {
             lvCategory_Refresh();
             gvAdd_Refresh();
+            bToAddTabEnteringGridRefreshed = true;
         }
 
         public void lvCategory_Refresh()
@@ -1402,7 +1434,7 @@ namespace CostcoWinForm
                 this.lvToAddCategory.Items.Add(item);
             }
 
-            //chkAll.Checked = true;
+            chkToAddCategoryAll.Checked = true;
         }
 
         private void gvAdd_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -4599,6 +4631,42 @@ namespace CostcoWinForm
             }
         }
 
-        
+        private void lvToAddCategory_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            if (bToAddCategoryCheckingAll)
+                return;
+
+            if (!bInit)
+                return;
+
+            if (bToAddTabEnteringGridRefreshed)
+                return;
+
+            gvAdd_Refresh();
+        }
+
+        private void tpToAdd_Leave(object sender, EventArgs e)
+        {
+            bToAddTabEnteringGridRefreshed = false;
+        }
+
+        private void chkToAddCategoryAll_CheckedChanged(object sender, EventArgs e)
+        {
+            bToAddCategoryCheckingAll = true;
+
+            foreach (ListViewItem item in this.lvToAddCategory.Items)
+            {
+                item.Checked = chkToAddCategoryAll.Checked;
+            }
+
+            bToAddCategoryCheckingAll = false;
+
+            gvAdd_Refresh();
+        }
+
+        private void lvToAddCategory_Click(object sender, EventArgs e)
+        {
+            bToAddTabEnteringGridRefreshed = false;
+        }
     }
 }

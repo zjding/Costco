@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.eBaySoldTransactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dsEBaySold = new CostcoWinForm.dsEBaySold();
             this.costcoDataSet6 = new CostcoWinForm.CostcoDataSet6();
@@ -244,6 +244,7 @@
             this.eBayReferencePrice = new System.Windows.Forms.DataGridViewLinkColumn();
             this.btnListingDelete = new System.Windows.Forms.Button();
             this.tpToAdd = new System.Windows.Forms.TabPage();
+            this.chkToAddCategoryAll = new System.Windows.Forms.CheckBox();
             this.lvToAddCategory = new System.Windows.Forms.ListView();
             this.ToAddCategorySelect = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ToAddCategoryName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -2994,6 +2995,7 @@
             // 
             // tpToAdd
             // 
+            this.tpToAdd.Controls.Add(this.chkToAddCategoryAll);
             this.tpToAdd.Controls.Add(this.lvToAddCategory);
             this.tpToAdd.Controls.Add(this.chkAddAll);
             this.tpToAdd.Controls.Add(this.btnUpload);
@@ -3007,9 +3009,22 @@
             this.tpToAdd.Text = "To Add";
             this.tpToAdd.UseVisualStyleBackColor = true;
             this.tpToAdd.Enter += new System.EventHandler(this.tpToAdd_Enter);
+            this.tpToAdd.Leave += new System.EventHandler(this.tpToAdd_Leave);
+            // 
+            // chkToAddCategoryAll
+            // 
+            this.chkToAddCategoryAll.AutoSize = true;
+            this.chkToAddCategoryAll.Location = new System.Drawing.Point(6, 10);
+            this.chkToAddCategoryAll.Name = "chkToAddCategoryAll";
+            this.chkToAddCategoryAll.Size = new System.Drawing.Size(37, 17);
+            this.chkToAddCategoryAll.TabIndex = 9;
+            this.chkToAddCategoryAll.Text = "All";
+            this.chkToAddCategoryAll.UseVisualStyleBackColor = true;
+            this.chkToAddCategoryAll.CheckedChanged += new System.EventHandler(this.chkToAddCategoryAll_CheckedChanged);
             // 
             // lvToAddCategory
             // 
+            this.lvToAddCategory.CheckBoxes = true;
             this.lvToAddCategory.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ToAddCategorySelect,
             this.ToAddCategoryName});
@@ -3019,15 +3034,18 @@
             this.lvToAddCategory.TabIndex = 8;
             this.lvToAddCategory.UseCompatibleStateImageBehavior = false;
             this.lvToAddCategory.View = System.Windows.Forms.View.Details;
+            this.lvToAddCategory.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.lvToAddCategory_ItemChecked);
+            this.lvToAddCategory.Click += new System.EventHandler(this.lvToAddCategory_Click);
             // 
             // ToAddCategorySelect
             // 
             this.ToAddCategorySelect.Text = "Select";
+            this.ToAddCategorySelect.Width = 30;
             // 
             // ToAddCategoryName
             // 
             this.ToAddCategoryName.Text = "Category";
-            this.ToAddCategoryName.Width = 81;
+            this.ToAddCategoryName.Width = 100;
             // 
             // chkAddAll
             // 
@@ -3473,16 +3491,16 @@
             // Discount
             // 
             this.Discount.DataPropertyName = "Discount";
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Discount.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Discount.DefaultCellStyle = dataGridViewCellStyle3;
             this.Discount.HeaderText = "Discount";
             this.Discount.Name = "Discount";
             // 
             // Limit
             // 
             this.Limit.DataPropertyName = "Limit";
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.Limit.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.Limit.DefaultCellStyle = dataGridViewCellStyle4;
             this.Limit.HeaderText = "Limit";
             this.Limit.Name = "Limit";
             this.Limit.Width = 80;
@@ -4330,5 +4348,6 @@
         private System.Windows.Forms.ListView lvToAddCategory;
         private System.Windows.Forms.ColumnHeader ToAddCategorySelect;
         private System.Windows.Forms.ColumnHeader ToAddCategoryName;
+        private System.Windows.Forms.CheckBox chkToAddCategoryAll;
     }
 }
