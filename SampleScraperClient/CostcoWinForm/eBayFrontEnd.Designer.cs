@@ -267,23 +267,12 @@
             this.lvCategories = new System.Windows.Forms.ListView();
             this.Select = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Category_1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Category_8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCostcoCategory = new System.Windows.Forms.Button();
             this.label98 = new System.Windows.Forms.Label();
             this.btnAddProduct = new System.Windows.Forms.Button();
             this.txtProductUrl = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.chkProductAll = new System.Windows.Forms.CheckBox();
-            this.txtFilter = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.btnAddPending = new System.Windows.Forms.Button();
-            this.btnRefreshProducts = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.gvProducts = new System.Windows.Forms.DataGridView();
             this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -299,6 +288,11 @@
             this.specificationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.urlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.itemNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.chkProductAll = new System.Windows.Forms.CheckBox();
+            this.txtFilter = new System.Windows.Forms.TextBox();
+            this.btnRefreshProducts = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnAddPending = new System.Windows.Forms.Button();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.btnCrawl = new System.Windows.Forms.Button();
             this.tpDashboard = new System.Windows.Forms.TabPage();
@@ -330,7 +324,6 @@
             this.label97 = new System.Windows.Forms.Label();
             this.llClearanceProducts = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.eBaySoldTransactionsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dsEBaySold)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.costcoDataSet6)).BeginInit();
@@ -371,16 +364,16 @@
             this.splitContainer1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).BeginInit();
             this.tpDashboard.SuspendLayout();
             this.panel6.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // eBaySoldTransactionsBindingSource
@@ -3234,14 +3227,7 @@
             this.lvCategories.CheckBoxes = true;
             this.lvCategories.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Select,
-            this.Category_1,
-            this.Category_2,
-            this.Category_3,
-            this.Category_4,
-            this.Category_5,
-            this.Category_6,
-            this.Category_7,
-            this.Category_8});
+            this.Category_1});
             this.lvCategories.Location = new System.Drawing.Point(6, 45);
             this.lvCategories.Name = "lvCategories";
             this.lvCategories.Size = new System.Drawing.Size(200, 323);
@@ -3261,41 +3247,6 @@
             // 
             this.Category_1.Text = "Category1";
             this.Category_1.Width = 100;
-            // 
-            // Category_2
-            // 
-            this.Category_2.Text = "Category2";
-            this.Category_2.Width = 100;
-            // 
-            // Category_3
-            // 
-            this.Category_3.Text = "Category3";
-            this.Category_3.Width = 100;
-            // 
-            // Category_4
-            // 
-            this.Category_4.Text = "Category4";
-            this.Category_4.Width = 100;
-            // 
-            // Category_5
-            // 
-            this.Category_5.Text = "Category5";
-            this.Category_5.Width = 100;
-            // 
-            // Category_6
-            // 
-            this.Category_6.Text = "Category6";
-            this.Category_6.Width = 100;
-            // 
-            // Category_7
-            // 
-            this.Category_7.Text = "Category7";
-            this.Category_7.Width = 100;
-            // 
-            // Category_8
-            // 
-            this.Category_8.Text = "Category8";
-            this.Category_8.Width = 100;
             // 
             // btnCostcoCategory
             // 
@@ -3347,56 +3298,28 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Products";
             // 
-            // chkProductAll
+            // splitContainer2
             // 
-            this.chkProductAll.AutoSize = true;
-            this.chkProductAll.Location = new System.Drawing.Point(3, 4);
-            this.chkProductAll.Name = "chkProductAll";
-            this.chkProductAll.Size = new System.Drawing.Size(37, 17);
-            this.chkProductAll.TabIndex = 8;
-            this.chkProductAll.Text = "All";
-            this.chkProductAll.UseVisualStyleBackColor = true;
-            this.chkProductAll.CheckedChanged += new System.EventHandler(this.chkProductAll_CheckedChanged);
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 16);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // txtFilter
+            // splitContainer2.Panel1
             // 
-            this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilter.Location = new System.Drawing.Point(96, 6);
-            this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(349, 20);
-            this.txtFilter.TabIndex = 6;
+            this.splitContainer2.Panel1.Controls.Add(this.gvProducts);
+            this.splitContainer2.Panel1.Controls.Add(this.chkProductAll);
+            this.splitContainer2.Panel1.Controls.Add(this.txtFilter);
+            this.splitContainer2.Panel1.Controls.Add(this.btnRefreshProducts);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
+            this.splitContainer2.Panel1.Controls.Add(this.btnAddPending);
             // 
-            // label1
+            // splitContainer2.Panel2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(61, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Filter";
-            // 
-            // btnAddPending
-            // 
-            this.btnAddPending.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddPending.Location = new System.Drawing.Point(570, 4);
-            this.btnAddPending.Name = "btnAddPending";
-            this.btnAddPending.Size = new System.Drawing.Size(96, 23);
-            this.btnAddPending.TabIndex = 2;
-            this.btnAddPending.Text = "Add to Pending";
-            this.btnAddPending.UseVisualStyleBackColor = true;
-            this.btnAddPending.Click += new System.EventHandler(this.btnAddPending_Click);
-            // 
-            // btnRefreshProducts
-            // 
-            this.btnRefreshProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshProducts.Location = new System.Drawing.Point(451, 3);
-            this.btnRefreshProducts.Name = "btnRefreshProducts";
-            this.btnRefreshProducts.Size = new System.Drawing.Size(96, 23);
-            this.btnRefreshProducts.TabIndex = 1;
-            this.btnRefreshProducts.Text = "Refresh ";
-            this.btnRefreshProducts.UseVisualStyleBackColor = true;
-            this.btnRefreshProducts.Click += new System.EventHandler(this.btnRefreshProducts_Click);
+            this.splitContainer2.Panel2.Controls.Add(this.webBrowser1);
+            this.splitContainer2.Size = new System.Drawing.Size(669, 349);
+            this.splitContainer2.SplitterDistance = 174;
+            this.splitContainer2.TabIndex = 9;
             // 
             // gvProducts
             // 
@@ -3531,6 +3454,57 @@
             this.itemNumberDataGridViewTextBoxColumn.HeaderText = "ItemNumber";
             this.itemNumberDataGridViewTextBoxColumn.Name = "itemNumberDataGridViewTextBoxColumn";
             this.itemNumberDataGridViewTextBoxColumn.Visible = false;
+            // 
+            // chkProductAll
+            // 
+            this.chkProductAll.AutoSize = true;
+            this.chkProductAll.Location = new System.Drawing.Point(3, 4);
+            this.chkProductAll.Name = "chkProductAll";
+            this.chkProductAll.Size = new System.Drawing.Size(37, 17);
+            this.chkProductAll.TabIndex = 8;
+            this.chkProductAll.Text = "All";
+            this.chkProductAll.UseVisualStyleBackColor = true;
+            this.chkProductAll.CheckedChanged += new System.EventHandler(this.chkProductAll_CheckedChanged);
+            // 
+            // txtFilter
+            // 
+            this.txtFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtFilter.Location = new System.Drawing.Point(96, 6);
+            this.txtFilter.Name = "txtFilter";
+            this.txtFilter.Size = new System.Drawing.Size(349, 20);
+            this.txtFilter.TabIndex = 6;
+            // 
+            // btnRefreshProducts
+            // 
+            this.btnRefreshProducts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefreshProducts.Location = new System.Drawing.Point(451, 3);
+            this.btnRefreshProducts.Name = "btnRefreshProducts";
+            this.btnRefreshProducts.Size = new System.Drawing.Size(96, 23);
+            this.btnRefreshProducts.TabIndex = 1;
+            this.btnRefreshProducts.Text = "Refresh ";
+            this.btnRefreshProducts.UseVisualStyleBackColor = true;
+            this.btnRefreshProducts.Click += new System.EventHandler(this.btnRefreshProducts_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(61, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Filter";
+            // 
+            // btnAddPending
+            // 
+            this.btnAddPending.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddPending.Location = new System.Drawing.Point(570, 4);
+            this.btnAddPending.Name = "btnAddPending";
+            this.btnAddPending.Size = new System.Drawing.Size(96, 23);
+            this.btnAddPending.TabIndex = 2;
+            this.btnAddPending.Text = "Add to Pending";
+            this.btnAddPending.UseVisualStyleBackColor = true;
+            this.btnAddPending.Click += new System.EventHandler(this.btnAddPending_Click);
             // 
             // webBrowser1
             // 
@@ -3974,29 +3948,6 @@
             this.tabControl1.Size = new System.Drawing.Size(917, 441);
             this.tabControl1.TabIndex = 0;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(3, 16);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.gvProducts);
-            this.splitContainer2.Panel1.Controls.Add(this.chkProductAll);
-            this.splitContainer2.Panel1.Controls.Add(this.txtFilter);
-            this.splitContainer2.Panel1.Controls.Add(this.btnRefreshProducts);
-            this.splitContainer2.Panel1.Controls.Add(this.label1);
-            this.splitContainer2.Panel1.Controls.Add(this.btnAddPending);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.webBrowser1);
-            this.splitContainer2.Size = new System.Drawing.Size(669, 349);
-            this.splitContainer2.SplitterDistance = 174;
-            this.splitContainer2.TabIndex = 9;
-            // 
             // eBayFrontEnd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4056,6 +4007,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvProducts)).EndInit();
             this.tpDashboard.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
@@ -4063,11 +4019,6 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel1.PerformLayout();
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -4284,13 +4235,6 @@
         private System.Windows.Forms.ListView lvCategories;
         private System.Windows.Forms.ColumnHeader Select;
         private System.Windows.Forms.ColumnHeader Category_1;
-        private System.Windows.Forms.ColumnHeader Category_2;
-        private System.Windows.Forms.ColumnHeader Category_3;
-        private System.Windows.Forms.ColumnHeader Category_4;
-        private System.Windows.Forms.ColumnHeader Category_5;
-        private System.Windows.Forms.ColumnHeader Category_6;
-        private System.Windows.Forms.ColumnHeader Category_7;
-        private System.Windows.Forms.ColumnHeader Category_8;
         private System.Windows.Forms.Button btnCostcoCategory;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.GroupBox groupBox2;
