@@ -544,7 +544,7 @@ namespace CostcoWinForm
             dataAdapter.SelectCommand.CommandTimeout = 0;
             dataAdapter.Fill(products);
             DataTable productTable = products.Tables[0];
-            
+
             gvProducts.DataSource = productTable;
             gvProducts.Refresh();
 
@@ -1000,7 +1000,7 @@ namespace CostcoWinForm
 
         private bool GetProductInfoWithFirefox(string productUrl, string UrlNum, out int screenshotWidth, out int screenshotHeight, out int imageNumber)
         {
-            
+
 
             imageNumber = 0;
             screenshotWidth = 0;
@@ -1149,7 +1149,7 @@ namespace CostcoWinForm
             }
             finally
             {
-                
+
             }
         }
 
@@ -1300,7 +1300,7 @@ namespace CostcoWinForm
             }
 
 
-            string sqlString =  string.Empty;
+            string sqlString = string.Empty;
 
             foreach (string category in selectedCategories)
             {
@@ -1308,7 +1308,7 @@ namespace CostcoWinForm
                                         UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
-                                 AND Category like '" + category + "%' UNION ";               
+                                 AND Category like '" + category + "%' UNION ";
             }
 
             if (sqlString.Length == 0)
@@ -4330,15 +4330,18 @@ namespace CostcoWinForm
 
             driver.Navigate().GoToUrl(storeUrl);
 
+            IWebElement eProductCount = driver.FindElement(By.ClassName("rcnt"));
+            int nProductCount = Convert.ToInt32(eProductCount.Text.Replace(",", ""));
+
+            int nPage = Convert.ToInt16(Math.Round(nProductCount / 50.00 + 0.5));
+
             if (hasElement(driver, By.ClassName("pages")))
             {
-                IWebElement pagesElement = driver.FindElement(By.ClassName("pages"));
-
-                var tagas = pagesElement.FindElements(By.TagName("a"));
-
-                foreach (IWebElement a in tagas)
+                for (int i = 1; i <= nPage; i++)
                 {
-                    storeLinkList.Add(a.GetAttribute("href"));
+                    storeUrl = @"http://www.ebay.com/sch/m.html?_nkw=&_armrs=1&_from=&_ssn=" + storeName + @"&_pgn=" + i.ToString() + @"&_skc=" + ((i - 1) * 50).ToString() + @"&rt=nc";
+
+                    storeLinkList.Add(storeUrl);
                 }
             }
             else
@@ -4346,8 +4349,22 @@ namespace CostcoWinForm
                 storeLinkList.Add(storeUrl);
             }
 
+            ChromeDriver costcoDriver = new ChromeDriver();
+            costcoDriver.Navigate().GoToUrl("https://www.costco.com/LogonForm");
+            IWebElement logonForm = costcoDriver.FindElement(By.Id("LogonForm"));
+            logonForm.FindElement(By.Id("logonId")).SendKeys("zjding@outlook.com");
+            logonForm.FindElement(By.Id("logonPassword")).SendKeys("721123");
+            logonForm.FindElement(By.ClassName("submit")).Click();
+
+            string itemName = string.Empty;
+            string itemURL = string.Empty;
+            string itemPrice = string.Empty;
+            string trending = string.Empty;
+            string numberSold = string.Empty;
+
             foreach (string url in storeLinkList)
             {
+
                 driver.Navigate().GoToUrl(url);
 
                 if (hasElement(driver, By.Id("ResultSetItems")))
@@ -4356,48 +4373,194 @@ namespace CostcoWinForm
 
                     foreach (IWebElement li in lis)
                     {
-                        string itemName = li.FindElement(By.ClassName("lvtitle")).Text;
-                        string itemURL = li.FindElement(By.ClassName("lvtitle")).FindElement(By.TagName("a")).GetAttribute("href");
-                        string itemPrice = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).Text;
-                        string trending = string.Empty;
-                        if (hasElement(li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")), By.ClassName("medprc")))
-                            trending = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).FindElement(By.ClassName("medprc")).Text;
-                        if (!string.IsNullOrEmpty(trending))
-                            itemPrice = itemPrice.Replace(trending, "").Replace("$", "").Replace("\r", "").Replace("\n", "");
-                        else
-                            itemPrice = itemPrice.Replace("$", "").Replace("\r", "").Replace("\n", "");
+                        itemName = string.Empty;
+                        itemURL = string.Empty;
+                        itemPrice = string.Empty;
+                        trending = string.Empty;
+                        numberSold = string.Empty;
 
-                        string extra = string.Empty;
-                        IWebElement lvextras;
-
-                        if (hasElement(li, By.ClassName("lvextras")))
+                        try
                         {
-                            lvextras = li.FindElement(By.ClassName("lvextras"));
+                            itemName = li.FindElement(By.ClassName("lvtitle")).Text;
+                            itemName = itemName.Replace("NEW LISTING", "");
+                            itemURL = li.FindElement(By.ClassName("lvtitle")).FindElement(By.TagName("a")).GetAttribute("href");
+                            itemPrice = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).Text;
+                            if (hasElement(li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")), By.ClassName("medprc")))
+                                trending = li.FindElement(By.ClassName("lvprice")).FindElement(By.ClassName("bold")).FindElement(By.ClassName("medprc")).Text;
+                            if (!string.IsNullOrEmpty(trending))
+                                itemPrice = itemPrice.Replace(trending, "").Replace("$", "").Replace("\r", "").Replace("\n", "");
+                            else
+                                itemPrice = itemPrice.Replace("$", "").Replace("\r", "").Replace("\n", "");
 
-                            if (hasElement(lvextras, By.ClassName("red")))
-                                lvextras = lvextras.FindElement(By.ClassName("red"));
+                            string extra = string.Empty;
+                            IWebElement lvextras;
 
-                            extra = lvextras.Text;
+                            if (hasElement(li, By.ClassName("lvextras")))
+                            {
+                                lvextras = li.FindElement(By.ClassName("lvextras"));
+
+                                if (hasElement(lvextras, By.ClassName("red")))
+                                    lvextras = lvextras.FindElement(By.ClassName("red"));
+
+                                extra = lvextras.Text;
+                            }
+
+                            if (extra.Contains("sold"))
+                            {
+                                numberSold = extra.Replace("sold", "").Replace("+", "").Trim();
+                            }
+
+                            //string searchUrl = itemName.Replace(" ", "+");
+                            //searchUrl = searchUrl.Replace("%", "%25");
+                            //searchUrl = "https://www.google.com/?gws_rd=ssl#q=" + searchUrl + "+site:costco.com";
+
+                            //costcoDriver.Navigate().GoToUrl(searchUrl);
+
+                            //costcoDriver.Navigate().GoToUrl("https://www.google.com");
+                            //costcoDriver.FindElement(By.Id("lst-ib")).SendKeys(itemName + " site:costco.com");
+                            //costcoDriver.FindElement(By.Name("btnG")).Click();
+
+                            //costcoDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(2));
+
+                            costcoDriver.Navigate().GoToUrl("http://www.costco.com");
+                            costcoDriver.FindElement(By.Id("search-field")).SendKeys(itemName);
+                            costcoDriver.FindElement(By.ClassName("co-search-thin")).Click();
+                            costcoDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(2));
+                            string cs = string.Empty;
+                            string price = string.Empty;
+                            string productUrl = string.Empty;
+
+                            if (hasElement(costcoDriver, By.Id("product-details")))
+                            {
+                                IWebElement eProductDetails = costcoDriver.FindElement(By.Id("product-details"));
+                                IWebElement ePrice = eProductDetails.FindElements(By.ClassName("form-group"))[0];
+                                IWebElement eYourPrice = ePrice.FindElement(By.ClassName("your-price")).FindElement(By.ClassName("value"));
+                                price = eYourPrice.Text.Replace(",", "");
+                                cs = "C";
+                            } 
+                            else if (!hasElement(costcoDriver, By.Id("no-results"))&& hasElement(costcoDriver, By.ClassName("product-list")))
+                            {
+                                IWebElement eProductList = costcoDriver.FindElement(By.ClassName("product-list"));
+                                if (hasElement(eProductList, By.ClassName("product")))
+                                {
+                                    IWebElement eProduct = eProductList.FindElement(By.ClassName("product"));
+                                    IWebElement ePrice = eProduct.FindElement(By.ClassName("price"));
+                                    price = ePrice.Text.Replace("$", "").Replace(",", "");
+                                    cs = "C";
+                                }
+                            }
+
+
+                            //if (hasElement(costcoDriver, By.Id("res")))
+                            //{
+                            //    IWebElement eRes = costcoDriver.FindElement(By.Id("res"));
+
+                                //    if (hasElement(eRes, By.ClassName("srg")))
+                                //    {
+                                //        IWebElement eSrg = eRes.FindElement(By.ClassName("srg"));
+
+                                //        if (hasElement(eSrg, By.ClassName("g")))
+                                //        {
+                                //            var eGs = eSrg.FindElements(By.ClassName("g"));
+
+                                //            productUrl = eGs[0].FindElement(By.TagName("h3")).FindElement(By.TagName("a")).GetAttribute("href");
+
+                                //            costcoDriver.Navigate().GoToUrl(productUrl);
+
+                                //            IWebElement eProductDetails = costcoDriver.FindElement(By.Id("product-details"));
+                                //            IWebElement ePrice = eProductDetails.FindElements(By.ClassName("form-group"))[0];
+                                //            IWebElement eYourPrice = ePrice.FindElement(By.ClassName("your-price")).FindElement(By.ClassName("value"));
+                                //            price = eYourPrice.Text.Replace(",", "");
+
+                                //            cs = "C";
+                                //        }
+                                //    }
+                                //}
+
+                            if (string.IsNullOrEmpty(price))
+                            {
+                                //searchUrl = searchUrl.Replace("costco", "samsclub");
+
+                                //costcoDriver.Navigate().GoToUrl(searchUrl);
+
+                                //costcoDriver.Navigate().GoToUrl("https://www.google.com");
+                                //costcoDriver.FindElement(By.Id("lst-ib")).SendKeys(itemName + " site:samsclub.com");
+                                //costcoDriver.FindElement(By.Name("btnG")).Click();
+                                //costcoDriver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(2));
+
+                                //if (hasElement(costcoDriver, By.Id("res")))
+                                //{
+                                //    IWebElement eRes = costcoDriver.FindElement(By.Id("res"));
+
+                                //    if (hasElement(eRes, By.ClassName("srg")))
+                                //    {
+                                //        IWebElement eSrg = eRes.FindElement(By.ClassName("srg"));
+
+                                //        if (hasElement(eSrg, By.ClassName("g")))
+                                //        {
+                                //            var eGs = eSrg.FindElements(By.ClassName("g"));
+
+                                //            productUrl = eGs[0].FindElement(By.TagName("h3")).FindElement(By.TagName("a")).GetAttribute("href");
+
+                                //            costcoDriver.Navigate().GoToUrl(productUrl);
+
+                                //            IWebElement eMoneyBox = costcoDriver.FindElement(By.Id("itemPageMoneyBox"));
+
+                                //            IWebElement ePrice = eMoneyBox.FindElement(By.ClassName("pricingInfo"));
+
+                                //            price = ePrice.FindElement(By.ClassName("price")).Text + "." + ePrice.FindElements(By.ClassName("superscript"))[1].Text;
+
+                                //            cs = "S";
+                                //        }
+                                //    }
+                                //}
+
+                                costcoDriver.Navigate().GoToUrl("http://www.samsclub.com");
+                                costcoDriver.FindElement(By.Id("id-search-bar")).SendKeys(itemName);
+                                costcoDriver.FindElement(By.ClassName("search-ico")).Click();
+
+                                if (hasElement(costcoDriver, By.ClassName("sc-product-grid")))
+                                {
+                                    IWebElement eProductCard = costcoDriver.FindElement(By.ClassName("sc-product-grid")).FindElement(By.ClassName("sc-product-card"));
+                                    price = eProductCard.FindElement(By.ClassName("sc-dollars")).Text.Replace(",", "");
+                                    cs = "S";
+                                }
+                                else if (hasElement(costcoDriver, By.Id("itemPageMoneyBox")))
+                                {
+                                    IWebElement eMoneyBox = costcoDriver.FindElement(By.Id("itemPageMoneyBox"));
+                                    IWebElement ePrice = eMoneyBox.FindElement(By.ClassName("pricingInfo"));
+                                    price = ePrice.FindElement(By.ClassName("price")).Text + "." + ePrice.FindElements(By.ClassName("superscript"))[1].Text;
+
+                                    cs = "S";
+                                }
+                            }
+
+                            sqlString = @"INSERT INTO eBay_ProductsResearch (Name, eBayUrl, eBayPrice, eBaySoldNumber, productUrl, productPrice, SamsOrCostco, eBayUserId) VALUES ('" +
+                            itemName.Replace("'", "") + "','" + itemURL.Replace("'", "") + "','" + itemPrice + "'," + (string.IsNullOrEmpty(numberSold) ? "NULL" : numberSold) +
+                            ", '" + productUrl + "', " + price + ", '" + cs + "', '" + storeName.Replace("'", "") + "')";
+
+                            cmd.CommandText = sqlString;
+                            cmd.ExecuteNonQuery();
                         }
-
-                        string numberSold = string.Empty;
-                        if (extra.Contains("sold"))
+                        catch (Exception ex)
                         {
-                            numberSold = extra.Replace("sold", "").Replace("+", "").Trim();
+                            sqlString = @"INSERT INTO eBay_ProductsResearch (Name, eBayUrl, eBayPrice, eBaySoldNumber, eBayUserId) VALUES ('" +
+                                    itemName.Replace("'", "") + "','" + itemURL.Replace("'", "") + "','" + itemPrice + "'," + (string.IsNullOrEmpty(numberSold) ? "NULL" : numberSold) +
+                                    ", '" + storeName.Replace("'", "") + "')";
+
+                            cmd.CommandText = sqlString;
+                            cmd.ExecuteNonQuery();
+
+                            continue;
                         }
-
-                        sqlString = @"INSERT INTO eBay_ProductsResearch (Name, eBayUrl, eBayPrice, eBaySoldNumber, eBayUserId) VALUES ('" +
-                                    itemName.Replace("'", "") + "','" + itemURL.Replace("'", "") + "','" + itemPrice + "'," + (string.IsNullOrEmpty(numberSold) ? "NULL" : numberSold) + ", '" + storeName.Replace("'", "") + "')";
-
-                        cmd.CommandText = sqlString;
-                        cmd.ExecuteNonQuery();
                     }
                 }
             }
 
             cn.Close();
-            driver.Close();
+
             driver.Dispose();
+            costcoDriver.Dispose();
 
             gvEBayResearch_Refresh();
         }
@@ -4463,6 +4626,19 @@ namespace CostcoWinForm
 
             gvEBayResearch.Columns[1].Visible = false;
             gvEBayResearch.Columns[2].Visible = false;
+
+            foreach (DataGridViewRow row in gvEBayResearch.Rows)
+            {
+                row.HeaderCell.Value = (row.Index + 1).ToString();
+            }
+        }
+
+        private void gvEBayResearch_Sorted(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in gvEBayResearch.Rows)
+            {
+                row.HeaderCell.Value = (row.Index + 1).ToString();
+            }
         }
 
         private void gvEBayResearch_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -4711,5 +4887,7 @@ namespace CostcoWinForm
         {
             bToAddTabEnteringGridRefreshed = false;
         }
+
+
     }
 }
