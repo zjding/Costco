@@ -1413,7 +1413,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 16] = "1";
                 oSheet.Cells[i, 17] = "zjding@outlook.com";
                 oSheet.Cells[i, 22] = "Flat";
-                oSheet.Cells[i, 23] = "USPSPriority";
+                oSheet.Cells[i, 23] = "ShippingMethodStandard";
                 oSheet.Cells[i, 24] = "0";
                 oSheet.Cells[i, 25] = "1";
                 oSheet.Cells[i, 31] = "1";

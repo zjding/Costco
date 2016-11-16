@@ -728,7 +728,8 @@ namespace CostcoWinForm
 
 
             //IWebDriver driver = new ChromeDriver();
-            int screenshotWidth = 0, screenshotHeight = 0, imageNumber = 0;
+            int descriptionWidth = 0, descriptionHeight = 0, reviewWidth = 0, reviewHeight = 0, ratingWidth = 0, ratingHeight = 0, imageNumber = 0;
+            string feature = "";
 
             cn.Open();
 
@@ -737,6 +738,23 @@ namespace CostcoWinForm
             foreach (Product p in products)
             {
                 string eBayReferenceUrl = string.Empty;
+
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(p.ImageLink.Split('|')[0], @"C:\eBayApp\Files\Screenshots\" + p.UrlNumber + ".jpg");
+
+                    var myBitMap = new Bitmap(@"C:\eBayApp\Files\Screenshots\" + p.UrlNumber + ".jpg");
+                    var g = Graphics.FromImage(myBitMap);
+                    g.DrawString("No Sales Tax!", new System.Drawing.Font("Tahoma", 35), Brushes.Red, new PointF(0, 0));
+                
+                    myBitMap.Save(@"C:\eBayApp\Files\Screenshots\" + p.UrlNumber + "_productimage.jpg", ImageFormat.Jpeg);
+
+                    g.Dispose();
+                    myBitMap.Dispose();
+
+                    client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                    client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + p.UrlNumber + "_productimage.jpg", "STOR", @"C:\eBayApp\Files\Screenshots\" + p.UrlNumber + "_productimage.jpg");
+                }
 
                 string categoryIDAndPrice = GetEbayCategoryIDAndPrice(p.Name, ref eBayReferenceUrl, string.IsNullOrEmpty(p.eBayCategoryID));
                 if (string.IsNullOrEmpty(p.eBayCategoryID))
@@ -773,17 +791,66 @@ namespace CostcoWinForm
 
                 p.eBaySoldNumber = (categoryIDAndPrice.Split('|').Length == 2 || categoryIDAndPrice.Split('|')[2] == "") ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
 
-                if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out screenshotWidth, out screenshotHeight, out imageNumber))
+                if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out descriptionWidth, out descriptionHeight, out reviewWidth, out reviewHeight, out ratingWidth, out ratingHeight, out feature)) ;
                 {
-                    p.DescriptionImageHeight = screenshotHeight;
-                    p.DescriptionImageWidth = screenshotWidth;
+                    p.DescriptionImageHeight = descriptionHeight;
+                    p.DescriptionImageWidth = descriptionWidth;
                     p.NumberOfImage = imageNumber;
 
-                    p.Details = "<p><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + ".jpg' width='" +
-                                p.DescriptionImageWidth.ToString() + "' height='" + p.DescriptionImageHeight.ToString() + "'/></p>";
-                    string attach = @"<div style='font-family:Arial; font-size:12px; color:#5D5D5D'><p><strong>Payments</strong></p><p>We accept all major credit cards and instant transfers through PayPal. Payments must be received within 7 days after the end of sale.<br></p><p><strong>Shipping</strong></p><p>We are not able to deliver to P.O. Boxes, Freight Forwarders, or APO boxes. Shipping is available to the contiguous 48 United States only. We are required to ship purchased item to the address listed with Ebay. Merchandise will be shipped within 2 business days (NOT including weekend and holidays)<br></p><p><strong>Stock</strong></p><P>Items are shipped directly from the warehouse, (No Local Pick Ups!). Items are in stock at time of listing but are offered to other retailers &amp; occasionally go on back order or sell out. Please don't hesitate to ask us prior to ordering whether or not your item is in stock.<br>If for whatever reason your item is either sold out or on back order a full refund will be issued immediately. Please don't leave unfair feedback as I am upfront about the possibility of this happening.</P><P> <strong>Descriptions &amp; Errors:</strong></P><p>We attempt to describe products as accurately as possible. However, we do not warrant that product descriptions are accurate, complete, reliable, current, or error-free. In the event a product is listed at an incorrect price or with incorrect information due to a typographical error or an error in pricing or product information received from our suppliers, we shall have the right to refuse or cancel any orders placed for products listed at the incorrect price.</p><p> <strong>Return Policy</strong><br></p><p>We have a 14 day return policy on most items (excluding Non-Prescription Remedies, Food, Vitamins, Herbals &amp; Dietary Supplements,  Family Planning Items).Item must be returned in condition received (Tags & Packaging). Buyer is responsible for all return shipping cost.</p><p><strong>Expiration Date</strong><br></p><p>Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.)</p><p><strong>Sales Tax</strong><br></p><p>If the item is shipped to the following states, applicable sales tax will be applied: AL,AK,AS,AZ,AR,CA,CO,CT,DE,DC,FM,FL,GA,GU,HI,ID,IL,IN,IA,KS,KY,LA,ME,MH,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,MP,OH,OK,OR,PW,PA,PR,RI,SC,SD,TN, TX,UT,VT,VI,VA,WA,WV,WI,WY</p><p><strong>About Us</strong></p><p>We are dedicated to providing you the best customer service and a wonderful shopping experience on eBay. Please feel free to email us with any questions you might have. Your satisfaction is extremely important to us and is our highest priority. Please leave your positive feedback and help us build our business. We leave positive feedback for our customers upon shipment of the order.</p></div>";
+                    string eBayTemplate = @"<div id='ds_div'>";
+                    eBayTemplate += @"<link href='http://www.jasondingphotography.com/eBay/etemp.css' rel='stylesheet' type='text/css'>";
+                    eBayTemplate += @"<link href='http://www.jasondingphotography.com/eBay/font-awesome.min.css' rel='stylesheet' type='text/css'>";
+                    eBayTemplate += @"<link href='http://www.jasondingphotography.com/eBay/slider.css' rel='stylesheet' type='text/css'>";
+                    eBayTemplate += @"<div id='etemp'><div id='eheader'><div id='etemp-wrap'><div style='clear:both;'></div><div id='econtent'>";
+                    eBayTemplate += @"<div class='slider'>";
 
-                    p.Details = p.Details + attach;
+                    int i = 1;
+                    foreach (string image in p.ImageLink.Split('|'))
+                    {
+                        eBayTemplate += @"<input type='radio' name='slide_switch' id='id" + i.ToString() + "'/>";
+                        eBayTemplate += @"<label for='id" + i.ToString() + "'><img src='" + image + "' width='100'/></label>";
+                        eBayTemplate += @"<img src='" + image + "'/>";
+                        i++;
+                    }
+
+                    eBayTemplate += "</div>";
+                    eBayTemplate += @"<div id='pinfo'><div id='topbox-wrap'><h1 id='ptitle' style='font-size:30px'>";
+                    eBayTemplate += p.Name;
+                    eBayTemplate += @"</h1>";
+                    eBayTemplate += @"<div><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + "_rating.jpg' width='" + ratingWidth + "' height='" + ratingHeight + "' alt=''/></div>";
+                    eBayTemplate += @"<div style='margin-bottom:20px; margin-top:20px'><span style='font-size:20px'>Price</span><span style='margin-left:20px; font-size:24px'>";
+                    eBayTemplate += @"$" + p.eBayListingPrice.ToString() + @"</span><span><img src='http://www.jasondingphotography.com/eBay/tax-free-stamp1.jpg' width='70' height='30' alt='' /></span> </div>";
+                    eBayTemplate += @"<div style='margin-bottom:20px'> <span style='font-size:16px'>Features:</span> </div><ul id='itemdesc'>";
+
+                    foreach (string f in feature.Split('|'))
+                    {
+                        eBayTemplate += @"<li>" + f + @"</li>";
+                    }
+
+                    eBayTemplate += @"</ul></div></div><div style='clear:both;' id='midclear'></div>";
+                    eBayTemplate += @"<div id='ptabs'><div class='tabslide opentab'><div class='tabhead'><i class='fa fa-minus-circle'></i>Description</div><div class='tabcontent' style='display: block;'>";
+                    eBayTemplate += @"<img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + "_description.jpg' width='" + descriptionWidth.ToString() + "' height='" + descriptionHeight.ToString() + "' />";
+                    eBayTemplate += @"</div><div class='tabslide'><div class='tabhead'><i class='fa fa-plus-circle'></i>Reviews</div><div class='tabcontent'>";
+                    eBayTemplate += @"<img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + "_review.jpg' width='" + reviewWidth.ToString() + "' height='" + reviewHeight.ToString() + "' /> </div>";
+                    eBayTemplate += @"</div><div class='tabslide'><div class='tabhead'><i class='fa fa-plus-circle'></i>Store Policy</div><div class='tabcontent'>";
+                    eBayTemplate += @"<strong>Payment</strong><br><br>We accepts payment by PayPal only. With a PayPal account, you can pay using your debit card, major credit card, or a bank account. Don't have a PayPal account yet? <a href='http://paypal.com'>Sign up now.</a><br><br>";
+                    eBayTemplate += @"<strong>Sales Tax</strong><br><br>No sales tax!<br><br>";
+                    eBayTemplate += @"<strong>Stock</strong><br><br>Items are shipped directly from the warehouse, (No Local Pick Ups!). Items are in stock at time of listing but are offered to other retailers & occasionally go on back order or sell out. Please don't hesitate to ask us prior to ordering whether or not your item is in stock. If for whatever reason your item is either sold out or on back order a full refund will be issued immediately. Please don't leave unfair feedback as I am upfront about the possibility of this happening.<br><br>";
+                    eBayTemplate += @"<strong>Descriptions & Errors</strong><br><br>We attempt to describe products as accurately as possible. However, we do not warrant that product descriptions are accurate, complete, reliable, current, or error-free. In the event a product is listed at an incorrect price or with incorrect information due to a typographical error or an error in pricing or product information received from our suppliers, we shall have the right to refuse or cancel any orders placed for products listed at the incorrect price.<br><br>";
+                    eBayTemplate += @"<strong>Expiration Date</strong><br><br>Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.)<br><br>";
+                    eBayTemplate += @"<strong>Shipping</strong><br><br>We are not able to deliver to P.O. Boxes, Freight Forwarders, or APO boxes. Shipping is available to the contiguous 48 United States only. We are required to ship purchased item to the address listed with Ebay. Merchandise will be shipped within 2 business days (NOT including weekend and holidays)<br><br>";
+                    eBayTemplate += @"<strong>Return</strong><br><br>We have a 14 day return policy on most items (excluding Non-Prescription Remedies, Food, Vitamins, Herbals &amp; Dietary Supplements,  Family Planning Items).Item must be returned in condition received (Tags &amp; Packaging). Buyer is responsible for all return shipping cost.";
+                    eBayTemplate += @"</div></div></div><div style='clear:both;' id='midclear'></div></div></div></div></div></div></div>";
+                    eBayTemplate += "<script>document.write('<sc' + 'ript src=\"ht' + 'tps://ajax.go' + 'ogleapis.com/ajax/libs/jque' + 'ry/2.1.4/jqu' + 'ery.min.j' + 's\"></scr' + 'ipt>');</script>";
+                    eBayTemplate += @"<script>$(document).ready(function(){$('.tabhead').click(function(){$(this).parent('.tabslide').children('.tabcontent').slideToggle('slow');$(this).parent('.tabslide').toggleClass('opentab');$(this).children('.fa').toggleClass('fa-plus-circle');$(this).children('.fa').toggleClass('fa-minus-circle');});";
+                    eBayTemplate += @"$('.lwp').click(function(){$(this).parent('.top').children('.tphide').slideToggle('slow');$(this).parent('.top').toggleClass('opennav');});";
+                    eBayTemplate += @"$('#thumbs img').click(function(){$('#thumbs img').removeClass('active');$(this).addClass('active');});";
+                    eBayTemplate += @"var tflag=0;$('#menutoggle').click(function(){$(this).toggleClass('active');$('#mobilenav').toggle('slow');$('#mobileoverlay').toggle();});";
+                    eBayTemplate += @"$('#mobileoverlay').click(function () {$('#menutoggle').toggleClass('active');$('#mobilenav').toggle('slow');$('#mobileoverlay').toggle();});";
+                    eBayTemplate += @"$('#searchtoggle').click(function () {$(this).toggleClass('active');$('#searchbar').toggle('fast');});});";
+                    eBayTemplate += @"</script><br style='clear:both'><br style='clear:both'><span id='closeHtml'></span>";
+
+                    p.Details = eBayTemplate;
 
                     p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.eBayReferencePrice), Convert.ToDouble(p.Shipping)));
 
@@ -998,147 +1065,49 @@ namespace CostcoWinForm
             }
         }
 
-        private bool GetProductInfoWithFirefox(string productUrl, string UrlNum, out int screenshotWidth, out int screenshotHeight, out int imageNumber)
+        private bool GetProductInfoWithFirefox(string productUrl, string UrlNum, out int descriptionWidth, out int descriptionHeight, out int reviewWidth, out int reviewHeight, out int ratingWidth, out int ratingHeight, out string feature )
         {
+            descriptionWidth = 0;
+            descriptionHeight = 0;
 
+            reviewWidth = 0;
+            reviewHeight = 0;
 
-            imageNumber = 0;
-            screenshotWidth = 0;
-            screenshotHeight = 0;
+            ratingWidth = 0;
+            ratingHeight = 0;
 
-            string swatchString = string.Empty;
-            string optionString = string.Empty;
+            feature = "";
 
             try
             {
-                //IJavaScriptExecutor js = driver as IJavaScriptExecutor;
-
                 driver.Navigate().GoToUrl(productUrl);
-                // view more
-                IWebElement eViewMore = driver.FindElement(By.ClassName("view-more"));
-                IWebElement eViewMoreLink = eViewMore.FindElement(By.TagName("a"));
-                eViewMoreLink.Click();
+
+                GetDescriptionScreenshot(UrlNum, out descriptionWidth, out descriptionHeight);
+
+                // review
+                driver.FindElement(By.Id("pdp-accordion-header-1")).Click();
+
+                IWebElement iReviewText = driver.FindElement(By.Id("reviews-text"));
+                iReviewText.Click();
 
                 ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
 
-                //IWebElement element = driver.FindElement(By.Id("product-tab1"));
+                IWebElement iReviews = driver.FindElement(By.ClassName("bv-content-list-Reviews"));
 
-                //var val = js.ExecuteScript("return products");
+                GetScreenshot(UrlNum, ref iReviews, "review", out reviewWidth, out reviewHeight);
 
-                //string optionsAvailable = string.Empty;
+                // rating
+                IWebElement iRating = driver.FindElement(By.ClassName("bv-stars-container"));
+                GetScreenshot(UrlNum, ref iRating, "rating", out ratingWidth, out ratingHeight);
 
-                //var a = val as System.Collections.ObjectModel.ReadOnlyCollection<object>;
-
-                //var b = a[0] as System.Collections.ObjectModel.ReadOnlyCollection<object>;
-
-                //List<object> l = b.ToList();
-
-                //foreach (var o in l)
-                //{
-                //    var v = ((Dictionary<string, object>)o)["options"];
-
-                //    var c = ((System.Collections.ObjectModel.ReadOnlyCollection<object>)v).ToList();
-
-                //    //c.Reverse();
-
-                //    foreach (var d in c)
-                //    {
-                //        optionsAvailable += d + "-";
-                //    }
-
-                //    optionsAvailable = optionsAvailable.Substring(0, optionsAvailable.Length - 1);
-
-                //    optionsAvailable += "|";
-                //}
-
-                //optionsAvailable = optionsAvailable.Substring(0, optionsAvailable.Length - 1);
-
-                //var matches = from v in l where v.Key == "options" select v.Value;
-
-                ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
-
-                // Create an Encoder object based on the GUID
-                // for the Quality parameter category.
-                System.Drawing.Imaging.Encoder myEncoder =
-                    System.Drawing.Imaging.Encoder.Quality;
-
-                // Create an EncoderParameters object.
-                // An EncoderParameters object has an array of EncoderParameter
-                // objects. In this case, there is only one
-                // EncoderParameter object in the array.
-                EncoderParameters myEncoderParameters = new EncoderParameters(1);
-
-                EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 85L);
-                myEncoderParameters.Param[0] = myEncoderParameter;
-
-                var screenshotDriver = driver as ITakesScreenshot;
-                Screenshot screenshot = screenshotDriver.GetScreenshot();
-                var bmpScreen = new Bitmap(new MemoryStream(screenshot.AsByteArray));
-
-                System.Drawing.Rectangle cropArea;
-
-
-
-                IWebElement element = driver.FindElement(By.ClassName("product-info-description"));
-
-
-                if (element.FindElements(By.Id("wc-power-page")).Count > 0)
+                // feature
+                if (hasElement(driver, By.ClassName("pdp-features")))
                 {
-                    IWebElement e = element.FindElement(By.Id("wc-power-page"));
-                    IWebElement eCaption = e.FindElement(By.ClassName("wc-ppp-caption"));
+                    IWebElement iFeature = driver.FindElement(By.ClassName("pdp-features"));
 
-                    int hCaption = 0;
+                    feature = iFeature.Text;
 
-                    if (eCaption != null)
-                    {
-                        hCaption = eCaption.Size.Height;
-                    }
-
-                    Size s = e.Size;
-                    s.Height = s.Height - hCaption;
-                    Point p = e.Location;
-                    p.Y = p.Y + hCaption;
-                    cropArea = new System.Drawing.Rectangle(p, s);
-                }
-                else if (element.FindElements(By.Id("sp_inline_product")).Count > 0)
-                {
-                    IWebElement e = element.FindElement(By.Id("sp_inline_product"));
-
-                    Size s = e.Size;
-                    s.Height = s.Height - 18;
-
-                    Point p = e.Location;
-                    p.Y = p.Y + 18;
-
-                    cropArea = new System.Drawing.Rectangle(p, s);
-                }
-                else
-                {
-                    //IWebElement e = element.FindElement(By.Id("product-tab1"));
-
-                    Size s = element.Size;
-                    Point p = element.Location;
-
-                    if (hasElement(element, By.XPath("//span[contains(text(),'local warehouse')]")))
-                    {
-                        IWebElement w = element.FindElement(By.XPath("//span[contains(text(),'local warehouse')]"));
-
-                        s.Height = s.Height - w.Size.Height;
-                        p.Y = p.Y + w.Size.Height * 2;
-                    }
-
-                    cropArea = new System.Drawing.Rectangle(p, s);
-                }
-
-                screenshotWidth = cropArea.Width;
-                screenshotHeight = cropArea.Height;
-
-                bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\Screenshots\" + UrlNum + ".jpg", jpgEncoder, myEncoderParameters);
-
-                using (WebClient client = new WebClient())
-                {
-                    client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
-                    client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + ".jpg");
+                    feature = feature.Replace("\r\n", @"|");
                 }
 
                 return true;
@@ -1150,6 +1119,121 @@ namespace CostcoWinForm
             finally
             {
 
+            }
+        }
+
+        private void GetScreenshot(string UrlNum, ref IWebElement element, string screenshotName, out int width, out int height)
+        {
+            Size reviewSize = element.Size;
+            Point reviewPoint = element.Location;
+            System.Drawing.Rectangle cropArea1 = new System.Drawing.Rectangle(reviewPoint, reviewSize);
+
+            width = cropArea1.Width;
+            height = cropArea1.Height;
+
+            ImageCodecInfo jpgEncoder1 = GetEncoder(ImageFormat.Jpeg);
+
+            System.Drawing.Imaging.Encoder myEncoder1 = System.Drawing.Imaging.Encoder.Quality;
+
+            EncoderParameters myEncoderParameters1 = new EncoderParameters(1);
+
+            EncoderParameter myEncoderParameter1 = new EncoderParameter(myEncoder1, 85L);
+            myEncoderParameters1.Param[0] = myEncoderParameter1;
+
+            var screenshotDriver1 = driver as ITakesScreenshot;
+            Screenshot screenshot1 = screenshotDriver1.GetScreenshot();
+            var bmpScreen1 = new Bitmap(new MemoryStream(screenshot1.AsByteArray));
+
+            bmpScreen1.Clone(cropArea1, bmpScreen1.PixelFormat).Save(@"C:\temp\Screenshots\" + UrlNum + "_" + screenshotName + ".jpg", jpgEncoder1, myEncoderParameters1);
+
+            using (WebClient client = new WebClient())
+            {
+                client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + "_" + screenshotName + ".jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + "_" + screenshotName + ".jpg");
+            }
+        }
+
+        private void GetDescriptionScreenshot(string UrlNum, out int descriptionWidth, out int descriptionHeight)
+        {
+            // view more
+            IWebElement eViewMore = driver.FindElement(By.ClassName("view-more"));
+            IWebElement eViewMoreLink = eViewMore.FindElement(By.TagName("a"));
+            eViewMoreLink.Click();
+
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
+
+            ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+
+            System.Drawing.Imaging.Encoder myEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+            EncoderParameters myEncoderParameters = new EncoderParameters(1);
+
+            EncoderParameter myEncoderParameter = new EncoderParameter(myEncoder, 85L);
+            myEncoderParameters.Param[0] = myEncoderParameter;
+
+            var screenshotDriver = driver as ITakesScreenshot;
+            Screenshot screenshot = screenshotDriver.GetScreenshot();
+            var bmpScreen = new Bitmap(new MemoryStream(screenshot.AsByteArray));
+
+            System.Drawing.Rectangle cropArea;
+
+            IWebElement element = driver.FindElement(By.ClassName("product-info-description"));
+
+            if (element.FindElements(By.Id("wc-power-page")).Count > 0)
+            {
+                IWebElement e = element.FindElement(By.Id("wc-power-page"));
+                IWebElement eCaption = e.FindElement(By.ClassName("wc-ppp-caption"));
+
+                int hCaption = 0;
+
+                if (eCaption != null)
+                {
+                    hCaption = eCaption.Size.Height;
+                }
+
+                Size s = e.Size;
+                s.Height = s.Height - hCaption;
+                Point p = e.Location;
+                p.Y = p.Y + hCaption;
+                cropArea = new System.Drawing.Rectangle(p, s);
+            }
+            else if (element.FindElements(By.Id("sp_inline_product")).Count > 0)
+            {
+                IWebElement e = element.FindElement(By.Id("sp_inline_product"));
+
+                Size s = e.Size;
+                s.Height = s.Height - 18;
+
+                Point p = e.Location;
+                p.Y = p.Y + 18;
+
+                cropArea = new System.Drawing.Rectangle(p, s);
+            }
+            else
+            {
+                Size s = element.Size;
+                Point p = element.Location;
+
+                if (hasElement(element, By.XPath("//span[contains(text(),'local warehouse')]")))
+                {
+                    IWebElement w = element.FindElement(By.XPath("//span[contains(text(),'local warehouse')]"));
+
+                    s.Height = s.Height - w.Size.Height;
+                    p.Y = p.Y + w.Size.Height * 2;
+                }
+
+                cropArea = new System.Drawing.Rectangle(p, s);
+            }
+
+            descriptionWidth = cropArea.Width;
+            descriptionHeight = cropArea.Height;
+
+            bmpScreen.Clone(cropArea, bmpScreen.PixelFormat).Save(@"C:\temp\Screenshots\" + UrlNum + "_description.jpg", jpgEncoder, myEncoderParameters);
+
+            using (WebClient client = new WebClient())
+            {
+                client.Credentials = new NetworkCredential("jasondi1", "@Yueding00");
+                client.UploadFile("ftp://jasondingphotography.com/public_html//eBay/" + UrlNum + "_description.jpg", "STOR", @"C:\temp\Screenshots\" + UrlNum + "_description.jpg");
             }
         }
 
@@ -1207,8 +1291,8 @@ namespace CostcoWinForm
         private double CalculateListingPrice(double productPrice, double eBayReferencePrice, double shipping)
         {
             double profit = 1.5;
-            double listingPrice = (0.3 + (shipping + productPrice) * 1.09 + profit) / (1.09 - 0.129);
-
+            double listingPrice = (0.3 + 0.3 + (shipping + productPrice) * 1.09 + profit) / (1.09 - 1.09 * 0.129);
+            //double listingPrice = (0.3 + (shipping + productPrice) * 1.09 + profit) / (1.00 - 0.129);
             //if (eBayReferencePrice < productPrice)
             //{
             //    listingPrice += listingPrice * 0.05;
@@ -1523,12 +1607,14 @@ namespace CostcoWinForm
                     string urlNumber = row.Cells["UrlNumber"].Value.ToString();
                     System.Drawing.Image image = System.Drawing.Image.FromFile(@"C:\temp\Screenshots\" + urlNumber + ".jpg");
 
+                    string header = @"<div style='font-family:Arial; font-size:14px; color:#FF0000'><p><strong>No Sales Tax!</strong></p></div>";
+
                     string detail = "<p><img src='http://www.jasondingphotography.com/eBay/" + urlNumber + ".jpg' width='" +
                                 image.Width.ToString() + "' height='" + image.Height.ToString() + "'/></p>";
 
-                    string attach = @"<div style='font-family:Arial; font-size:12px; color:#5D5D5D'><p><strong>Payments</strong></p><p>We accept all major credit cards and instant transfers through PayPal. Payments must be received within 7 days after the end of sale.<br></p><p><strong>Shipping</strong></p><p>We are not able to deliver to P.O. Boxes, Freight Forwarders, or APO boxes. Shipping is available to the contiguous 48 United States only. We are required to ship purchased item to the address listed with Ebay. Merchandise will be shipped within 2 business days (NOT including weekend and holidays)<br></p><p><strong>Stock</strong></p><P>Items are shipped directly from the warehouse, (No Local Pick Ups!). Items are in stock at time of listing but are offered to other retailers &amp; occasionally go on back order or sell out. Please don't hesitate to ask us prior to ordering whether or not your item is in stock.<br>If for whatever reason your item is either sold out or on back order a full refund will be issued immediately. Please don't leave unfair feedback as I am upfront about the possibility of this happening.</P><P> <strong>Descriptions &amp; Errors:</strong></P><p>We attempt to describe products as accurately as possible. However, we do not warrant that product descriptions are accurate, complete, reliable, current, or error-free. In the event a product is listed at an incorrect price or with incorrect information due to a typographical error or an error in pricing or product information received from our suppliers, we shall have the right to refuse or cancel any orders placed for products listed at the incorrect price.</p><p> <strong>Return Policy</strong><br></p><p>We have a 14 day return policy on most items (excluding Non-Prescription Remedies, Food, Vitamins, Herbals &amp; Dietary Supplements,  Family Planning Items).Item must be returned in condition received (Tags & Packaging). Buyer is responsible for all return shipping cost.</p><p><strong>Expiration Date</strong><br></p><p>Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.)</p><p><strong>Sales Tax</strong><br></p><p>If the item is shipped to the following states, applicable sales tax will be applied: AL,AK,AS,AZ,AR,CA,CO,CT,DE,DC,FM,FL,GA,GU,HI,ID,IL,IN,IA,KS,KY,LA,ME,MH,MD,MA,MI,MN,MS,MO,MT,NE,NV,NH,NJ,NM,NY,NC,ND,MP,OH,OK,OR,PW,PA,PR,RI,SC,SD,TN, TX,UT,VT,VI,VA,WA,WV,WI,WY</p><p><strong>About Us</strong></p><p>We are dedicated to providing you the best customer service and a wonderful shopping experience on eBay. Please feel free to email us with any questions you might have. Your satisfaction is extremely important to us and is our highest priority. Please leave your positive feedback and help us build our business. We leave positive feedback for our customers upon shipment of the order.</p></div>";
+                    string attach = @"<div style='font-family:Arial; font-size:12px; color:#5D5D5D'><p><strong>Payments</strong></p><p>We accept all major credit cards and instant transfers through PayPal. Payments must be received within 7 days after the end of sale.<br></p><p><strong>Shipping</strong></p><p>We are not able to deliver to P.O. Boxes, Freight Forwarders, or APO boxes. Shipping is available to the contiguous 48 United States only. We are required to ship purchased item to the address listed with Ebay. Merchandise will be shipped within 2 business days (NOT including weekend and holidays)<br></p><p><strong>Stock</strong></p><P>Items are shipped directly from the warehouse, (No Local Pick Ups!). Items are in stock at time of listing but are offered to other retailers &amp; occasionally go on back order or sell out. Please don't hesitate to ask us prior to ordering whether or not your item is in stock.<br>If for whatever reason your item is either sold out or on back order a full refund will be issued immediately. Please don't leave unfair feedback as I am upfront about the possibility of this happening.</P><P> <strong>Descriptions &amp; Errors:</strong></P><p>We attempt to describe products as accurately as possible. However, we do not warrant that product descriptions are accurate, complete, reliable, current, or error-free. In the event a product is listed at an incorrect price or with incorrect information due to a typographical error or an error in pricing or product information received from our suppliers, we shall have the right to refuse or cancel any orders placed for products listed at the incorrect price.</p><p> <strong>Return Policy</strong><br></p><p>We have a 14 day return policy on most items (excluding Non-Prescription Remedies, Food, Vitamins, Herbals &amp; Dietary Supplements,  Family Planning Items).Item must be returned in condition received (Tags & Packaging). Buyer is responsible for all return shipping cost.</p><p><strong>Expiration Date</strong><br></p><p>Satisfaction guaranteed. It will be fresh and not expired or near expiration. (Usually a few years out.)</p><p><strong>About Us</strong></p><p>We are dedicated to providing you the best customer service and a wonderful shopping experience on eBay. Please feel free to email us with any questions you might have. Your satisfaction is extremely important to us and is our highest priority. Please leave your positive feedback and help us build our business. We leave positive feedback for our customers upon shipment of the order.</p></div>";
 
-                    detail = detail + attach;
+                    detail = header + detail + attach;
                     //sqlString = @"UPDATE eBay_ToAdd SET DescriptionImageWidth = " + image.Width.ToString() +
                     //            ", DescriptionImageHeight = " + image.Height.ToString() + ", Details = '" + detail + "' WHERE UrlNumber = " + urlNumber + " AND DeleteTime is null";
 
@@ -1689,18 +1775,18 @@ namespace CostcoWinForm
                 //{
 
                 //}
-                oSheet.Cells[i, 7] = product.ImageLink;
+                oSheet.Cells[i, 7] = @"http://www.jasondingphotography.com/eBay/" + product.UrlNumber + "_productimage.jpg";
                 oSheet.Cells[i, 8] = "10";
                 oSheet.Cells[i, 9] = "FixedPrice";
                 oSheet.Cells[i, 10] = product.eBayListingPrice;
                 oSheet.Cells[i, 12] = "GTC";
                 oSheet.Cells[i, 13] = "1";
-                oSheet.Cells[i, 14] = "Multiple locations";
+                oSheet.Cells[i, 14] = "AL";
                 oSheet.Cells[i, 16] = "1";
                 oSheet.Cells[i, 17] = "zjding@outlook.com";
                 oSheet.Cells[i, 22] = "Flat";
-                oSheet.Cells[i, 23] = "USPSPriority";
-                oSheet.Cells[i, 24] = "0";
+                oSheet.Cells[i, 23] = "ShippingMethodStandard";
+                oSheet.Cells[i, 24] = Math.Round(Convert.ToDouble(product.eBayListingPrice) * 0.1, 2);
                 oSheet.Cells[i, 25] = "1";
                 oSheet.Cells[i, 31] = "1";
                 oSheet.Cells[i, 33] = "ReturnsNotAccepted";
@@ -1954,7 +2040,7 @@ namespace CostcoWinForm
 
                 if (imageUrl != "")
                 {
-                    e.Value = eBayFrontEnd.GetImageFromUrl(imageUrl);
+                    e.Value = eBayFrontEnd.GetImageFromUrl(imageUrl.Split('|')[0]);
                 }
                 else
                 {

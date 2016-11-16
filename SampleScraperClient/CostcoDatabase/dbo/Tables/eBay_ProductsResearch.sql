@@ -5,8 +5,12 @@
     [eBaySoldNumber] INT            NULL,
     [productUrl]     NVARCHAR (500) NULL,
     [productPrice]   MONEY          NULL,
+    [SamsOrCostco]   VARCHAR (1)    NULL,
+    [trendingPrice]  MONEY          NULL,
     [eBayUserId]     NVARCHAR (200) NULL
 );
+
+
 
 
 

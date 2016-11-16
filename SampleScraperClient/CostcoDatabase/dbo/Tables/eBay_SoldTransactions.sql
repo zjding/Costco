@@ -44,8 +44,11 @@ CREATE TABLE [dbo].[eBay_SoldTransactions] (
     [CostcoTrackingNumber] NVARCHAR (30)  NULL,
     [CostcoShipDate]       NCHAR (10)     NULL,
     [CostcoShipEmailPdf]   NVARCHAR (200) NULL,
-    [CostcoTaxExemptPdf]   NVARCHAR (200) NULL
+    [CostcoTaxExemptPdf]   NVARCHAR (200) NULL,
+    [CostcoOrderStatus]    NVARCHAR (20)  NULL
 );
+
+
 
 
 
