@@ -9,12 +9,12 @@
     [Shipping]               SMALLMONEY      NULL,
     [Limit]                  INT             NULL,
     [Discount]               NVARCHAR (500)  NULL,
-    [Details]                NVARCHAR (4000) NULL,
+    [Details]                NVARCHAR (MAX)  NULL,
     [Options]                NVARCHAR (2000) NULL,
     [Specification]          NVARCHAR (4000) NULL,
     [Url]                    NVARCHAR (500)  NULL,
     [Thumb]                  NVARCHAR (200)  NULL,
-    [ImageLink]              NVARCHAR (2000) NULL,
+    [ImageLink]              NVARCHAR (4000) NULL,
     [NumberOfImage]          INT             NULL,
     [ImageOptions]           NVARCHAR (4000) NULL,
     [eBayCategoryID]         NVARCHAR (50)   NULL,
@@ -35,6 +35,8 @@
     [eBaySoldNumber]         INT             NULL,
     CONSTRAINT [PK_eBayToAdd] PRIMARY KEY CLUSTERED ([ID] ASC)
 );
+
+
 
 
 

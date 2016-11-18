@@ -727,9 +727,9 @@ namespace CostcoWinForm
             cn.Close();
 
 
-            //IWebDriver driver = new ChromeDriver();
+            //driver = new ChromeDriver();
             int descriptionWidth = 0, descriptionHeight = 0, reviewWidth = 0, reviewHeight = 0, ratingWidth = 0, ratingHeight = 0, imageNumber = 0;
-            string feature = "";
+            string feature = "", productImages = "";
 
             cn.Open();
 
@@ -791,7 +791,7 @@ namespace CostcoWinForm
 
                 p.eBaySoldNumber = (categoryIDAndPrice.Split('|').Length == 2 || categoryIDAndPrice.Split('|')[2] == "") ? -1 : Convert.ToInt16(categoryIDAndPrice.Split('|')[2].Replace(",", ""));
 
-                if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out descriptionWidth, out descriptionHeight, out reviewWidth, out reviewHeight, out ratingWidth, out ratingHeight, out feature)) ;
+                if (GetProductInfoWithFirefox(p.Url, p.UrlNumber, out descriptionWidth, out descriptionHeight, out reviewWidth, out reviewHeight, out ratingWidth, out ratingHeight, out feature, out productImages)) ;
                 {
                     p.DescriptionImageHeight = descriptionHeight;
                     p.DescriptionImageWidth = descriptionWidth;
@@ -804,22 +804,34 @@ namespace CostcoWinForm
                     eBayTemplate += @"<div id='etemp'><div id='eheader'><div id='etemp-wrap'><div style='clear:both;'></div><div id='econtent'>";
                     eBayTemplate += @"<div class='slider'>";
 
-                    int i = 1;
-                    foreach (string image in p.ImageLink.Split('|'))
+                    if (productImages == "")
                     {
-                        eBayTemplate += @"<input type='radio' name='slide_switch' id='id" + i.ToString() + "'/>";
-                        eBayTemplate += @"<label for='id" + i.ToString() + "'><img src='" + image + "' width='100'/></label>";
-                        eBayTemplate += @"<img src='" + image + "'/>";
-                        i++;
+                        eBayTemplate += @"<input type='radio' name='slide_switch' id='id1" + "' checked='checked'/>";
+                        eBayTemplate += @"<label for='id1" + "'><img src='" + p.ImageLink + "' width='100'/></label>";
+                        eBayTemplate += @"<img src='" + p.ImageLink + "'/>";
+                    }
+                    else
+                    {
+                        int i = 1;
+                        foreach (string image in productImages.Split('|'))
+                        {
+                            if (i == 1)
+                                eBayTemplate += @"<input type='radio' name='slide_switch' id='id" + i.ToString() + "' checked='checked'/>";
+                            else
+                                eBayTemplate += @"<input type='radio' name='slide_switch' id='id" + i.ToString() + "'/>";
+                            eBayTemplate += @"<label for='id" + i.ToString() + "'><img src='" + image + "' width='100'/></label>";
+                            eBayTemplate += @"<img src='" + image + "'/>";
+                            i++;
+                        }
                     }
 
                     eBayTemplate += "</div>";
                     eBayTemplate += @"<div id='pinfo'><div id='topbox-wrap'><h1 id='ptitle' style='font-size:30px'>";
-                    eBayTemplate += p.Name;
+                    eBayTemplate += p.Name; 
                     eBayTemplate += @"</h1>";
-                    eBayTemplate += @"<div><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + "_rating.jpg' width='" + ratingWidth + "' height='" + ratingHeight + "' alt=''/></div>";
+                    eBayTemplate += @"<div style='margin-top:20px'><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + "_rating.jpg' width='" + ratingWidth + "' height='" + ratingHeight + "' alt=''/></div>";
                     eBayTemplate += @"<div style='margin-bottom:20px; margin-top:20px'><span style='font-size:20px'>Price</span><span style='margin-left:20px; font-size:24px'>";
-                    eBayTemplate += @"$" + p.eBayListingPrice.ToString() + @"</span><span><img src='http://www.jasondingphotography.com/eBay/tax-free-stamp1.jpg' width='70' height='30' alt='' /></span> </div>";
+                    eBayTemplate += @"$ xxx" + @"</span><span><img src='http://www.jasondingphotography.com/eBay/tax-free-stamp1.jpg' width='70' height='30' alt='' /></span> </div>";
                     eBayTemplate += @"<div style='margin-bottom:20px'> <span style='font-size:16px'>Features:</span> </div><ul id='itemdesc'>";
 
                     foreach (string f in feature.Split('|'))
@@ -876,7 +888,7 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_Limit", p.Limit);
                     cmd.Parameters.AddWithValue("@_Discount", p.Discount);
                     cmd.Parameters.AddWithValue("@_Details", p.Details);
-                    cmd.Parameters.AddWithValue("@_ImageLink", p.ImageLink);
+                    cmd.Parameters.AddWithValue("@_ImageLink", productImages == "" ? p.ImageLink : productImages);
                     cmd.Parameters.AddWithValue("@_NumberOfImage", p.NumberOfImage);
                     cmd.Parameters.AddWithValue("@_Options", p.Options);
                     cmd.Parameters.AddWithValue("@_ImageOptions", p.ImageOptions);
@@ -1065,7 +1077,7 @@ namespace CostcoWinForm
             }
         }
 
-        private bool GetProductInfoWithFirefox(string productUrl, string UrlNum, out int descriptionWidth, out int descriptionHeight, out int reviewWidth, out int reviewHeight, out int ratingWidth, out int ratingHeight, out string feature )
+        private bool GetProductInfoWithFirefox(string productUrl, string UrlNum, out int descriptionWidth, out int descriptionHeight, out int reviewWidth, out int reviewHeight, out int ratingWidth, out int ratingHeight, out string feature, out string stProductImages)
         {
             descriptionWidth = 0;
             descriptionHeight = 0;
@@ -1077,6 +1089,7 @@ namespace CostcoWinForm
             ratingHeight = 0;
 
             feature = "";
+            stProductImages = "";
 
             try
             {
@@ -1092,10 +1105,12 @@ namespace CostcoWinForm
 
                 ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollTo(0, document.body.scrollHeight)");
 
-                IWebElement iReviews = driver.FindElement(By.ClassName("bv-content-list-Reviews"));
+                if (hasElement(driver, By.ClassName("bv-content-list-Reviews")))
+                {
+                    IWebElement iReviews = driver.FindElement(By.ClassName("bv-content-list-Reviews"));
 
-                GetScreenshot(UrlNum, ref iReviews, "review", out reviewWidth, out reviewHeight);
-
+                    GetScreenshot(UrlNum, ref iReviews, "review", out reviewWidth, out reviewHeight);
+                }
                 // rating
                 IWebElement iRating = driver.FindElement(By.ClassName("bv-stars-container"));
                 GetScreenshot(UrlNum, ref iRating, "rating", out ratingWidth, out ratingHeight);
@@ -1110,6 +1125,33 @@ namespace CostcoWinForm
                     feature = feature.Replace("\r\n", @"|");
                 }
 
+                IWebElement iZoomViewer = driver.FindElement(By.Id("zoomViewer"));
+
+                if (hasElement(iZoomViewer, By.ClassName("slick-track")))
+                {
+                    IWebElement iSlickTrack = iZoomViewer.FindElement(By.ClassName("slick-track"));
+
+                    var iSlickSlides = iSlickTrack.FindElements(By.ClassName("slick-slide"));
+
+                    IWebElement iProductImageContainer = driver.FindElement(By.Id("productImageContainer"));
+
+                    foreach (IWebElement iSlickSlide in iSlickSlides)
+                    {
+                        iSlickSlide.Click();
+
+                        IWebElement i680Image = iProductImageContainer.FindElement(By.ClassName("RICHFXColorChange"));
+
+                        string image = i680Image.FindElement(By.TagName("img")).GetAttribute("src");
+
+                        stProductImages += image + "|";
+                    }
+
+                    stProductImages = stProductImages.Substring(0, stProductImages.Length - 1);
+                }
+                else
+                {
+                    
+                }
                 return true;
             }
             catch (Exception ex)
@@ -1130,6 +1172,12 @@ namespace CostcoWinForm
 
             width = cropArea1.Width;
             height = cropArea1.Height;
+
+            if (height == 0)
+            {
+                width = 0;
+                return;
+            }
 
             ImageCodecInfo jpgEncoder1 = GetEncoder(ImageFormat.Jpeg);
 
