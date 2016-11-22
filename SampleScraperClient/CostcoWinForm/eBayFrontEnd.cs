@@ -32,6 +32,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using OpenQA.Selenium.Chrome;
 using Microsoft.Win32.TaskScheduler;
+using System.Globalization;
 
 namespace CostcoWinForm
 {
@@ -831,7 +832,7 @@ namespace CostcoWinForm
                     eBayTemplate += @"</h1>";
                     eBayTemplate += @"<div style='margin-top:20px'><img src='http://www.jasondingphotography.com/eBay/" + p.UrlNumber + "_rating.jpg' width='" + ratingWidth + "' height='" + ratingHeight + "' alt=''/></div>";
                     eBayTemplate += @"<div style='margin-bottom:20px; margin-top:20px'><span style='font-size:20px'>Price</span><span style='margin-left:20px; font-size:24px'>";
-                    eBayTemplate += @"$ xxx" + @"</span><span><img src='http://www.jasondingphotography.com/eBay/tax-free-stamp1.jpg' width='70' height='30' alt='' /></span> </div>";
+                    eBayTemplate += @"xxx" + @"</span><span style='margin-left:10px'><img src='http://www.jasondingphotography.com/eBay/NoTax.jpg' width='79' height='30' alt='' /></span> </div>";
                     eBayTemplate += @"<div style='margin-bottom:20px'> <span style='font-size:16px'>Features:</span> </div><ul id='itemdesc'>";
 
                     foreach (string f in feature.Split('|'))
@@ -864,13 +865,15 @@ namespace CostcoWinForm
 
                     p.Details = eBayTemplate;
 
-                    p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.eBayReferencePrice), Convert.ToDouble(p.Shipping)));
+                    double eBayShipping = 0.0;
+
+                    p.eBayListingPrice = Convert.ToDecimal(CalculateListingPrice(Convert.ToDouble(p.Price), Convert.ToDouble(p.Shipping), Convert.ToDouble(p.eBayReferencePrice), out eBayShipping));
 
                     sqlString = @"INSERT INTO eBay_ToAdd
                                 (Name, eBayName, UrlNumber, ItemNumber, Category, Price, Shipping, Limit, Discount, Details, ImageLink, NumberOfImage, Options, ImageOptions, 
-                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl, Thumb, ebaySoldNumber)
+                                Url, eBayCategoryID, eBayReferencePrice, eBayListingPrice, DescriptionImageWidth, DescriptionImageHeight, TemplateName, Specifics, InsertTime, eBayReferenceUrl, Thumb, ebaySoldNumber, eBayShipping)
                                 VALUES (@_Name, @_eBayName, @_UrlNumber, @_ItemNumber, @_Category, @_Price, @_Shipping, @_Limit, @_Discount, @_Details, @_ImageLink, @_NumberOfImage, @_Options, @_ImageOptions,
-                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl, @_Thumb, @_eBaySoldNumber)";
+                                @_Url, @_eBayCategoryID, @_eBayReferencePrice, @_eBayListingPrice, @_DescriptionImageWidth, @_DescriptionImageHeight, @_TemplateName, @_Specifics, GETDATE(), @_eBayReferenceUrl, @_Thumb, @_eBaySoldNumber, @_eBayShipping)";
 
                     string eBayName = RemoveSpecialCharacters(p.Name);
                     if (eBayName.Length > 80)
@@ -903,6 +906,7 @@ namespace CostcoWinForm
                     cmd.Parameters.AddWithValue("@_eBayReferenceUrl", eBayReferenceUrl);
                     cmd.Parameters.AddWithValue("@_Thumb", p.Thumb);
                     cmd.Parameters.AddWithValue("@_eBaySoldNumber", p.eBaySoldNumber == -1 ? (object)DBNull.Value : p.eBaySoldNumber);
+                    cmd.Parameters.AddWithValue("@_eBayShipping", eBayShipping);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -1336,10 +1340,46 @@ namespace CostcoWinForm
             }
         }
 
-        private double CalculateListingPrice(double productPrice, double eBayReferencePrice, double shipping)
+        private double CalculateListingPrice(double productPrice, double costcoShipping, double eBayReferencePrice, out double eBayShipping)
         {
+            double profit = 2.0;
+
+            double eBayPrice_Int = System.Math.Truncate(eBayReferencePrice);
+            double eBayPrice_Deicmal = eBayReferencePrice - eBayPrice_Int;
+
+            if (eBayPrice_Deicmal > 0.97)
+                eBayPrice_Deicmal = 0.97;
+            else if (eBayPrice_Deicmal > 0.47)
+                eBayPrice_Deicmal = 0.47;
+            else
+            {
+                eBayPrice_Deicmal = 0.97;
+                eBayPrice_Int = eBayPrice_Int - 1;
+            }
+
+            double eBayListPrice = eBayPrice_Int + eBayPrice_Deicmal;
+
+            eBayShipping = (profit + (productPrice + costcoShipping) * 1.09 + 0.3) / 0.871 - eBayListPrice;
+
+            double eBayShipping_Int = System.Math.Truncate(eBayShipping);
+            double eBayShipping_Decimal = eBayShipping - eBayShipping_Int;
+
+            if (eBayShipping_Decimal == 0.00)
+                eBayShipping_Decimal = 0.00;
+            else if (eBayShipping_Decimal < 0.47)
+                eBayShipping_Decimal = 0.47;
+            else if (eBayShipping_Decimal < 0.97)
+                eBayShipping_Decimal = 0.97;
+            else
+                eBayShipping_Decimal = 0.99;
+
+            eBayShipping = eBayShipping_Int + eBayShipping_Decimal;
+
+            return eBayListPrice;
+
+            /*
             double profit = 1.5;
-            double listingPrice = (0.3 + 0.3 + (shipping + productPrice) * 1.09 + profit) / (1.09 - 1.09 * 0.129);
+            double listingPrice = (0.3 + 0.3 + (costcoShipping + productPrice) * 1.09 + profit) / (1.09 - 1.09 * 0.129);
             //double listingPrice = (0.3 + (shipping + productPrice) * 1.09 + profit) / (1.00 - 0.129);
             //if (eBayReferencePrice < productPrice)
             //{
@@ -1360,6 +1400,7 @@ namespace CostcoWinForm
             listingPrice = Math.Round(listingPrice, 2);
 
             return listingPrice;
+            */
         }
 
         private void btnAddProduct_Click(object sender, EventArgs e)
@@ -1408,6 +1449,11 @@ namespace CostcoWinForm
             }
         }
 
+        private void txtFilter_TextChanged(object sender, EventArgs e)
+        {
+            (this.gvProducts.DataSource as DataTable).DefaultView.RowFilter = string.Format("CostcoProductName LIKE '%{0}%'", txtFilter.Text);
+        }
+
         // tpToAdd
 
         SqlCommand cmdToAdd;
@@ -1436,16 +1482,16 @@ namespace CostcoWinForm
 
             foreach (string category in selectedCategories)
             {
-                sqlString += @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
-                                        UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
+                sqlString += @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, eBayShipping, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
+                                        UrlNumber, eBayReferenceUrl, Details, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd 
                                  WHERE DeleteTime is NULL
                                  AND Category like '" + category + "%' UNION ";
             }
 
             if (sqlString.Length == 0)
-                sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
-                                        UrlNumber, eBayReferenceUrl, Specifics, Limit, Options, Category, eBayCategoryID, eBayName
+                sqlString = @"SELECT ID, Thumb, ImageLink, Name as ProductName, 0.00 as eBayReferencePriceProfit, Price, eBayListingPrice, eBayShipping, 0.00 as Profit, Shipping, Url, eBayReferencePrice,  eBaySoldNumber, 
+                                        UrlNumber, eBayReferenceUrl, Details, Limit, Options, Category, eBayCategoryID, eBayName
                                  FROM eBay_ToAdd
                                  WHERE 1 = 2";
             else
@@ -1732,6 +1778,7 @@ namespace CostcoWinForm
                     product.DescriptionImageWidth = Convert.ToInt16(reader["DescriptionImageWidth"]);
                     product.TemplateName = Convert.ToString(reader["TemplateName"]);
                     product.Specifics = Convert.ToString(reader["Specifics"]);
+                    product.eBayShipping = Convert.ToDecimal(reader["eBayShipping"]);
 
                     products.Add(product);
                 }
@@ -1804,7 +1851,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 1] = "Add";
                 oSheet.Cells[i, 2] = product.eBayCategoryID;
                 oSheet.Cells[i, 3] = product.eBayName;
-                oSheet.Cells[i, 5] = product.Details;
+                oSheet.Cells[i, 5] = product.Details.Replace("xxx", product.eBayListingPrice.ToString("C", new CultureInfo("en-US")));
                 oSheet.Cells[i, 6] = "1000";
 
                 //if (string.IsNullOrEmpty(product.Options))
@@ -1823,7 +1870,7 @@ namespace CostcoWinForm
                 //{
 
                 //}
-                oSheet.Cells[i, 7] = @"http://www.jasondingphotography.com/eBay/" + product.UrlNumber + "_productimage.jpg";
+                oSheet.Cells[i, 7] = product.ImageLink; //@"http://www.jasondingphotography.com/eBay/" + product.UrlNumber + "_productimage.jpg";
                 oSheet.Cells[i, 8] = "10";
                 oSheet.Cells[i, 9] = "FixedPrice";
                 oSheet.Cells[i, 10] = product.eBayListingPrice;
@@ -1834,7 +1881,7 @@ namespace CostcoWinForm
                 oSheet.Cells[i, 17] = "zjding@outlook.com";
                 oSheet.Cells[i, 22] = "Flat";
                 oSheet.Cells[i, 23] = "ShippingMethodStandard";
-                oSheet.Cells[i, 24] = Math.Round(Convert.ToDouble(product.eBayListingPrice) * 0.1, 2);
+                oSheet.Cells[i, 24] = Math.Round(product.eBayShipping, 2);
                 oSheet.Cells[i, 25] = "1";
                 oSheet.Cells[i, 31] = "1";
                 oSheet.Cells[i, 33] = "ReturnsNotAccepted";
@@ -2048,19 +2095,19 @@ namespace CostcoWinForm
 
             if (e.ColumnIndex == 8)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[12].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[13].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
             else if (e.ColumnIndex == 6)
             {
-                string fileName = gvAdd.Rows[e.RowIndex].Cells[15].FormattedValue.ToString();
+                string fileName = gvAdd.Rows[e.RowIndex].Cells[16].FormattedValue.ToString();
 
                 Process.Start(@"C:\temp\Screenshots\" + fileName + ".jpg");
             }
-            else if (e.ColumnIndex == 13)
+            else if (e.ColumnIndex == 14)
             {
-                string url = gvAdd.Rows[e.RowIndex].Cells[16].FormattedValue.ToString();
+                string url = gvAdd.Rows[e.RowIndex].Cells[17].FormattedValue.ToString();
 
                 Process.Start(@"chrome", url);
             }
@@ -2073,7 +2120,7 @@ namespace CostcoWinForm
 
             if (e.ColumnIndex == 0)
             {
-                double eBayReferencePrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[13].Value);
+                double eBayReferencePrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[14].Value);
                 double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].Value);
                 if (eBayListingPrice < eBayReferencePrice)
                 {
@@ -2099,20 +2146,23 @@ namespace CostcoWinForm
             {
                 double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].Value);
                 double eBayListingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[9].Value);
+                double eBayShippingPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[10].Value == DBNull.Value ? 0 : this.gvAdd.Rows[e.RowIndex].Cells[10].Value);
                 double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[11].Value);
 
-                double eBayFee = eBayListingPrice * 0.1;
-                double payPalFee = eBayListingPrice * 0.029 + 0.3;
-                double costcoCost = costcoPrice * 1.09 + shipping;
+                double eBayFee = (eBayListingPrice + eBayShippingPrice) * 0.1;
+                double payPalFee = (eBayListingPrice + eBayShippingPrice) * 0.029 + 0.3;
+                double costcoCost = (costcoPrice + shipping) * 1.09;
 
-                double profit = eBayListingPrice * 1.09 - eBayFee - payPalFee - costcoCost;
+                //double profit = eBayListingPrice * 1.09 - eBayFee - payPalFee - costcoCost;
+
+                double profit = eBayListingPrice + eBayShippingPrice - eBayFee - payPalFee - costcoCost;
 
                 e.Value = Math.Round(profit, 2);
             }
             else if (gvAdd.Columns[e.ColumnIndex].Name == "eBayReferencePriceProfit")
             {
                 double costcoPrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[8].Value);
-                double eBayReferencePrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[13].Value);
+                double eBayReferencePrice = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[14].Value);
                 double shipping = Convert.ToDouble(this.gvAdd.Rows[e.RowIndex].Cells[11].Value);
 
                 double eBayFee = eBayReferencePrice * 0.1;
@@ -5022,6 +5072,6 @@ namespace CostcoWinForm
             bToAddTabEnteringGridRefreshed = false;
         }
 
-
+        
     }
 }

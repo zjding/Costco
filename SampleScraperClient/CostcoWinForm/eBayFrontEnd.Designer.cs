@@ -3475,6 +3475,7 @@
             this.txtFilter.Name = "txtFilter";
             this.txtFilter.Size = new System.Drawing.Size(349, 20);
             this.txtFilter.TabIndex = 6;
+            this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
             // 
             // btnRefreshProducts
             // 

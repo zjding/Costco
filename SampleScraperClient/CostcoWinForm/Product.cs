@@ -40,6 +40,8 @@ namespace CostcoWinForm
         public string Specifics { get; set; } = "";
 
         public int eBaySoldNumber { get; set; }
+
+        public decimal eBayShipping { get; set; }
     }
 
     public class ProductUpdate
